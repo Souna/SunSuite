@@ -76,7 +76,7 @@ namespace SunFileManager.SunFileLib.Properties
 
         public override void WriteValue(SunBinaryWriter writer)
         {
-            byte[] imageBytes = new byte[0];
+            byte[] canvasBytes = new byte[0];
 
             writer.Write(Name);
             writer.Write((byte)SunPropertyType.Canvas);
@@ -88,14 +88,14 @@ namespace SunFileManager.SunFileLib.Properties
             }
             else
             {
-                imageBytes = GetCompressedBytes();
+                canvasBytes = GetCompressedBytes();
                 int size = sizeof(byte);    // SunPropertyType (8)
                 size += sizeof(byte);       // Property bool
                 size += sizeof(byte);       // Gif bool
                 size += SunFileHelper.GetCompressedIntLength(Width);
                 size += SunFileHelper.GetCompressedIntLength(Height);
                 size += 4;                  // Image Length
-                size += imageBytes.Length;
+                size += canvasBytes.Length;
                 writer.Write(size);
             }
 
@@ -137,9 +137,9 @@ namespace SunFileManager.SunFileLib.Properties
             writer.WriteCompressedInt(Width);
             writer.WriteCompressedInt(Height);
 
-            writer.Write(imageBytes.Length);     // Write total size of image data
+            writer.Write(canvasBytes.Length);     // Write total size of image data
 
-            writer.Write(imageBytes);
+            writer.Write(canvasBytes);
 
             //byte[] imageBytes = new byte[0];
 
@@ -219,18 +219,18 @@ namespace SunFileManager.SunFileLib.Properties
         public override string Name { get { return name; } set { name = value; } }
 
         /// <summary>
-        /// Returns the parent object containing this Image.
+        /// Returns the parent object containing this canvas.
         /// </summary>
         public override SunObject Parent { get { return parent; } set { parent = value; } }
 
         /// <summary>
-        /// Returns the byte-value type of an image (3).
+        /// Returns the byte-value type of a canvas (3).
         /// Deprecated.
         /// </summary>
         public override SunObjectType ObjectType { get { return SunObjectType.Property; } }
 
         /// <summary>
-        /// Returns the SunFile this image is a part of.
+        /// Returns the SunFile this canvas is a part of.
         /// </summary>
         public override SunFile SunFileParent { get { return Parent.SunFileParent; } }
 
@@ -239,7 +239,7 @@ namespace SunFileManager.SunFileLib.Properties
         #region IPropertyContainer
 
         /// <summary>
-        /// Adds a property to the image.
+        /// Adds a property to the canvas.
         /// </summary>
         public void AddProperty(SunProperty property)
         {
@@ -259,7 +259,7 @@ namespace SunFileManager.SunFileLib.Properties
         }
 
         /// <summary>
-        /// Deletes the selected property under the image.
+        /// Deletes the selected property under the canvas.
         /// </summary>
         public void RemoveProperty(SunProperty property)
         {
@@ -278,7 +278,7 @@ namespace SunFileManager.SunFileLib.Properties
         }
 
         /// <summary>
-        /// The list of properties belonging to this image.
+        /// The list of properties belonging to this canvas.
         /// </summary>
         public List<SunProperty> SunProperties { get { return sunPropertyList; } }
 
@@ -301,7 +301,7 @@ namespace SunFileManager.SunFileLib.Properties
         }
 
         /// <summary>
-        /// Creates a blank image property.
+        /// Creates a blank canvas property.
         /// </summary>
         public SunCanvasProperty() { }
 
@@ -422,10 +422,10 @@ namespace SunFileManager.SunFileLib.Properties
         }
 
         /// <summary>
-        /// Gets the origin position of the Image.
+        /// Gets the origin position of the canvas.
         /// <br>Defaults to 0, 0 if unavailable.</br>
         /// </summary>
-        public Point GetImageOriginPosition()
+        public Point GetCanvasOriginPosition()
         {
             return new Point(0, 0);
         }

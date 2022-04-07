@@ -8,7 +8,7 @@ namespace SunFileManager.GUI.Container
     public partial class Panning_PictureBox : UserControl
     {
         private Point startingPoint = new Point();
-        private frmImageInputBox imageInputBox;
+        private frmCanvasInputBox canvasInputBox;
 
         public Panning_PictureBox()
         {
@@ -18,7 +18,7 @@ namespace SunFileManager.GUI.Container
         private void Panning_PictureBox_Load(object sender, EventArgs e)
         {
             picPan.SizeMode = PictureBoxSizeMode.AutoSize;
-            imageInputBox = ParentForm as frmImageInputBox;
+            canvasInputBox = ParentForm as frmCanvasInputBox;
         }
 
         private void picPan_MouseDown(object sender, MouseEventArgs e)
@@ -46,7 +46,7 @@ namespace SunFileManager.GUI.Container
         /// <summary>
         /// The image contained in the PictureBox.
         /// </summary>
-        public Image Image
+        public Image Canvas
         {
             get { if (picPan.Image != null) return picPan.Image; return null; }
             set
@@ -66,10 +66,10 @@ namespace SunFileManager.GUI.Container
 
         private void picPan_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (imageInputBox == null) return;
+            if (canvasInputBox == null) return;
             if (e.Button == MouseButtons.Left)
             {
-                imageInputBox.SelectImage();
+                canvasInputBox.SelectCanvas();
             }
         }
 

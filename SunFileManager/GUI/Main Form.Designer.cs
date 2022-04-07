@@ -64,6 +64,7 @@
             this.sunTreeView.Size = new System.Drawing.Size(255, 414);
             this.sunTreeView.TabIndex = 0;
             this.sunTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.sunTreeView_AfterSelect);
+            this.sunTreeView.DoubleClick += new System.EventHandler(this.sunTreeView_DoubleClick);
             this.sunTreeView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.sunTreeView_MouseUp);
             // 
             // menuStripMain
@@ -245,7 +246,7 @@
             this.mainfrm_panning_PictureBox.BackColor = System.Drawing.Color.Transparent;
             this.mainfrm_panning_PictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.mainfrm_panning_PictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.mainfrm_panning_PictureBox.Image = null;
+            this.mainfrm_panning_PictureBox.Canvas = null;
             this.mainfrm_panning_PictureBox.Location = new System.Drawing.Point(277, 101);
             this.mainfrm_panning_PictureBox.Name = "mainfrm_panning_PictureBox";
             this.mainfrm_panning_PictureBox.Size = new System.Drawing.Size(315, 378);

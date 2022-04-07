@@ -242,7 +242,7 @@ namespace SunFileManager.SunFileLib
                 // Selected a nested directory.
                 if (Parent != null && Parent.Tag is SunDirectory && Tag is SunDirectory)
                     return "Nested " + SunObjectType.Directory.ToString();
-                //  Selected an image node.
+                //  Selected a node for a canvas.
                 else if (Parent != null && Tag is SunCanvasProperty img)
                 {
                     // Selected a gif node.

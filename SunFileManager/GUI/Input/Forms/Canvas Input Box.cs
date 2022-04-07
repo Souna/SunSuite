@@ -8,17 +8,17 @@ using System.Windows.Media.Imaging;
 
 namespace SunFileManager.GUI.Input
 {
-    public partial class frmImageInputBox : Form
+    public partial class frmCanvasInputBox : Form
     {
         private string nameResult = null, defaultText = null;
         private Image image;
         private List<Bitmap> bitmapResult = new List<Bitmap>(); // List for ability to accommodate a gif's frames.
         private bool gifListResult = false; // Bool for whether or not the submission is a gif
-        private static frmImageInputBox form = null;
+        private static frmCanvasInputBox form = null;
 
         public static bool Show(string title, out string name, out List<Bitmap> bitmap, out bool isGif)
         {
-            form = new frmImageInputBox(title);
+            form = new frmCanvasInputBox(title);
             bool result = form.ShowDialog() == DialogResult.OK;
             name = form.nameResult;
             bitmap = form.bitmapResult;
@@ -26,7 +26,7 @@ namespace SunFileManager.GUI.Input
             return result;
         }
 
-        public frmImageInputBox(string title)
+        public frmCanvasInputBox(string title)
         {
             InitializeComponent();
             DialogResult = DialogResult.Cancel;
@@ -39,9 +39,9 @@ namespace SunFileManager.GUI.Input
             panning_PictureBox.Visible = false;
         }
 
-        private void txtImagePath_Click(object sender, EventArgs e)
+        private void txtCanvasPath_Click(object sender, EventArgs e)
         {
-            SelectImage();
+            SelectCanvas();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -50,8 +50,8 @@ namespace SunFileManager.GUI.Input
             {
                 image.Dispose();
                 image = null;
-                panning_PictureBox.Image.Dispose();
-                panning_PictureBox.Image = null;
+                panning_PictureBox.Canvas.Dispose();
+                panning_PictureBox.Canvas = null;
                 panning_PictureBox.Dispose();
                 form.Dispose();
                 Dispose();
@@ -63,8 +63,8 @@ namespace SunFileManager.GUI.Input
         private void btnOk_Click(object sender, EventArgs e)
         {
             if (txtNameInput.Text != string.Empty && txtNameInput.Text != null
-                && txtImagePath.Text != string.Empty && txtImagePath.Text != null
-                && panning_PictureBox.Image != null)
+                && txtCanvasPath.Text != string.Empty && txtCanvasPath.Text != null
+                && panning_PictureBox.Canvas != null)
             {
                 if (txtNameInput.Text.StartsWith(" ") || txtNameInput.Text.EndsWith(" "))
                 {
@@ -79,26 +79,26 @@ namespace SunFileManager.GUI.Input
             else return;
         }
 
-        // When you change the image.
-        private void txtImagePath_TextChanged(object sender, EventArgs e)
+        // When you change the canvas.
+        private void txtCanvasPath_TextChanged(object sender, EventArgs e)
         {
             // This block is for resetting different properties back to their default values.
             {
                 Size = form.MinimumSize;
                 Text = defaultText;
-                txtImagePath.Size = txtImagePath.MinimumSize;
+                txtCanvasPath.Size = txtCanvasPath.MinimumSize;
                 txtNameInput.Size = txtNameInput.MinimumSize;
             }
-            if (panning_PictureBox.Image != null)
+            if (panning_PictureBox.Canvas != null)
             {
-                panning_PictureBox.Image.Dispose();
-                panning_PictureBox.Image = null;
+                panning_PictureBox.Canvas.Dispose();
+                panning_PictureBox.Canvas = null;
             }
 
             try
             {
                 bitmapResult.Clear();
-                string path = txtImagePath.Text;
+                string path = txtCanvasPath.Text;
                 image = Image.FromFile(path);
                 Text += " (" + Path.GetFileName(path) + ")";
 
@@ -112,11 +112,11 @@ namespace SunFileManager.GUI.Input
 
                 //  Reveal labels.
                 lbltxtDimensions.Visible = true;
-                lblImageDimensions.Text = image.Width.ToString() + " x " + image.Height.ToString();
+                lblCanvasDimensions.Text = image.Width.ToString() + " x " + image.Height.ToString();
                 lbltxtSize.Visible = true;
-                lblImageSize.Text = GetFileSizeString(new FileInfo(path).Length);
+                lblCanvasSize.Text = GetFileSizeString(new FileInfo(path).Length);
                 lbltxtType.Visible = true;
-                lblImageType.Text = Path.GetExtension(path);
+                lblCanvasType.Text = Path.GetExtension(path);
 
                 //  Display picturebox, resize it, and display the image.
                 panning_PictureBox.Visible = true;
@@ -124,7 +124,7 @@ namespace SunFileManager.GUI.Input
                     panning_PictureBox.Size = panning_PictureBox.MaximumSize;
                 else panning_PictureBox.Size = image.Size;
                 form.Size = form.PreferredSize;
-                panning_PictureBox.Image = image;
+                panning_PictureBox.Canvas = image;
 
                 //CenterFormOnImageChange();
                 CenterToScreen();
@@ -161,17 +161,17 @@ namespace SunFileManager.GUI.Input
             return new Bitmap(outStream);
         }
 
-        public void SelectImage()
+        public void SelectCanvas()
         {
             OpenFileDialog ofd = new OpenFileDialog()
             {
-                Title = "Select Image",
+                Title = "Select Canvas File",
                 Filter = "Image File|*.jpg;*.bmp;*.png;*.gif;*.tiff",
                 SupportMultiDottedExtensions = false
             };
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                txtImagePath.Text = ofd.FileName;
+                txtCanvasPath.Text = ofd.FileName;
             }
         }
 
@@ -182,9 +182,9 @@ namespace SunFileManager.GUI.Input
         }
 
         /// <summary>
-        /// Keeps the form in the center of the screen when changing the image.
+        /// Keeps the form in the center of the screen when changing the canvas.
         /// </summary>
-        private void CenterFormOnImageChange()
+        private void CenterFormOnCanvasChange()
         {
             //  Get screen the form is on.
             Screen screen = Screen.FromControl(this);
@@ -212,7 +212,7 @@ namespace SunFileManager.GUI.Input
         }
 
 
-        private void txtImagePath_KeyUp(object sender, KeyEventArgs e)
+        private void txtCanvasPath_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
             {
@@ -221,9 +221,9 @@ namespace SunFileManager.GUI.Input
             }
         }
 
-        private void txtImagePath_MouseHover(object sender, EventArgs e)
+        private void txtCanvasPath_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.Show(txtImagePath.Text, txtImagePath);
+            toolTip1.Show(txtCanvasPath.Text, txtCanvasPath);
         }
 
         private void txtNameInput_MouseHover(object sender, EventArgs e)
