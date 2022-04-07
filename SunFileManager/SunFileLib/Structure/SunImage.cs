@@ -211,41 +211,6 @@ namespace SunFileManager.SunFileLib.Structure
                 long originalPos = reader.BaseStream.Position;
                 reader.BaseStream.Position = offset;
 
-                byte b = reader.ReadByte();
-                switch (b)
-                {
-                    //case 0x1: // .lua   
-                    //    {
-                    //        if (IsLuaSunImage)
-                    //        {
-                    //            WzLuaProperty lua = WzImageProperty.ParseLuaProperty(offset, reader, this, this);
-
-                    //            List<WzImageProperty> luaImage = new List<WzImageProperty>();
-                    //            luaImage.Add(lua);
-
-                    //            properties.AddRange(luaImage);
-                    //            parsed = true; // test
-                    //            return true;
-                    //        }
-
-                    //        return false; // unhandled for now, if it isnt an .lua image
-                    //    }
-                    case SunImageHeaderByte:
-                        {
-                            string prop = reader.ReadString();
-                            ushort val = reader.ReadUInt16();
-                            if (prop != "Property" || val != 0)
-                            {
-                                return false;
-                            }
-                            break;
-                        }
-                    default:
-                        {
-                            ErrorLogger.Log(ErrorLevel.MissingFeature, "[SunImage] New SunImage header found. B = " + b);
-                            return false;
-                        }
-                }
                 List<SunProperty> props = SunProperty.ParsePropertyList(offset, reader, this, this);
                 properties.AddRange(props);
 

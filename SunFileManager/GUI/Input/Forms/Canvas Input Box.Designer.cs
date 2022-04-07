@@ -1,6 +1,6 @@
 ﻿namespace SunFileManager.GUI.Input
 {
-    partial class frmImageInputBox
+    partial class frmCanvasInputBox
     {
         /// <summary>
         /// Required designer variable.
@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmImageInputBox));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCanvasInputBox));
             this.txtNameInput = new System.Windows.Forms.TextBox();
-            this.txtImagePath = new System.Windows.Forms.TextBox();
+            this.txtCanvasPath = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.lblImageDimensions = new System.Windows.Forms.Label();
+            this.lblCanvasDimensions = new System.Windows.Forms.Label();
             this.lbltxtSize = new System.Windows.Forms.Label();
             this.lbltxtType = new System.Windows.Forms.Label();
-            this.lblImageType = new System.Windows.Forms.Label();
+            this.lblCanvasType = new System.Windows.Forms.Label();
             this.lbltxtDimensions = new System.Windows.Forms.Label();
-            this.lblImageSize = new System.Windows.Forms.Label();
+            this.lblCanvasSize = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panning_PictureBox = new SunFileManager.GUI.Container.Panning_PictureBox();
             this.SuspendLayout();
@@ -60,19 +60,19 @@
             this.txtNameInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyUp);
             this.txtNameInput.MouseHover += new System.EventHandler(this.txtNameInput_MouseHover);
             // 
-            // txtImagePath
+            // txtCanvasPath
             // 
-            this.txtImagePath.Cursor = System.Windows.Forms.Cursors.Default;
-            this.txtImagePath.Location = new System.Drawing.Point(79, 6);
-            this.txtImagePath.MinimumSize = new System.Drawing.Size(181, 20);
-            this.txtImagePath.Name = "txtImagePath";
-            this.txtImagePath.ReadOnly = true;
-            this.txtImagePath.Size = new System.Drawing.Size(181, 20);
-            this.txtImagePath.TabIndex = 0;
-            this.txtImagePath.Click += new System.EventHandler(this.txtImagePath_Click);
-            this.txtImagePath.TextChanged += new System.EventHandler(this.txtImagePath_TextChanged);
-            this.txtImagePath.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtImagePath_KeyUp);
-            this.txtImagePath.MouseHover += new System.EventHandler(this.txtImagePath_MouseHover);
+            this.txtCanvasPath.Cursor = System.Windows.Forms.Cursors.Default;
+            this.txtCanvasPath.Location = new System.Drawing.Point(79, 6);
+            this.txtCanvasPath.MinimumSize = new System.Drawing.Size(181, 20);
+            this.txtCanvasPath.Name = "txtCanvasPath";
+            this.txtCanvasPath.ReadOnly = true;
+            this.txtCanvasPath.Size = new System.Drawing.Size(181, 20);
+            this.txtCanvasPath.TabIndex = 0;
+            this.txtCanvasPath.Click += new System.EventHandler(this.txtCanvasPath_Click);
+            this.txtCanvasPath.TextChanged += new System.EventHandler(this.txtCanvasPath_TextChanged);
+            this.txtCanvasPath.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCanvasPath_KeyUp);
+            this.txtCanvasPath.MouseHover += new System.EventHandler(this.txtCanvasPath_MouseHover);
             // 
             // label1
             // 
@@ -88,9 +88,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 9);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 13);
+            this.label2.Size = new System.Drawing.Size(48, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Image Path:";
+            this.label2.Text = "Art Path:";
             // 
             // btnOk
             // 
@@ -112,15 +112,15 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // lblImageDimensions
+            // lblCanvasDimensions
             // 
-            this.lblImageDimensions.AutoSize = true;
-            this.lblImageDimensions.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblImageDimensions.ForeColor = System.Drawing.Color.Green;
-            this.lblImageDimensions.Location = new System.Drawing.Point(115, 101);
-            this.lblImageDimensions.Name = "lblImageDimensions";
-            this.lblImageDimensions.Size = new System.Drawing.Size(0, 20);
-            this.lblImageDimensions.TabIndex = 7;
+            this.lblCanvasDimensions.AutoSize = true;
+            this.lblCanvasDimensions.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lblCanvasDimensions.ForeColor = System.Drawing.Color.Green;
+            this.lblCanvasDimensions.Location = new System.Drawing.Point(115, 101);
+            this.lblCanvasDimensions.Name = "lblCanvasDimensions";
+            this.lblCanvasDimensions.Size = new System.Drawing.Size(0, 20);
+            this.lblCanvasDimensions.TabIndex = 7;
             // 
             // lbltxtSize
             // 
@@ -146,15 +146,15 @@
             this.lbltxtType.Text = "Type:";
             this.lbltxtType.Visible = false;
             // 
-            // lblImageType
+            // lblCanvasType
             // 
-            this.lblImageType.AutoSize = true;
-            this.lblImageType.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblImageType.ForeColor = System.Drawing.Color.Green;
-            this.lblImageType.Location = new System.Drawing.Point(115, 141);
-            this.lblImageType.Name = "lblImageType";
-            this.lblImageType.Size = new System.Drawing.Size(0, 20);
-            this.lblImageType.TabIndex = 10;
+            this.lblCanvasType.AutoSize = true;
+            this.lblCanvasType.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lblCanvasType.ForeColor = System.Drawing.Color.Green;
+            this.lblCanvasType.Location = new System.Drawing.Point(115, 141);
+            this.lblCanvasType.Name = "lblCanvasType";
+            this.lblCanvasType.Size = new System.Drawing.Size(0, 20);
+            this.lblCanvasType.TabIndex = 10;
             // 
             // lbltxtDimensions
             // 
@@ -168,15 +168,15 @@
             this.lbltxtDimensions.Text = "Dimensions:";
             this.lbltxtDimensions.Visible = false;
             // 
-            // lblImageSize
+            // lblCanvasSize
             // 
-            this.lblImageSize.AutoSize = true;
-            this.lblImageSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblImageSize.ForeColor = System.Drawing.Color.Green;
-            this.lblImageSize.Location = new System.Drawing.Point(115, 121);
-            this.lblImageSize.Name = "lblImageSize";
-            this.lblImageSize.Size = new System.Drawing.Size(0, 20);
-            this.lblImageSize.TabIndex = 12;
+            this.lblCanvasSize.AutoSize = true;
+            this.lblCanvasSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.lblCanvasSize.ForeColor = System.Drawing.Color.Green;
+            this.lblCanvasSize.Location = new System.Drawing.Point(115, 121);
+            this.lblCanvasSize.Name = "lblCanvasSize";
+            this.lblCanvasSize.Size = new System.Drawing.Size(0, 20);
+            this.lblCanvasSize.TabIndex = 12;
             // 
             // toolTip1
             // 
@@ -187,7 +187,7 @@
             // panning_PictureBox
             // 
             this.panning_PictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.panning_PictureBox.Image = null;
+            this.panning_PictureBox.Canvas = null;
             this.panning_PictureBox.Location = new System.Drawing.Point(3, 179);
             this.panning_PictureBox.MaximumSize = new System.Drawing.Size(1472, 775);
             this.panning_PictureBox.MinimumSize = new System.Drawing.Size(2, 2);
@@ -195,7 +195,7 @@
             this.panning_PictureBox.Size = new System.Drawing.Size(2, 2);
             this.panning_PictureBox.TabIndex = 13;
             // 
-            // frmImageInputBox
+            // frmCanvasInputBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -206,24 +206,24 @@
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtImagePath);
+            this.Controls.Add(this.txtCanvasPath);
             this.Controls.Add(this.txtNameInput);
             this.Controls.Add(this.panning_PictureBox);
-            this.Controls.Add(this.lblImageSize);
+            this.Controls.Add(this.lblCanvasSize);
             this.Controls.Add(this.lbltxtDimensions);
-            this.Controls.Add(this.lblImageType);
+            this.Controls.Add(this.lblCanvasType);
             this.Controls.Add(this.lbltxtType);
             this.Controls.Add(this.lbltxtSize);
-            this.Controls.Add(this.lblImageDimensions);
+            this.Controls.Add(this.lblCanvasDimensions);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(1500, 1000);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(290, 136);
-            this.Name = "frmImageInputBox";
+            this.Name = "frmCanvasInputBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtImagePath_KeyUp);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCanvasPath_KeyUp);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -232,17 +232,17 @@
         #endregion
 
         private System.Windows.Forms.TextBox txtNameInput;
-        private System.Windows.Forms.TextBox txtImagePath;
+        private System.Windows.Forms.TextBox txtCanvasPath;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Label lblImageDimensions;
+        private System.Windows.Forms.Label lblCanvasDimensions;
         private System.Windows.Forms.Label lbltxtSize;
         private System.Windows.Forms.Label lbltxtType;
-        private System.Windows.Forms.Label lblImageType;
+        private System.Windows.Forms.Label lblCanvasType;
         private System.Windows.Forms.Label lbltxtDimensions;
-        private System.Windows.Forms.Label lblImageSize;
+        private System.Windows.Forms.Label lblCanvasSize;
         private Container.Panning_PictureBox panning_PictureBox;
         private System.Windows.Forms.ToolTip toolTip1;
     }

@@ -305,7 +305,7 @@ namespace SunFileManager.SunFileLib
                 if (dir.Size > 0)
                     dir.SaveDirectory(writer);
                 else
-                    writer.Write((byte)0);
+                    writer.Write((byte)0);  //00 indicates empty directory
             }
 
 
@@ -571,8 +571,8 @@ namespace SunFileManager.SunFileLib
             int a;
 
             Size += 4;  /**/ offsetSize += 4;   // Picture property size
-            Size++;     /**/ offsetSize++;      // Property bool ("yes, there are properties associated with this image")
-            Size++;     /**/ offsetSize++;      // Gif bool (Marks image as a gif)
+            Size++;     /**/ offsetSize++;      // Property bool ("yes, there are properties associated with this canvas")
+            Size++;     /**/ offsetSize++;      // Gif bool (Marks canvas as a gif)
 
             if (canvasProperty.SunProperties.Count > 0)
             {

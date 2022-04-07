@@ -148,6 +148,22 @@ namespace SunFileManager
             node.DeleteNode();
         }
 
+        /// <summary>
+        /// Parse the data tree selected item on double clicking, or copy pasting into it.
+        /// </summary>
+        /// <param name="selectedNode"></param>
+        private static void ParseOnTreeViewSelectedItem(SunNode selectedNode, bool expandDataTree = true)
+        {
+            SunImage wzImage = (SunImage)selectedNode.Tag;
+
+            if (!wzImage.Parsed)
+                wzImage.ParseImage();
+            selectedNode.Reparse();
+            if (expandDataTree)
+            {
+                selectedNode.Expand();
+            }
+        }
         #endregion Loading, Unloading & Saving
 
         #region Treeview Node Manipulation
@@ -298,7 +314,7 @@ namespace SunFileManager
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
             // List for ability to use gifs.
-            if (!frmImageInputBox.Show("Add Image", out string name, out List<Bitmap> bitmapList, out bool isGif))
+            if (!frmCanvasInputBox.Show("Add Image", out string name, out List<Bitmap> bitmapList, out bool isGif))
                 return;
 
             SunNode target = (SunNode)targetNode;
@@ -449,6 +465,14 @@ namespace SunFileManager
 
         #region Treeview Click Events
 
+        private void sunTreeView_DoubleClick(object sender, EventArgs e)
+        {
+            if (sunTreeView.SelectedNode != null && sunTreeView.SelectedNode.Tag is SunImage && sunTreeView.SelectedNode.Nodes.Count == 0)
+            {
+                ParseOnTreeViewSelectedItem((SunNode)sunTreeView.SelectedNode);
+            }
+        }
+
         //  Updates the selected node type label on selection of a node
         //  and shows necessary controls/values.
         private void sunTreeView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -496,7 +520,7 @@ namespace SunFileManager
             txtPropertyValue.Multiline = false;
 
             mainfrm_panning_PictureBox.Visible = false;
-            mainfrm_panning_PictureBox.Image = null;
+            mainfrm_panning_PictureBox.Canvas = null;
 
             chkAnimateGif.Visible = false;
             // Do something here about cpu usage
@@ -564,14 +588,14 @@ namespace SunFileManager
                     txtPropertyValue.Text = stringProperty.Value;
                     break;
 
-                case SunCanvasProperty imageProperty:
+                case SunCanvasProperty canvasProperty:
                     //  Display the image/gif with its attributes.
                     mainfrm_panning_PictureBox.Visible = true;
                     //  Check if selected node is of a gif, if so act accordingly
-                    if (imageProperty.IsGif && imageProperty.Frames.Count > 0)
+                    if (canvasProperty.IsGif && canvasProperty.Frames.Count > 0)
                     {
                         chkAnimateGif.Visible = true;
-                        mainfrm_panning_PictureBox.Image = imageProperty.Frames[0].PNG; // as a form of thumbnail
+                        mainfrm_panning_PictureBox.Canvas = canvasProperty.Frames[0].PNG; // as a form of thumbnail
                         //if (AnimateGifs)    // find out how to animate the gif here - not only that but make it efficient or whatever
                         //{
                         //    do
@@ -583,7 +607,7 @@ namespace SunFileManager
                     }
                     else
                     {
-                        mainfrm_panning_PictureBox.Image = imageProperty.PNG;
+                        mainfrm_panning_PictureBox.Canvas = canvasProperty.PNG;
                     }
                     break;
 
