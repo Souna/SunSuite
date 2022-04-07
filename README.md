@@ -1,1 +1,1 @@
-# SunSuite buy mooncoin
+# buy mooncoin
