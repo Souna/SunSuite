@@ -1,4 +1,5 @@
 ﻿using SunFileManager.SunFileLib.Properties;
+using SunFileManager.SunFileLib.Structure;
 using System;
 
 namespace SunFileManager.SunFileLib
@@ -35,11 +36,6 @@ namespace SunFileManager.SunFileLib
         /// </summary>
         public abstract void Remove();
 
-        /// <summary>
-        /// The amount of top-level (not nested) entries within this SunObject.
-        /// consider removing cuz int properties dont need this shit
-        /// </summary>
-        public virtual int TopLevelEntryCount { get { return 0; } set { } }
 
         /// <summary>
         /// Returns the SunObject by name.
@@ -55,6 +51,10 @@ namespace SunFileManager.SunFileLib
                 else if (this is SunDirectory directory)
                 {
                     return directory[name];
+                }
+                else if (this is SunImage image)
+                {
+                    return image[name];
                 }
                 else if (this is SunProperty property)
                 {

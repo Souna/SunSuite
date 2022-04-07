@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using SunFileManager.SunFileLib.Structure;
+using System.IO;
 using System.Text;
 
 namespace SunFileManager.SunFileLib.Util
@@ -8,6 +9,8 @@ namespace SunFileManager.SunFileLib.Util
         #region Properties
 
         public SunHeader Header { get; set; }
+
+        public uint Hash { get; set; }
 
         #endregion Properties
 
@@ -54,6 +57,21 @@ namespace SunFileManager.SunFileLib.Util
             return Encoding.ASCII.GetString(ReadBytes(length));
         }
 
+        public string ReadStringBlock(uint offset)
+        {
+            switch (ReadByte())
+            {
+                case 0:
+                case SunImage.SunImageHeaderByte:
+                    return ReadString();
+                case 1:
+                case 0x1B:  //reads 1B or "K"
+                    return ReadStringAtOffset(offset + ReadInt32());
+                default:
+                    return "";
+            }
+        }
+
         public string ReadNullTerminatedString()
         {
             StringBuilder retString = new StringBuilder();
@@ -86,6 +104,19 @@ namespace SunFileManager.SunFileLib.Util
             return sb;
         }
 
+        public uint ReadOffset()
+        {
+            return ReadUInt32(); //Use just this line if not reading encrypted data
+            //uint offset = (uint)BaseStream.Position;
+            //offset = (offset - Header.FileStart) ^ uint.MaxValue;
+            //offset *= Hash;
+            //offset -= 0x581C3F6D; //Wz Offset Constant
+            //offset = SunTool.RotateLeft(offset, (byte)(offset & 0x1F));
+            //uint encryptedOffset = ReadUInt32();
+            //offset ^= encryptedOffset;
+            //offset += Header.FileStart * 2;
+            //return offset;
+        }
         #endregion Methods
     }
 }

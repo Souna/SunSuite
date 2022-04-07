@@ -63,5 +63,22 @@ namespace SunFileManager.GUI.Input.Forms
                 btnOk_Click(null, null);
             }
         }
+
+        private void txtNameInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnOk_Click(null, null);
+            }
+        }
+
+        private void frmNameValueInputBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                DialogResult = DialogResult.Cancel;
+                Close();
+            }
+        }
     }
 }

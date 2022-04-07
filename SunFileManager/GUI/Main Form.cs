@@ -3,6 +3,7 @@ using SunFileManager.GUI.Input;
 using SunFileManager.GUI.Input.Forms;
 using SunFileManager.SunFileLib;
 using SunFileManager.SunFileLib.Properties;
+using SunFileManager.SunFileLib.Structure;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,7 +15,7 @@ namespace SunFileManager
 {
     public partial class frmFileManager : Form
     {
-        public static string DefaultPath = "C:\\Users\\SOUND\\Desktop";
+        public static string DefaultPath = "C:\\Users\\SOUND\\Desktop\\New .Sun Files";
         public FileManager manager = null;
         public SunContextMenuManager contextMenuManager = null;
         public bool AnimateGifs = false;
@@ -133,7 +134,7 @@ namespace SunFileManager
                     node = ((SunNode)sunTreeView.SelectedNode).TopLevelNode;
                 }
             }
-            FileManager.SaveToDisk(ref node);
+            manager.SaveToDisk(ref node);
         }
 
         /// <summary>
@@ -169,7 +170,7 @@ namespace SunFileManager
                     break;
 
                 case SunObjectType.Property:
-                    if (((SunProperty)node.Tag).PropertyType is SunPropertyType.Image)
+                    if (((SunProperty)node.Tag).PropertyType is SunPropertyType.Canvas)
                         namestring = "Rename Image";
                     else
                         namestring = "Rename Property";
@@ -192,8 +193,7 @@ namespace SunFileManager
 
         /// <summary>
         /// Creates a new Directory under the selected node.
-        /// <br>A directory may be created as a top-level directory underneath the SunFile,</br>
-        /// <br>or may be nested within another directory.</br>
+        /// <br>A directory may be created as a top-level directory underneath the SunFile.</br>
         /// </summary>
         public void AddSunDirectoryToSelectedNode(TreeNode selectedNode, string name)
         {
@@ -212,6 +212,8 @@ namespace SunFileManager
                     return;
             }
 
+            bool added = false;
+
             SunObject obj = (SunObject)selectedNode.Tag;
 
             if (obj is SunFile sunFileParent) // Selected parent node.
@@ -219,12 +221,34 @@ namespace SunFileManager
                 // Because the parent node is a SunFile,
                 // we use the master directory as the parent for this new directory.
                 ((SunNode)selectedNode).AddObject(new SunDirectory(dirName, sunFileParent.SunDirectory));
+                added = true;
             }
-            else if (obj is SunDirectory dir)
+            if (!added)
             {
-                // Since this is going to be a nested directory the parent is the directory above it.
-                ((SunNode)selectedNode).AddObject(new SunDirectory(dirName, dir));
+                MessageBox.Show("Error adding directory.");
             }
+        }
+
+        public void AddSunImageToSelectedNode(TreeNode selectedNode, string name)
+        {
+            if (selectedNode == null) return;
+
+            if (!(selectedNode.Tag is SunDirectory) && !(selectedNode.Tag is SunFile))
+            {
+                MessageBox.Show("Tag is " + selectedNode.Tag.ToString());
+                return;
+            }
+
+            string imgName = name;
+            if (name == string.Empty || name == null)
+            {
+                if (!frmNameInputBox.Show("Add Image", out imgName))
+                    return;
+            }
+
+            bool added = false;
+
+            ((SunNode)selectedNode).AddObject(new SunImage(imgName) { Changed = true });
         }
 
         /// <summary>
@@ -270,7 +294,7 @@ namespace SunFileManager
         /// <summary>
         /// Creates a node containing a bitmap image or animated gif under a selected node.
         /// </summary>
-        public void AddImageToSelectedNode(TreeNode targetNode)
+        public void AddCanvasPropertyToSelectedNode(TreeNode targetNode)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
             // List for ability to use gifs.
@@ -282,12 +306,12 @@ namespace SunFileManager
             if (isGif)
             {
                 //  Create the parent node containing all of the gif frames.
-                SunNode gifParentNode = target.AddObject(new SunImageProperty(name, (SunObject)target.Tag, true));
+                SunNode gifParentNode = target.AddObject(new SunCanvasProperty(name, (SunObject)target.Tag, true));
                 if (gifParentNode == null) return;  //improve this duplicate node checking
 
                 for (int i = 0; i < bitmapList.Count; i++)
                 {
-                    SunImageProperty frame = new SunImageProperty(i.ToString(), (SunObject)gifParentNode.Tag)
+                    SunCanvasProperty frame = new SunCanvasProperty(i.ToString(), (SunObject)gifParentNode.Tag)
                     {
                         PNG = bitmapList[i]
                     };
@@ -306,7 +330,7 @@ namespace SunFileManager
             {
                 foreach (Bitmap bmp in bitmapList)
                 {
-                    SunImageProperty image = new SunImageProperty(name, (SunObject)target.Tag)
+                    SunCanvasProperty image = new SunCanvasProperty(name, (SunObject)target.Tag)
                     {
                         PNG = bmp
                     };
@@ -540,7 +564,7 @@ namespace SunFileManager
                     txtPropertyValue.Text = stringProperty.Value;
                     break;
 
-                case SunImageProperty imageProperty:
+                case SunCanvasProperty imageProperty:
                     //  Display the image/gif with its attributes.
                     mainfrm_panning_PictureBox.Visible = true;
                     //  Check if selected node is of a gif, if so act accordingly
@@ -630,18 +654,18 @@ namespace SunFileManager
             AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "Test");
             AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode, "still");
 
-            AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name], "Map");
-            AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "Map1");
-            AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode, "1");
-            AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode, "background");
-            AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode, "0");
-            AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "animated", 0);
-            AddStringPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "Set", "Test");
-            AddShortPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "short", 32767);
-            AddLongPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "long", 9223372036854775807);
-            AddFloatPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "float", 1.23456f);
-            AddDoublePropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "double", 2.34567890123456);
-            AddVectorPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "vector", new Point(543, 210));
+            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name], "Map");
+            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "Map1");
+            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode, "1");
+            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode, "background");
+            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode, "0");
+            //AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "animated", 0);
+            //AddStringPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "Set", "Test");
+            //AddShortPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "short", 32767);
+            //AddLongPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "long", 9223372036854775807);
+            //AddFloatPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "float", 1.23456f);
+            //AddDoublePropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "double", 2.34567890123456);
+            //AddVectorPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "vector", new Point(543, 210));
         }
 
         private void btnQuickImageInt_Click(object sender, EventArgs e)
@@ -653,11 +677,15 @@ namespace SunFileManager
             sunTreeView.Nodes.Add(new SunNode(file));
 
             AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name], "directory1");
-            AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "x", 543);
-            AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "z", 654);
-            AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name], "directory2");
-            AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "y", 210);
-            AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "w", 321);
+            AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "image1");
+            AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode, "int1", 543);
+            AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "image2");
+            AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "image3");
+            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "directory2");
+            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode, "directory3");
+            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name], "directory4");
+            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "directory5");
+            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name], "directory6");
         }
 
         #endregion Temporary

@@ -5,7 +5,7 @@ namespace SunFileManager.SunFileLib.Properties
 {
     /// <summary>
     /// A SunProperty that contains an x and a y value.
-    /// <br>A SunVectorProperty may be associated with a SunDirectory or SunImageProperty.</br>
+    /// <br>A SunVectorProperty may be associated with a SunDirectory or SunCanvasProperty.</br>
     /// </summary>
     public class SunVectorProperty : SunProperty
     {
@@ -112,7 +112,7 @@ namespace SunFileManager.SunFileLib.Properties
         public SunVectorProperty(string name) { this.name = name; }
 
         /// <summary>
-        /// Creates a SunVectorProperty with a provided name and value.
+        /// Creates a SunVectorProperty with a provided name and values.
         /// </summary>
         public SunVectorProperty(string name, SunIntProperty x, SunIntProperty y)
         {

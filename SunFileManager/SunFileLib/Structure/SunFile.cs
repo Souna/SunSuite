@@ -1,27 +1,27 @@
-﻿using SunFileManager.SunFileLib.Util;
+﻿using SunFileManager.SunFileLib.Structure;
+using SunFileManager.SunFileLib.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 
 namespace SunFileManager.SunFileLib
 {
     /// <summary>
     /// The file that contains all of the directories. As top-level as it gets.
-    /// <para>A SunFile may only allow SunDirectorys as child nodes. Everything in the file
+    /// <para>A SunFile allows for SunDirectories as child nodes. Everything in the file
     /// is then contained within said directories.</para>
     /// <para>By default, a SunFile has an 'invisible' "master" SunDirectory with the same name as the
-    /// SunFile which is the parent of all subsequent SunDirectorys.</para>
+    /// SunFile which is the parent of all subsequent SunDirectories.</para>
     /// </summary>
     public class SunFile : SunObject
     {
         #region Fields
 
-        private List<SunDirectory> directoryList = new List<SunDirectory>();
         private string path;
-        private string name;
-        public string DefaultPath = "@C:\\Users\\SOUND\\Desktop";
         private SunDirectory sunDir;
         public SunHeader header;
+        private string name;
 
         #endregion Fields
 
@@ -62,6 +62,7 @@ namespace SunFileManager.SunFileLib
         {
             try
             {
+                Dispose();
             }
             catch (Exception e)
             {
@@ -80,7 +81,7 @@ namespace SunFileManager.SunFileLib
         /// <summary>
         /// Returns amount of top-level entries (SunDirectorys) in this SunFile.
         /// </summary>
-        public override int TopLevelEntryCount
+        public int TopLevelEntryCount
         {
             get { return sunDir.TopLevelEntryCount; }
         }
@@ -97,23 +98,6 @@ namespace SunFileManager.SunFileLib
 
         #endregion Inherited Members
 
-        /// <summary>
-        /// Returns a list of every SunDirectory, nested or top-level, in the file.
-        /// </summary>
-        public List<SunDirectory> Directories
-        { //no work wtf
-            get
-            {
-                directoryList.Clear();
-                foreach (SunDirectory dir in SunDirectory.SubDirectories)
-                {
-                    foreach (SunDirectory nestedDir in dir.SubDirectories)
-                    {
-                    }
-                }
-                return directoryList;
-            }
-        }
 
         /// <summary>
         /// Returns the file header preceding the SunFile data.
@@ -123,7 +107,7 @@ namespace SunFileManager.SunFileLib
         /// <summary>
         /// Returns the "master" SunDirectory which contains all subsequent directories and their properties.
         /// </summary>
-        public SunDirectory SunDirectory { get { return sunDir; } }
+        public SunDirectory SunDirectory { get { return sunDir; } set { sunDir = value; } }
 
         public SunFile()
         {
@@ -164,23 +148,137 @@ namespace SunFileManager.SunFileLib
         /// </summary>
         public void SaveToDisk(string path)
         {
-            sunDir.GenerateFileInfo();
-            uint totalLength = sunDir.GetOffsets(Header.FileStart);
+            // Create Temp File
+            string tempFile = Path.GetFileNameWithoutExtension(path) + ".TEMP";
+            File.Create(tempFile).Close();
+
+            sunDir.GenerateFileInfo(tempFile);
+            // this +2 is most likely to go over version short in wz files, we don't need it here.
+            uint totalLength = sunDir.GetImgOffsets(sunDir.GetOffsets(Header.FileStart));
             Header.FileSize = totalLength - Header.FileStart;
 
-            SunBinaryWriter sunWriter = new SunBinaryWriter(File.Create(path));
+            try
+            {
+                SunBinaryWriter sunWriter = new SunBinaryWriter(File.Create(path));
+                for (int i = 0; i < Header.Identifier.Length; i++)
+                {
+                    sunWriter.Write((byte)Header.Identifier[i]);
+                }
+                //Bloat trash
+                for (int i = 0; i < Header.Ascii.Length; i++)
+                {
+                    sunWriter.Write((byte)Header.Ascii[i]);
+                }
+                sunWriter.Write((long)Header.FileSize);
+                sunWriter.Write(Header.FileStart);
+                sunWriter.WriteNullTerminatedString(Header.Copyright);
 
-            for (int i = 0; i < Header.Identifier.Length; i++)
-                sunWriter.Write((byte)Header.Identifier[i]);
-            for (int i = 0; i < Header.Ascii.Length; i++)
-                sunWriter.Write((byte)Header.Ascii[i]);
-            sunWriter.Write(Header.FileSize);
-            sunWriter.Write(Header.FileStart);
-            sunWriter.WriteNullTerminatedString(Header.Copyright);
+                long extraHeaderLength = Header.FileStart - sunWriter.BaseStream.Position;
+                if (extraHeaderLength > 0)
+                {
+                    sunWriter.Write(new byte[(int)extraHeaderLength]);
+                }
+                sunWriter.Header = header;
+                sunDir.SaveDirectory(sunWriter);
 
-            sunDir.SaveToDisk(sunWriter);
+                using (FileStream fileStream = File.OpenRead(tempFile))
+                {
+                    sunDir.SaveImages(sunWriter, fileStream);
+                    fileStream.Close();
+                }
+                File.Delete(tempFile);
+                sunWriter.Close();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
-            sunWriter.Close();
+
+            //uint totalLength = sunDir.GetOffsets(Header.FileStart + 2);
+            //Header.FileSize = totalLength - Header.FileStart;
+
+            //try
+            //{
+            //    SunBinaryWriter sunWriter = new SunBinaryWriter(File.Create(path));
+
+            //    for (int i = 0; i < Header.Identifier.Length; i++)
+            //        sunWriter.Write((byte)Header.Identifier[i]);
+            //    for (int i = 0; i < Header.Ascii.Length; i++)
+            //        sunWriter.Write((byte)Header.Ascii[i]);
+            //    sunWriter.Write(Header.FileSize);
+            //    sunWriter.Write(Header.FileStart);
+            //    sunWriter.WriteNullTerminatedString(Header.Copyright);
+
+            //    sunDir.SaveDirectory(sunWriter);
+
+            //    using (FileStream fileStream = File.OpenRead(tempFile))
+            //    {
+            //        sunDir.SaveDirectoryContents(sunWriter, fileStream);
+            //        fileStream.Close();
+            //    }
+
+            //    File.Delete(tempFile);
+            //    sunWriter.Close();
+            //}
+            //catch (Exception e)
+            //{
+            //    MessageBox.Show(e.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
+        }
+
+        /// <summary>
+        /// Parses the SunFile with all of its contents for loading.
+        /// </summary>
+        public bool ParseSunFile(out string parseError)
+        {
+            bool success = ParseMasterSunDirectory(out parseError);
+            return success;
+        }
+
+        /// <summary>
+        /// Parse the directories in the SunFile.
+        /// </summary>
+        public bool ParseMasterSunDirectory(out string parseError)
+        {
+            if (path == null)
+            {
+                parseError = "Path is null.";
+                return false;
+            }
+
+            SunBinaryReader reader = new SunBinaryReader(File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read));
+
+            this.Header = new SunHeader();
+            this.Header.Identifier = reader.ReadString(8);
+            this.Header.Ascii = reader.ReadString(112);
+            this.Header.FileSize = reader.ReadUInt64();
+            this.Header.FileStart = reader.ReadUInt32();
+            this.Header.Copyright = reader.ReadNullTerminatedString();
+
+            reader.ReadBytes((int)(header.FileStart - reader.BaseStream.Position)); //reset to beginning? Does this even do anything?
+            reader.Header = this.Header;
+            long resetPos = reader.BaseStream.Position;     //position to rollback to if things go bad
+
+            try
+            {
+                SunDirectory masterDirectory = new SunDirectory(reader, name, this);
+                masterDirectory.ParseDirectory();
+                this.SunDirectory = masterDirectory;
+                parseError = "Success";
+                return true;
+            }
+            catch
+            {
+                reader.BaseStream.Position = resetPos;
+                ErrorLogger.Log(ErrorLevel.Critical, "Error occured parsing SunFile.");
+                parseError = "Fail";
+                return false;
+            }
         }
     }
 }

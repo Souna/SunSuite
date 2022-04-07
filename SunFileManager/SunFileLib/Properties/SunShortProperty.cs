@@ -5,7 +5,7 @@ namespace SunFileManager.SunFileLib.Properties
     /// <summary>
     /// A 16-bit Integer property represented as a signed byte.
     /// If the byte value is <b>-128</b> the value is the short (2 bytes) that follows it.
-    /// <br>A SunShortProperty may be associated with a SunDirectory or SunImageProperty.</br>
+    /// <br>A SunShortProperty may be associated with a SunDirectory or SunCanvasProperty.</br>
     /// </summary>
     public class SunShortProperty : SunProperty
     {

@@ -82,7 +82,9 @@ namespace SunFileManager.GUI.Input.Forms
             this.txtNameInput.Name = "txtNameInput";
             this.txtNameInput.Size = new System.Drawing.Size(156, 20);
             this.txtNameInput.TabIndex = 0;
+            this.txtNameInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyDown);
             this.txtNameInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNameInput_KeyPress);
+            this.txtNameInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmNameValueInputBox_KeyUp);
             // 
             // txtStringValueInput
             // 
@@ -94,6 +96,7 @@ namespace SunFileManager.GUI.Input.Forms
             this.txtStringValueInput.Size = new System.Drawing.Size(156, 84);
             this.txtStringValueInput.TabIndex = 1;
             this.txtStringValueInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtStringValueInput_KeyDown);
+            this.txtStringValueInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmNameValueInputBox_KeyUp);
             // 
             // frmNameValueInputBox
             // 
@@ -110,6 +113,7 @@ namespace SunFileManager.GUI.Input.Forms
             this.MaximizeBox = false;
             this.Name = "frmNameValueInputBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmNameValueInputBox_KeyUp);
             this.ResumeLayout(false);
             this.PerformLayout();
 

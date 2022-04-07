@@ -1,27 +1,31 @@
 ﻿using SunFileManager.SunFileLib.Properties;
+using SunFileManager.SunFileLib.Structure;
 using SunFileManager.SunFileLib.Util;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SunFileManager.SunFileLib
 {
     /// <summary>
     /// The "folders" of the SunFile structure.
-    /// <para>SunDirectorys contain all of the content of the SunFile. Every SunDirectory is
-    /// capable of storing data such as images, properties, as well as additional nested sub-directories.</para>
+    /// <para>SunDirectories contain all of the content of the SunFile. Every SunDirectory is
+    /// capable of storing images, as well as having additional nested sub-directories.</para>
     /// </summary>
-    public class SunDirectory : SunObject, IPropertyContainer, IEnumerable
+    public class SunDirectory : SunObject
     {
         #region Fields
-
-        public List<SunDirectory> subDirectoryList = new List<SunDirectory>();
-        public List<SunProperty> sunPropertyList = new List<SunProperty>();
+        public List<SunImage> images = new List<SunImage>();
+        public List<SunDirectory> subDirs = new List<SunDirectory>();
+        public SunBinaryReader reader;
+        private uint offset = 0;
         private string name;
+        private uint hash;
+        private int size, checksum, offsetSize;
         private SunObject parent;
         private SunFile sunFile;
-        private int size, offsetSize;
-        private uint offset = 0;
+        private int topLevelEntryCount;
 
         #endregion Fields
 
@@ -35,7 +39,9 @@ namespace SunFileManager.SunFileLib
             foreach (SunDirectory dir in SubDirectories)
                 dir.Dispose();
             SubDirectories.Clear();
-            subDirectoryList = null;
+            subDirs = null;
+            SunImages.Clear();
+            images = null;
         }
 
         /// <summary>
@@ -70,23 +76,24 @@ namespace SunFileManager.SunFileLib
         /// <summary>
         /// Returns amount of top-level entries in this SunDirectory.
         /// </summary>
-        public override int TopLevelEntryCount { get { return subDirectoryList.Count + sunPropertyList.Count; } }
+        public int TopLevelEntryCount { get { return SubDirectories.Count + SunImages.Count; } set { topLevelEntryCount = value; } }
 
         /// <summary>
         /// Returns a directory by its given name.
         /// </summary>
         /// <param name="directory">Bool value to indicate we're after a directory and not a property.
         /// Properties get addressed with just name.</param>
-        public SunObject this[string name, bool directory]
+        public new SunObject this[string name]
         {
-            // >=( only stupid shitty way to make this possible without making an entirely
-            // new class for "SunImage".
-            // this[name] refers to properties, this[name, 1] refers to directories themselves.
             get
             {
-                foreach (SunDirectory dir in SubDirectories)
-                    if (dir.name.ToLower() == name.ToLower())
-                        return dir;
+                foreach (SunImage i in SunImages)
+                    if (i.Name.ToLower() == name.ToLower())
+                        return i;
+
+                foreach (SunDirectory d in SubDirectories)
+                    if (d.name.ToLower() == name.ToLower())
+                        return d;
                 return null;
             }
             set
@@ -94,71 +101,17 @@ namespace SunFileManager.SunFileLib
                 if (value != null)
                 {
                     value.Name = name;
-                    if (value is SunDirectory d)
-                        AddDirectory(d);
-                    else throw new ArgumentException("Value must be a directory or bool to indicate directory");
+                    if (value is SunDirectory)
+                        AddDirectory((SunDirectory)value);
+                    else if (value is SunImage)
+                        AddImage((SunImage)value);
+                    else
+                        throw new ArgumentException("Value must be a Directory or an Image.");
                 }
             }
         }
 
         #endregion SunObject
-
-        #region IPropertyContainer
-
-        /// <summary>
-        /// Adds a property to the directory.
-        /// </summary>
-        public void AddProperty(SunProperty property)
-        {
-            property.Parent = this;
-            sunPropertyList.Add(property);
-        }
-
-        /// <summary>
-        /// Deletes the selected property under this directory.
-        /// </summary>
-        public void RemoveProperty(SunProperty property)
-        {
-            property.Parent = null;
-            sunPropertyList.Remove(property);
-        }
-
-        /// <summary>
-        /// Returns the list of properties belonging to this directory.
-        /// </summary>
-        public List<SunProperty> SunProperties
-        {
-            get { return sunPropertyList; }
-        }
-
-        /// <summary>
-        /// Gets a SunProperty by its name.
-        /// </summary>
-        public new SunProperty this[string name]
-        {
-            get
-            {
-                foreach (SunProperty prop in sunPropertyList)
-                    if (prop.Name.ToLower() == name.ToLower())
-                        return prop;
-                return null;
-            }
-            set
-            {
-                if (value != null)
-                {
-                    value.Name = name;
-                    AddProperty(value);
-                }
-            }
-        }
-
-        #endregion IPropertyContainer
-
-        public IEnumerator GetEnumerator()
-        {
-            return this.SubDirectories.GetEnumerator();
-        }
 
         #endregion Inherited Members
 
@@ -192,22 +145,98 @@ namespace SunFileManager.SunFileLib
             parent = fileParent;
         }
 
+        public SunDirectory(SunBinaryReader reader, string dirName, SunFile sunFile)
+        {
+            this.reader = reader;
+            this.name = dirName;
+            this.sunFile = sunFile;
+            this.parent = sunFile;//idk if this parent thing works the same as the line above it
+        }
+
+        /// <summary>
+        /// Finds all child images in a SunDirectory
+        /// </summary>
+        public List<SunImage> FindChildImages()
+        {
+            List<SunImage> imgList = new List<SunImage>();
+            imgList.AddRange(images);
+            foreach(SunDirectory subdir in SubDirectories)
+            {
+                imgList.AddRange(subdir.FindChildImages());
+            }
+            return imgList;
+        }
+
+        public List<SunProperty> ParsePropertyList(uint offset, SunBinaryReader reader, SunObject parent, SunDirectory parentDir)
+        {
+            int entryCount = reader.ReadCompressedInt();
+            List<SunProperty> properties = new List<SunProperty>(entryCount);
+
+            for (int i = 0; i < entryCount; i++)
+            {
+                string name = reader.ReadString();
+                byte propertyType = reader.ReadByte();
+                switch (propertyType)
+                {
+                    case 0: //NULL
+                        break;
+                    case 2: //SHORT
+                        break;
+                    case 3: //INT
+                        properties.Add(new SunIntProperty(name, reader.ReadCompressedInt()) { Parent = parent });
+                        break;
+                    case 4: //LONG
+                        break;
+                    case 5: //FLOAT
+                        break;
+                    case 6: //DOUBLE
+                        break;
+                    case 7: //STRING
+                        break;
+                    case 8: //CANVAS (PNG)
+                        break;
+                    case 9: //VECTOR
+                        break;
+                    case 10://SOUND
+                        break;
+
+                }
+            }
+            return null;
+        }
+
         /// <summary>
         /// Returns size, in bytes, of the directory in the SunFile.
         /// </summary>
         public int Size { get { return size; } set { size = value; } }
 
         /// <summary>
-        /// Returns offset to the directory.
+        /// Returns offset to the folder.
         /// </summary>
         public uint Offset { get { return offset; } set { offset = value; } }
 
         /// <summary>
-        /// Returns the list of subdirectories inside this directory.
+        /// Returns the list of subdirectories inside the master directory.
         /// </summary>
         public List<SunDirectory> SubDirectories
         {
-            get { return subDirectoryList; }
+            get { return subDirs; }
+        }
+
+        /// <summary>
+        /// Returns the directory's Checksum value
+        /// </summary>
+        public int Checksum 
+        { 
+            get { return checksum; } set { checksum = value; }
+        }
+
+        /// <summary>
+        /// Returns the list of images inside this directory.
+        /// </summary>
+        public List<SunImage> SunImages
+        {
+            get { return images; }
         }
 
         /// <summary>
@@ -215,8 +244,14 @@ namespace SunFileManager.SunFileLib
         /// </summary>
         public void RemoveDirectory(SunDirectory dir)
         {
-            subDirectoryList.Remove(dir);
+            subDirs.Remove(dir);
             dir.Parent = null;
+        }
+
+        public void RemoveImage(SunImage img)
+        {
+            images.Remove(img);
+            img.Parent = null;
         }
 
         /// <summary>
@@ -224,55 +259,137 @@ namespace SunFileManager.SunFileLib
         /// </summary>
         public void AddDirectory(SunDirectory dir)
         {
-            subDirectoryList.Add(dir);
+            subDirs.Add(dir);
+        }
+
+        /// <summary>
+        /// Adds a SunImage to the list of sun images.
+        /// </summary>
+        public void AddImage(SunImage img)
+        {
+            images.Add(img);
+            img.Parent = this;
         }
 
         /// <summary>
         /// Saves the SunDirectory to disk within the <b>SunFile</b>.
         /// <br>Called by the <b>SaveToDisk()</b> method in SunFile.</br>
         /// </summary>
-        public void SaveToDisk(SunBinaryWriter sbw)
+        public void SaveDirectory(SunBinaryWriter writer)
         {
-            Offset = (uint)sbw.BaseStream.Position;
+            Offset = (uint)writer.BaseStream.Position;
 
-            TopLevelEntryCount = SubDirectories.Count + SunProperties.Count;
             if (TopLevelEntryCount == 0)
             {
                 Size = 0;
                 return;
             }
-            sbw.WriteCompressedInt(TopLevelEntryCount);
-            SaveDirectoryContents(sbw);
-        }
 
-        public void SaveDirectoryContents(SunBinaryWriter writer)
-        {
-            foreach (SunDirectory directory in subDirectoryList)
+            writer.WriteCompressedInt(TopLevelEntryCount);
+            foreach(SunImage img in images)
             {
-                writer.WriteSunObjectValue(directory.Name, (byte)SunObjectType.Directory);
-                writer.WriteCompressedInt(directory.Size);    // Make sure this is always accurate.
-                writer.Write(directory.Offset);        // This as well.
+                writer.WriteSunObjectValue(img.Name, (byte)SunObjectType.Image);
+                writer.WriteCompressedInt(img.Size);
+                writer.WriteCompressedInt(img.Checksum);
+                writer.WriteOffset(img.Offset);
             }
-
-            if (!(Parent is SunFile))
+            foreach (SunDirectory dir in subDirs)
             {
-                if (SunProperties.Count > 0)
-                {   // Writes property list header.
-                    // It's basically telling the file "Heads up, there are X amount of properties about to be sequentially written."
-                    writer.WriteCompressedInt(SunProperties.Count);
-                    writer.Write((byte)SunObjectType.Property);
-                }
+                writer.WriteSunObjectValue(dir.Name, (byte)SunObjectType.Directory);
+                writer.WriteCompressedInt(dir.Size);
+                writer.WriteCompressedInt(dir.Checksum);
+                writer.WriteOffset(dir.Offset);
             }
-
-            foreach (SunProperty prop in sunPropertyList)
-                prop.WriteValue(writer);
-
-            foreach (SunDirectory directory in subDirectoryList)
+            foreach (SunDirectory dir in subDirs)
             {
-                if (directory.Size > 0)
-                    directory.SaveDirectoryContents(writer);
+                if (dir.Size > 0)
+                    dir.SaveDirectory(writer);
                 else
                     writer.Write((byte)0);
+            }
+
+
+            //if (Parent is SunFile)
+            //    sbw.WriteCompressedInt(TopLevelEntryCount);
+
+            //foreach (SunDirectory directory in subDirs)
+            //{
+            //    sbw.WriteSunObjectValue(directory.Name, (byte)SunObjectType.Directory);
+            //    sbw.WriteCompressedInt(directory.SubDirectories.Count);
+            //    sbw.WriteCompressedInt(directory.SunProperties.Count);
+            //    sbw.WriteCompressedInt(directory.Size);    // Make sure this is always accurate.
+            //    sbw.Write(directory.Offset);        // This as well.
+            //    //writer.WriteCompressedInt(directory.SubDirectories.Count + directory.SunProperties.Count);  //needed or no?
+
+            //    if (directory.Size > 0)
+            //        //directory.SaveDirectoryContents(sbw);
+            //        directory.SaveDirectory(sbw);
+            //    else
+            //        sbw.Write((byte)0);
+            //}
+        }
+
+        //public void SaveDirectoryContents(SunBinaryWriter writer, FileStream stream)
+        //{
+        //    int adjustedSize = 0;
+        //    byte[] buffer;
+        //    foreach (SunDirectory directory in SubDirectories)
+        //    {
+        //        if (directory.Changed)
+        //        {
+        //            if (directory.SubDirectories.Count > 0)
+        //            {
+        //                foreach (SunDirectory dir in directory.SubDirectories)
+        //                {
+        //                    adjustedSize += SunFileHelper.GetCompressedIntLength(dir.TopLevelEntryCount);
+        //                    adjustedSize++;
+        //                    adjustedSize += dir.Name.Length + 1;
+        //                    adjustedSize += SunFileHelper.GetCompressedIntLength(dir.Size);
+        //                    adjustedSize += 4;
+        //                    adjustedSize += dir.Size;
+        //                }
+        //            adjustedSize = directory.Size - adjustedSize;
+        //            }
+        //            stream.Position = directory.tempFileStart;
+        //            //byte[] buffer = new byte[directory.Size > 1 ? directory.Size : 1];
+        //            if (adjustedSize > 0)
+        //                buffer = new byte[adjustedSize > 1 ? adjustedSize : 1];
+        //            else buffer = new byte[directory.Size > 1 ? directory.Size : 1];
+        //            stream.Read(buffer, 0, buffer.Length);
+        //            writer.Write(buffer);
+        //        }
+        //        else
+        //        {
+        //            directory.reader.BaseStream.Position = directory.tempFileStart;
+        //            writer.Write(directory.reader.ReadBytes((int)(directory.tempFileEnd - directory.tempFileStart)));
+        //        }
+        //    }
+        //    foreach (SunDirectory dir in SubDirectories)
+        //    {
+        //        dir.SaveDirectoryContents(writer, stream);
+        //    }
+        //}
+
+        public void SaveImages(SunBinaryWriter sunWriter, FileStream fileStream)
+        {
+            foreach (SunImage img in images)
+            {
+                if (img.Changed)
+                {
+                    fileStream.Position = img.tempFileStart;
+                    byte[] buffer = new byte[img.Size];
+                    fileStream.Read(buffer, 0, img.Size);
+                    sunWriter.Write(buffer);
+                }
+                else
+                {
+                    img.reader.BaseStream.Position = img.tempFileStart;
+                    sunWriter.Write(img.reader.ReadBytes((int)(img.tempFileEnd - img.tempFileStart)));
+                }
+            }
+            foreach (SunDirectory dir in subDirs)
+            {
+                dir.SaveImages(sunWriter, fileStream);
             }
         }
 
@@ -280,9 +397,23 @@ namespace SunFileManager.SunFileLib
         {
             Offset = currentOffset;
             currentOffset += (uint)offsetSize;
-            foreach (SunDirectory dir in subDirectoryList)
+            foreach (SunDirectory dir in subDirs)
             {
                 currentOffset = dir.GetOffsets(currentOffset);
+            }
+            return currentOffset;
+        }
+
+        public uint GetImgOffsets(uint currentOffset)
+        {
+            foreach (SunImage img in images)
+            {
+                img.Offset = currentOffset;
+                currentOffset += (uint)img.Size;
+            }
+            foreach (SunDirectory dir in subDirs)
+            {
+                currentOffset = dir.GetImgOffsets(currentOffset);
             }
             return currentOffset;
         }
@@ -290,122 +421,152 @@ namespace SunFileManager.SunFileLib
         /// <summary>
         /// Calculates the sizes and offset sizes of every SunDirectory in the File.
         /// </summary>
-        public int GenerateFileInfo()
+        public int GenerateFileInfo(string tempFileName)
         {
-            int a;
-            Size = 0;
-            offsetSize = 0;
-            if (Parent is SunFile)
+            size = 0;
+            if (TopLevelEntryCount == 0)
             {
-                TopLevelEntryCount = subDirectoryList.Count + sunPropertyList.Count;
-                if (TopLevelEntryCount == 0)
+                offsetSize = 1;
+                return (size = 0);
+            }
+            size = SunFileHelper.GetCompressedIntLength(TopLevelEntryCount);
+            offsetSize = SunFileHelper.GetCompressedIntLength(TopLevelEntryCount);
+
+            SunBinaryWriter imgWriter = null;
+            MemoryStream memoryStream = null;
+            FileStream fileWrite = new FileStream(tempFileName, FileMode.Append, FileAccess.Write);
+
+            foreach(SunImage img in SunImages)
+            {
+                if (img.changed)
                 {
-                    offsetSize = 1;
-                    return Size = 0;
+                    memoryStream = new MemoryStream();
+                    imgWriter = new SunBinaryWriter(memoryStream);
+                    img.SaveImage(imgWriter);
+                    img.Checksum = 0;
+                    foreach (byte b in memoryStream.ToArray())
+                    {
+                        img.Checksum += b;
+                    }
+                    img.tempFileStart = fileWrite.Position;
+                    fileWrite.Write(memoryStream.ToArray(), 0, (int)memoryStream.Length);
+                    img.tempFileEnd = fileWrite.Position;
+                    memoryStream.Dispose();
                 }
-                Size += SunFileHelper.GetCompressedIntLength(TopLevelEntryCount);
-                offsetSize += SunFileHelper.GetCompressedIntLength(TopLevelEntryCount);
-            }
-            else
-            {
-                if (SunProperties.Count > 0)
+                else
                 {
-                    a = SunFileHelper.GetCompressedIntLength(SunProperties.Count);
-                    Size += a;  /**/ offsetSize += a;
-                    Size++;     /**/ offsetSize++;  // Byte SunObjectType (4)
+                    img.tempFileStart = img.Offset;
+                    img.tempFileEnd = img.Offset + img.Size;
                 }
-            }
+                img.UnparseImage();
 
-            foreach (SunProperty prop in SunProperties)
+                Size++; //entrycount
+                int nameLength = img.Name.Length + 1;
+                Size += nameLength;
+                int imgLength = img.Size;
+                Size += SunFileHelper.GetCompressedIntLength(imgLength);
+                Size += imgLength;
+                Size += SunFileHelper.GetCompressedIntLength(img.Checksum);
+                Size += 4;
+
+                offsetSize++;   //entrycount
+                offsetSize += nameLength;
+                offsetSize += SunFileHelper.GetCompressedIntLength(imgLength);
+                offsetSize += SunFileHelper.GetCompressedIntLength(img.Checksum);
+                offsetSize += 4;
+                if (img.Changed)
+                    imgWriter.Close();
+            }
+            fileWrite.Close();
+
+            foreach (SunDirectory dir in SubDirectories)
             {
-                // Calculating size of directory (not the whole sunfile; an individual sundir)
-                Size += prop.Name.Length + 1; /**/ offsetSize += prop.Name.Length + 1;
-                Size++;     /**/ offsetSize++;       // Byte SunPropertyType
+                int nameLength = dir.Name.Length + 1;
+                Size++; //entrycount
+                Size += nameLength;
+                Size += dir.GenerateFileInfo(tempFileName);
+                Size += SunFileHelper.GetCompressedIntLength(dir.Size);
+                Size += SunFileHelper.GetCompressedIntLength(dir.Checksum);
 
-                switch (prop.PropertyType)
-                {
-                    case SunPropertyType.Null:
-                        Size++; /**/ offsetSize++;
-                        break;
-
-                    case SunPropertyType.Short:
-                        Size += 2; /**/ offsetSize += 2;
-                        break;
-
-                    case SunPropertyType.Int:
-                        a = SunFileHelper.GetCompressedIntLength(((SunIntProperty)prop).Value);
-                        Size += a; /**/ offsetSize += a;
-                        break;
-
-                    case SunPropertyType.Long:
-                        a = SunFileHelper.GetCompressedLongLength(((SunIntProperty)prop).Value);
-                        Size += a; /**/ offsetSize += a;
-                        break;
-
-                    case SunPropertyType.Float:
-                        if (((SunFloatProperty)prop).Value == 0)
-                        {
-                            Size++; /**/ offsetSize++;
-                            break;
-                        }
-                        Size += 4; /**/ offsetSize += 4;
-                        break;
-
-                    case SunPropertyType.Double:
-                        if (((SunDoubleProperty)prop).Value == 0)
-                        {
-                            Size++; /**/ offsetSize++;
-                            break;
-                        }
-                        Size += 8; /**/ offsetSize += 8;
-                        break;
-
-                    case SunPropertyType.String:
-                        a = ((SunStringProperty)prop).Value.Length + 1;
-                        Size += a; /**/ offsetSize += a;
-                        break;
-
-                    case SunPropertyType.Image:
-                        SunImageProperty imageProperty = (SunImageProperty)prop;
-                        CalculateImageSize(imageProperty);
-                        break;
-
-                    case SunPropertyType.Vector:
-                        a = SunFileHelper.GetCompressedIntLength(((SunVectorProperty)prop).X.Value);
-                        Size += a; /**/ offsetSize += a;
-                        a = SunFileHelper.GetCompressedIntLength(((SunVectorProperty)prop).Y.Value);
-                        Size += a; /**/ offsetSize += a;
-                        break;
-
-                    case SunPropertyType.Sound: break;
-
-                    default:
-                        break;
-                }
+                offsetSize++; //entrycount
+                offsetSize += nameLength;
+                offsetSize += SunFileHelper.GetCompressedIntLength(dir.Size);
+                offsetSize += SunFileHelper.GetCompressedIntLength(dir.Checksum);
+                offsetSize += 4;
             }
-
-            foreach (SunDirectory dir in subDirectoryList)
-            {
-                Size++; /**/ offsetSize++;            // Byte SunObjectType
-
-                Size += dir.Name.Length + 1; /**/ offsetSize += dir.Name.Length + 1;
-
-                Size += dir.GenerateFileInfo();
-
-                a = SunFileHelper.GetCompressedIntLength(dir.Size);
-                Size += a; /**/ offsetSize += a;
-
-                Size += sizeof(int); /**/ offsetSize += sizeof(int);  // Offset
-
-                if (dir.Size == 0)      // Byte of empty data
-                    Size++;
-            }
-            if (Size == 0)
-                offsetSize++;           // To account for the blank byte
             return Size;
         }
 
-        public void CalculateImageSize(SunImageProperty imageProperty)
+
+        public void ParseDirectory(bool lazyParse = false)
+        {
+            int entryCount = reader.ReadCompressedInt();
+            for (int i = 0; i < entryCount; i++)
+            {
+                byte type = reader.ReadByte();
+                string fileName = null;
+                int fileSize;
+                int checksum;
+                uint offset;
+
+                long rememberPos = 0;
+                switch (type)
+                {
+                    case 2: // 2 = .img
+                    case 3: // 3 = directory
+                        {
+                            fileName = reader.ReadString();
+                            rememberPos = reader.BaseStream.Position;
+                            break;
+                        }
+                    case 4:// 4 = SunProperty
+                        {
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                }
+                reader.BaseStream.Position = rememberPos;
+                fileSize = reader.ReadCompressedInt();
+                checksum = reader.ReadCompressedInt();
+                offset = reader.ReadOffset();
+                if (type == 3)  //directory
+                {
+                    SunDirectory subDir = new SunDirectory(reader, fileName, sunFile);
+                    subDir.Size = fileSize;
+                    subDir.Checksum = checksum;
+                    subDir.Offset = offset;
+                    subDir.Parent = this;
+                    subDirs.Add(subDir);
+
+                    if (lazyParse)
+                        break;
+                }
+                else if (type == 2)
+                {
+                    SunImage img = new SunImage(fileName, reader);
+                    img.Size = fileSize;
+                    img.Checksum = checksum;
+                    img.Offset = offset;
+                    img.Parent = this;  //how does this line tell how many properties are in the img???
+                    images.Add(img);
+
+                    if (lazyParse)
+                        break;
+                }
+            }
+
+            foreach (SunDirectory subdir in subDirs)
+            {
+                reader.BaseStream.Position = subdir.offset;  //see if this line is even needed
+                subdir.ParseDirectory();
+            }
+        }
+
+
+        public void CalculateCanvasSize(SunCanvasProperty canvasProperty)
         {
             int a;
 
@@ -413,25 +574,25 @@ namespace SunFileManager.SunFileLib
             Size++;     /**/ offsetSize++;      // Property bool ("yes, there are properties associated with this image")
             Size++;     /**/ offsetSize++;      // Gif bool (Marks image as a gif)
 
-            if (imageProperty.SunProperties.Count > 0)
+            if (canvasProperty.SunProperties.Count > 0)
             {
-                a = SunFileHelper.GetCompressedIntLength(imageProperty.SunProperties.Count);
+                a = SunFileHelper.GetCompressedIntLength(canvasProperty.SunProperties.Count);
                 Size += a;  /**/ offsetSize += a;
                 Size++;     /**/ offsetSize++;      // Byte SunObjectType.Property
-                foreach (SunProperty property in imageProperty.SunProperties)
+                foreach (SunProperty property in canvasProperty.SunProperties)
                 {
                     Size += property.Name.Length + 1; /**/ offsetSize += property.Name.Length + 1;
                 }
             }
 
-            if (imageProperty.IsGif)
+            if (canvasProperty.IsGif)
             {
-                a = SunFileHelper.GetCompressedIntLength(imageProperty.Frames.Count);
+                a = SunFileHelper.GetCompressedIntLength(canvasProperty.Frames.Count);
                 Size += a; /**/ offsetSize += a;
 
                 Size++; /**/ offsetSize++;  //Byte SunObjectType.Property
 
-                foreach (SunImageProperty frame in imageProperty.Frames)
+                foreach (SunCanvasProperty frame in canvasProperty.Frames)
                 {
                     Size += frame.Name.Length + 1; /**/ offsetSize += frame.Name.Length + 1;
                     Size++;     /**/ offsetSize++;       // Byte SunPropertyType
@@ -454,15 +615,15 @@ namespace SunFileManager.SunFileLib
             }
             else
             {
-                a = SunFileHelper.GetCompressedIntLength(imageProperty.Width);
+                a = SunFileHelper.GetCompressedIntLength(canvasProperty.Width);
                 Size += a; /**/ offsetSize += a;
 
-                a = SunFileHelper.GetCompressedIntLength(imageProperty.Height);
+                a = SunFileHelper.GetCompressedIntLength(canvasProperty.Height);
                 Size += a; /**/ offsetSize += a;
 
                 Size += 4; /**/ offsetSize += 4; // Image size length
 
-                a = imageProperty.GetCompressedBytes().Length;
+                a = canvasProperty.GetCompressedBytes().Length;
                 Size += a; /**/ offsetSize += a;
             }
         }

@@ -7,6 +7,10 @@ namespace SunFileManager.SunFileLib.Util
     /// </summary>
     public class SunBinaryWriter : BinaryWriter
     {
+        #region Properties
+        public SunHeader Header { get; set; }
+        #endregion Properties
+
         #region Constructors
 
         public SunBinaryWriter(Stream output) : base(output)
@@ -63,10 +67,40 @@ namespace SunFileManager.SunFileLib.Util
         /// Writes the byte type of the SunObject passed to the method,
         /// <br>followed by its name as a length-prefixed string.</br>
         /// </summary>
-        public void WriteSunObjectValue(string sobjectName, byte type)
+        public void WriteSunObjectValue(string sObjectName, byte type)
         {
+            //	All encryption related shit idek lol
+            //string storeName = type + "_" + s;
+            //if (s.Length > 4 && StringCache.ContainsKey(storeName))
+            //{
+            //    Write((byte)2);
+            //    Write((int)StringCache[storeName]);
+            //}
+            //else
+            //{
+            //    int sOffset = (int)(this.BaseStream.Position - Header.FStart);
+            //    Write(type);
+            //    base.Write(s);  //remove base later. We need this to learn 2 encrypt
+            //    if (!StringCache.ContainsKey(storeName))
+            //    {
+            //        StringCache[storeName] = sOffset;
+            //    }
+            //}
             Write(type);
-            Write(sobjectName);
+            base.Write(sObjectName);
+        }
+
+        public void WriteOffset(uint value)
+        {
+            //Uncomment all of this when it's time to encrypt things
+            //uint encOffset = (uint)BaseStream.Position;
+            //encOffset = (encOffset - Header.FStart) ^ 0xFFFFFFFF;
+            //encOffset *= Hash;
+            //encOffset -= CryptoConstants.WZ_OffsetConstant;
+            //encOffset = RotateLeft(encOffset, (byte)(encOffset & 0x1F));
+            //uint writeOffset = encOffset ^ (value - (Header.FStart * 2));
+            //Write(writeOffset);
+            Write(value);
         }
 
         #endregion Methods

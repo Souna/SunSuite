@@ -51,14 +51,6 @@ namespace SunFileManager.GUI
             Close();
         }
 
-        private void txtNameInput_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // Enter button
-            if (e.KeyChar == (char)13)
-            {
-                btnOk_Click(null, null);
-            }
-        }
 
         private void txtNameInput_KeyUp(object sender, KeyEventArgs e)
         {
@@ -66,6 +58,14 @@ namespace SunFileManager.GUI
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
+            }
+        }
+
+        private void txtNameInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnOk_Click(null, null);
             }
         }
     }

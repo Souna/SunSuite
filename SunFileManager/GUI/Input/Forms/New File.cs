@@ -79,21 +79,20 @@ namespace SunFileManager.GUI
             Close();
         }
 
-        private void txtFileName_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // Enter button
-            if (e.KeyChar == (char)13)
-            {
-                btnCreate_Click(null, null);
-            }
-        }
-
         private void txtFileName_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
+            }
+        }
+
+        private void txtFileName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnCreate_Click(null, null);
             }
         }
     }
