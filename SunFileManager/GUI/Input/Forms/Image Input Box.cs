@@ -211,14 +211,6 @@ namespace SunFileManager.GUI.Input
             }
         }
 
-        private void txtImagePath_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // Enter button
-            if (e.KeyChar == (char)13)
-            {
-                btnOk_Click(null, null);
-            }
-        }
 
         private void txtImagePath_KeyUp(object sender, KeyEventArgs e)
         {
@@ -239,6 +231,14 @@ namespace SunFileManager.GUI.Input
             toolTip1.Show(txtNameInput.Text, txtNameInput);
         }
 
+        private void txtNameInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnOk_Click(null, null);
+            }
+        }
+
         /// <summary>
         /// Returns the file size in an easy-to-read string.
         /// </summary>
@@ -249,7 +249,7 @@ namespace SunFileManager.GUI.Input
             while (fileLength >= 1024 && order + 1 < sizes.Length)
             {
                 order++;
-                fileLength = fileLength / 1024;
+                fileLength /= 1024;
             }
             string result = string.Format("{0:0.##} {1}", fileLength, sizes[order]);
             return result;

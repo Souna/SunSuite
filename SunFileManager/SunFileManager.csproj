@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,7 +25,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -151,11 +151,14 @@
     <Compile Include="SunFileLib\Properties\SunShortProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunSoundProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunStringProperty.cs" />
+    <Compile Include="SunFileLib\Properties\SunSubProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunVectorProperty.cs" />
     <Compile Include="SunFileLib\Structure\IPropertyContainer.cs" />
-    <Compile Include="SunFileLib\Properties\SunImageProperty.cs" />
+    <Compile Include="SunFileLib\Properties\SunCanvasProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunIntProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunProperty.cs" />
+    <Compile Include="SunFileLib\Structure\SunImage.cs" />
+    <Compile Include="SunFileLib\Structure\SunPropertyExtended.cs" />
     <Compile Include="SunFileLib\SunContextMenuManager.cs" />
     <Compile Include="SunFileLib\Structure\SunDirectory.cs" />
     <Compile Include="SunFileLib\Structure\SunFile.cs" />
@@ -165,9 +168,12 @@
     <Compile Include="SunFileLib\Structure\SunObject.cs" />
     <Compile Include="SunFileLib\Structure\SunObjectType.cs" />
     <Compile Include="SunFileLib\Properties\SunPropertyType.cs" />
+    <Compile Include="SunFileLib\Util\ByteUtils.cs" />
+    <Compile Include="SunFileLib\Util\ErrorLogger.cs" />
     <Compile Include="SunFileLib\Util\SunBinaryReader.cs" />
     <Compile Include="SunFileLib\Util\SunBinaryWriter.cs" />
     <Compile Include="SunFileLib\Util\SunFileHelper.cs" />
+    <Compile Include="SunFileLib\Util\SunTool.cs" />
     <EmbeddedResource Include="GUI\Container\Panning PictureBox.resx">
       <DependentUpon>Panning PictureBox.cs</DependentUpon>
     </EmbeddedResource>

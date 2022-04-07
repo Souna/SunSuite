@@ -30,7 +30,7 @@ namespace SunFileManager.SunFileLib
                 }
 
                 string error = string.Empty;
-                //bool success = f.ParseSunFile(out error);
+                bool success = f.ParseSunFile(out error);
 
                 //if (!success ||!File.Exists(path))
                 //{
@@ -87,7 +87,7 @@ namespace SunFileManager.SunFileLib
         /// <summary>
         /// Save a SunFile to disk.
         /// </summary>
-        public static void SaveToDisk(ref SunNode node)
+        public void SaveToDisk(ref SunNode node)
         {
             SunFile SaveSunFile = (SunFile)node.Tag;
 
@@ -101,17 +101,26 @@ namespace SunFileManager.SunFileLib
             if (sfd.ShowDialog() != DialogResult.OK)
                 return;
 
-            /*Maybe might not even need these if/else blocks*/
-            //  If saving and not changing the save destination or filename before it's saved
+            //If saving a file that exists already, creates a new temp file and replaces current file with that
             if (SaveSunFile.FilePath != null && SaveSunFile.FilePath.ToLower() == sfd.FileName.ToLower())
             {
+                SaveSunFile.SaveToDisk(sfd.FileName + "$tmp");
+                node.DeleteNode();
+                File.Delete(sfd.FileName);
+                File.Move(sfd.FileName = "$tmp", sfd.FileName);
             }
-            else
+            else // We're making a new file, or the name of the file was changed in the SaveFileDialog
             {
-                //  Changed something
+                SaveSunFile.SaveToDisk(sfd.FileName);
+                node.DeleteNode();
             }
 
-            SaveSunFile.SaveToDisk(sfd.FileName);
+            //Now reload the file
+            SunFile loadedSunFile = LoadSunFile(sfd.FileName);
+            if (loadedSunFile != null)
+                AddLoadedSunFileToTreeView(loadedSunFile, Dispatcher.CurrentDispatcher);
+
+
         }
 
         public void UnloadSunFile(SunFile file)

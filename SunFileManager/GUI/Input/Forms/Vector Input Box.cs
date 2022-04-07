@@ -51,27 +51,38 @@ namespace SunFileManager.GUI.Input.Forms
             Close();
         }
 
-        private void txtNameInput_KeyPress(object sender, KeyPressEventArgs e)
+
+        private void txtNameInput_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyChar == (char)13)
+            if (e.KeyCode == Keys.Enter)
             {
                 btnOk_Click(null, null);
             }
         }
 
-        private void txtXValueInput_KeyPress(object sender, KeyPressEventArgs e)
+        private void txtXValueInput_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyChar == (char)13)
+            if (e.KeyCode == Keys.Enter)
             {
                 btnOk_Click(null, null);
             }
         }
 
-        private void txtYValueInput_KeyPress(object sender, KeyPressEventArgs e)
+        private void txtYValueInput_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyChar == (char)13)
+            if (e.KeyCode == Keys.Enter)
             {
                 btnOk_Click(null, null);
+            }
+        }
+
+
+        private void frmVectorInputBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                DialogResult = DialogResult.Cancel;
+                Close();
             }
         }
     }

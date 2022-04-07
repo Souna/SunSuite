@@ -77,7 +77,8 @@ namespace SunFileManager.GUI.Input.Forms
             this.txtXValueInput.TabIndex = 1;
             this.txtXValueInput.Text = "0";
             this.txtXValueInput.Value = 0;
-            this.txtXValueInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtXValueInput_KeyPress);
+            this.txtXValueInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtXValueInput_KeyDown);
+            this.txtXValueInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmVectorInputBox_KeyUp);
             // 
             // txtNameInput
             // 
@@ -86,7 +87,8 @@ namespace SunFileManager.GUI.Input.Forms
             this.txtNameInput.Name = "txtNameInput";
             this.txtNameInput.Size = new System.Drawing.Size(156, 20);
             this.txtNameInput.TabIndex = 0;
-            this.txtNameInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNameInput_KeyPress);
+            this.txtNameInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyDown);
+            this.txtNameInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmVectorInputBox_KeyUp);
             // 
             // txtYValueInput
             // 
@@ -97,7 +99,8 @@ namespace SunFileManager.GUI.Input.Forms
             this.txtYValueInput.TabIndex = 2;
             this.txtYValueInput.Text = "0";
             this.txtYValueInput.Value = 0;
-            this.txtYValueInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtYValueInput_KeyPress);
+            this.txtYValueInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtYValueInput_KeyDown);
+            this.txtYValueInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmVectorInputBox_KeyUp);
             // 
             // label3
             // 
@@ -134,6 +137,7 @@ namespace SunFileManager.GUI.Input.Forms
             this.MaximizeBox = false;
             this.Name = "frmVectorInputBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmVectorInputBox_KeyUp);
             this.ResumeLayout(false);
             this.PerformLayout();
 

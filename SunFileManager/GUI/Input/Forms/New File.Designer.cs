@@ -52,7 +52,7 @@
             this.txtFileName.Name = "txtFileName";
             this.txtFileName.Size = new System.Drawing.Size(100, 20);
             this.txtFileName.TabIndex = 0;
-            this.txtFileName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFileName_KeyPress);
+            this.txtFileName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFileName_KeyDown);
             this.txtFileName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFileName_KeyUp);
             // 
             // label2
@@ -102,7 +102,6 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "New file...";
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFileName_KeyPress);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFileName_KeyUp);
             this.ResumeLayout(false);
             this.PerformLayout();

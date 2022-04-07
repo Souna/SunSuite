@@ -55,6 +55,7 @@
             this.txtNameInput.Name = "txtNameInput";
             this.txtNameInput.Size = new System.Drawing.Size(181, 20);
             this.txtNameInput.TabIndex = 1;
+            this.txtNameInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyDown);
             this.txtNameInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNameInput_KeyPress);
             this.txtNameInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyUp);
             this.txtNameInput.MouseHover += new System.EventHandler(this.txtNameInput_MouseHover);
@@ -70,7 +71,6 @@
             this.txtImagePath.TabIndex = 0;
             this.txtImagePath.Click += new System.EventHandler(this.txtImagePath_Click);
             this.txtImagePath.TextChanged += new System.EventHandler(this.txtImagePath_TextChanged);
-            this.txtImagePath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtImagePath_KeyPress);
             this.txtImagePath.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtImagePath_KeyUp);
             this.txtImagePath.MouseHover += new System.EventHandler(this.txtImagePath_MouseHover);
             // 
@@ -223,6 +223,7 @@
             this.MinimumSize = new System.Drawing.Size(290, 136);
             this.Name = "frmImageInputBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtImagePath_KeyUp);
             this.ResumeLayout(false);
             this.PerformLayout();
 

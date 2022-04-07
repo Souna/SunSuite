@@ -8,15 +8,15 @@ namespace SunFileManager.SunFileLib.Properties
 {
     /// <summary>
     /// A property containing a bitmap image.
-    /// <br>A SunImageProperty may have its own subproperties just as well.</br>
+    /// <br>A SunCanvasProperty may have its own subproperties just as well.</br>
     /// </summary>
-    public class SunImageProperty : SunProperty, IPropertyContainer
+    public class SunCanvasProperty : SunProperty, IPropertyContainer
     {
         #region Fields
 
         private string name;
         private List<SunProperty> sunPropertyList = new List<SunProperty>();
-        private List<SunImageProperty> frameList = new List<SunImageProperty>();
+        private List<SunCanvasProperty> frameList = new List<SunCanvasProperty>();
         private SunObject parent;
         private int width, height;
         private byte[] compressedBytes;
@@ -64,7 +64,7 @@ namespace SunFileManager.SunFileLib.Properties
         /// Returns the type of the Property
         /// <br>Image = 8</br>
         /// </summary>
-        public override SunPropertyType PropertyType { get { return SunPropertyType.Image; } }
+        public override SunPropertyType PropertyType { get { return SunPropertyType.Canvas; } }
 
         /// <summary>
         /// Sets the value of the image property.
@@ -79,7 +79,7 @@ namespace SunFileManager.SunFileLib.Properties
             byte[] imageBytes = new byte[0];
 
             writer.Write(Name);
-            writer.Write((byte)SunPropertyType.Image);
+            writer.Write((byte)SunPropertyType.Canvas);
 
             // Writing size. If gif, size = 0.
             if (IsGif)
@@ -120,7 +120,7 @@ namespace SunFileManager.SunFileLib.Properties
                 writer.Write(true);
                 writer.WriteCompressedInt(Frames.Count);
                 writer.Write((byte)SunObjectType.Property);
-                foreach (SunImageProperty frame in Frames)
+                foreach (SunCanvasProperty frame in Frames)
                 {
                     frame.WriteValue(writer);
                 }
@@ -207,14 +207,14 @@ namespace SunFileManager.SunFileLib.Properties
                 property.Dispose();
             SunProperties.Clear();
             if (Frames.Count > 0)
-                foreach (SunImageProperty frame in Frames)
+                foreach (SunCanvasProperty frame in Frames)
                     frame.Dispose();
             sunPropertyList = null;
             frameList = null;
         }
 
         /// <summary>
-        /// Returns the name of this SunImageProperty.
+        /// Returns the name of this SunCanvasProperty.
         /// </summary>
         public override string Name { get { return name; } set { name = value; } }
 
@@ -248,12 +248,33 @@ namespace SunFileManager.SunFileLib.Properties
         }
 
         /// <summary>
+        /// Add a list of properties at once
+        /// </summary>
+        public void AddProperties(List<SunProperty> props)
+        {
+            foreach (SunProperty prop in props)
+            {
+                AddProperty(prop);
+            }
+        }
+
+        /// <summary>
         /// Deletes the selected property under the image.
         /// </summary>
         public void RemoveProperty(SunProperty property)
         {
             property.Parent = null;
             sunPropertyList.Remove(property);
+        }
+
+        /// <summary>
+        /// Clear the list of properties
+        /// </summary>
+        public void ClearProperties()
+        {
+            foreach (SunProperty prop in SunProperties)
+                prop.Parent = null;
+            SunProperties.Clear();
         }
 
         /// <summary>
@@ -267,13 +288,13 @@ namespace SunFileManager.SunFileLib.Properties
 
         #region Custom Members
 
-        public void AddFrame(SunImageProperty frame)
+        public void AddFrame(SunCanvasProperty frame)
         {
             frame.Parent = this;
             Frames.Add(frame);
         }
 
-        public void RemoveFrame(SunImageProperty frame)
+        public void RemoveFrame(SunCanvasProperty frame)
         {
             frame.Parent = null;
             Frames.Remove(frame);
@@ -282,12 +303,12 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// Creates a blank image property.
         /// </summary>
-        public SunImageProperty() { }
+        public SunCanvasProperty() { }
 
         /// <summary>
-        /// Creates a SunImageProperty with a specified name and parent.
+        /// Creates a SunCanvasProperty with a specified name and parent.
         /// </summary>
-        public SunImageProperty(string name, SunObject sunParent, bool gif = false)
+        public SunCanvasProperty(string name, SunObject sunParent, bool gif = false)
         {
             Name = name;
             Parent = sunParent;
@@ -297,7 +318,7 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// List of gif frames.
         /// </summary>
-        public List<SunImageProperty> Frames { get { return frameList; } }
+        public List<SunCanvasProperty> Frames { get { return frameList; } }
 
         /// <summary>
         /// The bitmap width.

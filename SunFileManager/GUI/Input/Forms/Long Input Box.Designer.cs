@@ -84,7 +84,8 @@ namespace SunFileManager.GUI.Input.Forms
             this.txtIntValueInput.TabIndex = 1;
             this.txtIntValueInput.Text = "0";
             this.txtIntValueInput.Value = 0;
-            this.txtIntValueInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtIntValueInput_KeyPress);
+            this.txtIntValueInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtIntValueInput_KeyDown);
+            this.txtIntValueInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtIntValueInput_KeyUp);
             // 
             // txtNameInput
             // 
@@ -93,7 +94,8 @@ namespace SunFileManager.GUI.Input.Forms
             this.txtNameInput.Name = "txtNameInput";
             this.txtNameInput.Size = new System.Drawing.Size(156, 20);
             this.txtNameInput.TabIndex = 0;
-            this.txtNameInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNameInput_KeyPress);
+            this.txtNameInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyDown);
+            this.txtNameInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyUp);
             // 
             // frmLongInputBox
             // 
@@ -110,6 +112,7 @@ namespace SunFileManager.GUI.Input.Forms
             this.MaximizeBox = false;
             this.Name = "frmLongInputBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyUp);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -1,6 +1,7 @@
 ﻿using SunFileManager.GUI;
 using SunFileManager.Properties;
 using SunFileManager.SunFileLib.Properties;
+using SunFileManager.SunFileLib.Structure;
 using System;
 using System.Windows.Forms;
 
@@ -52,6 +53,9 @@ namespace SunFileManager.SunFileLib
         //  Right-click button to add a SunDirectory to a SunFile node.
         private ToolStripMenuItem AddSunDirectory;
 
+        //  Right-click button to add a SunImage to a SunNode.
+        private ToolStripMenuItem AddSunImage;
+
         //  Right-click button to add a Double property to a node.
         private ToolStripMenuItem AddDoubleProperty;
 
@@ -59,7 +63,7 @@ namespace SunFileManager.SunFileLib
         private ToolStripMenuItem AddFloatProperty;
 
         //  Right-click button to add an Image property to a node.
-        private ToolStripMenuItem AddImageProperty;
+        private ToolStripMenuItem AddCanvasProperty;
 
         //  Right-click button to add an Int property to a node.
         private ToolStripMenuItem AddIntProperty;
@@ -178,6 +182,12 @@ namespace SunFileManager.SunFileLib
                     mainform.AddSunDirectoryToSelectedNode(mainform.sunTreeView.SelectedNode, null);
                 }));
 
+            AddSunImage = new ToolStripMenuItem("Image", Resources.Directory, new EventHandler(
+                delegate (object sender, EventArgs e)
+                {
+                    mainform.AddSunImageToSelectedNode(mainform.sunTreeView.SelectedNode, null);
+                }));
+
             AddDoubleProperty = new ToolStripMenuItem("Double       8 bytes", Resources.Decimal, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
@@ -190,10 +200,10 @@ namespace SunFileManager.SunFileLib
                     mainform.AddFloatPropertyToSelectedNode(mainform.sunTreeView.SelectedNode);
                 }));
 
-            AddImageProperty = new ToolStripMenuItem("Image", Resources.Image, new EventHandler(
+            AddCanvasProperty = new ToolStripMenuItem("Canvas", Resources.Canvas, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddImageToSelectedNode(mainform.sunTreeView.SelectedNode);
+                    mainform.AddCanvasPropertyToSelectedNode(mainform.sunTreeView.SelectedNode);
                 }));
 
             AddIntProperty = new ToolStripMenuItem("Int               4 bytes", Resources.Input, new EventHandler(
@@ -259,8 +269,9 @@ namespace SunFileManager.SunFileLib
                 //  If selecting a SunFile node.
                 if (node.Tag is SunFile fileNode)
                 {
-                    //  Only option is to add a SunDirectory. We're top-level rn.
+                    //  We're at top-level rn
                     AddSubMenu.DropDownItems.Add(AddSunDirectory);
+                    AddSubMenu.DropDownItems.Add(AddSunImage);
 
                     PopupMenu.Items.Add(AddSubMenu);
                     PopupMenu.Items.Add(new ToolStripSeparator());
@@ -279,9 +290,20 @@ namespace SunFileManager.SunFileLib
                 else if (node.Tag is SunDirectory)
                 {
                     //  Populate "Add" menu.
+                    AddSubMenu.DropDownItems.Add(AddSunImage);
+
+                    PopupMenu.Items.Add(AddSubMenu);
+                    PopupMenu.Items.Add(new ToolStripSeparator());
+                    PopupMenu.Items.Add(Rename);
+                    PopupMenu.Items.Add(Remove);
+                    PopupMenu.Items.Add(Expand);
+                    PopupMenu.Items.Add(Collapse);
+                    PopupMenu.Show(mainform.sunTreeView, e.X, e.Y);
+                }
+                else if (node.Tag is SunImage)
+                {
+                    //  Populate "Add" menu.
                     AddSubMenu.DropDownItems.Add(AddPropertySubMenu);
-                    AddSubMenu.DropDownItems.Add(new ToolStripSeparator());
-                    AddSubMenu.DropDownItems.Add(AddSunDirectory);
 
                     //  Populate "Digit" add menu.
                     AddDigitPropertySubMenu.DropDownItems.Add(AddShortProperty);
@@ -293,7 +315,7 @@ namespace SunFileManager.SunFileLib
 
                     // Populate "Property" add menu.
                     AddPropertySubMenu.DropDownItems.Add(AddDigitPropertySubMenu);
-                    AddPropertySubMenu.DropDownItems.Add(AddImageProperty);
+                    AddPropertySubMenu.DropDownItems.Add(AddCanvasProperty);
                     AddPropertySubMenu.DropDownItems.Add(AddSoundProperty);
                     AddPropertySubMenu.DropDownItems.Add(AddStringProperty);
                     AddPropertySubMenu.DropDownItems.Add(AddVectorProperty);
@@ -309,7 +331,7 @@ namespace SunFileManager.SunFileLib
                 //  If selecting a Property node.
                 else if (node.Tag is SunProperty)
                 {
-                    if (node.Tag is SunImageProperty)
+                    if (node.Tag is SunCanvasProperty)
                     {
                         AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddShortProperty, AddIntProperty, AddLongProperty });
                         AddDigitPropertySubMenu.DropDownItems.Add(new ToolStripSeparator());

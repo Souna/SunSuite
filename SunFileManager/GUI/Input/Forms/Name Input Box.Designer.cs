@@ -62,7 +62,7 @@
             this.txtNameInput.Name = "txtNameInput";
             this.txtNameInput.Size = new System.Drawing.Size(115, 20);
             this.txtNameInput.TabIndex = 0;
-            this.txtNameInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNameInput_KeyPress);
+            this.txtNameInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyDown);
             this.txtNameInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyUp);
             // 
             // label1
@@ -89,7 +89,6 @@
             this.MinimizeBox = false;
             this.Name = "frmNameInputBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNameInput_KeyPress);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyUp);
             this.ResumeLayout(false);
             this.PerformLayout();

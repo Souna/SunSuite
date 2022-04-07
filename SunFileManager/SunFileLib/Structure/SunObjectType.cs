@@ -3,7 +3,8 @@
     public enum SunObjectType
     {
         File = 1,
-        Directory = 2,
+        Image = 2,
+        Directory = 3,
         Property = 4
     }
 }

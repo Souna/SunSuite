@@ -82,7 +82,8 @@ namespace SunFileManager.GUI.Input.Forms
             this.txtNameInput.Name = "txtNameInput";
             this.txtNameInput.Size = new System.Drawing.Size(156, 20);
             this.txtNameInput.TabIndex = 0;
-            this.txtNameInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNameInput_KeyPress);
+            this.txtNameInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyDown);
+            this.txtNameInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyUp);
             // 
             // txtFloatValueInput
             // 
@@ -92,7 +93,8 @@ namespace SunFileManager.GUI.Input.Forms
             this.txtFloatValueInput.TabIndex = 1;
             this.txtFloatValueInput.Text = "0";
             this.txtFloatValueInput.Value = 0D;
-            this.txtFloatValueInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFloatValueInput_KeyPress);
+            this.txtFloatValueInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFloatValueInput_KeyDown);
+            this.txtFloatValueInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFloatValueInput_KeyUp);
             // 
             // frmFloatInputBox
             // 
@@ -109,6 +111,7 @@ namespace SunFileManager.GUI.Input.Forms
             this.MaximizeBox = false;
             this.Name = "frmFloatInputBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFloatValueInput_KeyUp);
             this.ResumeLayout(false);
             this.PerformLayout();
 

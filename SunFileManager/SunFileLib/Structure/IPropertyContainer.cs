@@ -10,7 +10,11 @@ namespace SunFileManager.SunFileLib
     {
         void AddProperty(SunProperty prop);
 
+        void AddProperties(List<SunProperty> props);
+
         void RemoveProperty(SunProperty prop);
+
+        void ClearProperties();
 
         List<SunProperty> SunProperties { get; }
 
