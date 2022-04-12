@@ -154,10 +154,10 @@ namespace SunFileManager
         /// <param name="selectedNode"></param>
         private static void ParseOnTreeViewSelectedItem(SunNode selectedNode, bool expandDataTree = true)
         {
-            SunImage wzImage = (SunImage)selectedNode.Tag;
+            SunImage img = (SunImage)selectedNode.Tag;
 
-            if (!wzImage.Parsed)
-                wzImage.ParseImage();
+            if (!img.Parsed)
+                img.ParseImage();
             selectedNode.Reparse();
             if (expandDataTree)
             {
@@ -180,16 +180,15 @@ namespace SunFileManager
                 case SunObjectType.File:
                     namestring = "Rename File";
                     break;
-
+                case SunObjectType.Image:
+                    namestring = "Rename Image";
+                    break;
                 case SunObjectType.Directory:
                     namestring = "Rename Directory";
                     break;
 
                 case SunObjectType.Property:
-                    if (((SunProperty)node.Tag).PropertyType is SunPropertyType.Canvas)
-                        namestring = "Rename Image";
-                    else
-                        namestring = "Rename Property";
+                    namestring = "Rename Property";
                     break;
 
                 default:
@@ -245,13 +244,13 @@ namespace SunFileManager
             }
         }
 
-        public void AddSunImageToSelectedNode(TreeNode selectedNode, string name)
+        public void AddSunImageToSelectedNode(TreeNode targetNode, string name)
         {
-            if (selectedNode == null) return;
+            if (targetNode == null) return;
 
-            if (!(selectedNode.Tag is SunDirectory) && !(selectedNode.Tag is SunFile))
+            if (!(targetNode.Tag is SunDirectory) && !(targetNode.Tag is SunFile))
             {
-                MessageBox.Show("Tag is " + selectedNode.Tag.ToString());
+                MessageBox.Show("Tag is " + targetNode.Tag.ToString());
                 return;
             }
 
@@ -262,9 +261,31 @@ namespace SunFileManager
                     return;
             }
 
-            bool added = false;
+            if (!imgName.EndsWith(".img"))
+                imgName += ".img";
 
-            ((SunNode)selectedNode).AddObject(new SunImage(imgName) { Changed = true });
+            ((SunNode)targetNode).AddObject(new SunImage(imgName) { Changed = true });
+        }
+
+        public void AddSubPropertyToSelectedNode(TreeNode targetNode, string name)
+        {
+            if (!(targetNode.Tag is IPropertyContainer)) return;
+
+            if (!(targetNode.Tag is SunDirectory) && !(targetNode.Tag is SunFile) && !(targetNode.Tag is SunImage) && !(targetNode.Tag is SunSubProperty))
+            {
+                MessageBox.Show("Can't add a SubProperty to directory or sunfile.Tag is " + targetNode.Tag.ToString());
+                return;
+            }
+
+            string subPropName = name;
+            if (name == string.Empty || name == null)
+            {
+                if (!frmNameInputBox.Show("Add SubProperty", out subPropName))
+                    return;
+            }
+
+            ((SunNode)targetNode).AddObject(new SunSubProperty(subPropName));
+
         }
 
         /// <summary>
@@ -276,15 +297,6 @@ namespace SunFileManager
             if (!frmFloatInputBox.Show("Add Double Value", out string name, out double? value))
                 return;
             ((SunNode)targetNode).AddObject(new SunDoubleProperty(name, (double)value));
-        }
-
-        /// <summary>
-        /// Creates a new Integer property node under a selected node, with a provided name and value.
-        /// </summary>
-        public void AddDoublePropertyToSelectedNode(TreeNode targetNode, string name, double value)
-        {
-            if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
-            ((SunNode)targetNode).AddObject(new SunDoubleProperty(name, value));
         }
 
         /// <summary>
@@ -592,7 +604,7 @@ namespace SunFileManager
                     //  Display the image/gif with its attributes.
                     mainfrm_panning_PictureBox.Visible = true;
                     //  Check if selected node is of a gif, if so act accordingly
-                    if (canvasProperty.IsGif && canvasProperty.Frames.Count > 0)
+                    if (canvasProperty.IsGif/* && canvasProperty.Frames.Count > 0*/)
                     {
                         chkAnimateGif.Visible = true;
                         mainfrm_panning_PictureBox.Canvas = canvasProperty.Frames[0].PNG; // as a form of thumbnail

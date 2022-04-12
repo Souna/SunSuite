@@ -107,7 +107,7 @@ namespace SunFileManager.SunFileLib
                 SaveSunFile.SaveToDisk(sfd.FileName + "$tmp");
                 node.DeleteNode();
                 File.Delete(sfd.FileName);
-                File.Move(sfd.FileName = "$tmp", sfd.FileName);
+                File.Move(sfd.FileName + "$tmp", sfd.FileName);
             }
             else // We're making a new file, or the name of the file was changed in the SaveFileDialog
             {
@@ -125,16 +125,17 @@ namespace SunFileManager.SunFileLib
 
         public void UnloadSunFile(SunFile file)
         {
-            //lock(sunFiles)
-            //{
-            //    if (sunFiles.Contains(file))
-            //    {
-            //        mainform.sunTreeView.SelectedNode.Remove();
-            //        sunFiles.Remove(file);
-            //    }
-            //}
-            mainform.sunTreeView.SelectedNode.Remove();
-            if (sunFiles.Contains(file)) sunFiles.Remove(file);
+            lock (sunFiles)
+            {
+                if (sunFiles.Contains(file))
+                {
+                    //file.Remove();
+                    ((SunNode)mainform.sunTreeView.SelectedNode).DeleteNode();
+                    sunFiles.Remove(file);
+                }
+            }
+            //mainform.sunTreeView.SelectedNode.Remove();
+            //if (sunFiles.Contains(file)) sunFiles.Remove(file);
         }
 
         public void ReloadSunFile(SunFile file, Dispatcher currentDispatcher = null)

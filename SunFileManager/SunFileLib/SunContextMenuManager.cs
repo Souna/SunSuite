@@ -56,6 +56,9 @@ namespace SunFileManager.SunFileLib
         //  Right-click button to add a SunImage to a SunNode.
         private ToolStripMenuItem AddSunImage;
 
+        //  Right-click button to add a Sub Property to a node.
+        private ToolStripMenuItem AddSubProperty;
+
         //  Right-click button to add a Double property to a node.
         private ToolStripMenuItem AddDoubleProperty;
 
@@ -188,6 +191,12 @@ namespace SunFileManager.SunFileLib
                     mainform.AddSunImageToSelectedNode(mainform.sunTreeView.SelectedNode, null);
                 }));
 
+            AddSubProperty = new ToolStripMenuItem("SubProperty", Resources.Directory, new EventHandler(
+                delegate (object sender, EventArgs e)
+                {
+                    mainform.AddSubPropertyToSelectedNode(mainform.sunTreeView.SelectedNode, null);
+                }));
+
             AddDoubleProperty = new ToolStripMenuItem("Double       8 bytes", Resources.Decimal, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
@@ -269,7 +278,7 @@ namespace SunFileManager.SunFileLib
                 //  If selecting a SunFile node.
                 if (node.Tag is SunFile fileNode)
                 {
-                    //  We're at top-level rn
+                    //  We're at top level rn
                     AddSubMenu.DropDownItems.Add(AddSunDirectory);
                     AddSubMenu.DropDownItems.Add(AddSunImage);
 
@@ -306,15 +315,13 @@ namespace SunFileManager.SunFileLib
                     AddSubMenu.DropDownItems.Add(AddPropertySubMenu);
 
                     //  Populate "Digit" add menu.
-                    AddDigitPropertySubMenu.DropDownItems.Add(AddShortProperty);
-                    AddDigitPropertySubMenu.DropDownItems.Add(AddIntProperty);
-                    AddDigitPropertySubMenu.DropDownItems.Add(AddLongProperty);
+                    AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddShortProperty, AddIntProperty, AddLongProperty });
                     AddDigitPropertySubMenu.DropDownItems.Add(new ToolStripSeparator());
-                    AddDigitPropertySubMenu.DropDownItems.Add(AddFloatProperty);
-                    AddDigitPropertySubMenu.DropDownItems.Add(AddDoubleProperty);
+                    AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddFloatProperty, AddDoubleProperty });
 
                     // Populate "Property" add menu.
                     AddPropertySubMenu.DropDownItems.Add(AddDigitPropertySubMenu);
+                    AddPropertySubMenu.DropDownItems.Add(AddSubProperty);
                     AddPropertySubMenu.DropDownItems.Add(AddCanvasProperty);
                     AddPropertySubMenu.DropDownItems.Add(AddSoundProperty);
                     AddPropertySubMenu.DropDownItems.Add(AddStringProperty);
@@ -338,6 +345,25 @@ namespace SunFileManager.SunFileLib
                         AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddFloatProperty, AddDoubleProperty });
 
                         AddSubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddDigitPropertySubMenu, AddStringProperty, AddVectorProperty });
+                        PopupMenu.Items.Add(AddSubMenu);
+                        PopupMenu.Items.Add(new ToolStripSeparator());
+                    }
+                    else if (node.Tag is SunSubProperty)
+                    {
+                        AddSubMenu.DropDownItems.Add(AddPropertySubMenu);
+
+                        //  Populate "Digit" add menu.
+                        AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddShortProperty, AddIntProperty, AddLongProperty });
+                        AddDigitPropertySubMenu.DropDownItems.Add(new ToolStripSeparator());
+                        AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddFloatProperty, AddDoubleProperty });
+
+                        // Populate "Property" add menu.
+                        AddPropertySubMenu.DropDownItems.Add(AddDigitPropertySubMenu);
+                        AddPropertySubMenu.DropDownItems.Add(AddSubProperty);
+                        AddPropertySubMenu.DropDownItems.Add(AddCanvasProperty);
+                        AddPropertySubMenu.DropDownItems.Add(AddSoundProperty);
+                        AddPropertySubMenu.DropDownItems.Add(AddStringProperty);
+                        AddPropertySubMenu.DropDownItems.Add(AddVectorProperty);
                         PopupMenu.Items.Add(AddSubMenu);
                         PopupMenu.Items.Add(new ToolStripSeparator());
                     }

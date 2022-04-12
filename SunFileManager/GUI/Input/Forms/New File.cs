@@ -47,28 +47,32 @@ namespace SunFileManager.GUI
             }
             else return;
 
+            // If we're creating a duplicate SunFile in the default path
             if (File.Exists(frmFileManager.DefaultPath + "\\" + name + ".sun"))
             {
                 MessageBox.Show(name + ".sun" + " is an already existing file.", "File Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            // Flip through every node to see if we're trying to create a SunFile node which already exists.
-            // idk a better way to do this
-            for (int i = 0; i < mainform.sunTreeView.Nodes.Count; i++)
-            {
-                if (mainform.sunTreeView.Nodes[i].Name == name + ".sun")
-                {
-                    MessageBox.Show(name + " is an already existing Node. Try creating one with a different name.");
-                    return;
-                }
-            }
+
+            //// Flip through every node to see if we're trying to create a SunFile node which already exists.
+            //// idk a better way to do this
+            //for (int i = 0; i < mainform.sunTreeView.Nodes.Count; i++)
+            //{
+            //    if (mainform.sunTreeView.Nodes[i].Name == name + ".sun")
+            //    {
+            //        MessageBox.Show(name + " is an already existing Node. Try creating one with a different name.");
+            //        return;
+            //    }
+            //}
+
             if (name.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 || name == string.Empty)
             {
                 MessageBox.Show("Invalid file name.", "File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            name += ".sun";
+            if (!name.EndsWith(".sun"))
+                name += ".sun";
 
             // Create the file.
             var fullpath = Path.Combine(frmFileManager.DefaultPath, name);

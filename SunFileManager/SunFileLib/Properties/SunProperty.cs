@@ -70,8 +70,7 @@ namespace SunFileManager.SunFileLib.Properties
             List<SunProperty> properties = new List<SunProperty>(entryCount);
             for (int i = 0; i < entryCount; i++)
             {
-                //string name = reader.ReadStringAtOffset(offset);
-                string name = reader.ReadStringBlock(offset);
+                string name = reader.ReadString();
                 byte propertyType = reader.ReadByte();
                 switch (propertyType)
                 {
@@ -85,7 +84,7 @@ namespace SunFileManager.SunFileLib.Properties
                         properties.Add(new SunIntProperty(name, reader.ReadCompressedInt()) { Parent = parent });
                         break;
                     case 4:
-                        properties.Add(new SunLongProperty(name, reader.ReadLong()) { Parent = parent });
+                        properties.Add(new SunLongProperty(name, reader.ReadLong()) { Parent = parent });   // Max value is int only?
                         break;
                     case 5:
                         properties.Add(new SunFloatProperty(name, reader.ReadSingle()) { Parent = parent });
@@ -94,8 +93,8 @@ namespace SunFileManager.SunFileLib.Properties
                         properties.Add(new SunDoubleProperty(name, reader.ReadDouble()) { Parent = parent });
                         break;
                     case 7:
-                        //properties.Add(new SunStringProperty(name, reader.ReadString()){ Parent = parent });
-                        properties.Add(new SunStringProperty(name, reader.ReadStringBlock(offset)) { Parent = parent });
+                        properties.Add(new SunStringProperty(name, reader.ReadString()){ Parent = parent });
+                        //properties.Add(new SunStringProperty(name, reader.ReadStringBlock(offset)) { Parent = parent });
                         break;
                     case 8:
                         reader.BaseStream.Position += 5;    // To skip to Gif_Bool  

@@ -36,12 +36,15 @@ namespace SunFileManager.SunFileLib
         public override void Dispose()
         {
             name = null;
+            reader = null;
+            foreach (SunImage img in images)
+                img.Dispose();
             foreach (SunDirectory dir in SubDirectories)
                 dir.Dispose();
-            SubDirectories.Clear();
-            subDirs = null;
             SunImages.Clear();
+            SubDirectories.Clear();
             images = null;
+            subDirs = null;
         }
 
         /// <summary>
@@ -165,44 +168,6 @@ namespace SunFileManager.SunFileLib
                 imgList.AddRange(subdir.FindChildImages());
             }
             return imgList;
-        }
-
-        public List<SunProperty> ParsePropertyList(uint offset, SunBinaryReader reader, SunObject parent, SunDirectory parentDir)
-        {
-            int entryCount = reader.ReadCompressedInt();
-            List<SunProperty> properties = new List<SunProperty>(entryCount);
-
-            for (int i = 0; i < entryCount; i++)
-            {
-                string name = reader.ReadString();
-                byte propertyType = reader.ReadByte();
-                switch (propertyType)
-                {
-                    case 0: //NULL
-                        break;
-                    case 2: //SHORT
-                        break;
-                    case 3: //INT
-                        properties.Add(new SunIntProperty(name, reader.ReadCompressedInt()) { Parent = parent });
-                        break;
-                    case 4: //LONG
-                        break;
-                    case 5: //FLOAT
-                        break;
-                    case 6: //DOUBLE
-                        break;
-                    case 7: //STRING
-                        break;
-                    case 8: //CANVAS (PNG)
-                        break;
-                    case 9: //VECTOR
-                        break;
-                    case 10://SOUND
-                        break;
-
-                }
-            }
-            return null;
         }
 
         /// <summary>
