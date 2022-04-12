@@ -277,8 +277,19 @@ namespace SunFileManager.SunFileLib
         /// </summary>
         public void DeleteNode()
         {
+            try
+            {
+                Remove(); //Delete from Tree.
+            }
+            catch(Exception e)
+            {
+                throw new Exception("Error occured at DeleteNode()");
+            }
+            if (Tag is SunProperty)
+            {
+                ((SunProperty)Tag).ParentImage.Changed = true;
+            }
             ((SunObject)Tag).Remove();
-            Remove();   // Delete from Tree.
         }
 
         /// <summary>
@@ -286,8 +297,14 @@ namespace SunFileManager.SunFileLib
         /// </summary>
         public void Rename(string newName)
         {
+            if (Tag is SunFile file)
+                if (!newName.EndsWith(".sun"))
+                    newName += ".sun";
+            if (Tag is SunImage img)
+                if (!newName.EndsWith(".img"))
+                    newName += ".img";
             Text = newName; // The displayed name.
-            if (Tag is SunFile) Text += ".sun";
+
             ((SunObject)Tag).Name = newName;    // Change internal name.
         }
 

@@ -88,12 +88,13 @@ namespace SunFileManager.SunFileLib
 
         public override void Dispose()
         {
-            if (sunDir == null)
+            if (sunDir == null || SunDirectory.reader == null)
                 return;
+            SunDirectory.reader.Close();
             Header = null;
             path = null;
             name = null;
-            sunDir.Dispose();
+            SunDirectory.Dispose();
         }
 
         #endregion Inherited Members

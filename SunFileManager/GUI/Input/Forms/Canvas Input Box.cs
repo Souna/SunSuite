@@ -11,7 +11,7 @@ namespace SunFileManager.GUI.Input
     public partial class frmCanvasInputBox : Form
     {
         private string nameResult = null, defaultText = null;
-        private Image image;
+        private Image canvas;
         private List<Bitmap> bitmapResult = new List<Bitmap>(); // List for ability to accommodate a gif's frames.
         private bool gifListResult = false; // Bool for whether or not the submission is a gif
         private static frmCanvasInputBox form = null;
@@ -46,10 +46,10 @@ namespace SunFileManager.GUI.Input
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            if (image != null)
+            if (canvas != null)
             {
-                image.Dispose();
-                image = null;
+                canvas.Dispose();
+                canvas = null;
                 panning_PictureBox.Canvas.Dispose();
                 panning_PictureBox.Canvas = null;
                 panning_PictureBox.Dispose();
@@ -99,7 +99,7 @@ namespace SunFileManager.GUI.Input
             {
                 bitmapResult.Clear();
                 string path = txtCanvasPath.Text;
-                image = Image.FromFile(path);
+                canvas = Image.FromFile(path);
                 Text += " (" + Path.GetFileName(path) + ")";
 
                 //  Capitalizes the first letter of the image/gif name when automatically deriving it from the original filename.
@@ -112,19 +112,19 @@ namespace SunFileManager.GUI.Input
 
                 //  Reveal labels.
                 lbltxtDimensions.Visible = true;
-                lblCanvasDimensions.Text = image.Width.ToString() + " x " + image.Height.ToString();
+                lblCanvasDimensions.Text = canvas.Width.ToString() + " x " + canvas.Height.ToString();
                 lbltxtSize.Visible = true;
                 lblCanvasSize.Text = GetFileSizeString(new FileInfo(path).Length);
                 lbltxtType.Visible = true;
                 lblCanvasType.Text = Path.GetExtension(path);
 
-                //  Display picturebox, resize it, and display the image.
+                //  Display picturebox, resize it, and display the canvas.
                 panning_PictureBox.Visible = true;
-                if ((image.Width > form.MaximumSize.Width) && (image.Height > form.MaximumSize.Height))
+                if ((canvas.Width > form.MaximumSize.Width) && (canvas.Height > form.MaximumSize.Height))
                     panning_PictureBox.Size = panning_PictureBox.MaximumSize;
-                else panning_PictureBox.Size = image.Size;
+                else panning_PictureBox.Size = canvas.Size;
                 form.Size = form.PreferredSize;
-                panning_PictureBox.Canvas = image;
+                panning_PictureBox.Canvas = canvas;
 
                 //CenterFormOnImageChange();
                 CenterToScreen();
@@ -140,7 +140,7 @@ namespace SunFileManager.GUI.Input
                 }
                 else
                 {
-                    bitmapResult.Add((Bitmap)image);
+                    bitmapResult.Add((Bitmap)canvas);
                 }
             }
             catch (Exception ex)

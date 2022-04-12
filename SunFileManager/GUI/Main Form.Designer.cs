@@ -57,10 +57,13 @@
             // 
             this.sunTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.sunTreeView.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sunTreeView.HotTracking = true;
             this.sunTreeView.Location = new System.Drawing.Point(13, 27);
             this.sunTreeView.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.sunTreeView.MinimumSize = new System.Drawing.Size(255, 175);
             this.sunTreeView.Name = "sunTreeView";
+            this.sunTreeView.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.sunTreeView.Size = new System.Drawing.Size(255, 414);
             this.sunTreeView.TabIndex = 0;
             this.sunTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.sunTreeView_AfterSelect);
@@ -245,8 +248,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mainfrm_panning_PictureBox.BackColor = System.Drawing.Color.Transparent;
             this.mainfrm_panning_PictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.mainfrm_panning_PictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
             this.mainfrm_panning_PictureBox.Canvas = null;
+            this.mainfrm_panning_PictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
             this.mainfrm_panning_PictureBox.Location = new System.Drawing.Point(277, 101);
             this.mainfrm_panning_PictureBox.Name = "mainfrm_panning_PictureBox";
             this.mainfrm_panning_PictureBox.Size = new System.Drawing.Size(315, 378);

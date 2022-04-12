@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.IO;
 
 namespace SunFileManager.SunFileLib.Util
 {
@@ -9,12 +10,15 @@ namespace SunFileManager.SunFileLib.Util
     {
         #region Properties
         public SunHeader Header { get; set; }
+
+        public Hashtable StringCache { get; set; }
         #endregion Properties
 
         #region Constructors
 
         public SunBinaryWriter(Stream output) : base(output)
         {
+            StringCache = new Hashtable();
         }
 
         #endregion Constructors

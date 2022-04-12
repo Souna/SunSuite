@@ -209,7 +209,7 @@ namespace SunFileManager.SunFileLib.Structure
             {
                 this.parseEverything = parseEverything;
                 long originalPos = reader.BaseStream.Position;
-                reader.BaseStream.Position = offset;
+                reader.BaseStream.Position = offset + 1;
 
                 List<SunProperty> props = SunProperty.ParsePropertyList(offset, reader, this, this);
                 properties.AddRange(props);

@@ -75,8 +75,8 @@ namespace SunFileManager.SunFileLib.Properties
                 foreach (SunProperty p in properties)
                     if (p.Name.ToLower() == name.ToLower())
                         return p;
-                throw new KeyNotFoundException("A SunProperty with the specified name was not found: " + name);
-                //return null;
+                //throw new KeyNotFoundException("A SunProperty with the specified name was not found: " + name);
+                return null;
             }
             set
             {
