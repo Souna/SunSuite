@@ -51,7 +51,6 @@ namespace SunFileManager.GUI
             Close();
         }
 
-
         private void txtNameInput_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)

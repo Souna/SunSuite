@@ -51,7 +51,6 @@ namespace SunFileManager.GUI.Input.Forms
             Close();
         }
 
-
         private void txtNameInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -75,7 +74,6 @@ namespace SunFileManager.GUI.Input.Forms
                 btnOk_Click(null, null);
             }
         }
-
 
         private void frmVectorInputBox_KeyUp(object sender, KeyEventArgs e)
         {

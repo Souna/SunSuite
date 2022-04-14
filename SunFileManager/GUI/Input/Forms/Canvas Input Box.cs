@@ -211,7 +211,6 @@ namespace SunFileManager.GUI.Input
             }
         }
 
-
         private void txtCanvasPath_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)

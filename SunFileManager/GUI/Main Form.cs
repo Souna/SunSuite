@@ -1,15 +1,15 @@
-﻿using SunFileManager.GUI;
-using SunFileManager.GUI.Input;
-using SunFileManager.GUI.Input.Forms;
-using SunFileManager.SunFileLib;
-using SunFileManager.SunFileLib.Properties;
-using SunFileManager.SunFileLib.Structure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Threading;
+using SunFileManager.GUI;
+using SunFileManager.GUI.Input;
+using SunFileManager.GUI.Input.Forms;
+using SunFileManager.SunFileLib;
+using SunFileManager.SunFileLib.Properties;
+using SunFileManager.SunFileLib.Structure;
 
 namespace SunFileManager
 {
@@ -164,6 +164,7 @@ namespace SunFileManager
                 selectedNode.Expand();
             }
         }
+
         #endregion Loading, Unloading & Saving
 
         #region Treeview Node Manipulation
@@ -180,9 +181,11 @@ namespace SunFileManager
                 case SunObjectType.File:
                     namestring = "Rename File";
                     break;
+
                 case SunObjectType.Image:
                     namestring = "Rename Image";
                     break;
+
                 case SunObjectType.Directory:
                     namestring = "Rename Directory";
                     break;
@@ -285,7 +288,6 @@ namespace SunFileManager
             }
 
             ((SunNode)targetNode).AddObject(new SunSubProperty(subPropName));
-
         }
 
         /// <summary>
@@ -673,8 +675,8 @@ namespace SunFileManager
             MessageBox.Show(
                 "(s)byte  ->" + sizeof(byte) + " byte" + Environment.NewLine +
                 "(u)short ->" + sizeof(short) + " bytes" + Environment.NewLine +
-                  "(u)int ->" + sizeof(int) + " bytes" + Environment.NewLine +
-                 "(u)long ->" + sizeof(long) + " bytes");
+                    "(u)int ->" + sizeof(int) + " bytes" + Environment.NewLine +
+                "(u)long ->" + sizeof(long) + " bytes");
         }
 
         private void btnCreateMapSun_Click(object sender, EventArgs e)
@@ -689,19 +691,6 @@ namespace SunFileManager
             AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name], "Back");
             AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "Test");
             AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode, "still");
-
-            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name], "Map");
-            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "Map1");
-            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode, "1");
-            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode, "background");
-            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode, "0");
-            //AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "animated", 0);
-            //AddStringPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "Set", "Test");
-            //AddShortPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "short", 32767);
-            //AddLongPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "long", 9223372036854775807);
-            //AddFloatPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "float", 1.23456f);
-            //AddDoublePropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "double", 2.34567890123456);
-            //AddVectorPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode.LastNode.LastNode.LastNode, "vector", new Point(543, 210));
         }
 
         private void btnQuickImageInt_Click(object sender, EventArgs e)
@@ -716,12 +705,7 @@ namespace SunFileManager
             AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "image1");
             AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode, "int1", 543);
             AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "image2");
-            AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "image3");
-            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "directory2");
-            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode, "directory3");
-            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name], "directory4");
-            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "directory5");
-            //AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name], "directory6");
+            AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "image3");//
         }
 
         #endregion Temporary
