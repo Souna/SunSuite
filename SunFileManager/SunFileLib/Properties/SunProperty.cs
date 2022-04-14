@@ -100,6 +100,9 @@ namespace SunFileManager.SunFileLib.Properties
                         reader.BaseStream.Position += 5;    // To skip to Gif_Bool  
                         properties.Add(new SunCanvasProperty(name, parent, reader.ReadBoolean()));
                         break;
+                    // Extended
+                    //case 9:
+                    //    properties.Add(new SunVectorProperty(name, ))
                     default:
                         throw new Exception("Unknown property type at ParsePropertyList, Type = " + propertyType);
                 }
