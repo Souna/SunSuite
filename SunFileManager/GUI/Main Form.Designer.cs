@@ -39,7 +39,6 @@
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sunDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnSizeOf = new System.Windows.Forms.Button();
             this.btnCreateMapSun = new System.Windows.Forms.Button();
             this.lblSelectedNodeType = new System.Windows.Forms.Label();
             this.cmsNodes = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -135,18 +134,6 @@
             this.sunDirectoryToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.sunDirectoryToolStripMenuItem.Text = "SunDirectory";
             this.sunDirectoryToolStripMenuItem.Click += new System.EventHandler(this.sunDirectoryToolStripMenuItem_Click);
-            // 
-            // btnSizeOf
-            // 
-            this.btnSizeOf.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSizeOf.Location = new System.Drawing.Point(125, 465);
-            this.btnSizeOf.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnSizeOf.Name = "btnSizeOf";
-            this.btnSizeOf.Size = new System.Drawing.Size(27, 21);
-            this.btnSizeOf.TabIndex = 2;
-            this.btnSizeOf.Text = "ts";
-            this.btnSizeOf.UseVisualStyleBackColor = true;
-            this.btnSizeOf.Click += new System.EventHandler(this.btnSizeOf_Click);
             // 
             // btnCreateMapSun
             // 
@@ -269,7 +256,6 @@
             this.Controls.Add(this.txtPropertyValue);
             this.Controls.Add(this.lblSelectedNodeType);
             this.Controls.Add(this.btnCreateMapSun);
-            this.Controls.Add(this.btnSizeOf);
             this.Controls.Add(this.sunTreeView);
             this.Controls.Add(this.menuStripMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -297,7 +283,6 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sunDirectoryToolStripMenuItem;
-        private System.Windows.Forms.Button btnSizeOf;
         private System.Windows.Forms.Button btnCreateMapSun;
         private System.Windows.Forms.Label lblSelectedNodeType;
         private System.Windows.Forms.ContextMenuStrip cmsNodes;

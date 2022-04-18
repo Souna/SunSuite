@@ -1,9 +1,9 @@
-﻿using SunFileManager.Comparer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Threading;
+using SunFileManager.Comparer;
 
 namespace SunFileManager.SunFileLib
 {
@@ -119,8 +119,6 @@ namespace SunFileManager.SunFileLib
             SunFile loadedSunFile = LoadSunFile(sfd.FileName);
             if (loadedSunFile != null)
                 AddLoadedSunFileToTreeView(loadedSunFile, Dispatcher.CurrentDispatcher);
-
-
         }
 
         public void UnloadSunFile(SunFile file)
@@ -154,7 +152,7 @@ namespace SunFileManager.SunFileLib
             SunFile loadedSunFile = LoadSunFile(path);
 
             if (loadedSunFile != null)
-                mainform.manager.AddLoadedSunFileToTreeView(file, currentDispatcher);
+                mainform.manager.AddLoadedSunFileToTreeView(loadedSunFile, currentDispatcher);
         }
 
         public void SortNodesRecursively(SunNode parent)

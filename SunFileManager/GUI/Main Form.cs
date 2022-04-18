@@ -215,7 +215,9 @@ namespace SunFileManager
         /// </summary>
         public void AddSunDirectoryToSelectedNode(TreeNode selectedNode, string name)
         {
+            bool added = false;
             if (selectedNode == null) return;
+            SunObject obj = (SunObject)selectedNode.Tag;
 
             if (!(selectedNode.Tag is SunDirectory) && !(selectedNode.Tag is SunFile))
             {
@@ -230,15 +232,16 @@ namespace SunFileManager
                     return;
             }
 
-            bool added = false;
-
-            SunObject obj = (SunObject)selectedNode.Tag;
-
             if (obj is SunFile sunFileParent) // Selected parent node.
             {
-                // Because the parent node is a SunFile,
-                // we use the master directory as the parent for this new directory.
+                if (sunFileParent.SunDirectory == null)
+                    sunFileParent.SunDirectory = new SunDirectory(sunFileParent.Name, sunFileParent);   // If master sundirectory is null make a new one
                 ((SunNode)selectedNode).AddObject(new SunDirectory(dirName, sunFileParent.SunDirectory));
+                added = true;
+            }
+            else if (obj is SunDirectory sunDirectoryParent)
+            {
+                ((SunNode)selectedNode).AddObject(new SunDirectory(dirName, sunDirectoryParent));
                 added = true;
             }
             if (!added)
@@ -667,18 +670,6 @@ namespace SunFileManager
 
         #region Temporary
 
-        /// <summary>
-        /// Shows byte size of data types because i forget
-        /// </summary>
-        private void btnSizeOf_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(
-                "(s)byte  ->" + sizeof(byte) + " byte" + Environment.NewLine +
-                "(u)short ->" + sizeof(short) + " bytes" + Environment.NewLine +
-                    "(u)int ->" + sizeof(int) + " bytes" + Environment.NewLine +
-                "(u)long ->" + sizeof(long) + " bytes");
-        }
-
         private void btnCreateMapSun_Click(object sender, EventArgs e)
         {
             sunTreeView.Focus();
@@ -703,9 +694,6 @@ namespace SunFileManager
 
             AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name], "directory1");
             AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "image1");
-            AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode, "int1", 543);
-            AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "image2");
-            AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "image3");//
         }
 
         #endregion Temporary
