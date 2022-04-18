@@ -1,8 +1,8 @@
-﻿using SunFileManager.SunFileLib.Util;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
+using SunFileManager.SunFileLib.Util;
 
 namespace SunFileManager.SunFileLib.Properties
 {
@@ -18,11 +18,9 @@ namespace SunFileManager.SunFileLib.Properties
         private List<SunProperty> sunPropertyList = new List<SunProperty>();
         private List<SunCanvasProperty> frameList = new List<SunCanvasProperty>();
         private SunObject parent;
-        private int width, height;
         private byte[] compressedBytes;
         private Bitmap png;
         private long offset;
-        private bool isGif;
         private SunBinaryReader sunReader;
 
         // Different Zlib header values. Little-endian.
@@ -64,7 +62,8 @@ namespace SunFileManager.SunFileLib.Properties
         /// Returns the type of the Property
         /// <br>Image = 8</br>
         /// </summary>
-        public override SunPropertyType PropertyType { get { return SunPropertyType.Canvas; } }
+        public override SunPropertyType PropertyType
+        { get { return SunPropertyType.Canvas; } }
 
         /// <summary>
         /// Sets the value of the image property.
@@ -216,23 +215,27 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// Returns the name of this SunCanvasProperty.
         /// </summary>
-        public override string Name { get { return name; } set { name = value; } }
+        public override string Name
+        { get { return name; } set { name = value; } }
 
         /// <summary>
         /// Returns the parent object containing this canvas.
         /// </summary>
-        public override SunObject Parent { get { return parent; } set { parent = value; } }
+        public override SunObject Parent
+        { get { return parent; } set { parent = value; } }
 
         /// <summary>
         /// Returns the byte-value type of a canvas (3).
         /// Deprecated.
         /// </summary>
-        public override SunObjectType ObjectType { get { return SunObjectType.Property; } }
+        public override SunObjectType ObjectType
+        { get { return SunObjectType.Property; } }
 
         /// <summary>
         /// Returns the SunFile this canvas is a part of.
         /// </summary>
-        public override SunFile SunFileParent { get { return Parent.SunFileParent; } }
+        public override SunFile SunFileParent
+        { get { return Parent.SunFileParent; } }
 
         #endregion SunObject
 
@@ -280,7 +283,8 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// The list of properties belonging to this canvas.
         /// </summary>
-        public List<SunProperty> SunProperties { get { return sunPropertyList; } }
+        public List<SunProperty> SunProperties
+        { get { return sunPropertyList; } }
 
         #endregion IPropertyContainer
 
@@ -303,7 +307,8 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// Creates a blank canvas property.
         /// </summary>
-        public SunCanvasProperty() { }
+        public SunCanvasProperty()
+        { }
 
         /// <summary>
         /// Creates a SunCanvasProperty with a specified name and parent.
@@ -318,17 +323,18 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// List of gif frames.
         /// </summary>
-        public List<SunCanvasProperty> Frames { get { return frameList; } }
+        public List<SunCanvasProperty> Frames
+        { get { return frameList; } }
 
         /// <summary>
         /// The bitmap width.
         /// </summary>
-        public int Width { get { return width; } set { width = value; } }
+        public int Width { get; set; }
 
         /// <summary>
         /// The bitmap height.
         /// </summary>
-        public int Height { get { return height; } set { height = value; } }
+        public int Height { get; set; }
 
         /// <summary>
         /// The actual bitmap or gif.
@@ -342,8 +348,8 @@ namespace SunFileManager.SunFileLib.Properties
             set
             {
                 png = value;
-                width = value.Width;
-                height = value.Height;
+                Width = value.Width;
+                Height = value.Height;
                 CompressPNG(value);
             }
         }
@@ -354,11 +360,7 @@ namespace SunFileManager.SunFileLib.Properties
             CompressPNG(png);
         }
 
-        public bool IsGif
-        {
-            get { return isGif; }
-            set { isGif = value; }
-        }
+        public bool IsGif { get; set; }
 
         public void CompressPNG(Bitmap bmp)
         {
@@ -366,8 +368,8 @@ namespace SunFileManager.SunFileLib.Properties
             byte[] buffer = new byte[bmp.Width * bmp.Height * 8];   // 8 for 8 bits per channel?
 
             int position = 0;
-            for (int i = 0; i < height; i++)
-                for (int j = 0; j < width; j++)
+            for (int i = 0; i < Height; i++)
+                for (int j = 0; j < Width; j++)
                 {
                     Color currentPixel = bmp.GetPixel(j, i);
                     buffer[position] = currentPixel.B;

@@ -1,9 +1,9 @@
-﻿using SunFileManager.GUI;
+﻿using System;
+using System.Windows.Forms;
+using SunFileManager.GUI;
 using SunFileManager.Properties;
 using SunFileManager.SunFileLib.Properties;
 using SunFileManager.SunFileLib.Structure;
-using System;
-using System.Windows.Forms;
 
 namespace SunFileManager.SunFileLib
 {
@@ -288,7 +288,7 @@ namespace SunFileManager.SunFileLib
                     PopupMenu.Items.Add(Save);
                     PopupMenu.Items.Add(Unload);
                     PopupMenu.Items.Add(Reload);
-                    if (fileNode.SunDirectory.SubDirectories.Count > 0)
+                    if (fileNode.SunDirectory != null && fileNode.SunDirectory.SubDirectories.Count > 0)
                     {
                         PopupMenu.Items.Add(Expand);
                         PopupMenu.Items.Add(Collapse);
@@ -299,6 +299,7 @@ namespace SunFileManager.SunFileLib
                 else if (node.Tag is SunDirectory)
                 {
                     //  Populate "Add" menu.
+                    AddSubMenu.DropDownItems.Add(AddSunDirectory);
                     AddSubMenu.DropDownItems.Add(AddSunImage);
 
                     PopupMenu.Items.Add(AddSubMenu);

@@ -1,7 +1,7 @@
-﻿using SunFileManager.SunFileLib.Structure;
-using SunFileManager.SunFileLib.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using SunFileManager.SunFileLib.Structure;
+using SunFileManager.SunFileLib.Util;
 
 namespace SunFileManager.SunFileLib.Properties
 {
@@ -12,7 +12,8 @@ namespace SunFileManager.SunFileLib.Properties
     {
         #region Members
 
-        public virtual new SunProperty this[string name] { get { return null; } set { } }
+        public virtual new SunProperty this[string name]
+        { get { return null; } set { } }
 
         public abstract SunPropertyType PropertyType { get; }
 
@@ -45,12 +46,14 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// Returns the byte-value type of the SunProperty.
         /// </summary>
-        public override SunObjectType ObjectType { get { return SunObjectType.Property; } }
+        public override SunObjectType ObjectType
+        { get { return SunObjectType.Property; } }
 
         /// <summary>
         /// Returns the SunFile this property is a part of.
         /// </summary>
-        public override SunFile SunFileParent { get { return ParentDirectory.SunFileParent; } }
+        public override SunFile SunFileParent
+        { get { return ParentDirectory.SunFileParent; } }
 
         /// <summary>
         /// Removes the property from its parent in the file structure.
@@ -77,32 +80,43 @@ namespace SunFileManager.SunFileLib.Properties
                     case 0:
                         properties.Add(new SunNullProperty(name) { Parent = parent });
                         break;
+
                     case 2:
                         properties.Add(new SunShortProperty(name, reader.ReadInt16()) { Parent = parent });
                         break;
+
                     case 3:
                         properties.Add(new SunIntProperty(name, reader.ReadCompressedInt()) { Parent = parent });
                         break;
+
                     case 4:
                         properties.Add(new SunLongProperty(name, reader.ReadLong()) { Parent = parent });   // Max value is int only?
                         break;
+
                     case 5:
                         properties.Add(new SunFloatProperty(name, reader.ReadSingle()) { Parent = parent });
                         break;
+
                     case 6:
                         properties.Add(new SunDoubleProperty(name, reader.ReadDouble()) { Parent = parent });
                         break;
+
                     case 7:
-                        properties.Add(new SunStringProperty(name, reader.ReadString()){ Parent = parent });
-                        //properties.Add(new SunStringProperty(name, reader.ReadStringBlock(offset)) { Parent = parent });
+                        properties.Add(new SunStringProperty(name, reader.ReadString()) { Parent = parent });
                         break;
+
                     case 8:
-                        reader.BaseStream.Position += 5;    // To skip to Gif_Bool  
+                        reader.BaseStream.Position += 5;    // To skip to Gif_Bool
                         properties.Add(new SunCanvasProperty(name, parent, reader.ReadBoolean()));
                         break;
                     // Extended
-                    //case 9:
-                    //    properties.Add(new SunVectorProperty(name, ))
+                    case 9:
+                        SunVectorProperty vectorProperty = new SunVectorProperty(name) { Parent = parent };
+                        vectorProperty.X = new SunIntProperty("X", reader.ReadCompressedInt()) { Parent = vectorProperty };
+                        vectorProperty.Y = new SunIntProperty("Y", reader.ReadCompressedInt()) { Parent = vectorProperty };
+                        properties.Add(vectorProperty);
+                        break;
+
                     default:
                         throw new Exception("Unknown property type at ParsePropertyList, Type = " + propertyType);
                 }
@@ -112,10 +126,9 @@ namespace SunFileManager.SunFileLib.Properties
 
         public static void WritePropertyList(SunBinaryWriter writer, List<SunProperty> properties)
         {
-            //if (properties.Count == 0) return;
             writer.Write((byte)SunObjectType.Property);
             writer.WriteCompressedInt(properties.Count);
-            for(int i = 0; i < properties.Count; i++)
+            for (int i = 0; i < properties.Count; i++)
             {
                 properties[i].WriteValue(writer);
             }
@@ -128,12 +141,13 @@ namespace SunFileManager.SunFileLib.Properties
                 SunObject parent = Parent;
                 while (parent != null)
                 {
-                    if (parent is SunImage) return (SunImage)parent;
+                    if (parent is SunImage image) return image;
                     else parent = parent.Parent;
                 }
                 return null;
             }
         }
+
         #endregion Custom Members
     }
 }

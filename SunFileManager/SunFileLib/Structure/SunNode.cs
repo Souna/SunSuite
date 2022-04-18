@@ -1,8 +1,8 @@
-﻿using SunFileManager.SunFileLib.Properties;
-using SunFileManager.SunFileLib.Structure;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using SunFileManager.SunFileLib.Properties;
+using SunFileManager.SunFileLib.Structure;
 
 namespace SunFileManager.SunFileLib
 {
@@ -15,6 +15,7 @@ namespace SunFileManager.SunFileLib
     {
         private bool isSunObjectAddedManually = false;
         public static Color NewObjectForeColor = Color.Red;
+
         public SunNode(SunObject sourceObject, bool isSunObjectAddedManually = false) : base(sourceObject.Name)
         {
             Name = sourceObject.Name;
@@ -60,7 +61,6 @@ namespace SunFileManager.SunFileLib
                     }
                 }
             }
-
             else if (sourceObject is IPropertyContainer container)
             {
                 foreach (SunProperty prop in container.SunProperties)
@@ -74,13 +74,11 @@ namespace SunFileManager.SunFileLib
 
         private void TryParseImage(bool reparseImage = true)
         {
-            if (Tag is SunImage)
+            if (Tag is SunImage image)
             {
-                ((SunImage)Tag).ParseImage();
+                image.ParseImage();
                 if (reparseImage)
-                {
                     Reparse();
-                }
             }
         }
 
@@ -98,7 +96,8 @@ namespace SunFileManager.SunFileLib
             //  Original HaRepacker tries to parse the wzimage before adding object.
             if (CanNodeBeInserted(this, newObject.Name))
             {
-                TryParseImage();
+                if (Tag is SunImage)
+                    TryParseImage();
                 if (AddObjectInternal(newObject))
                 {
                     SunNode node = new SunNode(newObject, true);
@@ -143,13 +142,13 @@ namespace SunFileManager.SunFileLib
             if (selectedObject is SunFile file) selectedObject = file.SunDirectory;
             if (selectedObject is SunDirectory directory)
             {
-                if (newObject is SunDirectory)
+                if (newObject is SunDirectory newDir)
                 {
-                    directory.AddDirectory((SunDirectory)newObject);
+                    directory.AddDirectory(newDir);
                 }
-                else if (newObject is SunImage)
+                else if (newObject is SunImage image)
                 {
-                    directory.AddImage((SunImage)newObject);
+                    directory.AddImage(image);
                 }
                 else
                 {
@@ -159,9 +158,9 @@ namespace SunFileManager.SunFileLib
             else if (selectedObject is SunImage image)
             {
                 if (!image.Parsed) image.ParseImage();
-                if (newObject is SunProperty)
+                if (newObject is SunProperty newProp)
                 {
-                    image.AddProperty((SunProperty)newObject);
+                    image.AddProperty(newProp);
                     image.Changed = true;
                 }
                 else
@@ -171,9 +170,9 @@ namespace SunFileManager.SunFileLib
             }
             else if (selectedObject is IPropertyContainer propertyContainer)
             {
-                if (newObject is SunProperty)
+                if (newObject is SunProperty newProp)
                 {
-                    propertyContainer.AddProperty((SunProperty)newObject);
+                    propertyContainer.AddProperty(newProp);
                     if (selectedObject is SunProperty prop)
                     {
                         prop.ParentImage.Changed = true;
@@ -281,13 +280,13 @@ namespace SunFileManager.SunFileLib
             {
                 Remove(); //Delete from Tree.
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                throw new Exception("Error occured at DeleteNode()");
+                throw new Exception(message: "Error occured at DeleteNode()");
             }
-            if (Tag is SunProperty)
+            if (Tag is SunProperty prop)
             {
-                ((SunProperty)Tag).ParentImage.Changed = true;
+                prop.ParentImage.Changed = true;
             }
             ((SunObject)Tag).Remove();
         }
@@ -298,14 +297,28 @@ namespace SunFileManager.SunFileLib
         public void Rename(string newName)
         {
             if (Tag is SunFile file)
+            {
                 if (!newName.EndsWith(".sun"))
+                {
                     newName += ".sun";
+                }
+            }
+
             if (Tag is SunImage img)
+            {
                 if (!newName.EndsWith(".img"))
                     newName += ".img";
+                img.Changed = true;
+            }
+
             Text = newName; // The displayed name.
 
             ((SunObject)Tag).Name = newName;    // Change internal name.
+
+            if (Tag is SunProperty prop)
+            {
+                prop.ParentImage.Changed = true;
+            }
         }
 
         /// <summary>
@@ -326,23 +339,23 @@ namespace SunFileManager.SunFileLib
         {   // Using a getter to create something new feels disgusting
             get
             {
-                foreach (SunNode node in Nodes)
-                    if (node.Name.ToLower() == name.ToLower())
-                        return null;
-                // wtf. flesh this out later
-                switch (type)
-                {
-                    case SunObjectType.Directory:
-                        return AddObject(new SunDirectory(name, (SunDirectory)Tag));
+                //foreach (SunNode node in Nodes)
+                //    if (node.Name.ToLower() == name.ToLower())
+                //        return null;
+                //// wtf. flesh this out later
+                //switch (type)
+                //{
+                //    case SunObjectType.Directory:
+                //        return AddObject(new SunDirectory(name, (SunDirectory)Tag));
 
-                    case SunObjectType.File:
-                        break;
+                //    case SunObjectType.File:
+                //        break;
 
-                    case SunObjectType.Property:
-                        break;
+                //    case SunObjectType.Property:
+                //        break;
 
-                    default: break;
-                }
+                //    default: break;
+                //}
                 return null;
             }
         }

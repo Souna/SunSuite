@@ -1,9 +1,9 @@
-﻿using SunFileManager.SunFileLib.Structure;
-using SunFileManager.SunFileLib.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using SunFileManager.SunFileLib.Structure;
+using SunFileManager.SunFileLib.Util;
 
 namespace SunFileManager.SunFileLib
 {
@@ -56,7 +56,8 @@ namespace SunFileManager.SunFileLib
         /// <summary>
         /// Returns the byte-value type of the SunFile.
         /// </summary>
-        public override SunObjectType ObjectType { get { return SunObjectType.File; } }
+        public override SunObjectType ObjectType
+        { get { return SunObjectType.File; } }
 
         public override void Remove()
         {
@@ -99,16 +100,17 @@ namespace SunFileManager.SunFileLib
 
         #endregion Inherited Members
 
-
         /// <summary>
         /// Returns the file header preceding the SunFile data.
         /// </summary>
-        public SunHeader Header { get { return header; } set { header = value; } }
+        public SunHeader Header
+        { get { return header; } set { header = value; } }
 
         /// <summary>
         /// Returns the "master" SunDirectory which contains all subsequent directories and their properties.
         /// </summary>
-        public SunDirectory SunDirectory { get { return sunDir; } set { sunDir = value; } }
+        public SunDirectory SunDirectory
+        { get { return sunDir; } set { sunDir = value; } }
 
         public SunFile()
         {
@@ -154,7 +156,6 @@ namespace SunFileManager.SunFileLib
             File.Create(tempFile).Close();
 
             sunDir.GenerateFileInfo(tempFile);
-            // this +2 is most likely to go over version short in wz files, we don't need it here.
             uint totalLength = sunDir.GetImgOffsets(sunDir.GetOffsets(Header.FileStart));
             Header.FileSize = totalLength - Header.FileStart;
 
@@ -196,40 +197,6 @@ namespace SunFileManager.SunFileLib
             {
                 MessageBox.Show(e.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
-            //uint totalLength = sunDir.GetOffsets(Header.FileStart + 2);
-            //Header.FileSize = totalLength - Header.FileStart;
-
-            //try
-            //{
-            //    SunBinaryWriter sunWriter = new SunBinaryWriter(File.Create(path));
-
-            //    for (int i = 0; i < Header.Identifier.Length; i++)
-            //        sunWriter.Write((byte)Header.Identifier[i]);
-            //    for (int i = 0; i < Header.Ascii.Length; i++)
-            //        sunWriter.Write((byte)Header.Ascii[i]);
-            //    sunWriter.Write(Header.FileSize);
-            //    sunWriter.Write(Header.FileStart);
-            //    sunWriter.WriteNullTerminatedString(Header.Copyright);
-
-            //    sunDir.SaveDirectory(sunWriter);
-
-            //    using (FileStream fileStream = File.OpenRead(tempFile))
-            //    {
-            //        sunDir.SaveDirectoryContents(sunWriter, fileStream);
-            //        fileStream.Close();
-            //    }
-
-            //    File.Delete(tempFile);
-            //    sunWriter.Close();
-            //}
-            //catch (Exception e)
-            //{
-            //    MessageBox.Show(e.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
-            //GC.Collect();
-            //GC.WaitForPendingFinalizers();
         }
 
         /// <summary>
