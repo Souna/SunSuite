@@ -1,10 +1,10 @@
-﻿using SunFileManager.SunFileLib.Properties;
-using SunFileManager.SunFileLib.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SunFileManager.SunFileLib.Properties;
+using SunFileManager.SunFileLib.Util;
 
 namespace SunFileManager.SunFileLib.Structure
 {
@@ -59,28 +59,31 @@ namespace SunFileManager.SunFileLib.Structure
         /// <summary>
         /// The name of the SunImage.
         /// </summary>
-        public override string Name { get { return name; } set { name = value; } }
+        public override string Name
+        { get { return name; } set { name = value; } }
 
         /// <summary>
         /// Returns the parent object of this .img.
         /// </summary>
-        public override SunObject Parent { get { return parent; } set { parent = value; } }
+        public override SunObject Parent
+        { get { return parent; } set { parent = value; } }
 
         /// <summary>
         /// Returns the SunFile this .img belongs to.
         /// </summary>
-        public override SunFile SunFileParent { get { return parent.SunFileParent; } }
+        public override SunFile SunFileParent
+        { get { return parent.SunFileParent; } }
 
         /// <summary>
         /// Returns the byte-value type of the SunImage.
         /// </summary>
-        public override SunObjectType ObjectType 
-        { 
+        public override SunObjectType ObjectType
+        {
             get
             {
                 if (reader != null && !parsed) ParseImage();
-                return SunObjectType.Image; 
-            } 
+                return SunObjectType.Image;
+            }
         }
 
         /// <summary>
@@ -108,7 +111,7 @@ namespace SunFileManager.SunFileLib.Structure
 
         public void AddProperties(List<SunProperty> props)
         {
-            foreach(SunProperty prop in props)
+            foreach (SunProperty prop in props)
             {
                 AddProperty(prop);
             }
@@ -156,7 +159,7 @@ namespace SunFileManager.SunFileLib.Structure
             }
         }
 
-        #endregion
+        #endregion IPropertyContainer
 
         #endregion Inherited Members
 
@@ -178,18 +181,22 @@ namespace SunFileManager.SunFileLib.Structure
             this.blockStart = (int)reader.BaseStream.Position;
         }
 
-        public bool Parsed { get { return parsed; } set { parsed = value; } }
+        public bool Parsed
+        { get { return parsed; } set { parsed = value; } }
 
-        public bool Changed { get { return changed; } set { changed = value; } }
+        public bool Changed
+        { get { return changed; } set { changed = value; } }
 
-        public int Size {  get { return size; } set { size = value; } }
+        public int Size
+        { get { return size; } set { size = value; } }
 
-        public int Checksum {  get { return checksum; } set { checksum = value; } }
+        public int Checksum
+        { get { return checksum; } set { checksum = value; } }
 
-        public uint Offset { get { return offset; } set { offset = value; } }
+        public uint Offset
+        { get { return offset; } set { offset = value; } }
 
         #endregion Custom Members
-
 
         #region Parsing Methods
 
@@ -205,7 +212,7 @@ namespace SunFileManager.SunFileLib.Structure
                 return true;
             }
 
-            lock (reader) // for multi threaded XMLWZ export. 
+            lock (reader) // for multi threaded XMLWZ export.
             {
                 this.parseEverything = parseEverything;
                 long originalPos = reader.BaseStream.Position;
@@ -237,7 +244,8 @@ namespace SunFileManager.SunFileLib.Structure
                 SunSubProperty imgProp = new SunSubProperty();
                 long startPosition = writer.BaseStream.Position;
                 imgProp.AddProperties(SunProperties);
-                imgProp.WriteValue(writer);
+                //imgProp.WritePropertyList(writer);
+                imgProp.WriteValue(writer, true);
                 Size = (int)(writer.BaseStream.Position - startPosition);
             }
             else
@@ -250,6 +258,5 @@ namespace SunFileManager.SunFileLib.Structure
         }
 
         #endregion Parsing Methods
-
     }
 }

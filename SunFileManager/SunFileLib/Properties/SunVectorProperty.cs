@@ -43,7 +43,7 @@ namespace SunFileManager.SunFileLib.Properties
 
         public override void WriteValue(SunBinaryWriter writer)
         {
-            writer.Write(Name);
+            //writer.Write(Name);
             writer.Write((byte)SunPropertyType.Vector);
             writer.WriteCompressedInt(X.Value);
             writer.WriteCompressedInt(Y.Value);

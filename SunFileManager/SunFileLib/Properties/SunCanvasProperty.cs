@@ -77,7 +77,7 @@ namespace SunFileManager.SunFileLib.Properties
         {
             byte[] canvasBytes = new byte[0];
 
-            writer.Write(Name);
+            //writer.Write(Name);
             writer.Write((byte)SunPropertyType.Canvas);
 
             // Writing size. If gif, size = 0.

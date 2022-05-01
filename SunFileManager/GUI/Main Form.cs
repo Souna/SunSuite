@@ -235,7 +235,7 @@ namespace SunFileManager
             if (obj is SunFile sunFileParent) // Selected parent node.
             {
                 if (sunFileParent.SunDirectory == null)
-                    sunFileParent.SunDirectory = new SunDirectory(sunFileParent.Name, sunFileParent);   // If master sundirectory is null make a new one
+                    CreateMasterDirectory(sunFileParent);
                 ((SunNode)selectedNode).AddObject(new SunDirectory(dirName, sunFileParent.SunDirectory));
                 added = true;
             }
@@ -270,7 +270,18 @@ namespace SunFileManager
             if (!imgName.EndsWith(".img"))
                 imgName += ".img";
 
+            if ((SunObject)targetNode.Tag is SunFile sunFileParent)
+            {
+                if (sunFileParent.SunDirectory == null)
+                    CreateMasterDirectory(sunFileParent);
+            }
+
             ((SunNode)targetNode).AddObject(new SunImage(imgName) { Changed = true });
+        }
+
+        public void CreateMasterDirectory(SunFile file)
+        {
+            file.SunDirectory = new SunDirectory(file.Name, file);
         }
 
         public void AddSubPropertyToSelectedNode(TreeNode targetNode, string name)
@@ -480,7 +491,16 @@ namespace SunFileManager
 
         #endregion Adding Directories & Properties
 
-        #region Treeview Click Events
+        #region Treeview Input Events
+
+        private void sunTreeView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Right)
+            {
+                if (sunTreeView.SelectedNode != null && sunTreeView.SelectedNode.Tag is SunImage)
+                    ParseOnTreeViewSelectedItem((SunNode)sunTreeView.SelectedNode);
+            }
+        }
 
         private void sunTreeView_DoubleClick(object sender, EventArgs e)
         {
@@ -666,7 +686,7 @@ namespace SunFileManager
             else AnimateGifs = false;
         }
 
-        #endregion Treeview Click Events
+        #endregion Treeview Input Events
 
         #region Temporary
 
@@ -692,8 +712,9 @@ namespace SunFileManager
             SunFile file = new SunFile(name, fullpath);
             sunTreeView.Nodes.Add(new SunNode(file));
 
-            AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name], "directory1");
-            AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "image1");
+            AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name], "image1");
+            AddSubPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "sloob");
+            AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode, "subInt", 69420);
         }
 
         #endregion Temporary
