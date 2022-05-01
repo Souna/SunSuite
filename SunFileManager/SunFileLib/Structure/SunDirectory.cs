@@ -1,9 +1,9 @@
-﻿using SunFileManager.SunFileLib.Properties;
-using SunFileManager.SunFileLib.Structure;
-using SunFileManager.SunFileLib.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using SunFileManager.SunFileLib.Properties;
+using SunFileManager.SunFileLib.Structure;
+using SunFileManager.SunFileLib.Util;
 
 namespace SunFileManager.SunFileLib
 {
@@ -399,6 +399,7 @@ namespace SunFileManager.SunFileLib
                 Size += dir.GenerateFileInfo(tempFileName);
                 Size += SunFileHelper.GetCompressedIntLength(dir.Size);
                 Size += SunFileHelper.GetCompressedIntLength(dir.Checksum);
+                Size += 4;  //offset
 
                 offsetSize++; //entrycount
                 offsetSize += nameLength;

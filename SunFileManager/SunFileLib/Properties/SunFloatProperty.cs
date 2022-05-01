@@ -32,7 +32,7 @@ namespace SunFileManager.SunFileLib.Properties
 
         public override void WriteValue(SunBinaryWriter writer)
         {
-            writer.Write(Name);
+            //writer.Write(Name);
             writer.Write((byte)SunPropertyType.Float);
             if (Value == 0f)
             {

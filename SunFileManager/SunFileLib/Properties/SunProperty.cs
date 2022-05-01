@@ -67,7 +67,7 @@ namespace SunFileManager.SunFileLib.Properties
 
         #region Custom Members
 
-        public static List<SunProperty> ParsePropertyList(uint offset, SunBinaryReader reader, SunObject parent, SunImage parentImg)
+        public static List<SunProperty> ParsePropertyList(uint? offset, SunBinaryReader reader, SunObject parent, SunImage parentImg)
         {
             int entryCount = reader.ReadCompressedInt();
             List<SunProperty> properties = new List<SunProperty>(entryCount);
@@ -116,6 +116,15 @@ namespace SunFileManager.SunFileLib.Properties
                         vectorProperty.Y = new SunIntProperty("Y", reader.ReadCompressedInt()) { Parent = vectorProperty };
                         properties.Add(vectorProperty);
                         break;
+                    // Extended
+                    case 11:
+                    case 12:
+                        int endOfBlock = (int)(reader.ReadUInt32() + reader.BaseStream.Position);
+                        SunProperty extendedProperty = ParseExtendedProperty(reader, name, parent);
+                        properties.Add(extendedProperty);
+                        if (reader.BaseStream.Position != endOfBlock)
+                            reader.BaseStream.Position = endOfBlock;
+                        break;
 
                     default:
                         throw new Exception("Unknown property type at ParsePropertyList, Type = " + propertyType);
@@ -124,14 +133,58 @@ namespace SunFileManager.SunFileLib.Properties
             return properties;
         }
 
+        public static SunPropertyExtended ParseExtendedProperty(SunBinaryReader reader, string name, SunObject parent)
+        {
+            // Here read the different extended property bytes
+            /*  Canvas = 8
+                Vector = 9
+                Sound = 10        (0A)
+                SubProperty = 11  (0B) */
+
+            switch (reader.ReadByte())
+            {
+                case 11:
+                    SunSubProperty subProp = new SunSubProperty(name) { Parent = parent };
+                    reader.BaseStream.Position++;   //To jump over 04
+                    subProp.AddProperties(ParsePropertyList(null, reader, subProp, subProp.ParentImage));
+                    return subProp;
+                    break;
+
+                default:
+                    throw new Exception("Error occured parsing extended property");
+            }
+        }
+
         public static void WritePropertyList(SunBinaryWriter writer, List<SunProperty> properties)
         {
             writer.Write((byte)SunObjectType.Property);
             writer.WriteCompressedInt(properties.Count);
             for (int i = 0; i < properties.Count; i++)
             {
-                properties[i].WriteValue(writer);
+                writer.Write(properties[i].Name);
+                if (properties[i] is SunPropertyExtended)
+                {
+                    WriteExtendedPropertyValue(writer, (SunPropertyExtended)properties[i]);
+                }
+                else
+                {
+                    properties[i].WriteValue(writer);
+                }
             }
+        }
+
+        internal static void WriteExtendedPropertyValue(SunBinaryWriter writer, SunPropertyExtended extProp)
+        {
+            writer.Write((byte)SunPropertyType.Extended);
+            long beforePos = writer.BaseStream.Position;
+            writer.Write((Int32)0); // Placeholder
+            extProp.WriteValue(writer);
+
+            int len = (int)(writer.BaseStream.Position - beforePos);
+            long newPos = writer.BaseStream.Position;
+            writer.BaseStream.Position = beforePos;
+            writer.Write(len - 4);
+            writer.BaseStream.Position = newPos;
         }
 
         public SunImage ParentImage
