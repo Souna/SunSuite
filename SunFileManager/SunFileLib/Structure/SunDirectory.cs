@@ -57,7 +57,7 @@ namespace SunFileManager.SunFileLib
         /// Returns the parent object of this SunDirectory.
         /// </summary>
         public override SunObject Parent
-        { get { return parent; } set { parent = value; } }
+        { get { return parent; } internal set { parent = value; } }
 
         /// <summary>
         /// Returns the SunFile this directory belongs to.
@@ -474,67 +474,67 @@ namespace SunFileManager.SunFileLib
             }
         }
 
-        public void CalculateCanvasSize(SunCanvasProperty canvasProperty)
-        {
-            int a;
+        //public void CalculateCanvasSize(SunCanvasProperty canvasProperty)
+        //{
+        //    int a;
 
-            Size += 4;  /**/ offsetSize += 4;   // Picture property size
-            Size++;     /**/ offsetSize++;      // Property bool ("yes, there are properties associated with this canvas")
-            Size++;     /**/ offsetSize++;      // Gif bool (Marks canvas as a gif)
+        //    Size += 4;  /**/ offsetSize += 4;   // Picture property size
+        //    Size++;     /**/ offsetSize++;      // Property bool ("yes, there are properties associated with this canvas")
+        //    Size++;     /**/ offsetSize++;      // Gif bool (Marks canvas as a gif)
 
-            if (canvasProperty.SunProperties.Count > 0)
-            {
-                a = SunFileHelper.GetCompressedIntLength(canvasProperty.SunProperties.Count);
-                Size += a;  /**/ offsetSize += a;
-                Size++;     /**/ offsetSize++;      // Byte SunObjectType.Property
-                foreach (SunProperty property in canvasProperty.SunProperties)
-                {
-                    Size += property.Name.Length + 1; /**/ offsetSize += property.Name.Length + 1;
-                }
-            }
+        //    if (canvasProperty.SunProperties.Count > 0)
+        //    {
+        //        a = SunFileHelper.GetCompressedIntLength(canvasProperty.SunProperties.Count);
+        //        Size += a;  /**/ offsetSize += a;
+        //        Size++;     /**/ offsetSize++;      // Byte SunObjectType.Property
+        //        foreach (SunProperty property in canvasProperty.SunProperties)
+        //        {
+        //            Size += property.Name.Length + 1; /**/ offsetSize += property.Name.Length + 1;
+        //        }
+        //    }
 
-            if (canvasProperty.IsGif)
-            {
-                a = SunFileHelper.GetCompressedIntLength(canvasProperty.Frames.Count);
-                Size += a; /**/ offsetSize += a;
+        //    if (canvasProperty.IsGif)
+        //    {
+        //        a = SunFileHelper.GetCompressedIntLength(canvasProperty.Frames.Count);
+        //        Size += a; /**/ offsetSize += a;
 
-                Size++; /**/ offsetSize++;  //Byte SunObjectType.Property
+        //        Size++; /**/ offsetSize++;  //Byte SunObjectType.Property
 
-                foreach (SunCanvasProperty frame in canvasProperty.Frames)
-                {
-                    Size += frame.Name.Length + 1; /**/ offsetSize += frame.Name.Length + 1;
-                    Size++;     /**/ offsetSize++;       // Byte SunPropertyType
+        //        foreach (SunCanvasProperty frame in canvasProperty.Frames)
+        //        {
+        //            Size += frame.Name.Length + 1; /**/ offsetSize += frame.Name.Length + 1;
+        //            Size++;     /**/ offsetSize++;       // Byte SunPropertyType
 
-                    Size += 4;  /**/ offsetSize += 4;   // Picture property size
-                    Size++; /**/ offsetSize++;          // Property bool ("yes, there are properties associated with this image")
-                    Size++; /**/ offsetSize++;          // Gif bool
+        //            Size += 4;  /**/ offsetSize += 4;   // Picture property size
+        //            Size++; /**/ offsetSize++;          // Property bool ("yes, there are properties associated with this image")
+        //            Size++; /**/ offsetSize++;          // Gif bool
 
-                    a = SunFileHelper.GetCompressedIntLength(frame.Width);
-                    Size += a; /**/ offsetSize += a;
+        //            a = SunFileHelper.GetCompressedIntLength(frame.Width);
+        //            Size += a; /**/ offsetSize += a;
 
-                    a = SunFileHelper.GetCompressedIntLength(frame.Height);
-                    Size += a; /**/ offsetSize += a;
+        //            a = SunFileHelper.GetCompressedIntLength(frame.Height);
+        //            Size += a; /**/ offsetSize += a;
 
-                    Size += 4; /**/ offsetSize += 4;    // Image size length
+        //            Size += 4; /**/ offsetSize += 4;    // Image size length
 
-                    a = frame.GetCompressedBytes().Length;
-                    Size += a; /**/ offsetSize += a;
-                }
-            }
-            else
-            {
-                a = SunFileHelper.GetCompressedIntLength(canvasProperty.Width);
-                Size += a; /**/ offsetSize += a;
+        //            a = frame.GetCompressedBytes().Length;
+        //            Size += a; /**/ offsetSize += a;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        a = SunFileHelper.GetCompressedIntLength(canvasProperty.Width);
+        //        Size += a; /**/ offsetSize += a;
 
-                a = SunFileHelper.GetCompressedIntLength(canvasProperty.Height);
-                Size += a; /**/ offsetSize += a;
+        //        a = SunFileHelper.GetCompressedIntLength(canvasProperty.Height);
+        //        Size += a; /**/ offsetSize += a;
 
-                Size += 4; /**/ offsetSize += 4; // Image size length
+        //        Size += 4; /**/ offsetSize += 4; // Image size length
 
-                a = canvasProperty.GetCompressedBytes().Length;
-                Size += a; /**/ offsetSize += a;
-            }
-        }
+        //        a = canvasProperty.GetCompressedBytes().Length;
+        //        Size += a; /**/ offsetSize += a;
+        //    }
+        //}
 
         #endregion Custom Members
     }

@@ -42,7 +42,7 @@ namespace SunFileManager.SunFileLib
         public override SunObject Parent
         {
             get { return null; }
-            set { }
+            internal set { }
         }
 
         /// <summary>

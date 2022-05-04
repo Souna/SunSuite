@@ -22,7 +22,8 @@ namespace SunFileManager.SunFileLib.Properties
         /// Returns the type of the Property.
         /// <br>Null = 0</br>
         /// </summary>
-        public override SunPropertyType PropertyType { get { return SunPropertyType.Null; } }
+        public override SunPropertyType PropertyType
+        { get { return SunPropertyType.Null; } }
 
         public override void SetValue(object value)
         {
@@ -47,22 +48,26 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// Returns the name of this Null property.
         /// </summary>
-        public override string Name { get { return name; } set { name = value; } }
+        public override string Name
+        { get { return name; } set { name = value; } }
 
         /// <summary>
         /// Returns the parent object containing this Null Property.
         /// </summary>
-        public override SunObject Parent { get { return parent; } set { parent = value; } }
+        public override SunObject Parent
+        { get { return parent; } internal set { parent = value; } }
 
         /// <summary>
         /// Returns the byte-value type of a property (4).
         /// </summary>
-        public override SunObjectType ObjectType { get { return SunObjectType.Property; } }
+        public override SunObjectType ObjectType
+        { get { return SunObjectType.Property; } }
 
         /// <summary>
         /// Returns the SunFile this property is a member of.
         /// </summary>
-        public override SunFile SunFileParent { get { return Parent.SunFileParent; } }
+        public override SunFile SunFileParent
+        { get { return Parent.SunFileParent; } }
 
         #endregion SunObject
 
@@ -73,12 +78,14 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// Creates a blank SunNullProperty object.
         /// </summary>
-        public SunNullProperty() { }
+        public SunNullProperty()
+        { }
 
         /// <summary>
         /// Creates a SunNullProperty with a provided name.
         /// </summary>
-        public SunNullProperty(string name) { this.name = name; }
+        public SunNullProperty(string name)
+        { this.name = name; }
 
         #endregion Custom Members
     }

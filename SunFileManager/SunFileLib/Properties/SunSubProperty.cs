@@ -124,7 +124,7 @@ namespace SunFileManager.SunFileLib.Properties
         /// Returns the parent object containing this Property.
         /// </summary>
         public override SunObject Parent
-        { get { return parent; } set { parent = value; } }
+        { get { return parent; } internal set { parent = value; } }
 
         /// <summary>
         /// Returns the byte-value type of a property (4).
