@@ -1,5 +1,6 @@
-﻿using SunFileManager.SunFileLib.Util;
-using System.Drawing;
+﻿using System.Drawing;
+using SunFileManager.SunFileLib.Structure;
+using SunFileManager.SunFileLib.Util;
 
 namespace SunFileManager.SunFileLib.Properties
 {
@@ -7,7 +8,7 @@ namespace SunFileManager.SunFileLib.Properties
     /// A SunProperty that contains an x and a y value.
     /// <br>A SunVectorProperty may be associated with a SunDirectory or SunCanvasProperty.</br>
     /// </summary>
-    public class SunVectorProperty : SunProperty
+    public class SunVectorProperty : SunPropertyExtended
     {
         #region Fields
 
@@ -25,7 +26,8 @@ namespace SunFileManager.SunFileLib.Properties
         /// Returns the type of the Property.
         /// <br>Vector = 9</br>
         /// </summary>
-        public override SunPropertyType PropertyType { get { return SunPropertyType.Vector; } }
+        public override SunPropertyType PropertyType
+        { get { return SunPropertyType.Vector; } }
 
         public override void SetValue(object value)
         {
@@ -43,7 +45,6 @@ namespace SunFileManager.SunFileLib.Properties
 
         public override void WriteValue(SunBinaryWriter writer)
         {
-            //writer.Write(Name);
             writer.Write((byte)SunPropertyType.Vector);
             writer.WriteCompressedInt(X.Value);
             writer.WriteCompressedInt(Y.Value);
@@ -63,22 +64,26 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// Returns the name of this Vector property.
         /// </summary>
-        public override string Name { get { return name; } set { name = value; } }
+        public override string Name
+        { get { return name; } set { name = value; } }
 
         /// <summary>
         /// Returns the parent object containing this Vector Property.
         /// </summary>
-        public override SunObject Parent { get { return parent; } set { parent = value; } }
+        public override SunObject Parent
+        { get { return parent; } internal set { parent = value; } }
 
         /// <summary>
         /// Returns the byte-value type of a property (4).
         /// </summary>
-        public override SunObjectType ObjectType { get { return SunObjectType.Property; } }
+        public override SunObjectType ObjectType
+        { get { return SunObjectType.Property; } }
 
         /// <summary>
         /// Returns the SunFile this property is a member of.
         /// </summary>
-        public override SunFile SunFileParent { get { return Parent.SunFileParent; } }
+        public override SunFile SunFileParent
+        { get { return Parent.SunFileParent; } }
 
         #endregion SunObject
 
@@ -89,27 +94,32 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// Returns a new Point with both X and Y values.
         /// </summary>
-        public Point Value { get { return new Point(x.Value, y.Value); } set { x.Value = value.X; y.Value = value.Y; } }
+        public Point Value
+        { get { return new Point(x.Value, y.Value); } set { x.Value = value.X; y.Value = value.Y; } }
 
         /// <summary>
         /// The X-value of the vector point.
         /// </summary>
-        public SunIntProperty X { get { return x; } set { x = value; } }
+        public SunIntProperty X
+        { get { return x; } set { x = value; } }
 
         /// <summary>
         /// The Y-value of the vector point.
         /// </summary>
-        public SunIntProperty Y { get { return y; } set { y = value; } }
+        public SunIntProperty Y
+        { get { return y; } set { y = value; } }
 
         /// <summary>
         /// Creates a blank SunVectorProperty object.
         /// </summary>
-        public SunVectorProperty() { }
+        public SunVectorProperty()
+        { }
 
         /// <summary>
         /// Creates a SunVectorProperty with a provided name.
         /// </summary>
-        public SunVectorProperty(string name) { this.name = name; }
+        public SunVectorProperty(string name)
+        { this.name = name; }
 
         /// <summary>
         /// Creates a SunVectorProperty with a provided name and values.

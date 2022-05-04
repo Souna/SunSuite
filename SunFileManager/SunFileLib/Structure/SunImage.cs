@@ -66,7 +66,7 @@ namespace SunFileManager.SunFileLib.Structure
         /// Returns the parent object of this .img.
         /// </summary>
         public override SunObject Parent
-        { get { return parent; } set { parent = value; } }
+        { get { return parent; } internal set { parent = value; } }
 
         /// <summary>
         /// Returns the SunFile this .img belongs to.
@@ -215,7 +215,6 @@ namespace SunFileManager.SunFileLib.Structure
             lock (reader) // for multi threaded XMLWZ export.
             {
                 this.parseEverything = parseEverything;
-                long originalPos = reader.BaseStream.Position;
                 reader.BaseStream.Position = offset + 1;
 
                 List<SunProperty> props = SunProperty.ParsePropertyList(offset, reader, this, this);
@@ -244,7 +243,6 @@ namespace SunFileManager.SunFileLib.Structure
                 SunSubProperty imgProp = new SunSubProperty();
                 long startPosition = writer.BaseStream.Position;
                 imgProp.AddProperties(SunProperties);
-                //imgProp.WritePropertyList(writer);
                 imgProp.WriteValue(writer, true);
                 Size = (int)(writer.BaseStream.Position - startPosition);
             }

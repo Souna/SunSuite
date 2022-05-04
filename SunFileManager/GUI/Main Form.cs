@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using SunFileManager.Converter;
 using SunFileManager.GUI;
 using SunFileManager.GUI.Input;
 using SunFileManager.GUI.Input.Forms;
@@ -341,50 +343,62 @@ namespace SunFileManager
         public void AddCanvasPropertyToSelectedNode(TreeNode targetNode)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
-            // List for ability to use gifs.
+
             if (!frmCanvasInputBox.Show("Add Image", out string name, out List<Bitmap> bitmapList, out bool isGif))
                 return;
 
             SunNode target = (SunNode)targetNode;
 
-            if (isGif)
+            int i = 0;
+            foreach (Bitmap bmp in bitmapList)
             {
-                //  Create the parent node containing all of the gif frames.
-                SunNode gifParentNode = target.AddObject(new SunCanvasProperty(name, (SunObject)target.Tag, true));
-                if (gifParentNode == null) return;  //improve this duplicate node checking
+                SunCanvasProperty canvasProp = new SunCanvasProperty(bitmapList.Count == 1 ? name : (name + i));
+                SunPngProperty pngProp = new SunPngProperty();
+                pngProp.SetPNG(bmp);
+                canvasProp.PNG = pngProp;
 
-                for (int i = 0; i < bitmapList.Count; i++)
-                {
-                    SunCanvasProperty frame = new SunCanvasProperty(i.ToString(), (SunObject)gifParentNode.Tag)
-                    {
-                        PNG = bitmapList[i]
-                    };
-                    gifParentNode.AddObject(frame, false);
-
-                    // Add default image properties here. To do so change gifParentNode.AddObject(frame) to
-                    // SunNode newNode = gifParentNode.AddObject(frame), then do
-                    // newNode.AddObject(whatever_default_property_you_want_to_add)
-                    // Examples: image origin, frame delay
-                }
-                //  To force Treeview AfterSelect to fire
-                sunTreeView.SelectedNode = null;
-                sunTreeView.SelectedNode = gifParentNode;
+                SunNode newNode = target.AddObject(canvasProp);
+                i++;
             }
-            else
-            {
-                foreach (Bitmap bmp in bitmapList)
-                {
-                    SunCanvasProperty image = new SunCanvasProperty(name, (SunObject)target.Tag)
-                    {
-                        PNG = bmp
-                    };
-                    target.AddObject(image);
 
-                    // Add default image properties here. To do so change target.AddObject(image) to
-                    // SunNode newNode = target.AddObject(image), then do
-                    // newNode.AddObject(whatever_default_property_you_want_to_add)
-                }
-            }
+            //if (isGif)
+            //{
+            //    //  Create the parent node containing all of the gif frames.
+            //    SunNode gifParentNode = target.AddObject(new SunCanvasProperty(name, (SunObject)target.Tag, true));
+            //    if (gifParentNode == null) return;  //improve this duplicate node checking
+
+            //    for (int i = 0; i < bitmapList.Count; i++)
+            //    {
+            //        SunCanvasProperty frame = new SunCanvasProperty(i.ToString(), (SunObject)gifParentNode.Tag)
+            //        {
+            //            PNG = bitmapList[i]
+            //        };
+            //        gifParentNode.AddObject(frame, false);
+
+            //        // Add default image properties here. To do so change gifParentNode.AddObject(frame) to
+            //        // SunNode newNode = gifParentNode.AddObject(frame), then do
+            //        // newNode.AddObject(whatever_default_property_you_want_to_add)
+            //        // Examples: image origin, frame delay
+            //    }
+            //    //  To force Treeview AfterSelect to fire
+            //    sunTreeView.SelectedNode = null;
+            //    sunTreeView.SelectedNode = gifParentNode;
+            //}
+            //else
+            //{
+            //    foreach (Bitmap bmp in bitmapList)
+            //    {
+            //        SunCanvasProperty image = new SunCanvasProperty(name, (SunObject)target.Tag)
+            //        {
+            //            PNG = bmp
+            //        };
+            //        target.AddObject(image);
+
+            //        // Add default image properties here. To do so change target.AddObject(image) to
+            //        // SunNode newNode = target.AddObject(image), then do
+            //        // newNode.AddObject(whatever_default_property_you_want_to_add)
+            //    }
+            //}
         }
 
         /// <summary>
@@ -497,7 +511,8 @@ namespace SunFileManager
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Right)
             {
-                if (sunTreeView.SelectedNode != null && sunTreeView.SelectedNode.Tag is SunImage)
+                if (sunTreeView.SelectedNode != null && sunTreeView.SelectedNode.Tag is SunImage
+                    && sunTreeView.SelectedNode.Nodes.Count == 0)
                     ParseOnTreeViewSelectedItem((SunNode)sunTreeView.SelectedNode);
             }
         }
@@ -628,24 +643,29 @@ namespace SunFileManager
                 case SunCanvasProperty canvasProperty:
                     //  Display the image/gif with its attributes.
                     mainfrm_panning_PictureBox.Visible = true;
+
+                    //mainfrm_panning_PictureBox.Canvas = BitmapToImageSource.ToWinFormsBitmap(canvasProperty.GetBitmap());
+
+                    mainfrm_panning_PictureBox.Canvas = canvasProperty.GetBitmap();
+
                     //  Check if selected node is of a gif, if so act accordingly
-                    if (canvasProperty.IsGif/* && canvasProperty.Frames.Count > 0*/)
-                    {
-                        chkAnimateGif.Visible = true;
-                        mainfrm_panning_PictureBox.Canvas = canvasProperty.Frames[0].PNG; // as a form of thumbnail
-                        //if (AnimateGifs)    // find out how to animate the gif here - not only that but make it efficient or whatever
-                        //{
-                        //    do
-                        //    {
-                        //        //mainfrm_panning_PictureBox.Image
-                        //    }
-                        //    while (AnimateGifs);
-                        //}
-                    }
-                    else
-                    {
-                        mainfrm_panning_PictureBox.Canvas = canvasProperty.PNG;
-                    }
+                    //if (canvasProperty.IsGif/* && canvasProperty.Frames.Count > 0*/)
+                    //{
+                    //    chkAnimateGif.Visible = true;
+                    //    mainfrm_panning_PictureBox.Canvas = canvasProperty.Frames[0].PNG; // as a form of thumbnail
+                    //    //if (AnimateGifs)    // find out how to animate the gif here - not only that but make it efficient or whatever
+                    //    //{
+                    //    //    do
+                    //    //    {
+                    //    //        //mainfrm_panning_PictureBox.Image
+                    //    //    }
+                    //    //    while (AnimateGifs);
+                    //    //}
+                    //}
+                    //else
+                    //{
+                    //    mainfrm_panning_PictureBox.Canvas = canvasProperty.PNG;
+                    //}
                     break;
 
                 case SunVectorProperty vectorProperty:
@@ -713,8 +733,7 @@ namespace SunFileManager
             sunTreeView.Nodes.Add(new SunNode(file));
 
             AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name], "image1");
-            AddSubPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "sloob");
-            AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode, "subInt", 69420);
+            AddCanvasPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode);
         }
 
         #endregion Temporary

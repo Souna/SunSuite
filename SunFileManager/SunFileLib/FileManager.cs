@@ -125,15 +125,26 @@ namespace SunFileManager.SunFileLib
         {
             lock (sunFiles)
             {
-                if (sunFiles.Contains(file))
+                try
                 {
-                    //file.Remove();
                     ((SunNode)mainform.sunTreeView.SelectedNode).DeleteNode();
                     sunFiles.Remove(file);
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            //mainform.sunTreeView.SelectedNode.Remove();
-            //if (sunFiles.Contains(file)) sunFiles.Remove(file);
+        }
+
+        public void UnloadAllSunFiles()
+        {
+            IReadOnlyCollection<SunFile> fileList = new List<SunFile>(sunFiles);
+
+            foreach (SunFile file in fileList)
+            {
+                UnloadSunFile(file);
+            }
         }
 
         public void ReloadSunFile(SunFile file, Dispatcher currentDispatcher = null)

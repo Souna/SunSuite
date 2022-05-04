@@ -23,7 +23,8 @@ namespace SunFileManager.SunFileLib.Properties
         /// Returns the type of the Property.
         /// <br>Float = 5</br>
         /// </summary>
-        public override SunPropertyType PropertyType { get { return SunPropertyType.Float; } }
+        public override SunPropertyType PropertyType
+        { get { return SunPropertyType.Float; } }
 
         public override void SetValue(object value)
         {
@@ -57,22 +58,26 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// Returns the name of this Float property.
         /// </summary>
-        public override string Name { get { return name; } set { name = value; } }
+        public override string Name
+        { get { return name; } set { name = value; } }
 
         /// <summary>
         /// Returns the parent object containing this Float Property.
         /// </summary>
-        public override SunObject Parent { get { return parent; } set { parent = value; } }
+        public override SunObject Parent
+        { get { return parent; } internal set { parent = value; } }
 
         /// <summary>
         /// Returns the byte-value type of a property (4).
         /// </summary>
-        public override SunObjectType ObjectType { get { return SunObjectType.Property; } }
+        public override SunObjectType ObjectType
+        { get { return SunObjectType.Property; } }
 
         /// <summary>
         /// Returns the SunFile this property is a member of.
         /// </summary>
-        public override SunFile SunFileParent { get { return Parent.SunFileParent; } }
+        public override SunFile SunFileParent
+        { get { return Parent.SunFileParent; } }
 
         #endregion SunObject
 
@@ -83,17 +88,20 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// The value of the Float property.
         /// </summary>
-        public float Value { get { return val; } set { val = value; } }
+        public float Value
+        { get { return val; } set { val = value; } }
 
         /// <summary>
         /// Creates a blank SunFloatProperty object.
         /// </summary>
-        public SunFloatProperty() { }
+        public SunFloatProperty()
+        { }
 
         /// <summary>
         /// Creates a SunFloatProperty with a provided name.
         /// </summary>
-        public SunFloatProperty(string name) { this.name = name; }
+        public SunFloatProperty(string name)
+        { this.name = name; }
 
         /// <summary>
         /// Creates a SunFloatProperty with a provided name and value.

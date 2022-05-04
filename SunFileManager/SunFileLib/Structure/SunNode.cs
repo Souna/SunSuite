@@ -248,20 +248,7 @@ namespace SunFileManager.SunFileLib
                     if (img.IsGif) return "Animated " + SunPropertyType.Canvas.ToString();
                     else return SunPropertyType.Canvas.ToString();
                 }
-                //switch (((SunObject)Tag).ObjectType)
-                //{
-                //    case SunObjectType.File:
-                //        return SunObjectType.File.ToString();
 
-                //    case SunObjectType.Directory:
-                //        return SunObjectType.Directory.ToString();
-
-                //    case SunObjectType.Property:
-                //        return ((SunProperty)Tag).PropertyType.ToString() + " " + SunObjectType.Property.ToString();
-
-                //    default:    // Selected anything else.
-                //        return Tag.GetType().Name;
-                //}
                 return Tag.GetType().Name;
             }
             catch (Exception)

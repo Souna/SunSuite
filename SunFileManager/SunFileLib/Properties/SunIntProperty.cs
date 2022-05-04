@@ -25,7 +25,8 @@ namespace SunFileManager.SunFileLib.Properties
         /// Returns the type of the Property.
         /// <br>Int = 3</br>
         /// </summary>
-        public override SunPropertyType PropertyType { get { return SunPropertyType.Int; } }
+        public override SunPropertyType PropertyType
+        { get { return SunPropertyType.Int; } }
 
         public override void SetValue(object value)
         {
@@ -52,22 +53,26 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// Returns the name of this Int property.
         /// </summary>
-        public override string Name { get { return name; } set { name = value; } }
+        public override string Name
+        { get { return name; } set { name = value; } }
 
         /// <summary>
         /// Returns the parent object containing this Int Property.
         /// </summary>
-        public override SunObject Parent { get { return parent; } set { parent = value; } }
+        public override SunObject Parent
+        { get { return parent; } internal set { parent = value; } }
 
         /// <summary>
         /// Returns the byte-value type of a property (4).
         /// </summary>
-        public override SunObjectType ObjectType { get { return SunObjectType.Property; } }
+        public override SunObjectType ObjectType
+        { get { return SunObjectType.Property; } }
 
         /// <summary>
         /// Returns the SunFile this property is a member of.
         /// </summary>
-        public override SunFile SunFileParent { get { return Parent.SunFileParent; } }
+        public override SunFile SunFileParent
+        { get { return Parent.SunFileParent; } }
 
         #endregion SunObject
 
@@ -78,17 +83,20 @@ namespace SunFileManager.SunFileLib.Properties
         /// <summary>
         /// The value of the Int property.
         /// </summary>
-        public int Value { get { return val; } set { val = value; } }
+        public int Value
+        { get { return val; } set { val = value; } }
 
         /// <summary>
         /// Creates a blank SunIntProperty object.
         /// </summary>
-        public SunIntProperty() { }
+        public SunIntProperty()
+        { }
 
         /// <summary>
         /// Creates a SunIntProperty with a provided name.
         /// </summary>
-        public SunIntProperty(string name) { this.name = name; }
+        public SunIntProperty(string name)
+        { this.name = name; }
 
         /// <summary>
         /// Creates a SunIntProperty with a provided name and value.

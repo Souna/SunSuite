@@ -89,8 +89,8 @@ namespace SunFileManager.SunFileLib.Properties
                         properties.Add(new SunIntProperty(name, reader.ReadCompressedInt()) { Parent = parent });
                         break;
 
-                    case 4:
-                        properties.Add(new SunLongProperty(name, reader.ReadLong()) { Parent = parent });   // Max value is int only?
+                    case 4: // Max value is int only?
+                        properties.Add(new SunLongProperty(name, reader.ReadLong()) { Parent = parent });
                         break;
 
                     case 5:
@@ -105,20 +105,7 @@ namespace SunFileManager.SunFileLib.Properties
                         properties.Add(new SunStringProperty(name, reader.ReadString()) { Parent = parent });
                         break;
 
-                    case 8:
-                        reader.BaseStream.Position += 5;    // To skip to Gif_Bool
-                        properties.Add(new SunCanvasProperty(name, parent, reader.ReadBoolean()));
-                        break;
-                    // Extended
-                    case 9:
-                        SunVectorProperty vectorProperty = new SunVectorProperty(name) { Parent = parent };
-                        vectorProperty.X = new SunIntProperty("X", reader.ReadCompressedInt()) { Parent = vectorProperty };
-                        vectorProperty.Y = new SunIntProperty("Y", reader.ReadCompressedInt()) { Parent = vectorProperty };
-                        properties.Add(vectorProperty);
-                        break;
-                    // Extended
-                    case 11:
-                    case 12:
+                    case 12:    // Extended Properties (Canvas/Vector/Sound/Sub)
                         int endOfBlock = (int)(reader.ReadUInt32() + reader.BaseStream.Position);
                         SunProperty extendedProperty = ParseExtendedProperty(reader, name, parent);
                         properties.Add(extendedProperty);
@@ -136,19 +123,33 @@ namespace SunFileManager.SunFileLib.Properties
         public static SunPropertyExtended ParseExtendedProperty(SunBinaryReader reader, string name, SunObject parent)
         {
             // Here read the different extended property bytes
-            /*  Canvas = 8
-                Vector = 9
-                Sound = 10        (0A)
-                SubProperty = 11  (0B) */
-
             switch (reader.ReadByte())
             {
+                case 8:
+                    SunCanvasProperty canvasProperty = new SunCanvasProperty(name) { Parent = parent };
+                    if (reader.ReadByte() == 1)
+                    {
+                        // There are properties
+                        reader.BaseStream.Position++;   //To jump over 04
+                        canvasProperty.AddProperties(ParsePropertyList(null, reader, canvasProperty, canvasProperty.ParentImage));
+                    }
+                    canvasProperty.PNG = new SunPngProperty(reader, false);
+                    return canvasProperty;
+
+                case 9:
+                    SunVectorProperty vectorProperty = new SunVectorProperty(name) { Parent = parent };
+                    vectorProperty.X = new SunIntProperty("X", reader.ReadCompressedInt()) { Parent = vectorProperty };
+                    vectorProperty.Y = new SunIntProperty("Y", reader.ReadCompressedInt()) { Parent = vectorProperty };
+                    return vectorProperty;
+
+                case 10:
+                    return null;
+
                 case 11:
                     SunSubProperty subProp = new SunSubProperty(name) { Parent = parent };
                     reader.BaseStream.Position++;   //To jump over 04
                     subProp.AddProperties(ParsePropertyList(null, reader, subProp, subProp.ParentImage));
                     return subProp;
-                    break;
 
                 default:
                     throw new Exception("Error occured parsing extended property");
@@ -162,9 +163,9 @@ namespace SunFileManager.SunFileLib.Properties
             for (int i = 0; i < properties.Count; i++)
             {
                 writer.Write(properties[i].Name);
-                if (properties[i] is SunPropertyExtended)
+                if (properties[i] is SunPropertyExtended extendedProp)
                 {
-                    WriteExtendedPropertyValue(writer, (SunPropertyExtended)properties[i]);
+                    WriteExtendedPropertyValue(writer, extendedProp);
                 }
                 else
                 {

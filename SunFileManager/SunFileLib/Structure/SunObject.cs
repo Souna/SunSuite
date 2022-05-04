@@ -1,6 +1,6 @@
-﻿using SunFileManager.SunFileLib.Properties;
+﻿using System;
+using SunFileManager.SunFileLib.Properties;
 using SunFileManager.SunFileLib.Structure;
-using System;
 
 namespace SunFileManager.SunFileLib
 {
@@ -19,7 +19,7 @@ namespace SunFileManager.SunFileLib
         /// <summary>
         /// Returns the parent object.
         /// </summary>
-        public abstract SunObject Parent { get; set; }
+        public abstract SunObject Parent { get; internal set; }
 
         /// <summary>
         /// Returns the parent SunFile.
@@ -35,7 +35,6 @@ namespace SunFileManager.SunFileLib
         /// Deletes object from its parent.
         /// </summary>
         public abstract void Remove();
-
 
         /// <summary>
         /// Returns the SunObject by name.
@@ -71,7 +70,7 @@ namespace SunFileManager.SunFileLib
         {
             get
             {
-                if (this is SunFile) return ((SunFile)this).SunDirectory.Name;
+                if (this is SunFile file) return file.SunDirectory.Name;
                 string result = this.Name;
                 SunObject currentObject = this;
                 while (currentObject.Parent != null)
