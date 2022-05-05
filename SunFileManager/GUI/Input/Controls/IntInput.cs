@@ -6,7 +6,7 @@
 
 using System.Windows.Forms;
 
-namespace SunFileManager.GUI.Input
+namespace SunFileManager.GUI.Input.Controls
 {
     public partial class IntInput : TextBox
     {

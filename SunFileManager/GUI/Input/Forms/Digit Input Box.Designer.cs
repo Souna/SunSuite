@@ -1,4 +1,6 @@
-﻿namespace SunFileManager.GUI.Input
+﻿using SunFileManager.GUI.Input.Controls;
+
+namespace SunFileManager.GUI.Input
 {
     partial class frmDigitInputBox
     {
@@ -34,7 +36,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.txtIntValueInput = new SunFileManager.GUI.Input.IntInput();
+            this.txtIntValueInput = new SunFileManager.GUI.Input.Controls.IntInput();
             this.SuspendLayout();
             // 
             // txtNameInput

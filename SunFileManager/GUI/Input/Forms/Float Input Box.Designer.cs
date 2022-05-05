@@ -1,4 +1,6 @@
 ﻿
+using SunFileManager.GUI.Input.Controls;
+
 namespace SunFileManager.GUI.Input.Forms
 {
     partial class frmFloatInputBox
@@ -34,7 +36,7 @@ namespace SunFileManager.GUI.Input.Forms
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtNameInput = new System.Windows.Forms.TextBox();
-            this.txtFloatValueInput = new SunFileManager.GUI.Input.FloatingPointInput();
+            this.txtFloatValueInput = new SunFileManager.GUI.Input.Controls.FloatingPointInput();
             this.SuspendLayout();
             // 
             // btnCancel
