@@ -33,8 +33,8 @@ namespace SunFileManager.GUI.Input.Forms
             this.btnOk = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtIntValueInput = new SunFileManager.GUI.Input.IntInput();
             this.txtNameInput = new System.Windows.Forms.TextBox();
+            this.txtLongValueInput = new SunFileManager.GUI.Input.LongInput();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -42,7 +42,7 @@ namespace SunFileManager.GUI.Input.Forms
             this.btnCancel.Location = new System.Drawing.Point(114, 60);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(95, 23);
-            this.btnCancel.TabIndex = 3;
+            this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -52,7 +52,7 @@ namespace SunFileManager.GUI.Input.Forms
             this.btnOk.Location = new System.Drawing.Point(12, 60);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(95, 23);
-            this.btnOk.TabIndex = 2;
+            this.btnOk.TabIndex = 4;
             this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
@@ -63,7 +63,7 @@ namespace SunFileManager.GUI.Input.Forms
             this.label2.Location = new System.Drawing.Point(13, 37);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(37, 13);
-            this.label2.TabIndex = 9;
+            this.label2.TabIndex = 3;
             this.label2.Text = "Value:";
             // 
             // label1
@@ -72,20 +72,8 @@ namespace SunFileManager.GUI.Input.Forms
             this.label1.Location = new System.Drawing.Point(12, 11);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 8;
+            this.label1.TabIndex = 2;
             this.label1.Text = "Name:";
-            // 
-            // txtIntValueInput
-            // 
-            this.txtIntValueInput.Location = new System.Drawing.Point(56, 34);
-            this.txtIntValueInput.MaxLength = 50;
-            this.txtIntValueInput.Name = "txtIntValueInput";
-            this.txtIntValueInput.Size = new System.Drawing.Size(156, 20);
-            this.txtIntValueInput.TabIndex = 1;
-            this.txtIntValueInput.Text = "0";
-            this.txtIntValueInput.Value = 0;
-            this.txtIntValueInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtIntValueInput_KeyDown);
-            this.txtIntValueInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtIntValueInput_KeyUp);
             // 
             // txtNameInput
             // 
@@ -97,16 +85,27 @@ namespace SunFileManager.GUI.Input.Forms
             this.txtNameInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyDown);
             this.txtNameInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtNameInput_KeyUp);
             // 
+            // txtLongValueInput
+            // 
+            this.txtLongValueInput.Location = new System.Drawing.Point(56, 34);
+            this.txtLongValueInput.Name = "txtLongValueInput";
+            this.txtLongValueInput.Size = new System.Drawing.Size(156, 20);
+            this.txtLongValueInput.TabIndex = 1;
+            this.txtLongValueInput.Text = "0";
+            this.txtLongValueInput.Value = ((long)(0));
+            this.txtLongValueInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtLongValueInput_KeyDown);
+            this.txtLongValueInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtLongValueInput_KeyUp);
+            // 
             // frmLongInputBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(224, 91);
+            this.Controls.Add(this.txtLongValueInput);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtIntValueInput);
             this.Controls.Add(this.txtNameInput);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
@@ -124,7 +123,7 @@ namespace SunFileManager.GUI.Input.Forms
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private IntInput txtIntValueInput;
         private System.Windows.Forms.TextBox txtNameInput;
+        private LongInput txtLongValueInput;
     }
 }

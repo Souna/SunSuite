@@ -35,7 +35,7 @@ namespace SunFileManager.GUI.Input.Forms
                     return;
                 }
                 nameResult = txtNameInput.Text;
-                longResult = txtIntValueInput.Value;
+                longResult = txtLongValueInput.Value;
                 DialogResult = DialogResult.OK;
                 Close();
             }
@@ -65,7 +65,7 @@ namespace SunFileManager.GUI.Input.Forms
             }
         }
 
-        private void txtIntValueInput_KeyDown(object sender, KeyEventArgs e)
+        private void txtLongValueInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -73,7 +73,7 @@ namespace SunFileManager.GUI.Input.Forms
             }
         }
 
-        private void txtIntValueInput_KeyUp(object sender, KeyEventArgs e)
+        private void txtLongValueInput_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
             {

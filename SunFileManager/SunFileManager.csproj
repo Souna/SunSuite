@@ -77,6 +77,12 @@
     <Compile Include="GUI\Container\Panning PictureBox.Designer.cs">
       <DependentUpon>Panning PictureBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Input\Controls\LongInput.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\Controls\LongInput.Designer.cs">
+      <DependentUpon>LongInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Input\Forms\Float Input Box.cs">
       <SubType>Form</SubType>
     </Compile>
