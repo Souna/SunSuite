@@ -73,7 +73,7 @@ namespace SunFileManager.SunFileLib.Properties
             width = reader.ReadCompressedInt();
             height = reader.ReadCompressedInt();
             offset = reader.BaseStream.Position;    //Offset is being set to position of Length
-            int length = reader.ReadInt32();    // Starts at 78 9C
+            int length = reader.ReadInt32();
 
             sunReader = reader;
 
@@ -134,8 +134,8 @@ namespace SunFileManager.SunFileLib.Properties
             {
                 long position = sunReader.BaseStream.Position;
                 sunReader.BaseStream.Position = offset;
-                int length = sunReader.ReadInt32() - 1;
-                sunReader.BaseStream.Position += 1;
+                int length = sunReader.ReadInt32();
+                //sunReader.BaseStream.Position += 1;
 
                 if (length > 0)
                     compressedBytes = sunReader.ReadBytes(length);

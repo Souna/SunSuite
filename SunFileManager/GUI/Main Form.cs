@@ -708,9 +708,9 @@ namespace SunFileManager
 
         #endregion Treeview Input Events
 
-        #region Temporary
+        #region Debug
 
-        private void btnCreateMapSun_Click(object sender, EventArgs e)
+        private void btnCreateTestFile_Click(object sender, EventArgs e)
         {
             sunTreeView.Focus();
             string name = "map.sun";
@@ -719,23 +719,9 @@ namespace SunFileManager
             manager.sunFiles.Add(file);
             sunTreeView.Nodes.Add(new SunNode(file));
 
-            AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name], "Back");
-            AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "Test");
-            AddSunDirectoryToSelectedNode(sunTreeView.Nodes[file.Name].LastNode.LastNode, "still");
-        }
-
-        private void btnQuickImageInt_Click(object sender, EventArgs e)
-        {
-            sunTreeView.Focus();
-            string name = Path.GetRandomFileName() + ".sun";
-            var fullpath = Path.Combine(DefaultPath, name);
-            SunFile file = new SunFile(name, fullpath);
-            sunTreeView.Nodes.Add(new SunNode(file));
-
             AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name], "image1");
             AddCanvasPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode);
         }
-
-        #endregion Temporary
+        #endregion Debug
     }
 }

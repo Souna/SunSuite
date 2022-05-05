@@ -39,7 +39,7 @@
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sunDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnCreateMapSun = new System.Windows.Forms.Button();
+            this.btnCreateTestFile = new System.Windows.Forms.Button();
             this.lblSelectedNodeType = new System.Windows.Forms.Label();
             this.cmsNodes = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.txtPropertyValue = new System.Windows.Forms.TextBox();
@@ -47,7 +47,6 @@
             this.lblPropertyName = new System.Windows.Forms.Label();
             this.txtPropertyName = new System.Windows.Forms.TextBox();
             this.chkAnimateGif = new System.Windows.Forms.CheckBox();
-            this.btnQuickImageInt = new System.Windows.Forms.Button();
             this.mainfrm_panning_PictureBox = new SunFileManager.GUI.Container.Panning_PictureBox();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
@@ -136,17 +135,17 @@
             this.sunDirectoryToolStripMenuItem.Text = "SunDirectory";
             this.sunDirectoryToolStripMenuItem.Click += new System.EventHandler(this.sunDirectoryToolStripMenuItem_Click);
             // 
-            // btnCreateMapSun
+            // btnCreateTestFile
             // 
-            this.btnCreateMapSun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnCreateMapSun.Location = new System.Drawing.Point(11, 465);
-            this.btnCreateMapSun.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnCreateMapSun.Name = "btnCreateMapSun";
-            this.btnCreateMapSun.Size = new System.Drawing.Size(110, 21);
-            this.btnCreateMapSun.TabIndex = 3;
-            this.btnCreateMapSun.Text = "Quick Map";
-            this.btnCreateMapSun.UseVisualStyleBackColor = true;
-            this.btnCreateMapSun.Click += new System.EventHandler(this.btnCreateMapSun_Click);
+            this.btnCreateTestFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnCreateTestFile.Location = new System.Drawing.Point(11, 465);
+            this.btnCreateTestFile.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnCreateTestFile.Name = "btnCreateTestFile";
+            this.btnCreateTestFile.Size = new System.Drawing.Size(110, 21);
+            this.btnCreateTestFile.TabIndex = 3;
+            this.btnCreateTestFile.Text = "Test File";
+            this.btnCreateTestFile.UseVisualStyleBackColor = true;
+            this.btnCreateTestFile.Click += new System.EventHandler(this.btnCreateTestFile_Click);
             // 
             // lblSelectedNodeType
             // 
@@ -218,17 +217,6 @@
             this.chkAnimateGif.UseVisualStyleBackColor = true;
             this.chkAnimateGif.CheckedChanged += new System.EventHandler(this.chkAnimateGif_CheckedChanged);
             // 
-            // btnQuickImageInt
-            // 
-            this.btnQuickImageInt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnQuickImageInt.Location = new System.Drawing.Point(157, 465);
-            this.btnQuickImageInt.Name = "btnQuickImageInt";
-            this.btnQuickImageInt.Size = new System.Drawing.Size(26, 22);
-            this.btnQuickImageInt.TabIndex = 11;
-            this.btnQuickImageInt.Text = "button1";
-            this.btnQuickImageInt.UseVisualStyleBackColor = true;
-            this.btnQuickImageInt.Click += new System.EventHandler(this.btnQuickImageInt_Click);
-            // 
             // mainfrm_panning_PictureBox
             // 
             this.mainfrm_panning_PictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -250,13 +238,12 @@
             this.ClientSize = new System.Drawing.Size(604, 491);
             this.Controls.Add(this.lblValue);
             this.Controls.Add(this.lblPropertyName);
-            this.Controls.Add(this.btnQuickImageInt);
             this.Controls.Add(this.chkAnimateGif);
             this.Controls.Add(this.mainfrm_panning_PictureBox);
             this.Controls.Add(this.txtPropertyName);
             this.Controls.Add(this.txtPropertyValue);
             this.Controls.Add(this.lblSelectedNodeType);
-            this.Controls.Add(this.btnCreateMapSun);
+            this.Controls.Add(this.btnCreateTestFile);
             this.Controls.Add(this.sunTreeView);
             this.Controls.Add(this.menuStripMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -284,7 +271,7 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sunDirectoryToolStripMenuItem;
-        private System.Windows.Forms.Button btnCreateMapSun;
+        private System.Windows.Forms.Button btnCreateTestFile;
         private System.Windows.Forms.Label lblSelectedNodeType;
         private System.Windows.Forms.ContextMenuStrip cmsNodes;
         private System.Windows.Forms.TextBox txtPropertyValue;
@@ -293,7 +280,6 @@
         private System.Windows.Forms.TextBox txtPropertyName;
         private GUI.Container.Panning_PictureBox mainfrm_panning_PictureBox;
         private System.Windows.Forms.CheckBox chkAnimateGif;
-        private System.Windows.Forms.Button btnQuickImageInt;
     }
 }
 
