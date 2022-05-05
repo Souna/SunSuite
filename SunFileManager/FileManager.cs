@@ -33,14 +33,8 @@ namespace SunFileManager
                 string error = string.Empty;
                 bool success = f.ParseSunFile(out error);
 
-                //if (!success ||!File.Exists(path))
-                //{
-                //    file = null;
-                //    return false;
-                //}
-
                 file = f;
-                return true;
+                return success;
             }
             catch (Exception e)
             {
