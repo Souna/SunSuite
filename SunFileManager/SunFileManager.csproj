@@ -151,37 +151,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SunFileLib\Properties\SunDoubleProperty.cs" />
-    <Compile Include="SunFileLib\Properties\SunFloatProperty.cs" />
-    <Compile Include="SunFileLib\Properties\SunLongProperty.cs" />
-    <Compile Include="SunFileLib\Properties\SunNullProperty.cs" />
-    <Compile Include="SunFileLib\Properties\SunPngProperty.cs" />
-    <Compile Include="SunFileLib\Properties\SunShortProperty.cs" />
-    <Compile Include="SunFileLib\Properties\SunSoundProperty.cs" />
-    <Compile Include="SunFileLib\Properties\SunStringProperty.cs" />
-    <Compile Include="SunFileLib\Properties\SunSubProperty.cs" />
-    <Compile Include="SunFileLib\Properties\SunVectorProperty.cs" />
-    <Compile Include="SunFileLib\Structure\IPropertyContainer.cs" />
-    <Compile Include="SunFileLib\Properties\SunCanvasProperty.cs" />
-    <Compile Include="SunFileLib\Properties\SunIntProperty.cs" />
-    <Compile Include="SunFileLib\Properties\SunProperty.cs" />
-    <Compile Include="SunFileLib\Structure\SunImage.cs" />
-    <Compile Include="SunFileLib\Structure\SunPropertyExtended.cs" />
-    <Compile Include="SunFileLib\SunContextMenuManager.cs" />
-    <Compile Include="SunFileLib\Structure\SunDirectory.cs" />
-    <Compile Include="SunFileLib\Structure\SunFile.cs" />
-    <Compile Include="SunFileLib\FileManager.cs" />
-    <Compile Include="SunFileLib\Structure\SunHeader.cs" />
-    <Compile Include="SunFileLib\Structure\SunNode.cs" />
-    <Compile Include="SunFileLib\Structure\SunObject.cs" />
-    <Compile Include="SunFileLib\Structure\SunObjectType.cs" />
-    <Compile Include="SunFileLib\Properties\SunPropertyType.cs" />
-    <Compile Include="SunFileLib\Util\ByteUtils.cs" />
-    <Compile Include="SunFileLib\Util\ErrorLogger.cs" />
-    <Compile Include="SunFileLib\Util\SunBinaryReader.cs" />
-    <Compile Include="SunFileLib\Util\SunBinaryWriter.cs" />
-    <Compile Include="SunFileLib\Util\SunFileHelper.cs" />
-    <Compile Include="SunFileLib\Util\SunTool.cs" />
+    <Compile Include="SunContextMenuManager.cs" />
+    <Compile Include="FileManager.cs" />
+    <Compile Include="SunNode.cs" />
     <EmbeddedResource Include="GUI\Container\Panning PictureBox.resx">
       <DependentUpon>Panning PictureBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -270,6 +242,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SunLibrary\SunLibrary.csproj">
+      <Project>{0da8b121-d068-4ec3-bcbf-a0caa6f83efb}</Project>
+      <Name>SunLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

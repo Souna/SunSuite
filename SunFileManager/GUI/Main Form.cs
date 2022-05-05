@@ -9,9 +9,8 @@ using SunFileManager.Converter;
 using SunFileManager.GUI;
 using SunFileManager.GUI.Input;
 using SunFileManager.GUI.Input.Forms;
-using SunFileManager.SunFileLib;
-using SunFileManager.SunFileLib.Properties;
-using SunFileManager.SunFileLib.Structure;
+using SunLibrary.SunFileLib.Properties;
+using SunLibrary.SunFileLib.Structure;
 
 namespace SunFileManager
 {
@@ -722,6 +721,7 @@ namespace SunFileManager
             AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name], "image1");
             AddCanvasPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode);
         }
+
         #endregion Debug
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace SunFileManager.GUI.Input
+﻿namespace SunFileManager.GUI.Input.Controls
 {
     partial class FloatingPointInput
     {

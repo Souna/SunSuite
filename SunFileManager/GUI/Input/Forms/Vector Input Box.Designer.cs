@@ -1,4 +1,6 @@
 ﻿
+using SunFileManager.GUI.Input.Controls;
+
 namespace SunFileManager.GUI.Input.Forms
 {
     partial class frmVectorInputBox
@@ -32,9 +34,9 @@ namespace SunFileManager.GUI.Input.Forms
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtXValueInput = new SunFileManager.GUI.Input.IntInput();
+            this.txtXValueInput = new SunFileManager.GUI.Input.Controls.IntInput();
             this.txtNameInput = new System.Windows.Forms.TextBox();
-            this.txtYValueInput = new SunFileManager.GUI.Input.IntInput();
+            this.txtYValueInput = new SunFileManager.GUI.Input.Controls.IntInput();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
