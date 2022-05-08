@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -10,19 +13,26 @@ namespace SunFileManager.GUI.Input
 {
     public partial class frmCanvasInputBox : Form
     {
+        // Returns
         private string nameResult = null, defaultText = null;
-        private Image canvas;
+
         private List<Bitmap> bitmapResult = new List<Bitmap>(); // List for ability to accommodate a gif's frames.
-        private bool gifListResult = false; // Bool for whether or not the submission is a gif
+        private List<int> gifFrameDelayResult = new List<int>();
+        private bool gifResult = false; // Bool for whether or not the submission is a gif
+        private bool createSubPropertyResult = false;
+
+        private Image canvas;
         private static frmCanvasInputBox form = null;
 
-        public static bool Show(string title, out string name, out List<Bitmap> bitmap, out bool isGif)
+        public static bool Show(string title, out string name, out List<Bitmap> bitmaps, out List<int> gifFrameDelays, out bool isGif, out bool createSubProperty)
         {
             form = new frmCanvasInputBox(title);
             bool result = form.ShowDialog() == DialogResult.OK;
             name = form.nameResult;
-            bitmap = form.bitmapResult;
-            isGif = form.gifListResult;
+            bitmaps = form.bitmapResult;
+            gifFrameDelays = form.gifFrameDelayResult;
+            isGif = form.gifResult;
+            createSubProperty = form.createSubPropertyResult;
             return result;
         }
 
@@ -50,13 +60,28 @@ namespace SunFileManager.GUI.Input
             {
                 canvas.Dispose();
                 canvas = null;
+                bitmapResult = null;
+                nameResult = null;
                 panning_PictureBox.Canvas.Dispose();
                 panning_PictureBox.Canvas = null;
                 panning_PictureBox.Dispose();
                 form.Dispose();
                 Dispose();
                 DialogResult = DialogResult.Cancel;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
             }
+            CloseForm();
+        }
+
+        public void CloseForm()
+        {
+            // Explicitly calling this is bad but I wanted it to collect immediately when the form closed
+            GC.Collect();
+            Dispose();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
             Close();
         }
 
@@ -74,21 +99,60 @@ namespace SunFileManager.GUI.Input
                 }
                 nameResult = txtNameInput.Text;
                 DialogResult = DialogResult.OK;
-                Close();
+                createSubPropertyResult = chkCreateSub.Checked;
+                CloseForm();
             }
             else return;
+        }
+
+        private void ResetDefaultControlSettings()
+        {
+            Size = form.MinimumSize;
+            Text = defaultText;
+            txtCanvasPath.Size = txtCanvasPath.MinimumSize;
+            txtNameInput.Size = txtNameInput.MinimumSize;
+        }
+
+        private void UpdateFormControls(string path)
+        {
+            Text += " (" + Path.GetFileName(path) + ")";
+
+            //  Capitalizes the first letter of the image/gif name when automatically deriving it from the original filename.
+            string capitalizedName = Path.GetFileNameWithoutExtension(path);
+            capitalizedName = capitalizedName.First().ToString().ToUpper() + capitalizedName.Substring(1);
+            if (PathIsGif(path))
+            {
+                txtNameInput.Text = capitalizedName;
+            }
+            else
+            {
+                txtNameInput.Text = "0";
+            }
+            txtNameInput.SelectionStart = txtNameInput.Text.Length;
+            txtNameInput.SelectAll();
+            txtNameInput.Focus();
+
+            //  Reveal labels.
+            lbltxtDimensions.Visible = true;
+            lblCanvasDimensions.Text = canvas.Width.ToString() + " x " + canvas.Height.ToString();
+            lbltxtSize.Visible = true;
+            lblCanvasSize.Text = GetFileSizeString(new FileInfo(path).Length);
+            lbltxtType.Visible = true;
+            lblCanvasType.Text = Path.GetExtension(path);
+
+            //  Display picturebox, resize it, and display the canvas.
+            panning_PictureBox.Visible = true;
+            if ((canvas.Width > form.MaximumSize.Width) && (canvas.Height > form.MaximumSize.Height))
+                panning_PictureBox.Size = panning_PictureBox.MaximumSize;
+            else panning_PictureBox.Size = canvas.Size;
+            form.Size = form.PreferredSize;
+            panning_PictureBox.Canvas = canvas;
         }
 
         // When you change the canvas.
         private void txtCanvasPath_TextChanged(object sender, EventArgs e)
         {
-            // This block is for resetting different properties back to their default values.
-            {
-                Size = form.MinimumSize;
-                Text = defaultText;
-                txtCanvasPath.Size = txtCanvasPath.MinimumSize;
-                txtNameInput.Size = txtNameInput.MinimumSize;
-            }
+            ResetDefaultControlSettings();
             if (panning_PictureBox.Canvas != null)
             {
                 panning_PictureBox.Canvas.Dispose();
@@ -97,46 +161,28 @@ namespace SunFileManager.GUI.Input
 
             try
             {
-                bitmapResult.Clear();
+                if (bitmapResult != null)
+                    bitmapResult.Clear();
                 string path = txtCanvasPath.Text;
                 canvas = Image.FromFile(path);
                 Text += " (" + Path.GetFileName(path) + ")";
 
-                //  Capitalizes the first letter of the image/gif name when automatically deriving it from the original filename.
-                string capitalizedName = Path.GetFileNameWithoutExtension(path);
-                capitalizedName = capitalizedName.First().ToString().ToUpper() + capitalizedName.Substring(1);
-                txtNameInput.Text = capitalizedName;
-                txtNameInput.SelectionStart = txtNameInput.Text.Length;
-                txtNameInput.SelectAll();
-                txtNameInput.Focus();
-
-                //  Reveal labels.
-                lbltxtDimensions.Visible = true;
-                lblCanvasDimensions.Text = canvas.Width.ToString() + " x " + canvas.Height.ToString();
-                lbltxtSize.Visible = true;
-                lblCanvasSize.Text = GetFileSizeString(new FileInfo(path).Length);
-                lbltxtType.Visible = true;
-                lblCanvasType.Text = Path.GetExtension(path);
-
-                //  Display picturebox, resize it, and display the canvas.
-                panning_PictureBox.Visible = true;
-                if ((canvas.Width > form.MaximumSize.Width) && (canvas.Height > form.MaximumSize.Height))
-                    panning_PictureBox.Size = panning_PictureBox.MaximumSize;
-                else panning_PictureBox.Size = canvas.Size;
-                form.Size = form.PreferredSize;
-                panning_PictureBox.Canvas = canvas;
+                UpdateFormControls(path);
 
                 //CenterFormOnImageChange();
                 CenterToScreen();
 
-                if (PathIsGif(path))
+                if (ImageAnimator.CanAnimate(canvas))
                 {
-                    gifListResult = true;
-                    //  Decode gif into individual frames.
+                    //  Decode the gif into individual frames.
                     Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
                     GifBitmapDecoder decoder = new GifBitmapDecoder(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
                     foreach (BitmapSource bmp in decoder.Frames)
+                    {
                         bitmapResult.Add(CreateBitmapFromSource(bmp));
+                    }
+                    gifFrameDelayResult = GetFrameDelays(canvas);
+                    gifResult = true;
                 }
                 else
                 {
@@ -147,6 +193,25 @@ namespace SunFileManager.GUI.Input
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        public List<int> GetFrameDelays(Image image)
+        {
+            var dimension = new FrameDimension(image.FrameDimensionsList[0]);
+            int frameCount = image.GetFrameCount(dimension);
+            List<int> frameDelayList = new List<int>();
+            int index = 0;
+
+            for (int i = 0; i < frameCount; i++)
+            {
+                image.SelectActiveFrame(dimension, i);
+                int delay = BitConverter.ToInt32(image.GetPropertyItem(20736).Value, index) * 10;
+                if (delay == 0) delay = 100;
+                frameDelayList.Add(delay);
+
+                index += 4;
+            }
+            return frameDelayList;
         }
 
         /// <summary>
@@ -177,8 +242,7 @@ namespace SunFileManager.GUI.Input
 
         private bool PathIsGif(string path)
         {
-            if (path.EndsWith("gif")) return true;
-            return false;
+            return (path.EndsWith("gif"));
         }
 
         /// <summary>
@@ -233,6 +297,18 @@ namespace SunFileManager.GUI.Input
         private void txtNameInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
+            {
+                btnOk_Click(null, null);
+            }
+        }
+
+        private void frmCanvasInputBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                btnCancel_Click(sender, e);
+            }
+            else if (e.KeyCode == Keys.Enter)
             {
                 btnOk_Click(null, null);
             }

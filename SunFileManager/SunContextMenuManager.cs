@@ -1,9 +1,9 @@
-﻿using System;
-using System.Windows.Forms;
-using SunFileManager.GUI;
+﻿using SunFileManager.GUI;
 using SunFileManager.Properties;
 using SunLibrary.SunFileLib.Properties;
 using SunLibrary.SunFileLib.Structure;
+using System;
+using System.Windows.Forms;
 
 namespace SunFileManager
 {
@@ -23,68 +23,29 @@ namespace SunFileManager
 
         #region Menu Item Declarations
 
-        //  Right-click button to create a new SunFile.
-        private ToolStripMenuItem New;
-
-        //  Right-click button to open SunFiles.
-        private ToolStripMenuItem Open;
-
-        //  Right-click button to save selected SunFile.
-        private ToolStripMenuItem Save;
-
-        //  Right-click button to unload selected SunFile.
-        private ToolStripMenuItem Unload;
-
-        //  Right-click button to reload selected SunFile.
-        private ToolStripMenuItem Reload;
-
-        //  Right-click button to rename selected node.
-        private ToolStripMenuItem Rename;
-
-        //  Right-click button to remove a node from a parent node.
-        private ToolStripMenuItem Remove;
-
-        //  Right-click button to collapse all child nodes of selected node.
-        private ToolStripMenuItem Collapse;
-
-        //  Right-click button to expand all child nodes of selected node.
-        private ToolStripMenuItem Expand;
-
-        //  Right-click button to add a SunDirectory to a SunFile node.
-        private ToolStripMenuItem AddSunDirectory;
-
-        //  Right-click button to add a SunImage to a SunNode.
-        private ToolStripMenuItem AddSunImage;
-
-        //  Right-click button to add a Sub Property to a node.
-        private ToolStripMenuItem AddSubProperty;
-
-        //  Right-click button to add a Double property to a node.
-        private ToolStripMenuItem AddDoubleProperty;
-
-        //  Right-click button to add a Float property to a node.
-        private ToolStripMenuItem AddFloatProperty;
-
-        //  Right-click button to add an Image property to a node.
-        private ToolStripMenuItem AddCanvasProperty;
-
-        //  Right-click button to add an Int property to a node.
-        private ToolStripMenuItem AddIntProperty;
-
-        //  Right-click button to add a Long property to a node.
-        private ToolStripMenuItem AddLongProperty;
-
-        //  Right-click button to add a Short property to a node.
-        private ToolStripMenuItem AddShortProperty;
-
-        //  Right-click button to add a Sound property to a node.
-        private ToolStripMenuItem AddSoundProperty;
-
-        //  Right-click button to add a String property to a node.
-        private ToolStripMenuItem AddStringProperty;
-
-        //  Right-click button to add a Vector property to a node.
-        private ToolStripMenuItem AddVectorProperty;
+        private readonly ToolStripMenuItem New;
+        private readonly ToolStripMenuItem Open;
+        private readonly ToolStripMenuItem Save;
+        private readonly ToolStripMenuItem Unload;
+        private readonly ToolStripMenuItem Reload;
+        private readonly ToolStripMenuItem Rename;
+        private readonly ToolStripMenuItem Remove;
+        private readonly ToolStripMenuItem RemoveThis;
+        private readonly ToolStripMenuItem RemoveChildren;
+        private readonly ToolStripMenuItem Collapse;
+        private readonly ToolStripMenuItem Expand;
+        private readonly ToolStripMenuItem AddSunDirectory;
+        private readonly ToolStripMenuItem AddSunImage;
+        private readonly ToolStripMenuItem AddSubProperty;
+        private readonly ToolStripMenuItem AddDoubleProperty;
+        private readonly ToolStripMenuItem AddFloatProperty;
+        private readonly ToolStripMenuItem AddCanvasProperty;
+        private readonly ToolStripMenuItem AddIntProperty;
+        private readonly ToolStripMenuItem AddLongProperty;
+        private readonly ToolStripMenuItem AddShortProperty;
+        private readonly ToolStripMenuItem AddSoundProperty;
+        private readonly ToolStripMenuItem AddStringProperty;
+        private readonly ToolStripMenuItem AddVectorProperty;
 
         #endregion Menu Item Declarations
 
@@ -92,6 +53,9 @@ namespace SunFileManager
 
         //  Submenu which contains the Add Property submenu and directory button.
         private ToolStripMenuItem AddSubMenu = new ToolStripMenuItem("Add", Resources.Add);
+
+        //  Submenu which contains the Remove submenu
+        private ToolStripMenuItem RemoveSubMenu = new ToolStripMenuItem("Remove...", Resources.Remove);
 
         //  Submenu which contains methods for adding numerical values to nodes.
         private ToolStripMenuItem AddDigitPropertySubMenu = new ToolStripMenuItem("Digit", Resources.Input);
@@ -156,6 +120,18 @@ namespace SunFileManager
                 delegate (object sender, EventArgs e)
                 {
                     mainform.RemoveSelectedNodes();
+                }));
+
+            RemoveThis = new ToolStripMenuItem("This Node", Resources.Remove, new EventHandler(
+                delegate (object sender, EventArgs e)
+                {
+                    mainform.RemoveSelectedNodes();
+                }));
+
+            RemoveChildren = new ToolStripMenuItem("All Child Nodes", Resources.Remove, new EventHandler(
+                delegate (object sender, EventArgs e)
+                {
+                    mainform.RemoveChildNodes();
                 }));
 
             Collapse = new ToolStripMenuItem("Collapse All", Resources.Collapse, new EventHandler(
@@ -261,109 +237,72 @@ namespace SunFileManager
         {
             PopupMenu.Items.Clear();
             AddSubMenu.DropDownItems.Clear();
+            RemoveSubMenu.DropDownItems.Clear();
             AddDigitPropertySubMenu.DropDownItems.Clear();
 
-            // No nodes in list yet or chose white space. Show basic menu.
             if (node == null)
             {
                 PopupMenu.Items.AddRange(new ToolStripItem[] { New, Open });
                 PopupMenu.Show(mainform.sunTreeView, e.X, e.Y);
             }
-            else    // List is populated with nodes, show menu populated with options.
+            else
             {
-                //  If selecting a SunFile node.
                 if (node.Tag is SunFile fileNode)
                 {
-                    //  We're at top level rn
-                    AddSubMenu.DropDownItems.Add(AddSunDirectory);
-                    AddSubMenu.DropDownItems.Add(AddSunImage);
+                    //  Populate "Add" menu.
+                    AddSubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddSunDirectory, AddSunImage });
 
-                    PopupMenu.Items.Add(AddSubMenu);
-                    PopupMenu.Items.Add(new ToolStripSeparator());
-                    PopupMenu.Items.Add(Rename);
-                    PopupMenu.Items.Add(Save);
-                    PopupMenu.Items.Add(Unload);
-                    PopupMenu.Items.Add(Reload);
-                    if (fileNode.SunDirectory != null && fileNode.SunDirectory.SubDirectories.Count > 0)
+                    PopupMenu.Items.AddRange(new ToolStripItem[] { AddSubMenu, new ToolStripSeparator(), Rename, Save, Unload, Reload });
+
+                    if (fileNode.SunDirectory != null && fileNode.SunDirectory.TopLevelEntryCount > 0)
                     {
-                        PopupMenu.Items.Add(Expand);
-                        PopupMenu.Items.Add(Collapse);
+                        PopupMenu.Items.AddRange(new ToolStripItem[] { Expand, Collapse });
                     }
                     PopupMenu.Show(mainform.sunTreeView, e.X, e.Y);
                 }
-                //  If selecting a SunDirectory node.
-                else if (node.Tag is SunDirectory)
+                else if (node.Tag is SunDirectory dir)
                 {
                     //  Populate "Add" menu.
-                    AddSubMenu.DropDownItems.Add(AddSunDirectory);
-                    AddSubMenu.DropDownItems.Add(AddSunImage);
+                    AddSubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddSunDirectory, AddSunImage });
 
-                    PopupMenu.Items.Add(AddSubMenu);
-                    PopupMenu.Items.Add(new ToolStripSeparator());
-                    PopupMenu.Items.Add(Rename);
-                    PopupMenu.Items.Add(Remove);
-                    PopupMenu.Items.Add(Expand);
-                    PopupMenu.Items.Add(Collapse);
+                    PopupMenu.Items.AddRange(new ToolStripItem[] { AddSubMenu, new ToolStripSeparator(), Rename });
+
+                    if (dir.TopLevelEntryCount > 0)
+                    {
+                        // Populate "Remove" menu.
+                        RemoveSubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { RemoveThis, RemoveChildren });
+                        PopupMenu.Items.AddRange(new ToolStripMenuItem[] { RemoveSubMenu, Expand, Collapse });
+                    }
+                    else
+                    {
+                        PopupMenu.Items.Add(Remove);
+                    }
                     PopupMenu.Show(mainform.sunTreeView, e.X, e.Y);
                 }
-                else if (node.Tag is SunImage)
+                else if (node.Tag is IPropertyContainer container)
                 {
-                    //  Populate "Add" menu.
-                    AddSubMenu.DropDownItems.Add(AddSubProperty);
-                    AddSubMenu.DropDownItems.Add(AddDigitPropertySubMenu);
-                    AddSubMenu.DropDownItems.Add(AddCanvasProperty);
-                    AddSubMenu.DropDownItems.Add(AddSoundProperty);
-                    AddSubMenu.DropDownItems.Add(AddStringProperty);
-                    AddSubMenu.DropDownItems.Add(AddVectorProperty);
+                    AddSubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddSubProperty, AddDigitPropertySubMenu, AddCanvasProperty, AddStringProperty, AddVectorProperty });
 
                     //  Populate "Digit" add menu.
-                    AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddShortProperty, AddIntProperty, AddLongProperty });
-                    AddDigitPropertySubMenu.DropDownItems.Add(new ToolStripSeparator());
-                    AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddFloatProperty, AddDoubleProperty });
+                    AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddShortProperty, AddIntProperty, AddLongProperty, new ToolStripSeparator(), AddFloatProperty, AddDoubleProperty });
 
-                    PopupMenu.Items.Add(AddSubMenu);
-                    PopupMenu.Items.Add(new ToolStripSeparator());
-                    PopupMenu.Items.Add(Rename);
-                    PopupMenu.Items.Add(Remove);
-                    PopupMenu.Items.Add(Expand);
-                    PopupMenu.Items.Add(Collapse);
+                    PopupMenu.Items.AddRange(new ToolStripItem[] { AddSubMenu, new ToolStripSeparator(), Rename });
+
+                    if (container.SunProperties.Count > 0)
+                    {
+                        // Populate "Remove" menu.
+                        RemoveSubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { RemoveThis, RemoveChildren });
+                        PopupMenu.Items.AddRange(new ToolStripMenuItem[] { RemoveSubMenu, Expand, Collapse });
+                    }
+                    else
+                    {
+                        PopupMenu.Items.Add(Remove);
+                    }
                     PopupMenu.Show(mainform.sunTreeView, e.X, e.Y);
                 }
-                //  If selecting a Property node.
                 else if (node.Tag is SunProperty)
                 {
-                    if (node.Tag is SunCanvasProperty)
-                    {
-                        AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddShortProperty, AddIntProperty, AddLongProperty });
-                        AddDigitPropertySubMenu.DropDownItems.Add(new ToolStripSeparator());
-                        AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddFloatProperty, AddDoubleProperty });
-
-                        AddSubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddDigitPropertySubMenu, AddStringProperty, AddVectorProperty });
-                        PopupMenu.Items.Add(AddSubMenu);
-                        PopupMenu.Items.Add(new ToolStripSeparator());
-                    }
-                    else if (node.Tag is SunSubProperty)
-                    {
-                        //  Populate "Add" menu.
-                        AddSubMenu.DropDownItems.Add(AddSubProperty);
-                        AddSubMenu.DropDownItems.Add(AddDigitPropertySubMenu);
-                        AddSubMenu.DropDownItems.Add(AddCanvasProperty);
-                        AddSubMenu.DropDownItems.Add(AddSoundProperty);
-                        AddSubMenu.DropDownItems.Add(AddStringProperty);
-                        AddSubMenu.DropDownItems.Add(AddVectorProperty);
-
-                        //  Populate "Digit" add menu.
-                        AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddShortProperty, AddIntProperty, AddLongProperty });
-                        AddDigitPropertySubMenu.DropDownItems.Add(new ToolStripSeparator());
-                        AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { AddFloatProperty, AddDoubleProperty });
-
-                        PopupMenu.Items.Add(AddSubMenu);
-                        PopupMenu.Items.Add(new ToolStripSeparator());
-                    }
-                    PopupMenu.Items.Add(Rename);
-                    PopupMenu.Items.Add(Remove);
-                    PopupMenu.Items.Add(Expand);
-                    PopupMenu.Items.Add(Collapse);
+                    PopupMenu.Items.AddRange(new ToolStripItem[] { Rename, Remove /*ChangeValue(?)*/});
                     PopupMenu.Show(mainform.sunTreeView, e.X, e.Y);
                 }
             }

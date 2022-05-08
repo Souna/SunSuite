@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using SunLibrary.SunFileLib.Properties;
 using SunLibrary.SunFileLib.Structure;
+using SunFileManager.GUI;
 
 namespace SunFileManager
 {
@@ -93,7 +94,6 @@ namespace SunFileManager
         /// </summary>
         public SunNode AddObject(SunObject newObject, bool expandNode = true)
         {
-            //  Original HaRepacker tries to parse the wzimage before adding object.
             if (CanNodeBeInserted(this, newObject.Name))
             {
                 if (Tag is SunImage)
@@ -102,12 +102,16 @@ namespace SunFileManager
                 {
                     SunNode node = new SunNode(newObject, true);
                     Nodes.Add(node);
-                    if (node.Tag is SunProperty)
+                    if (node.Tag is SunProperty property)
                     {
-                        ((SunProperty)node.Tag).ParentImage.Changed = true;
+                        property.ParentImage.Changed = true;
                     }
                     node.EnsureVisible();
-                    //if (expandNode) node.TreeView.SelectedNode = node;
+
+                    if (expandNode)
+                    {
+                        node.Expand();
+                    }
                     return node;
                 }
                 else return null;
@@ -261,21 +265,24 @@ namespace SunFileManager
         /// Calls the <b>Remove()</b> method for whichever type
         /// <br>the selected node belongs.</br>
         /// </summary>
-        public void DeleteNode()
+        public void DeleteNode(bool removeAllChildNodes = false)
         {
             try
             {
-                Remove(); //Delete from Tree.
+                if (Tag is SunProperty prop)
+                {
+                    prop.ParentImage.Changed = true;
+                }
+                ((SunObject)Tag).Remove();
+                if (removeAllChildNodes)
+                    Nodes.Clear();
+                else
+                    Remove(); //Delete from Tree.
             }
             catch (Exception e)
             {
                 throw new Exception(message: "Error occured at DeleteNode()");
             }
-            if (Tag is SunProperty prop)
-            {
-                prop.ParentImage.Changed = true;
-            }
-            ((SunObject)Tag).Remove();
         }
 
         /// <summary>
@@ -283,22 +290,16 @@ namespace SunFileManager
         /// </summary>
         public void Rename(string newName)
         {
-            if (Tag is SunFile file)
-            {
-                if (!newName.EndsWith(".sun"))
-                {
-                    newName += ".sun";
-                }
-            }
+            if (Tag is SunFile && !newName.EndsWith(".sun"))
+                newName += ".sun";
 
-            if (Tag is SunImage img)
+            if (Tag is SunImage img && !newName.EndsWith(".img"))
             {
-                if (!newName.EndsWith(".img"))
-                    newName += ".img";
+                newName += ".img";
                 img.Changed = true;
             }
 
-            Text = newName; // The displayed name.
+            Text = newName; // Change the displayed name.
 
             ((SunObject)Tag).Name = newName;    // Change internal name.
 

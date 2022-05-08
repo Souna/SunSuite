@@ -57,23 +57,6 @@ namespace SunLibrary.SunFileLib.Util
             return Encoding.ASCII.GetString(ReadBytes(length));
         }
 
-        public string ReadStringBlock(uint offset)
-        {
-            switch (ReadByte())
-            {
-                case 0:
-                case SunImage.SunImageHeaderByte:
-                    return ReadString();
-
-                case 1:
-                case 0x1B:  //reads 1B or "K"
-                    return ReadStringAtOffset(offset + ReadInt32());
-
-                default:
-                    return "";
-            }
-        }
-
         public string ReadNullTerminatedString()
         {
             StringBuilder retString = new StringBuilder();
