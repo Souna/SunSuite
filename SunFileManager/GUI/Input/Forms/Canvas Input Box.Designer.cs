@@ -43,6 +43,7 @@
             this.lbltxtDimensions = new System.Windows.Forms.Label();
             this.lblCanvasSize = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.chkCreateSub = new System.Windows.Forms.CheckBox();
             this.panning_PictureBox = new SunFileManager.GUI.Container.Panning_PictureBox();
             this.SuspendLayout();
             // 
@@ -67,7 +68,7 @@
             this.txtCanvasPath.MinimumSize = new System.Drawing.Size(181, 20);
             this.txtCanvasPath.Name = "txtCanvasPath";
             this.txtCanvasPath.ReadOnly = true;
-            this.txtCanvasPath.Size = new System.Drawing.Size(181, 20);
+            this.txtCanvasPath.Size = new System.Drawing.Size(328, 20);
             this.txtCanvasPath.TabIndex = 0;
             this.txtCanvasPath.Click += new System.EventHandler(this.txtCanvasPath_Click);
             this.txtCanvasPath.TextChanged += new System.EventHandler(this.txtCanvasPath_TextChanged);
@@ -94,20 +95,22 @@
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(29, 66);
+            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnOk.Location = new System.Drawing.Point(12, 66);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(105, 23);
-            this.btnOk.TabIndex = 2;
+            this.btnOk.Size = new System.Drawing.Size(188, 23);
+            this.btnOk.TabIndex = 3;
             this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(140, 66);
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(214, 66);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(105, 23);
-            this.btnCancel.TabIndex = 3;
+            this.btnCancel.Size = new System.Drawing.Size(187, 23);
+            this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -184,6 +187,16 @@
             this.toolTip1.InitialDelay = 500;
             this.toolTip1.ReshowDelay = 100;
             // 
+            // chkCreateSub
+            // 
+            this.chkCreateSub.AutoSize = true;
+            this.chkCreateSub.Location = new System.Drawing.Point(266, 34);
+            this.chkCreateSub.Name = "chkCreateSub";
+            this.chkCreateSub.Size = new System.Drawing.Size(141, 17);
+            this.chkCreateSub.TabIndex = 2;
+            this.chkCreateSub.Text = "Create new SubProperty";
+            this.chkCreateSub.UseVisualStyleBackColor = true;
+            // 
             // panning_PictureBox
             // 
             this.panning_PictureBox.BackColor = System.Drawing.Color.Transparent;
@@ -201,7 +214,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(274, 97);
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(413, 97);
+            this.Controls.Add(this.chkCreateSub);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.label2);
@@ -223,6 +238,7 @@
             this.MinimumSize = new System.Drawing.Size(290, 136);
             this.Name = "frmCanvasInputBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmCanvasInputBox_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCanvasPath_KeyUp);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -245,5 +261,6 @@
         private System.Windows.Forms.Label lblCanvasSize;
         private Container.Panning_PictureBox panning_PictureBox;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckBox chkCreateSub;
     }
 }

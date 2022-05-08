@@ -11,8 +11,6 @@ namespace SunLibrary.SunFileLib.Structure
 {
     public class SunImage : SunObject, IPropertyContainer
     {
-        public const int SunImageHeaderByte = 0x69;
-
         #region Fields
 
         internal bool parsed = false;

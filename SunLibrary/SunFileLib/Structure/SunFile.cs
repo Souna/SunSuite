@@ -192,6 +192,7 @@ namespace SunLibrary.SunFileLib.Structure
                 sunWriter.Close();
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
+                GC.Collect();
             }
             catch (Exception e)
             {

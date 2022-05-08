@@ -62,7 +62,7 @@
             this.sunTreeView.MinimumSize = new System.Drawing.Size(255, 175);
             this.sunTreeView.Name = "sunTreeView";
             this.sunTreeView.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.sunTreeView.Size = new System.Drawing.Size(255, 414);
+            this.sunTreeView.Size = new System.Drawing.Size(255, 641);
             this.sunTreeView.TabIndex = 0;
             this.sunTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.sunTreeView_AfterSelect);
             this.sunTreeView.DoubleClick += new System.EventHandler(this.sunTreeView_DoubleClick);
@@ -77,7 +77,7 @@
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
             this.menuStripMain.Padding = new System.Windows.Forms.Padding(6, 1, 0, 1);
-            this.menuStripMain.Size = new System.Drawing.Size(604, 24);
+            this.menuStripMain.Size = new System.Drawing.Size(1106, 24);
             this.menuStripMain.TabIndex = 1;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -138,7 +138,7 @@
             // btnCreateTestFile
             // 
             this.btnCreateTestFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnCreateTestFile.Location = new System.Drawing.Point(11, 465);
+            this.btnCreateTestFile.Location = new System.Drawing.Point(11, 692);
             this.btnCreateTestFile.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnCreateTestFile.Name = "btnCreateTestFile";
             this.btnCreateTestFile.Size = new System.Drawing.Size(110, 21);
@@ -151,7 +151,7 @@
             // 
             this.lblSelectedNodeType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblSelectedNodeType.AutoSize = true;
-            this.lblSelectedNodeType.Location = new System.Drawing.Point(11, 449);
+            this.lblSelectedNodeType.Location = new System.Drawing.Point(11, 676);
             this.lblSelectedNodeType.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblSelectedNodeType.Name = "lblSelectedNodeType";
             this.lblSelectedNodeType.Size = new System.Drawing.Size(110, 13);
@@ -209,7 +209,7 @@
             this.chkAnimateGif.AutoSize = true;
             this.chkAnimateGif.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkAnimateGif.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.chkAnimateGif.Location = new System.Drawing.Point(273, 71);
+            this.chkAnimateGif.Location = new System.Drawing.Point(985, 67);
             this.chkAnimateGif.Name = "chkAnimateGif";
             this.chkAnimateGif.Size = new System.Drawing.Size(109, 29);
             this.chkAnimateGif.TabIndex = 10;
@@ -228,14 +228,14 @@
             this.mainfrm_panning_PictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
             this.mainfrm_panning_PictureBox.Location = new System.Drawing.Point(277, 101);
             this.mainfrm_panning_PictureBox.Name = "mainfrm_panning_PictureBox";
-            this.mainfrm_panning_PictureBox.Size = new System.Drawing.Size(315, 378);
+            this.mainfrm_panning_PictureBox.Size = new System.Drawing.Size(817, 605);
             this.mainfrm_panning_PictureBox.TabIndex = 9;
             // 
             // frmFileManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(604, 491);
+            this.ClientSize = new System.Drawing.Size(1106, 718);
             this.Controls.Add(this.lblValue);
             this.Controls.Add(this.lblPropertyName);
             this.Controls.Add(this.chkAnimateGif);

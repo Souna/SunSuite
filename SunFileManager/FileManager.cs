@@ -124,6 +124,9 @@ namespace SunFileManager
                 {
                     ((SunNode)mainform.sunTreeView.SelectedNode).DeleteNode();
                     sunFiles.Remove(file);
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    GC.Collect();
                 }
                 catch (Exception ex)
                 {

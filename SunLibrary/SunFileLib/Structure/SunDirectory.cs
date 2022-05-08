@@ -362,6 +362,7 @@ namespace SunLibrary.SunFileLib.Structure
                     fileWrite.Write(memoryStream.ToArray(), 0, (int)memoryStream.Length);
                     img.tempFileEnd = fileWrite.Position;
                     memoryStream.Dispose();
+                    imgWriter.Close();
                 }
                 else
                 {
@@ -384,8 +385,8 @@ namespace SunLibrary.SunFileLib.Structure
                 offsetSize += SunFileHelper.GetCompressedIntLength(imgLength);
                 offsetSize += SunFileHelper.GetCompressedIntLength(img.Checksum);
                 offsetSize += 4;
-                if (img.Changed)
-                    imgWriter.Close();
+                //if (img.Changed)
+                //    imgWriter.Close();
             }
             fileWrite.Close();
 
