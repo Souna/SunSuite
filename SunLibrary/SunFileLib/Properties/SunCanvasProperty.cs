@@ -17,10 +17,7 @@ namespace SunLibrary.SunFileLib.Properties
         private List<SunProperty> properties = new List<SunProperty>();
         private List<SunCanvasProperty> frameList = new List<SunCanvasProperty>();
         private SunObject parent;
-        private byte[] compressedBytes;
         private SunPngProperty png;
-        private long offset;
-        private SunBinaryReader sunReader;
 
         // Different Zlib header values. Little-endian.
         private static int ZLIB_LOW_COMPRESSION = 0x0178;
@@ -106,7 +103,6 @@ namespace SunLibrary.SunFileLib.Properties
         public override void Dispose()
         {
             name = null;
-            compressedBytes = null;
             if (png != null)
             {
                 png.Dispose();

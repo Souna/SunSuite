@@ -478,9 +478,10 @@ namespace SunFileManager
         /// </summary>
         public void AddSoundPropertyToSelectedNode(TreeNode targetNode)
         {
-            //if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
-            //if (!frmSoundInputBox.Show("Add Sound", out string name, out string path)) return;
-            //((SunNode)targetNode).AddObject(new SunSoundProperty(name, path));
+            if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
+            if (!frmSoundInputBox.Show("Add Sound", out string name, out string path))
+                return;
+            ((SunNode)targetNode).AddObject(new SunSoundProperty(name, path));
         }
 
         public void AddStringPropertyToSelectedNode(TreeNode targetNode)
@@ -728,16 +729,16 @@ namespace SunFileManager
 
         private void btnCreateTestFile_Click(object sender, EventArgs e)
         {
-            //sunTreeView.Focus();
-            //string name = "map.sun";
-            //var fullpath = Path.Combine(DefaultPath, name);
-            //SunFile file = new SunFile(name, fullpath);
-            //manager.sunFiles.Add(file);
-            //sunTreeView.Nodes.Add(new SunNode(file));
+            sunTreeView.Focus();
+            string name = "map.sun";
+            var fullpath = Path.Combine(DefaultPath, name);
+            SunFile file = new SunFile(name, fullpath);
+            manager.sunFiles.Add(file);
+            sunTreeView.Nodes.Add(new SunNode(file));
 
-            //AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name], "image1");
-            //AddCanvasPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode);
-            openToolStripMenuItem_Click(null, null);
+            AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name], "image1");
+            AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "test int", 543210);
+            //openToolStripMenuItem_Click(null, null);
         }
 
         #endregion Debug

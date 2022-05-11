@@ -216,7 +216,7 @@ namespace SunLibrary.SunFileLib.Structure
                 this.parseEverything = parseEverything;
                 reader.BaseStream.Position = offset + 1;
 
-                List<SunProperty> props = SunProperty.ParsePropertyList(offset, reader, this, this);
+                List<SunProperty> props = SunProperty.ParsePropertyList(reader, this, this);
                 properties.AddRange(props);
 
                 parsed = true;
