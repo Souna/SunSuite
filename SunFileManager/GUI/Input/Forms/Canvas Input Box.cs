@@ -232,7 +232,7 @@ namespace SunFileManager.GUI.Input
             {
                 Title = "Select Canvas File",
                 Filter = "Image File|*.jpg;*.bmp;*.png;*.gif;*.tiff",
-                SupportMultiDottedExtensions = false
+                //SupportMultiDottedExtensions = false
             };
             if (ofd.ShowDialog() == DialogResult.OK)
             {

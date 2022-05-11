@@ -131,7 +131,6 @@ namespace SunLibrary.SunFileLib.Properties
                 long position = sunReader.BaseStream.Position;
                 sunReader.BaseStream.Position = offset;
                 int length = sunReader.ReadInt32();
-                //sunReader.BaseStream.Position += 1;
 
                 if (length > 0)
                     compressedBytes = sunReader.ReadBytes(length);
@@ -184,6 +183,8 @@ namespace SunLibrary.SunFileLib.Properties
 
         public byte[] CompressBuffer(byte[] decompressedBuffer)
         {
+            /*Using DeflateStream instead of GZipStream. GZipStream includes crc info automatically
+             GZipStream is the same as DeflateStream but it adds some CRC to ensure the data has no error.*/
             MemoryStream memoryStream = new MemoryStream();
             DeflateStream zlib = new DeflateStream(memoryStream, CompressionMode.Compress, true);
             zlib.Write(decompressedBuffer, 0, decompressedBuffer.Length);
@@ -197,7 +198,8 @@ namespace SunLibrary.SunFileLib.Properties
 
             zlib.Dispose();
 
-            // Writes List header to start of image data.
+            // Writes zlib medium compression header to start of buffer
+            // Necessary?
             //Buffer.BlockCopy(new byte[] { 0x78, 0x9C }, 0, newBuffer, 0, 2);
 
             return newBuffer;

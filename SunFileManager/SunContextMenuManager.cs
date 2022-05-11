@@ -267,7 +267,7 @@ namespace SunFileManager
 
                     PopupMenu.Items.AddRange(new ToolStripItem[] { AddSubMenu, new ToolStripSeparator(), Rename });
 
-                    if (dir.TopLevelEntryCount > 0)
+                    if (node.Nodes.Count > 0/*dir.TopLevelEntryCount > 0*/)
                     {
                         // Populate "Remove" menu.
                         RemoveSubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { RemoveThis, RemoveChildren });
@@ -279,16 +279,16 @@ namespace SunFileManager
                     }
                     PopupMenu.Show(mainform.sunTreeView, e.X, e.Y);
                 }
-                else if (node.Tag is IPropertyContainer container)
+                else if (node.Tag is IPropertyContainer)
                 {
-                    AddSubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddSubProperty, AddDigitPropertySubMenu, AddCanvasProperty, AddStringProperty, AddVectorProperty });
+                    AddSubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddSubProperty, AddDigitPropertySubMenu, AddCanvasProperty, AddStringProperty, AddSoundProperty, AddVectorProperty });
 
                     //  Populate "Digit" add menu.
                     AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddShortProperty, AddIntProperty, AddLongProperty, new ToolStripSeparator(), AddFloatProperty, AddDoubleProperty });
 
                     PopupMenu.Items.AddRange(new ToolStripItem[] { AddSubMenu, new ToolStripSeparator(), Rename });
 
-                    if (container.SunProperties.Count > 0)
+                    if (node.Nodes.Count > 0/*container.SunProperties.Count > 0*/)
                     {
                         // Populate "Remove" menu.
                         RemoveSubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { RemoveThis, RemoveChildren });

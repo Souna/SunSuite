@@ -67,7 +67,7 @@ namespace SunLibrary.SunFileLib.Properties
 
         #region Custom Members
 
-        public static List<SunProperty> ParsePropertyList(uint? offset, SunBinaryReader reader, SunObject parent, SunImage parentImg)
+        public static List<SunProperty> ParsePropertyList(SunBinaryReader reader, SunObject parent, SunImage parentImg)
         {
             int entryCount = reader.ReadCompressedInt();
             List<SunProperty> properties = new List<SunProperty>(entryCount);
@@ -89,7 +89,7 @@ namespace SunLibrary.SunFileLib.Properties
                         properties.Add(new SunIntProperty(name, reader.ReadCompressedInt()) { Parent = parent });
                         break;
 
-                    case 4: // Max value is int only?
+                    case 4:
                         properties.Add(new SunLongProperty(name, reader.ReadLong()) { Parent = parent });
                         break;
 
@@ -130,8 +130,8 @@ namespace SunLibrary.SunFileLib.Properties
                     if (reader.ReadByte() == 1)
                     {
                         // There are properties
-                        reader.BaseStream.Position++;   //To jump over 04
-                        canvasProperty.AddProperties(ParsePropertyList(null, reader, canvasProperty, canvasProperty.ParentImage));
+                        reader.BaseStream.Position++;   //To jump over 04 (bc canvas is a propertycontainer)
+                        canvasProperty.AddProperties(ParsePropertyList(reader, canvasProperty, canvasProperty.ParentImage));
                     }
                     canvasProperty.PNG = new SunPngProperty(reader, false);
                     return canvasProperty;
@@ -143,12 +143,13 @@ namespace SunLibrary.SunFileLib.Properties
                     return vectorProperty;
 
                 case 10:
-                    return null;
+                    SunSoundProperty soundProperty = new SunSoundProperty(name, reader, false) { Parent = parent };
+                    return soundProperty;
 
                 case 11:
                     SunSubProperty subProp = new SunSubProperty(name) { Parent = parent };
-                    reader.BaseStream.Position++;   //To jump over 04
-                    subProp.AddProperties(ParsePropertyList(null, reader, subProp, subProp.ParentImage));
+                    reader.BaseStream.Position++;   //To jump over 04 (bc sub is a propertycontainer)
+                    subProp.AddProperties(ParsePropertyList(reader, subProp, subProp.ParentImage));
                     return subProp;
 
                 default:
