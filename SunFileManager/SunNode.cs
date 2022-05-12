@@ -307,6 +307,8 @@ namespace SunFileManager
             {
                 prop.ParentImage.Changed = true;
             }
+            isSunObjectAddedManually = true;
+            ForeColor = NewObjectForeColor;
         }
 
         /// <summary>

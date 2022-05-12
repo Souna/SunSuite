@@ -30,6 +30,7 @@ namespace SunLibrary.SunFileLib.Properties
         public override void SetValue(object value)
         {
             val = (float)value;
+            ParentImage.Changed = true;
         }
 
         public override void WriteValue(SunBinaryWriter writer)
@@ -90,7 +91,7 @@ namespace SunLibrary.SunFileLib.Properties
         /// The value of the Float property.
         /// </summary>
         public float Value
-        { get { return val; } set { val = value; } }
+        { get { return val; } set { val = value; ParentImage.Changed = true; } }
 
         /// <summary>
         /// Creates a blank SunFloatProperty object.

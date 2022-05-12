@@ -47,7 +47,11 @@
             this.lblPropertyName = new System.Windows.Forms.Label();
             this.txtPropertyName = new System.Windows.Forms.TextBox();
             this.chkAnimateGif = new System.Windows.Forms.CheckBox();
+            this.btnApplyPropertyChanges = new System.Windows.Forms.Button();
+            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+            this.soundPlayer = new SunFileManager.GUI.SoundPlayer();
             this.mainfrm_panning_PictureBox = new SunFileManager.GUI.Container.Panning_PictureBox();
+            this.lblVectorXVal = new System.Windows.Forms.Label();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -200,6 +204,7 @@
             this.txtPropertyName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.txtPropertyName.Location = new System.Drawing.Point(347, 29);
             this.txtPropertyName.Name = "txtPropertyName";
+            this.txtPropertyName.ReadOnly = true;
             this.txtPropertyName.Size = new System.Drawing.Size(205, 29);
             this.txtPropertyName.TabIndex = 8;
             this.txtPropertyName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -217,6 +222,26 @@
             this.chkAnimateGif.UseVisualStyleBackColor = true;
             this.chkAnimateGif.CheckedChanged += new System.EventHandler(this.chkAnimateGif_CheckedChanged);
             // 
+            // btnApplyPropertyChanges
+            // 
+            this.btnApplyPropertyChanges.Location = new System.Drawing.Point(558, 51);
+            this.btnApplyPropertyChanges.Name = "btnApplyPropertyChanges";
+            this.btnApplyPropertyChanges.Size = new System.Drawing.Size(87, 23);
+            this.btnApplyPropertyChanges.TabIndex = 12;
+            this.btnApplyPropertyChanges.Text = "Apply Changes";
+            this.btnApplyPropertyChanges.UseVisualStyleBackColor = true;
+            this.btnApplyPropertyChanges.Click += new System.EventHandler(this.btnApplyPropertyChanges_Click);
+            // 
+            // elementHost1
+            // 
+            this.elementHost1.BackColor = System.Drawing.Color.Transparent;
+            this.elementHost1.Location = new System.Drawing.Point(289, 522);
+            this.elementHost1.Name = "elementHost1";
+            this.elementHost1.Size = new System.Drawing.Size(465, 167);
+            this.elementHost1.TabIndex = 11;
+            this.elementHost1.Text = "elementHost1";
+            this.elementHost1.Child = this.soundPlayer;
+            // 
             // mainfrm_panning_PictureBox
             // 
             this.mainfrm_panning_PictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -226,16 +251,30 @@
             this.mainfrm_panning_PictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.mainfrm_panning_PictureBox.Canvas = null;
             this.mainfrm_panning_PictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.mainfrm_panning_PictureBox.Location = new System.Drawing.Point(277, 101);
+            this.mainfrm_panning_PictureBox.Location = new System.Drawing.Point(289, 102);
             this.mainfrm_panning_PictureBox.Name = "mainfrm_panning_PictureBox";
             this.mainfrm_panning_PictureBox.Size = new System.Drawing.Size(817, 605);
             this.mainfrm_panning_PictureBox.TabIndex = 9;
+            // 
+            // lblVectorXVal
+            // 
+            this.lblVectorXVal.AutoSize = true;
+            this.lblVectorXVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVectorXVal.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblVectorXVal.Location = new System.Drawing.Point(343, 102);
+            this.lblVectorXVal.Name = "lblVectorXVal";
+            this.lblVectorXVal.Size = new System.Drawing.Size(66, 20);
+            this.lblVectorXVal.TabIndex = 13;
+            this.lblVectorXVal.Text = "X-Value";
             // 
             // frmFileManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1106, 718);
+            this.Controls.Add(this.lblVectorXVal);
+            this.Controls.Add(this.btnApplyPropertyChanges);
+            this.Controls.Add(this.elementHost1);
             this.Controls.Add(this.lblValue);
             this.Controls.Add(this.lblPropertyName);
             this.Controls.Add(this.chkAnimateGif);
@@ -280,6 +319,10 @@
         private System.Windows.Forms.TextBox txtPropertyName;
         private GUI.Container.Panning_PictureBox mainfrm_panning_PictureBox;
         private System.Windows.Forms.CheckBox chkAnimateGif;
+        private System.Windows.Forms.Integration.ElementHost elementHost1;
+        private SunFileManager.GUI.SoundPlayer soundPlayer;
+        private System.Windows.Forms.Button btnApplyPropertyChanges;
+        private System.Windows.Forms.Label lblVectorXVal;
     }
 }
 

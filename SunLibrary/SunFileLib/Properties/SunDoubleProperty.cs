@@ -30,6 +30,7 @@ namespace SunLibrary.SunFileLib.Properties
         public override void SetValue(object value)
         {
             val = (double)value;
+            ParentImage.Changed = true;
         }
 
         public override void WriteValue(SunBinaryWriter writer)
@@ -90,7 +91,7 @@ namespace SunLibrary.SunFileLib.Properties
         /// The value of the Double property.
         /// </summary>
         public double Value
-        { get { return val; } set { val = value; } }
+        { get { return val; } set { val = value; ParentImage.Changed = true; } }
 
         /// <summary>
         /// Creates a blank SunDoubleProperty object.

@@ -23,6 +23,10 @@ namespace SunFileManager
         public SunContextMenuManager contextMenuManager = null;
         public bool AnimateGifs = false;
         public Size defaultTextBoxSize = new Size(205, 29);
+        public SoundPlayer mp3Player = null;
+
+        public TextBox temporaryYbox = new TextBox();
+        private Label lblVectorYVal = new Label();
 
         public frmFileManager()
         {
@@ -30,10 +34,13 @@ namespace SunFileManager
             chkAnimateGif.Visible = false;
             contextMenuManager = new SunContextMenuManager(this);
             lblPropertyName.Visible = false;
+            lblVectorXVal.Visible = false;
             lblValue.Visible = false;
+            btnApplyPropertyChanges.Visible = false;
             txtPropertyName.Visible = false;
             txtPropertyValue.Visible = false;
             mainfrm_panning_PictureBox.Visible = false;
+            elementHost1.Visible = false;
             manager = new FileManager(this);
         }
 
@@ -215,7 +222,7 @@ namespace SunFileManager
                 return;
             node.Rename(newName);
             // Update property name textbox without having to 'refresh' the node.
-            if (node.Tag is SunProperty && txtPropertyName.Visible) txtPropertyName.Text = newName;
+            txtPropertyName.Text = newName;
         }
 
         #endregion Treeview Node Manipulation
@@ -574,14 +581,20 @@ namespace SunFileManager
             lblValue.Visible = false;
             if (Controls.ContainsKey("temp"))
                 Controls.RemoveByKey("temp");
+            //temporaryYbox.Visible = false;
+            lblVectorYVal.Visible = false;
+            btnApplyPropertyChanges.Visible = false;
             txtPropertyName.Visible = false;
             txtPropertyName.Text = "";
             txtPropertyValue.Visible = false;
             txtPropertyValue.Text = "";
+            lblVectorXVal.Visible = false;
             txtPropertyValue.Size = defaultTextBoxSize;
             txtPropertyValue.ScrollBars = ScrollBars.None;
             txtPropertyValue.TextAlign = HorizontalAlignment.Center;
             txtPropertyValue.Multiline = false;
+            elementHost1.Visible = false;
+            soundPlayer.Visibility = System.Windows.Visibility.Collapsed;
 
             mainfrm_panning_PictureBox.Visible = false;
             mainfrm_panning_PictureBox.Canvas = null;
@@ -601,6 +614,7 @@ namespace SunFileManager
                     txtPropertyValue.Visible = true;
                     txtPropertyName.Text = shortProperty.Name;
                     txtPropertyValue.Text = shortProperty.Value.ToString();
+                    btnApplyPropertyChanges.Visible = true;
                     break;
 
                 case SunIntProperty intProperty:
@@ -610,6 +624,7 @@ namespace SunFileManager
                     txtPropertyValue.Visible = true;
                     txtPropertyName.Text = intProperty.Name;
                     txtPropertyValue.Text = intProperty.Value.ToString();
+                    btnApplyPropertyChanges.Visible = true;
                     break;
 
                 case SunLongProperty longProperty:
@@ -619,6 +634,7 @@ namespace SunFileManager
                     txtPropertyValue.Visible = true;
                     txtPropertyName.Text = longProperty.Name;
                     txtPropertyValue.Text = longProperty.Value.ToString();
+                    btnApplyPropertyChanges.Visible = true;
                     break;
 
                 case SunFloatProperty floatProperty:
@@ -628,6 +644,7 @@ namespace SunFileManager
                     txtPropertyValue.Visible = true;
                     txtPropertyName.Text = floatProperty.Name;
                     txtPropertyValue.Text = floatProperty.Value.ToString();
+                    btnApplyPropertyChanges.Visible = true;
                     break;
 
                 case SunDoubleProperty doubleProperty:
@@ -637,6 +654,7 @@ namespace SunFileManager
                     txtPropertyValue.Visible = true;
                     txtPropertyName.Text = doubleProperty.Name;
                     txtPropertyValue.Text = doubleProperty.Value.ToString();
+                    btnApplyPropertyChanges.Visible = true;
                     break;
 
                 case SunStringProperty stringProperty:
@@ -650,6 +668,7 @@ namespace SunFileManager
                     txtPropertyValue.Size = new Size(205, 62);
                     txtPropertyValue.TextAlign = HorizontalAlignment.Left;
                     txtPropertyValue.Text = stringProperty.Value;
+                    btnApplyPropertyChanges.Visible = true;
                     break;
 
                 case SunCanvasProperty canvasProperty:
@@ -678,10 +697,14 @@ namespace SunFileManager
                     //{
                     //    mainfrm_panning_PictureBox.Canvas = canvasProperty.PNG;
                     //}
+
+                    //btnApplyPropertyChanges.Visible = true;
                     break;
 
                 case SunVectorProperty vectorProperty:
                     lblPropertyName.Visible = true;
+                    lblVectorXVal.Visible = true;
+                    lblVectorYVal.Visible = true;
                     lblValue.Visible = true;
                     txtPropertyName.Visible = true;
                     txtPropertyValue.Visible = true;
@@ -690,8 +713,7 @@ namespace SunFileManager
                     // Resize the original value textbox to hold the X-value.
                     txtPropertyValue.Size = new Size(txtPropertyValue.Size.Width / 2, txtPropertyValue.Height);
 
-                    // Create temporary textbox to hold Y-value of the vector.
-                    TextBox temporaryYbox = new TextBox();
+                    // Temporary textbox to hold Y-value of the vector.
                     temporaryYbox.Name = "temp";
                     temporaryYbox.Size = txtPropertyValue.Size;
                     temporaryYbox.Font = txtPropertyValue.Font;
@@ -699,13 +721,29 @@ namespace SunFileManager
                     temporaryYbox.Location = new Point(txtPropertyValue.Location.X + txtPropertyValue.Size.Width + 1, txtPropertyValue.Location.Y);
                     Controls.Add(temporaryYbox);
 
+                    // Temporary label to say "Y-Value" under second vector value box
+                    lblVectorYVal.Size = lblVectorXVal.Size;
+                    lblVectorYVal.Font = lblVectorXVal.Font;
+                    lblVectorYVal.ForeColor = lblVectorXVal.ForeColor;
+                    lblVectorYVal.Text = "Y-Value";
+                    lblVectorYVal.Location = new Point(lblVectorXVal.Location.X + txtPropertyValue.Size.Width + 1, lblVectorXVal.Location.Y);
+                    Controls.Add(lblVectorYVal);
+
                     // Add vector values to both textboxes.
-                    txtPropertyValue.Text = "X: " + vectorProperty.X.ToString();
-                    temporaryYbox.Text = "Y: " + vectorProperty.Y.ToString();
+                    txtPropertyValue.Text = vectorProperty.X.ToString();
+                    temporaryYbox.Text = vectorProperty.Y.ToString();
+
+                    btnApplyPropertyChanges.Visible = true;
                     break;
 
-                //case SunSoundProperty soundProperty:
-                //    break;
+                case SunSoundProperty soundProperty:
+                    elementHost1.Visible = true;
+                    soundPlayer.Visibility = System.Windows.Visibility.Visible;
+                    soundPlayer.SoundProperty = (SunSoundProperty)obj;
+                    break;
+
+                case SunSubProperty subProperty:
+                    break;
 
                 default:
                     break;
@@ -721,6 +759,73 @@ namespace SunFileManager
         private void chkAnimateGif_CheckedChanged(object sender, EventArgs e)
         {
             AnimateGifs = chkAnimateGif.Checked;
+        }
+
+        private void btnApplyPropertyChanges_Click(object sender, EventArgs e)
+        {
+            if (sunTreeView.SelectedNode == null) return;
+
+            SunObject obj = (SunObject)sunTreeView.SelectedNode.Tag;
+            //I know enclosing each case in its own block to declare local variables for the TryParse methods is ugly
+            //I'd rather do this than have a bunch of if/else statements. Don't know if it's better =)
+            switch (obj)
+            {
+                case SunNullProperty nullProperty:
+                    break;
+
+                case SunShortProperty shortProperty:
+                    {
+                        if (!short.TryParse(txtPropertyValue.Text, out short newValue)) return;
+                        ((SunShortProperty)obj).Value = newValue;
+                    }
+                    break;
+
+                case SunIntProperty intProperty:
+                    {
+                        if (!int.TryParse(txtPropertyValue.Text, out int newValue)) return;
+                        ((SunIntProperty)obj).Value = newValue;
+                    }
+                    break;
+
+                case SunLongProperty longProperty:
+                    {
+                        if (!long.TryParse(txtPropertyValue.Text, out long newValue)) return;
+                        ((SunLongProperty)obj).Value = newValue;
+                    }
+                    break;
+
+                case SunFloatProperty floatProperty:
+                    {
+                        if (!float.TryParse(txtPropertyValue.Text, out float newValue)) return;
+                        ((SunFloatProperty)obj).Value = newValue;
+                    }
+                    break;
+
+                case SunDoubleProperty doubleProperty:
+                    {
+                        if (!double.TryParse(txtPropertyValue.Text, out double newValue)) return;
+                        ((SunDoubleProperty)obj).Value = newValue;
+                    }
+                    break;
+
+                case SunStringProperty stringProperty:
+                    ((SunStringProperty)obj).Value = txtPropertyValue.Text;
+                    break;
+
+                case SunCanvasProperty canvasProperty:
+
+                    break;
+
+                case SunVectorProperty vectorProperty:
+                    {
+                        if (!int.TryParse(txtPropertyValue.Text, out int newXValue)) return;
+                        ((SunVectorProperty)obj).X.Value = newXValue;
+                        if (!int.TryParse(temporaryYbox.Text, out int newYValue)) return;
+                        ((SunVectorProperty)obj).Y.Value = newYValue;
+                    }
+                    break;
+            }
+            sunTreeView.SelectedNode.ForeColor = SunNode.NewObjectForeColor;
         }
 
         #endregion Treeview Input Events
