@@ -67,6 +67,7 @@ namespace SunLibrary.SunFileLib.Properties
         /// <param name="value"></param>
         public override void SetValue(object value)
         {
+            ParentImage.Changed = true;
         }
 
         public override void WriteValue(SunBinaryWriter writer)

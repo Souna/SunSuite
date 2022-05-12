@@ -95,19 +95,19 @@ namespace SunLibrary.SunFileLib.Properties
         /// Returns a new Point with both X and Y values.
         /// </summary>
         public Point Value
-        { get { return new Point(x.Value, y.Value); } set { x.Value = value.X; y.Value = value.Y; } }
+        { get { return new Point(x.Value, y.Value); } set { x.Value = value.X; y.Value = value.Y; ParentImage.Changed = true; } }
 
         /// <summary>
         /// The X-value of the vector point.
         /// </summary>
         public SunIntProperty X
-        { get { return x; } set { x = value; } }
+        { get { return x; } set { x = value; ParentImage.Changed = true; } }
 
         /// <summary>
         /// The Y-value of the vector point.
         /// </summary>
         public SunIntProperty Y
-        { get { return y; } set { y = value; } }
+        { get { return y; } set { y = value; ParentImage.Changed = true; } }
 
         /// <summary>
         /// Creates a blank SunVectorProperty object.

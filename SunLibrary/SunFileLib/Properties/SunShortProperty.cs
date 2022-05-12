@@ -32,6 +32,7 @@ namespace SunLibrary.SunFileLib.Properties
         public override void SetValue(object value)
         {
             val = (short)value;
+            ParentImage.Changed = true;
         }
 
         public override void WriteValue(SunBinaryWriter writer)
@@ -85,7 +86,7 @@ namespace SunLibrary.SunFileLib.Properties
         /// The value of the Short property.
         /// </summary>
         public short Value
-        { get { return val; } set { val = (short)value; } }
+        { get { return val; } set { val = (short)value; ParentImage.Changed = true; } }
 
         /// <summary>
         /// Creates a blank SunIntProperty object.
