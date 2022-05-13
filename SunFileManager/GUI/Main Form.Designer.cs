@@ -39,6 +39,9 @@
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sunDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnCreateTestFile = new System.Windows.Forms.Button();
             this.lblSelectedNodeType = new System.Windows.Forms.Label();
             this.cmsNodes = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -48,10 +51,10 @@
             this.txtPropertyName = new System.Windows.Forms.TextBox();
             this.chkAnimateGif = new System.Windows.Forms.CheckBox();
             this.btnApplyPropertyChanges = new System.Windows.Forms.Button();
+            this.lblVectorXVal = new System.Windows.Forms.Label();
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             this.soundPlayer = new SunFileManager.GUI.SoundPlayer();
             this.mainfrm_panning_PictureBox = new SunFileManager.GUI.Container.Panning_PictureBox();
-            this.lblVectorXVal = new System.Windows.Forms.Label();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,6 +69,7 @@
             this.sunTreeView.MinimumSize = new System.Drawing.Size(255, 175);
             this.sunTreeView.Name = "sunTreeView";
             this.sunTreeView.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.sunTreeView.ShowLines = false;
             this.sunTreeView.Size = new System.Drawing.Size(255, 641);
             this.sunTreeView.TabIndex = 0;
             this.sunTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.sunTreeView_AfterSelect);
@@ -77,7 +81,8 @@
             // 
             this.menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.editToolStripMenuItem});
+            this.editToolStripMenuItem,
+            this.toolsToolStripMenuItem});
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
             this.menuStripMain.Padding = new System.Windows.Forms.Padding(6, 1, 0, 1);
@@ -93,27 +98,33 @@
             this.saveToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 22);
-            this.fileToolStripMenuItem.Text = "File";
+            this.fileToolStripMenuItem.Text = "&File";
             // 
             // newToolStripMenuItem
             // 
+            this.newToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.New;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newToolStripMenuItem.Text = "&New...";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
+            this.openToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.Open;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
+            this.saveToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.Save;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
@@ -122,22 +133,48 @@
             this.addToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 22);
-            this.editToolStripMenuItem.Text = "Edit";
+            this.editToolStripMenuItem.Text = "&Edit";
             // 
             // addToolStripMenuItem
             // 
             this.addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sunDirectoryToolStripMenuItem});
+            this.addToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.Add;
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addToolStripMenuItem.Text = "Add";
             // 
             // sunDirectoryToolStripMenuItem
             // 
+            this.sunDirectoryToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.Directory;
             this.sunDirectoryToolStripMenuItem.Name = "sunDirectoryToolStripMenuItem";
             this.sunDirectoryToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.sunDirectoryToolStripMenuItem.Text = "SunDirectory";
             this.sunDirectoryToolStripMenuItem.Click += new System.EventHandler(this.sunDirectoryToolStripMenuItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.optionsToolStripMenuItem,
+            this.helpToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 22);
+            this.toolsToolStripMenuItem.Text = "&Tools";
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.Property;
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.optionsToolStripMenuItem.Text = "Options";
+            this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // btnCreateTestFile
             // 
@@ -232,6 +269,17 @@
             this.btnApplyPropertyChanges.UseVisualStyleBackColor = true;
             this.btnApplyPropertyChanges.Click += new System.EventHandler(this.btnApplyPropertyChanges_Click);
             // 
+            // lblVectorXVal
+            // 
+            this.lblVectorXVal.AutoSize = true;
+            this.lblVectorXVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVectorXVal.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblVectorXVal.Location = new System.Drawing.Point(343, 102);
+            this.lblVectorXVal.Name = "lblVectorXVal";
+            this.lblVectorXVal.Size = new System.Drawing.Size(66, 20);
+            this.lblVectorXVal.TabIndex = 13;
+            this.lblVectorXVal.Text = "X-Value";
+            // 
             // elementHost1
             // 
             this.elementHost1.BackColor = System.Drawing.Color.Transparent;
@@ -256,17 +304,6 @@
             this.mainfrm_panning_PictureBox.Size = new System.Drawing.Size(817, 605);
             this.mainfrm_panning_PictureBox.TabIndex = 9;
             // 
-            // lblVectorXVal
-            // 
-            this.lblVectorXVal.AutoSize = true;
-            this.lblVectorXVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVectorXVal.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblVectorXVal.Location = new System.Drawing.Point(343, 102);
-            this.lblVectorXVal.Name = "lblVectorXVal";
-            this.lblVectorXVal.Size = new System.Drawing.Size(66, 20);
-            this.lblVectorXVal.TabIndex = 13;
-            this.lblVectorXVal.Text = "X-Value";
-            // 
             // frmFileManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -286,6 +323,7 @@
             this.Controls.Add(this.sunTreeView);
             this.Controls.Add(this.menuStripMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStripMain;
             this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.MaximizeBox = false;
@@ -323,6 +361,9 @@
         private SunFileManager.GUI.SoundPlayer soundPlayer;
         private System.Windows.Forms.Button btnApplyPropertyChanges;
         private System.Windows.Forms.Label lblVectorXVal;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
     }
 }
 

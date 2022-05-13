@@ -69,8 +69,6 @@ namespace SunFileManager
                     Nodes.Add(new SunNode(prop));
                 }
             }
-
-            // another check for image and anything else that applies here ?
         }
 
         private void TryParseImage(bool reparseImage = true)
@@ -193,30 +191,6 @@ namespace SunFileManager
             }
 
             return true;
-
-            //  We're adding something to an existing image
-            //    else if (selectedObject is SunCanvasProperty image)
-            //    {
-            //        //  We're adding a gif to its own gif parent node (containing all the frames)
-            //        if (image.IsGif)
-            //        {
-            //            if (newObject is SunCanvasProperty frame)
-            //                //image.AddProperty(frame);
-            //                image.AddFrame(frame);
-            //            else return false;  // error
-            //        }
-            //        //  We're adding a property to the image
-            //        else if (newObject is SunProperty prop)
-            //        {
-            //            // Cannot create a property with a duplicate name under the same image.
-            //            foreach (SunProperty p in image.SunProperties)
-            //            {
-            //                if (p.Name == prop.Name) return false;
-            //            }
-            //            image.AddProperty(prop);
-            //        }
-            //        else return false;
-            //    }
         }
 
         /// <summary>

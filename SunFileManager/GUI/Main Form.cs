@@ -63,6 +63,22 @@ namespace SunFileManager
             AddSunDirectoryToSelectedNode(sunTreeView.SelectedNode, null);
         }
 
+        /// <summary>
+        /// Opens settings menu
+        /// </summary>
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new frmSettings().ShowDialog();
+        }
+
+        /// <summary>
+        /// Displays help menu
+        /// </summary>
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new frmHelp().ShowDialog();
+        }
+
         #endregion Toolstrip
 
         #region Loading, Unloading & Saving
@@ -142,6 +158,8 @@ namespace SunFileManager
                     // If selected node is something other than a top level SunFile,
                     // set node = to the top level SunFile node.
                     node = ((SunNode)sunTreeView.SelectedNode).TopLevelNode;
+
+                    sunTreeView.SelectedNode = ((SunNode)sunTreeView.SelectedNode).TopLevelNode;
                 }
             }
             manager.SaveToDisk(ref node);
@@ -719,6 +737,7 @@ namespace SunFileManager
                     temporaryYbox.Font = txtPropertyValue.Font;
                     temporaryYbox.TextAlign = txtPropertyValue.TextAlign;
                     temporaryYbox.Location = new Point(txtPropertyValue.Location.X + txtPropertyValue.Size.Width + 1, txtPropertyValue.Location.Y);
+                    temporaryYbox.TabIndex = txtPropertyValue.TabIndex + 1;
                     Controls.Add(temporaryYbox);
 
                     // Temporary label to say "Y-Value" under second vector value box
@@ -829,6 +848,32 @@ namespace SunFileManager
         }
 
         #endregion Treeview Input Events
+
+        #region Form Input Events
+
+        /// <summary>
+        /// For key combinations
+        /// </summary>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                // ... Process Shift+Ctrl+Alt+B ...
+                case Keys.B | Keys.Control | Keys.Alt | Keys.Shift:
+                    ShowPeterAlert();
+                    return true; // signal that we've processed this key
+            }
+
+            // run base implementation
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        public void ShowPeterAlert()
+        {
+            new frmPeterAlert().ShowDialog();
+        }
+
+        #endregion Form Input Events
 
         #region Debug
 

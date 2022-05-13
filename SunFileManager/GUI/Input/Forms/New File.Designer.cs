@@ -100,7 +100,7 @@
             this.MinimizeBox = false;
             this.Name = "frmNewFile";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "New file...";
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFileName_KeyUp);
             this.ResumeLayout(false);
