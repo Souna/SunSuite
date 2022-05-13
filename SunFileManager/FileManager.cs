@@ -55,7 +55,7 @@ namespace SunFileManager
             return file;
         }
 
-        public void AddLoadedSunFileToTreeView(SunFile file, Dispatcher dispatcher)
+        public void AddLoadedSunFileToTreeView(SunFile file, Dispatcher dispatcher, bool expand = false)
         {
             //Make it so this can edit treeview on mainform
             SunNode sunNode = new SunNode(file);
@@ -67,6 +67,7 @@ namespace SunFileManager
                     mainform.sunTreeView.BeginUpdate();
                     mainform.sunTreeView.Nodes.Add(sunNode);
                     SortNodesRecursively(sunNode);
+                    if (expand) sunNode.Expand();
                     mainform.sunTreeView.EndUpdate();
                 }));
             }
@@ -75,6 +76,7 @@ namespace SunFileManager
                 mainform.sunTreeView.BeginUpdate();
                 mainform.sunTreeView.Nodes.Add(sunNode);
                 SortNodesRecursively(sunNode);
+                if (expand) sunNode.Expand();
                 mainform.sunTreeView.EndUpdate();
             }
         }
@@ -113,7 +115,7 @@ namespace SunFileManager
             //Now reload the file
             SunFile loadedSunFile = LoadSunFile(sfd.FileName);
             if (loadedSunFile != null)
-                AddLoadedSunFileToTreeView(loadedSunFile, Dispatcher.CurrentDispatcher);
+                AddLoadedSunFileToTreeView(loadedSunFile, Dispatcher.CurrentDispatcher, node.IsExpanded);
         }
 
         public void UnloadSunFile(SunFile file)

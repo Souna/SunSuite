@@ -118,6 +118,24 @@
     <Compile Include="GUI\Input\Controls\LongInput.Designer.cs">
       <DependentUpon>LongInput.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Input\Forms\Help.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\Help.Designer.cs">
+      <DependentUpon>Help.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\Peter Alert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\Peter Alert.Designer.cs">
+      <DependentUpon>Peter Alert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Input\Forms\Sound Input Box.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,6 +220,15 @@
     <EmbeddedResource Include="GUI\Container\Panning PictureBox.resx">
       <DependentUpon>Panning PictureBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\Forms\Help.resx">
+      <DependentUpon>Help.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\Forms\Peter Alert.resx">
+      <DependentUpon>Peter Alert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\Forms\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Input\Forms\Sound Input Box.resx">
       <DependentUpon>Sound Input Box.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -278,6 +305,7 @@
     <None Include="Resources\Sound.png" />
     <None Include="Resources\Property.png" />
     <None Include="Resources\Decimal.png" />
+    <None Include="Resources\peter.gif" />
     <Content Include="Resources\String.png" />
     <Content Include="Resources\sun.ico" />
   </ItemGroup>
