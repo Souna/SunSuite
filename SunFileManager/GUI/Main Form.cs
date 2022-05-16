@@ -53,6 +53,7 @@ namespace SunFileManager
             //DisplayWarnings
             sunTreeView.ShowLines = Program.UserSettings.DisplayLinesBetweenNodes;
             sunTreeView.ShowRootLines = Program.UserSettings.DisplayLinesOnRootNodes;
+            sunTreeView.FullRowSelect = Program.UserSettings.HighlightWholeWidth;
         }
 
         #region Toolstrip
@@ -553,15 +554,6 @@ namespace SunFileManager
         #endregion Adding Directories & Properties
 
         #region Treeview Input Events
-
-        private void sunTreeView_AfterExpand(object sender, TreeViewEventArgs e)
-        {
-
-        }
-
-        private void sunTreeView_AfterCollapse(object sender, TreeViewEventArgs e)
-        {
-        }
 
         private void sunTreeView_KeyDown(object sender, KeyEventArgs e)
         {

@@ -18,6 +18,8 @@ namespace SunFileManager.Config
 
         public bool DisplayLinesOnRootNodes { get; set; }
 
+        public bool HighlightWholeWidth { get; set; }
+
         public override void WriteSettings(SettingsWriter writer)
         {
             writer.Write("UseDark", UseDark);
@@ -25,6 +27,7 @@ namespace SunFileManager.Config
             writer.Write("DisplayNodeWarnings", DisplayNodeWarnings);
             writer.Write("DisplayLinesBetweenNodes", DisplayLinesBetweenNodes);
             writer.Write("DisplayLinesOnRootNodes", DisplayLinesOnRootNodes);
+            writer.Write("HighlightWholeNodeWidth", HighlightWholeWidth);
         }
 
         public override void ReadSettings(SettingsReader reader)
@@ -34,6 +37,7 @@ namespace SunFileManager.Config
             DisplayNodeWarnings = reader.Read("DisplayNodeWarnings", true);
             DisplayLinesBetweenNodes = reader.Read("DisplayLinesBetweenNodes", true);
             DisplayLinesOnRootNodes = reader.Read("DisplayLinesOnRootNodes", true);
+            HighlightWholeWidth = reader.Read("HighlightWholeNodeWidth", false);
         }
     }
 }

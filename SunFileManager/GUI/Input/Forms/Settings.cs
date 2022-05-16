@@ -36,6 +36,7 @@ namespace SunFileManager.GUI.Input.Forms
             Program.UserSettings.DisplayNodeWarnings = chkNodeWarnings.Checked;
             Program.UserSettings.DisplayLinesBetweenNodes = chkNodeLines.Checked;
             Program.UserSettings.DisplayLinesOnRootNodes = chkNodeRootLines.Checked;
+            Program.UserSettings.HighlightWholeWidth = chkHighlightWholeWidth.Checked;
 
             Program.UserSettings.Save();
         }
@@ -47,6 +48,8 @@ namespace SunFileManager.GUI.Input.Forms
             chkNodeWarnings.Checked = Program.UserSettings.DisplayNodeWarnings;
             chkNodeLines.Checked = Program.UserSettings.DisplayLinesBetweenNodes;
             chkNodeRootLines.Checked = Program.UserSettings.DisplayLinesOnRootNodes;
+            chkHighlightWholeWidth.Checked = Program.UserSettings.HighlightWholeWidth;
+
             btnApply.Enabled = false;
         }
 
