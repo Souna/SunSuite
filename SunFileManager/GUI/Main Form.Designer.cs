@@ -76,8 +76,6 @@
             this.sunTreeView.ShowRootLines = false;
             this.sunTreeView.Size = new System.Drawing.Size(255, 641);
             this.sunTreeView.TabIndex = 0;
-            this.sunTreeView.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.sunTreeView_AfterCollapse);
-            this.sunTreeView.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.sunTreeView_AfterExpand);
             this.sunTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.sunTreeView_AfterSelect);
             this.sunTreeView.DoubleClick += new System.EventHandler(this.sunTreeView_DoubleClick);
             this.sunTreeView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sunTreeView_KeyDown);
