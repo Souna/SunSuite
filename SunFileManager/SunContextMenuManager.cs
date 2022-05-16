@@ -152,13 +152,13 @@ namespace SunFileManager
 
             #region Properties
 
-            AddSunDirectory = new ToolStripMenuItem("Directory", Resources.Directory, new EventHandler(
+            AddSunDirectory = new ToolStripMenuItem("Directory", Resources.addfolder, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
                     mainform.AddSunDirectoryToSelectedNode(mainform.sunTreeView.SelectedNode, null);
                 }));
 
-            AddSunImage = new ToolStripMenuItem("Image", Resources.Directory, new EventHandler(
+            AddSunImage = new ToolStripMenuItem("Image", Resources._3d, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
                     mainform.AddSunImageToSelectedNode(mainform.sunTreeView.SelectedNode, null);
@@ -302,7 +302,7 @@ namespace SunFileManager
                 }
                 else if (node.Tag is SunProperty)
                 {
-                    PopupMenu.Items.AddRange(new ToolStripItem[] { Rename, Remove /*ChangeValue(?)*/});
+                    PopupMenu.Items.AddRange(new ToolStripItem[] { Rename, Remove });
                     PopupMenu.Show(mainform.sunTreeView, e.X, e.Y);
                 }
             }

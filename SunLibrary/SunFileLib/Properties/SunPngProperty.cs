@@ -88,13 +88,13 @@ namespace SunLibrary.SunFileLib.Properties
         /// The width of the bitmap
         /// </summary>
         public int Width
-        { get { return width; } set { width = value; ParentImage.Changed = true; } }
+        { get { return width; } set { width = value; } }
 
         /// <summary>
         /// The height of the bitmap
         /// </summary>
         public int Height
-        { get { return height; } set { height = value; ParentImage.Changed = true; } }
+        { get { return height; } set { height = value; } }
 
         public void SetPNG(Bitmap png)
         {

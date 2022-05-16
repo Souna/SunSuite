@@ -26,7 +26,78 @@ namespace SunFileManager
                 ForeColor = NewObjectForeColor;
             }
 
+            SetNodeImage(sourceObject);
             ParseChilds(sourceObject);
+        }
+
+        public void SetNodeImage(SunObject obj)
+        {
+            switch (obj.ObjectType)
+            {
+                case SunObjectType.File:
+                    ImageIndex = 0;
+                    SelectedImageIndex = 0;
+                    break;
+
+                case SunObjectType.Image:
+                    ImageIndex = 1;
+                    SelectedImageIndex = 1;
+                    break;
+
+                case SunObjectType.Directory:
+                    ImageIndex = 2;
+                    SelectedImageIndex = 2;
+                    break;
+
+                case SunObjectType.Property:
+                    switch (((SunProperty)obj).PropertyType)
+                    {
+                        case SunPropertyType.Short:
+                        case SunPropertyType.Int:
+                        case SunPropertyType.Long:
+                            ImageIndex = 3;
+                            SelectedImageIndex = 3;
+                            break;
+
+                        case SunPropertyType.Float:
+                        case SunPropertyType.Double:
+                            ImageIndex = 4;
+                            SelectedImageIndex = 4;
+                            break;
+
+                        case SunPropertyType.String:
+                            ImageIndex = 5;
+                            SelectedImageIndex = 5;
+                            break;
+
+                        case SunPropertyType.Canvas:
+                        case SunPropertyType.Png:
+                            ImageIndex = 6;
+                            SelectedImageIndex = 6;
+                            break;
+
+                        case SunPropertyType.Vector:
+                            ImageIndex = 7;
+                            SelectedImageIndex = 7;
+                            break;
+
+                        case SunPropertyType.Sound:
+                            ImageIndex = 8;
+                            SelectedImageIndex = 8;
+                            break;
+
+                        case SunPropertyType.SubProperty:
+                            ImageIndex = 9;
+                            SelectedImageIndex = 9;
+                            break;
+
+                        default:
+                            ImageIndex = 10;
+                            SelectedImageIndex = 10;
+                            break;
+                    }
+                    break;
+            }
         }
 
         public void ParseChilds(SunObject sourceObject)

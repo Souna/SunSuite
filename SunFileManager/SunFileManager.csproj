@@ -83,6 +83,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Security.AccessControl, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.AccessControl.4.7.0\lib\net461\System.Security.AccessControl.dll</HintPath>
     </Reference>
@@ -217,6 +218,7 @@
     <Compile Include="FileManager.cs" />
     <Compile Include="SunMP3Streamer.cs" />
     <Compile Include="SunNode.cs" />
+    <Compile Include="TreeViewExtensions.cs" />
     <EmbeddedResource Include="GUI\Container\Panning PictureBox.resx">
       <DependentUpon>Panning PictureBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -271,9 +273,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="..\.editorconfig">
-      <Link>.editorconfig</Link>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -284,9 +283,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Vector.png" />
@@ -306,6 +302,11 @@
     <None Include="Resources\Property.png" />
     <None Include="Resources\Decimal.png" />
     <None Include="Resources\peter.gif" />
+    <None Include="Resources\AddDirectory.bmp" />
+    <None Include="Resources\addfolder.png" />
+    <None Include="Resources\3d.png" />
+    <None Include="Resources\folder.png" />
+    <None Include="Resources\folderblue.png" />
     <Content Include="Resources\String.png" />
     <Content Include="Resources\sun.ico" />
   </ItemGroup>
