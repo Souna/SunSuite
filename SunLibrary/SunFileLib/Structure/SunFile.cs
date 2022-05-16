@@ -203,16 +203,16 @@ namespace SunLibrary.SunFileLib.Structure
         /// <summary>
         /// Parses the SunFile with all of its contents for loading.
         /// </summary>
-        public bool ParseSunFile(out string parseError)
+        public bool ParseSunFile(out string parseError, bool parseImages)
         {
-            bool success = ParseMasterSunDirectory(out parseError);
+            bool success = ParseMasterSunDirectory(out parseError, parseImages);
             return success;
         }
 
         /// <summary>
         /// Parse the directories in the SunFile.
         /// </summary>
-        public bool ParseMasterSunDirectory(out string parseError)
+        public bool ParseMasterSunDirectory(out string parseError, bool parseImages)
         {
             if (path == null)
             {
@@ -236,7 +236,7 @@ namespace SunLibrary.SunFileLib.Structure
             try
             {
                 SunDirectory masterDirectory = new SunDirectory(reader, name, this);
-                masterDirectory.ParseDirectory();
+                masterDirectory.ParseDirectory(parseImages);
                 this.SunDirectory = masterDirectory;
                 parseError = "Success";
                 return true;

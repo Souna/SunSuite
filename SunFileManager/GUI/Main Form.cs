@@ -42,6 +42,17 @@ namespace SunFileManager
             mainfrm_panning_PictureBox.Visible = false;
             elementHost1.Visible = false;
             manager = new FileManager(this);
+            Program.UserSettings.Load();
+            ApplySettings();
+        }
+
+        public void ApplySettings()
+        {
+            //UseDarkMode
+            //AutomaticallyParseImages is handled in FileManager.OpenSunFile()
+            //DisplayWarnings
+            sunTreeView.ShowLines = Program.UserSettings.DisplayLinesBetweenNodes;
+            sunTreeView.ShowRootLines = Program.UserSettings.DisplayLinesOnRootNodes;
         }
 
         #region Toolstrip
@@ -51,8 +62,7 @@ namespace SunFileManager
         /// </summary>
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmNewFile newfile = new frmNewFile(this);
-            newfile.ShowDialog();
+            new frmNewFile(this).ShowDialog();
         }
 
         /// <summary>
@@ -68,7 +78,7 @@ namespace SunFileManager
         /// </summary>
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new frmSettings().ShowDialog();
+            new frmSettings(this).ShowDialog();
         }
 
         /// <summary>
@@ -127,7 +137,7 @@ namespace SunFileManager
             foreach (SunFile sunFile in loadedSunFiles)
             {
                 // Add to tree.
-                manager.AddLoadedSunFileToTreeView(sunFile, dispatcher);
+                manager.AddLoadedSunFileToTreeView(sunFile, dispatcher, null);
             }
         }
 
@@ -158,7 +168,6 @@ namespace SunFileManager
                     // If selected node is something other than a top level SunFile,
                     // set node = to the top level SunFile node.
                     node = ((SunNode)sunTreeView.SelectedNode).TopLevelNode;
-
                     sunTreeView.SelectedNode = ((SunNode)sunTreeView.SelectedNode).TopLevelNode;
                 }
             }
@@ -544,6 +553,15 @@ namespace SunFileManager
         #endregion Adding Directories & Properties
 
         #region Treeview Input Events
+
+        private void sunTreeView_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+
+        }
+
+        private void sunTreeView_AfterCollapse(object sender, TreeViewEventArgs e)
+        {
+        }
 
         private void sunTreeView_KeyDown(object sender, KeyEventArgs e)
         {

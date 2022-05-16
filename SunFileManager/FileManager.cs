@@ -31,7 +31,7 @@ namespace SunFileManager
                 }
 
                 string error = string.Empty;
-                bool success = f.ParseSunFile(out error);
+                bool success = f.ParseSunFile(out error, Program.UserSettings.ParseImagesAutomatically);
 
                 file = f;
                 return success;
@@ -55,9 +55,8 @@ namespace SunFileManager
             return file;
         }
 
-        public void AddLoadedSunFileToTreeView(SunFile file, Dispatcher dispatcher, bool expand = false)
+        public void AddLoadedSunFileToTreeView(SunFile file, Dispatcher dispatcher, List<string>? expansionState)
         {
-            //Make it so this can edit treeview on mainform
             SunNode sunNode = new SunNode(file);
 
             if (dispatcher != null)
@@ -67,7 +66,8 @@ namespace SunFileManager
                     mainform.sunTreeView.BeginUpdate();
                     mainform.sunTreeView.Nodes.Add(sunNode);
                     SortNodesRecursively(sunNode);
-                    if (expand) sunNode.Expand();
+                    if (expansionState != null)
+                        mainform.sunTreeView.Nodes.SetExpansionState(expansionState);
                     mainform.sunTreeView.EndUpdate();
                 }));
             }
@@ -76,7 +76,8 @@ namespace SunFileManager
                 mainform.sunTreeView.BeginUpdate();
                 mainform.sunTreeView.Nodes.Add(sunNode);
                 SortNodesRecursively(sunNode);
-                if (expand) sunNode.Expand();
+                if (expansionState != null)
+                    mainform.sunTreeView.Nodes.SetExpansionState(expansionState);
                 mainform.sunTreeView.EndUpdate();
             }
         }
@@ -87,6 +88,7 @@ namespace SunFileManager
         public void SaveToDisk(ref SunNode node)
         {
             SunFile SaveSunFile = (SunFile)node.Tag;
+            var savedExpansionState = mainform.sunTreeView.Nodes.GetExpansionState();
 
             SaveFileDialog sfd = new SaveFileDialog()
             {
@@ -113,9 +115,33 @@ namespace SunFileManager
             }
 
             //Now reload the file
+
             SunFile loadedSunFile = LoadSunFile(sfd.FileName);
             if (loadedSunFile != null)
-                AddLoadedSunFileToTreeView(loadedSunFile, Dispatcher.CurrentDispatcher, node.IsExpanded);
+                AddLoadedSunFileToTreeView(loadedSunFile, Dispatcher.CurrentDispatcher, savedExpansionState);  //make a setting
+        }
+
+        /// <summary>
+        /// Reloads a file that already exists on the treeview.
+        /// </summary>
+        public void ReloadSunFile(SunFile file, Dispatcher currentDispatcher = null)
+        {
+            var savedExpansionState = mainform.sunTreeView.Nodes.GetExpansionState();
+            string path = file.FilePath;
+            if (currentDispatcher != null)
+            {
+                currentDispatcher.BeginInvoke((Action)(() =>
+                {
+                    UnloadSunFile(file);
+                }));
+            }
+            else
+                UnloadSunFile(file);
+
+            SunFile loadedSunFile = LoadSunFile(path);
+
+            if (loadedSunFile != null)
+                mainform.manager.AddLoadedSunFileToTreeView(loadedSunFile, currentDispatcher, savedExpansionState);
         }
 
         public void UnloadSunFile(SunFile file)
@@ -145,25 +171,6 @@ namespace SunFileManager
             {
                 UnloadSunFile(file);
             }
-        }
-
-        public void ReloadSunFile(SunFile file, Dispatcher currentDispatcher = null)
-        {
-            string path = file.FilePath;
-            if (currentDispatcher != null)
-            {
-                currentDispatcher.BeginInvoke((Action)(() =>
-                {
-                    UnloadSunFile(file);
-                }));
-            }
-            else
-                UnloadSunFile(file);
-
-            SunFile loadedSunFile = LoadSunFile(path);
-
-            if (loadedSunFile != null)
-                mainform.manager.AddLoadedSunFileToTreeView(loadedSunFile, currentDispatcher);
         }
 
         public void SortNodesRecursively(SunNode parent)

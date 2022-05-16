@@ -244,7 +244,6 @@ namespace SunLibrary.SunFileLib.Structure
 
         /// <summary>
         /// Saves the SunDirectory to disk within the <b>SunFile</b>.
-        /// <br>Called by the <b>SaveToDisk()</b> method in SunFile.</br>
         /// </summary>
         public void SaveDirectory(SunBinaryWriter writer)
         {
@@ -329,7 +328,7 @@ namespace SunLibrary.SunFileLib.Structure
         }
 
         /// <summary>
-        /// Calculates the sizes and offset sizes of every SunDirectory in the File.
+        /// Calculates the size and offset of every SunDirectory/SunImage in the File.
         /// </summary>
         public int GenerateFileInfo(string tempFileName)
         {
@@ -409,7 +408,11 @@ namespace SunLibrary.SunFileLib.Structure
             return Size;
         }
 
-        public void ParseDirectory(bool lazyParse = false)
+        /// <summary>
+        /// Parse directories and images in the SunFile.
+        /// </summary>
+        /// <param name="parseImages">Only load images but does not parse them if true.</param>
+        public void ParseDirectory(bool parseImages)
         {
             int entryCount = reader.ReadCompressedInt();
             for (int i = 0; i < entryCount; i++)
@@ -449,8 +452,8 @@ namespace SunLibrary.SunFileLib.Structure
                     subDir.Parent = this;
                     subDirs.Add(subDir);
 
-                    if (lazyParse)
-                        break;
+                    //if (lazyParse)
+                    //    break;
                 }
                 else if (type == 2)
                 {
@@ -461,79 +464,25 @@ namespace SunLibrary.SunFileLib.Structure
                     img.Parent = this;  //how does this line tell how many properties are in the img???
                     images.Add(img);
 
-                    if (lazyParse)
-                        break;
+                    //if (lazyParse)
+                    //    break;
+                }
+            }
+
+            if (parseImages)
+            {
+                foreach (SunImage img in SunImages)
+                {
+                    img.ParseImage();
                 }
             }
 
             foreach (SunDirectory subdir in subDirs)
             {
                 reader.BaseStream.Position = subdir.offset;  //see if this line is even needed
-                subdir.ParseDirectory();
+                subdir.ParseDirectory(parseImages);
             }
         }
-
-        //public void CalculateCanvasSize(SunCanvasProperty canvasProperty)
-        //{
-        //    int a;
-
-        //    Size += 4;  /**/ offsetSize += 4;   // Picture property size
-        //    Size++;     /**/ offsetSize++;      // Property bool ("yes, there are properties associated with this canvas")
-        //    Size++;     /**/ offsetSize++;      // Gif bool (Marks canvas as a gif)
-
-        //    if (canvasProperty.SunProperties.Count > 0)
-        //    {
-        //        a = SunFileHelper.GetCompressedIntLength(canvasProperty.SunProperties.Count);
-        //        Size += a;  /**/ offsetSize += a;
-        //        Size++;     /**/ offsetSize++;      // Byte SunObjectType.Property
-        //        foreach (SunProperty property in canvasProperty.SunProperties)
-        //        {
-        //            Size += property.Name.Length + 1; /**/ offsetSize += property.Name.Length + 1;
-        //        }
-        //    }
-
-        //    if (canvasProperty.IsGif)
-        //    {
-        //        a = SunFileHelper.GetCompressedIntLength(canvasProperty.Frames.Count);
-        //        Size += a; /**/ offsetSize += a;
-
-        //        Size++; /**/ offsetSize++;  //Byte SunObjectType.Property
-
-        //        foreach (SunCanvasProperty frame in canvasProperty.Frames)
-        //        {
-        //            Size += frame.Name.Length + 1; /**/ offsetSize += frame.Name.Length + 1;
-        //            Size++;     /**/ offsetSize++;       // Byte SunPropertyType
-
-        //            Size += 4;  /**/ offsetSize += 4;   // Picture property size
-        //            Size++; /**/ offsetSize++;          // Property bool ("yes, there are properties associated with this image")
-        //            Size++; /**/ offsetSize++;          // Gif bool
-
-        //            a = SunFileHelper.GetCompressedIntLength(frame.Width);
-        //            Size += a; /**/ offsetSize += a;
-
-        //            a = SunFileHelper.GetCompressedIntLength(frame.Height);
-        //            Size += a; /**/ offsetSize += a;
-
-        //            Size += 4; /**/ offsetSize += 4;    // Image size length
-
-        //            a = frame.GetCompressedBytes().Length;
-        //            Size += a; /**/ offsetSize += a;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        a = SunFileHelper.GetCompressedIntLength(canvasProperty.Width);
-        //        Size += a; /**/ offsetSize += a;
-
-        //        a = SunFileHelper.GetCompressedIntLength(canvasProperty.Height);
-        //        Size += a; /**/ offsetSize += a;
-
-        //        Size += 4; /**/ offsetSize += 4; // Image size length
-
-        //        a = canvasProperty.GetCompressedBytes().Length;
-        //        Size += a; /**/ offsetSize += a;
-        //    }
-        //}
 
         #endregion Custom Members
     }

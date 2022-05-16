@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmFileManager));
             this.sunTreeView = new System.Windows.Forms.TreeView();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,18 +65,39 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.sunTreeView.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sunTreeView.HotTracking = true;
+            this.sunTreeView.ImageIndex = 0;
+            this.sunTreeView.ImageList = this.imageList1;
             this.sunTreeView.Location = new System.Drawing.Point(13, 27);
             this.sunTreeView.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.sunTreeView.MinimumSize = new System.Drawing.Size(255, 175);
             this.sunTreeView.Name = "sunTreeView";
             this.sunTreeView.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.sunTreeView.ShowLines = false;
+            this.sunTreeView.SelectedImageIndex = 0;
+            this.sunTreeView.ShowRootLines = false;
             this.sunTreeView.Size = new System.Drawing.Size(255, 641);
             this.sunTreeView.TabIndex = 0;
+            this.sunTreeView.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.sunTreeView_AfterCollapse);
+            this.sunTreeView.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.sunTreeView_AfterExpand);
             this.sunTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.sunTreeView_AfterSelect);
             this.sunTreeView.DoubleClick += new System.EventHandler(this.sunTreeView_DoubleClick);
             this.sunTreeView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sunTreeView_KeyDown);
             this.sunTreeView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.sunTreeView_MouseUp);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "sun.ico");
+            this.imageList1.Images.SetKeyName(1, "3d.png");
+            this.imageList1.Images.SetKeyName(2, "folder.png");
+            this.imageList1.Images.SetKeyName(3, "Input.png");
+            this.imageList1.Images.SetKeyName(4, "Decimal.png");
+            this.imageList1.Images.SetKeyName(5, "String.png");
+            this.imageList1.Images.SetKeyName(6, "Image.png");
+            this.imageList1.Images.SetKeyName(7, "Vector.png");
+            this.imageList1.Images.SetKeyName(8, "Sound.png");
+            this.imageList1.Images.SetKeyName(9, "folderblue.png");
+            this.imageList1.Images.SetKeyName(10, "Property.png");
             // 
             // menuStripMain
             // 
@@ -105,7 +127,7 @@
             this.newToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.New;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.newToolStripMenuItem.Text = "&New...";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -114,7 +136,7 @@
             this.openToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.Open;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -123,7 +145,7 @@
             this.saveToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.Save;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -141,7 +163,7 @@
             this.sunDirectoryToolStripMenuItem});
             this.addToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.Add;
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.addToolStripMenuItem.Text = "Add";
             // 
             // sunDirectoryToolStripMenuItem
@@ -165,14 +187,14 @@
             // 
             this.optionsToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.Property;
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.optionsToolStripMenuItem.Text = "Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
@@ -364,6 +386,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }
 
