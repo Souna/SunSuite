@@ -256,7 +256,9 @@ namespace SunFileManager
 
                     if (fileNode.SunDirectory != null && fileNode.SunDirectory.TopLevelEntryCount > 0)
                     {
-                        PopupMenu.Items.AddRange(new ToolStripItem[] { Expand, Collapse });
+                        PopupMenu.Items.Add(new ToolStripSeparator());
+                        PopupMenu.Items.Add(Expand);
+                        if (node.IsExpanded) PopupMenu.Items.Add(Collapse);
                     }
                     PopupMenu.Show(mainform.sunTreeView, e.X, e.Y);
                 }
@@ -267,16 +269,21 @@ namespace SunFileManager
 
                     PopupMenu.Items.AddRange(new ToolStripItem[] { AddSubMenu, new ToolStripSeparator(), Rename });
 
-                    if (node.Nodes.Count > 0/*dir.TopLevelEntryCount > 0*/)
+                    if (node.Nodes.Count > 0)
                     {
                         // Populate "Remove" menu.
                         RemoveSubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { RemoveThis, RemoveChildren });
-                        PopupMenu.Items.AddRange(new ToolStripMenuItem[] { RemoveSubMenu, Expand, Collapse });
+                        PopupMenu.Items.Add(RemoveSubMenu);
                     }
                     else
                     {
                         PopupMenu.Items.Add(Remove);
                     }
+
+                    PopupMenu.Items.Add(new ToolStripSeparator());
+                    PopupMenu.Items.Add(Expand);
+                    if (node.IsExpanded) PopupMenu.Items.Add(Collapse);
+
                     PopupMenu.Show(mainform.sunTreeView, e.X, e.Y);
                 }
                 else if (node.Tag is IPropertyContainer)
@@ -288,16 +295,21 @@ namespace SunFileManager
 
                     PopupMenu.Items.AddRange(new ToolStripItem[] { AddSubMenu, new ToolStripSeparator(), Rename });
 
-                    if (node.Nodes.Count > 0/*container.SunProperties.Count > 0*/)
+                    if (node.Nodes.Count > 0)
                     {
                         // Populate "Remove" menu.
                         RemoveSubMenu.DropDownItems.AddRange(new ToolStripMenuItem[] { RemoveThis, RemoveChildren });
-                        PopupMenu.Items.AddRange(new ToolStripMenuItem[] { RemoveSubMenu, Expand, Collapse });
+                        PopupMenu.Items.Add(RemoveSubMenu);
                     }
                     else
                     {
                         PopupMenu.Items.Add(Remove);
                     }
+
+                    PopupMenu.Items.Add(new ToolStripSeparator());
+                    PopupMenu.Items.Add(Expand);
+                    if (node.IsExpanded) PopupMenu.Items.Add(Collapse);
+
                     PopupMenu.Show(mainform.sunTreeView, e.X, e.Y);
                 }
                 else if (node.Tag is SunProperty)
