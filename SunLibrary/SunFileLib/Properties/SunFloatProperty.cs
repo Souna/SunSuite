@@ -39,7 +39,7 @@ namespace SunLibrary.SunFileLib.Properties
             writer.Write((byte)SunPropertyType.Float);
             if (Value == 0f)
             {
-                writer.Write((byte)0);
+                writer.Write((float)0);
             }
             else
             {

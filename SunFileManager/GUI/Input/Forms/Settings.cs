@@ -23,7 +23,7 @@ namespace SunFileManager.GUI.Input.Forms
             InitializeComponent();
         }
 
-        private void ApplySettingsChanges()
+        private void ApplyChangedSettings()
         {
             // Applies the changes once OK or Apply is clicked.
             mainForm.ApplySettings();
@@ -63,7 +63,7 @@ namespace SunFileManager.GUI.Input.Forms
         private void btnOk_Click(object sender, EventArgs e)
         {
             GatherSettings();
-            ApplySettingsChanges();
+            ApplyChangedSettings();
             Close();
         }
 
@@ -75,7 +75,7 @@ namespace SunFileManager.GUI.Input.Forms
         private void btnApply_Click(object sender, EventArgs e)
         {
             GatherSettings();
-            ApplySettingsChanges();
+            ApplyChangedSettings();
             btnApply.Enabled = false;
         }
 

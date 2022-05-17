@@ -1,5 +1,7 @@
 ﻿using SunFileManager.GUI.Input;
+using SunLibrary.SunFileLib.Properties;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -9,6 +11,7 @@ namespace SunFileManager.GUI.Container
     {
         private Point startingPoint = new Point();
         private frmCanvasInputBox canvasInputBox;
+        private frmFileManager mainForm = null;
 
         public Panning_PictureBox()
         {
@@ -18,7 +21,15 @@ namespace SunFileManager.GUI.Container
         private void Panning_PictureBox_Load(object sender, EventArgs e)
         {
             picPan.SizeMode = PictureBoxSizeMode.AutoSize;
-            canvasInputBox = ParentForm as frmCanvasInputBox;
+
+            if (ParentForm is frmFileManager)
+            {
+                mainForm = (frmFileManager)ParentForm;
+            }
+            else if (ParentForm is frmCanvasInputBox)
+            {
+                canvasInputBox = (frmCanvasInputBox)ParentForm;
+            }
         }
 
         private void picPan_MouseDown(object sender, MouseEventArgs e)
@@ -66,10 +77,30 @@ namespace SunFileManager.GUI.Container
 
         private void picPan_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (canvasInputBox == null) return;
             if (e.Button == MouseButtons.Left)
             {
-                canvasInputBox.SelectCanvas();
+                if (canvasInputBox != null)
+                    canvasInputBox.SelectCanvas();
+                else
+                {
+                    OpenFileDialog dialog = new OpenFileDialog()
+                    {
+                        Title = "Replace Image",
+                        Filter = "Image File|*.jpg;*.bmp;*.png;*.gif;*.tiff"
+                    };
+                    if (dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        SunNode targetNode = (SunNode)mainForm.sunTreeView.SelectedNode;
+                        if (targetNode.Tag is SunCanvasProperty canvas)
+                        {
+                            canvas.PNG.SetPNG((Bitmap)Image.FromFile(dialog.FileName));
+
+                            // Refresh picturebox to show new image
+                            mainForm.sunTreeView.SelectedNode = null;
+                            mainForm.sunTreeView.SelectedNode = targetNode;
+                        }
+                    }
+                }
             }
         }
 

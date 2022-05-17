@@ -99,7 +99,7 @@ namespace SunLibrary.SunFileLib.Properties
         public void SetPNG(Bitmap png)
         {
             this.pngProp = png;
-            CompressPNG(pngProp);    //use param or local?
+            CompressPNG(pngProp);
         }
 
         public Bitmap GetPNG(bool saveInMemory)

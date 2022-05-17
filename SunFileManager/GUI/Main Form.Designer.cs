@@ -55,7 +55,7 @@
             this.lblVectorXVal = new System.Windows.Forms.Label();
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             this.soundPlayer = new SunFileManager.GUI.SoundPlayer();
-            this.mainfrm_panning_PictureBox = new SunFileManager.GUI.Container.Panning_PictureBox();
+            this.panning_PictureBox = new SunFileManager.GUI.Container.Panning_PictureBox();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,7 +74,7 @@
             this.sunTreeView.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.sunTreeView.SelectedImageIndex = 0;
             this.sunTreeView.ShowRootLines = false;
-            this.sunTreeView.Size = new System.Drawing.Size(255, 641);
+            this.sunTreeView.Size = new System.Drawing.Size(326, 641);
             this.sunTreeView.TabIndex = 0;
             this.sunTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.sunTreeView_AfterSelect);
             this.sunTreeView.DoubleClick += new System.EventHandler(this.sunTreeView_DoubleClick);
@@ -228,7 +228,7 @@
             // txtPropertyValue
             // 
             this.txtPropertyValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPropertyValue.Location = new System.Drawing.Point(347, 65);
+            this.txtPropertyValue.Location = new System.Drawing.Point(418, 62);
             this.txtPropertyValue.Name = "txtPropertyValue";
             this.txtPropertyValue.Size = new System.Drawing.Size(205, 29);
             this.txtPropertyValue.TabIndex = 5;
@@ -239,7 +239,7 @@
             this.lblValue.AutoSize = true;
             this.lblValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblValue.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblValue.Location = new System.Drawing.Point(273, 72);
+            this.lblValue.Location = new System.Drawing.Point(344, 68);
             this.lblValue.Name = "lblValue";
             this.lblValue.Size = new System.Drawing.Size(50, 20);
             this.lblValue.TabIndex = 6;
@@ -250,7 +250,7 @@
             this.lblPropertyName.AutoSize = true;
             this.lblPropertyName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.lblPropertyName.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblPropertyName.Location = new System.Drawing.Point(273, 36);
+            this.lblPropertyName.Location = new System.Drawing.Point(344, 33);
             this.lblPropertyName.Name = "lblPropertyName";
             this.lblPropertyName.Size = new System.Drawing.Size(68, 20);
             this.lblPropertyName.TabIndex = 7;
@@ -259,7 +259,7 @@
             // txtPropertyName
             // 
             this.txtPropertyName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.txtPropertyName.Location = new System.Drawing.Point(347, 29);
+            this.txtPropertyName.Location = new System.Drawing.Point(418, 27);
             this.txtPropertyName.Name = "txtPropertyName";
             this.txtPropertyName.ReadOnly = true;
             this.txtPropertyName.Size = new System.Drawing.Size(205, 29);
@@ -281,7 +281,7 @@
             // 
             // btnApplyPropertyChanges
             // 
-            this.btnApplyPropertyChanges.Location = new System.Drawing.Point(558, 51);
+            this.btnApplyPropertyChanges.Location = new System.Drawing.Point(629, 48);
             this.btnApplyPropertyChanges.Name = "btnApplyPropertyChanges";
             this.btnApplyPropertyChanges.Size = new System.Drawing.Size(87, 23);
             this.btnApplyPropertyChanges.TabIndex = 12;
@@ -294,7 +294,7 @@
             this.lblVectorXVal.AutoSize = true;
             this.lblVectorXVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVectorXVal.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblVectorXVal.Location = new System.Drawing.Point(343, 102);
+            this.lblVectorXVal.Location = new System.Drawing.Point(414, 103);
             this.lblVectorXVal.Name = "lblVectorXVal";
             this.lblVectorXVal.Size = new System.Drawing.Size(66, 20);
             this.lblVectorXVal.TabIndex = 13;
@@ -303,26 +303,26 @@
             // elementHost1
             // 
             this.elementHost1.BackColor = System.Drawing.Color.Transparent;
-            this.elementHost1.Location = new System.Drawing.Point(289, 522);
+            this.elementHost1.Location = new System.Drawing.Point(344, 501);
             this.elementHost1.Name = "elementHost1";
             this.elementHost1.Size = new System.Drawing.Size(465, 167);
             this.elementHost1.TabIndex = 11;
             this.elementHost1.Text = "elementHost1";
             this.elementHost1.Child = this.soundPlayer;
             // 
-            // mainfrm_panning_PictureBox
+            // panning_PictureBox
             // 
-            this.mainfrm_panning_PictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panning_PictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.mainfrm_panning_PictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.mainfrm_panning_PictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.mainfrm_panning_PictureBox.Canvas = null;
-            this.mainfrm_panning_PictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.mainfrm_panning_PictureBox.Location = new System.Drawing.Point(289, 102);
-            this.mainfrm_panning_PictureBox.Name = "mainfrm_panning_PictureBox";
-            this.mainfrm_panning_PictureBox.Size = new System.Drawing.Size(817, 605);
-            this.mainfrm_panning_PictureBox.TabIndex = 9;
+            this.panning_PictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.panning_PictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panning_PictureBox.Canvas = null;
+            this.panning_PictureBox.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.panning_PictureBox.Location = new System.Drawing.Point(344, 102);
+            this.panning_PictureBox.Name = "panning_PictureBox";
+            this.panning_PictureBox.Size = new System.Drawing.Size(762, 605);
+            this.panning_PictureBox.TabIndex = 9;
             // 
             // frmFileManager
             // 
@@ -335,7 +335,7 @@
             this.Controls.Add(this.lblValue);
             this.Controls.Add(this.lblPropertyName);
             this.Controls.Add(this.chkAnimateGif);
-            this.Controls.Add(this.mainfrm_panning_PictureBox);
+            this.Controls.Add(this.panning_PictureBox);
             this.Controls.Add(this.txtPropertyName);
             this.Controls.Add(this.txtPropertyValue);
             this.Controls.Add(this.lblSelectedNodeType);
@@ -375,16 +375,16 @@
         private System.Windows.Forms.Label lblValue;
         private System.Windows.Forms.Label lblPropertyName;
         private System.Windows.Forms.TextBox txtPropertyName;
-        private GUI.Container.Panning_PictureBox mainfrm_panning_PictureBox;
+        private GUI.Container.Panning_PictureBox panning_PictureBox;
         private System.Windows.Forms.CheckBox chkAnimateGif;
         private System.Windows.Forms.Integration.ElementHost elementHost1;
-        private SunFileManager.GUI.SoundPlayer soundPlayer;
         private System.Windows.Forms.Button btnApplyPropertyChanges;
         private System.Windows.Forms.Label lblVectorXVal;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ImageList imageList1;
+        private GUI.SoundPlayer soundPlayer;
     }
 }
 
