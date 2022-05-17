@@ -165,7 +165,6 @@ namespace SunFileManager.GUI.Input
                     bitmapResult.Clear();
                 string path = txtCanvasPath.Text;
                 canvas = Image.FromFile(path);
-                Text += " (" + Path.GetFileName(path) + ")";
 
                 UpdateFormControls(path);
 

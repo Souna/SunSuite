@@ -155,73 +155,73 @@ namespace SunFileManager
             AddSunDirectory = new ToolStripMenuItem("Directory", Resources.addfolder, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddSunDirectoryToSelectedNode(mainform.sunTreeView.SelectedNode, null);
+                    mainform.AddSunDirectoryToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode, null);
                 }));
 
             AddSunImage = new ToolStripMenuItem("Image", Resources._3d, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddSunImageToSelectedNode(mainform.sunTreeView.SelectedNode, null);
+                    mainform.AddSunImageToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode, null);
                 }));
 
             AddSubProperty = new ToolStripMenuItem("SubProperty", Resources.Directory, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddSubPropertyToSelectedNode(mainform.sunTreeView.SelectedNode, null);
+                    mainform.AddSubPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode, null);
                 }));
 
             AddDoubleProperty = new ToolStripMenuItem("Double       8 bytes", Resources.Decimal, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddDoublePropertyToSelectedNode(mainform.sunTreeView.SelectedNode);
+                    mainform.AddDoublePropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
                 }));
 
             AddFloatProperty = new ToolStripMenuItem("Float           4 bytes", Resources.Decimal, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddFloatPropertyToSelectedNode(mainform.sunTreeView.SelectedNode);
+                    mainform.AddFloatPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
                 }));
 
             AddCanvasProperty = new ToolStripMenuItem("Canvas", Resources.Canvas, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddCanvasPropertyToSelectedNode(mainform.sunTreeView.SelectedNode);
+                    mainform.AddCanvasPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
                 }));
 
             AddIntProperty = new ToolStripMenuItem("Int               4 bytes", Resources.Input, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddIntPropertyToSelectedNode(mainform.sunTreeView.SelectedNode);
+                    mainform.AddIntPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
                 }));
 
             AddLongProperty = new ToolStripMenuItem("Long           8 bytes", Resources.Input, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddLongPropertyToSelectedNode(mainform.sunTreeView.SelectedNode);
+                    mainform.AddLongPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
                 }));
 
             AddShortProperty = new ToolStripMenuItem("Short          2 bytes", Resources.Input, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddShortPropertyToSelectedNode(mainform.sunTreeView.SelectedNode);
+                    mainform.AddShortPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
                 }));
 
             AddSoundProperty = new ToolStripMenuItem("Sound", Resources.Sound, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddSoundPropertyToSelectedNode(mainform.sunTreeView.SelectedNode);
+                    mainform.AddSoundPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
                 }));
 
             AddStringProperty = new ToolStripMenuItem("String", Resources.String, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddStringPropertyToSelectedNode(mainform.sunTreeView.SelectedNode);
+                    mainform.AddStringPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
                 }));
 
             AddVectorProperty = new ToolStripMenuItem("Vector", Resources.Vector, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddVectorPropertyToSelectedNode(mainform.sunTreeView.SelectedNode);
+                    mainform.AddVectorPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
                 }));
 
             #endregion Properties

@@ -12,11 +12,11 @@ namespace SunFileManager
     {
         public static TreeViewNodeSorter sorter = new TreeViewNodeSorter();
         public List<SunFile> sunFiles = new List<SunFile>();
-        private frmFileManager mainform = null;
+        private frmFileManager mainForm = null;
 
         public FileManager(Form form)
         {
-            mainform = form as frmFileManager;
+            mainForm = form as frmFileManager;
         }
 
         private bool OpenSunFile(string path, out SunFile file)
@@ -63,22 +63,22 @@ namespace SunFileManager
             {
                 dispatcher.BeginInvoke((Action)(() =>
                 {
-                    mainform.sunTreeView.BeginUpdate();
-                    mainform.sunTreeView.Nodes.Add(sunNode);
+                    mainForm.sunTreeView.BeginUpdate();
+                    mainForm.sunTreeView.Nodes.Add(sunNode);
                     SortNodesRecursively(sunNode);
                     if (expansionState != null)
-                        mainform.sunTreeView.Nodes.SetExpansionState(expansionState);
-                    mainform.sunTreeView.EndUpdate();
+                        mainForm.sunTreeView.Nodes.SetExpansionState(expansionState);
+                    mainForm.sunTreeView.EndUpdate();
                 }));
             }
             else
             {
-                mainform.sunTreeView.BeginUpdate();
-                mainform.sunTreeView.Nodes.Add(sunNode);
+                mainForm.sunTreeView.BeginUpdate();
+                mainForm.sunTreeView.Nodes.Add(sunNode);
                 SortNodesRecursively(sunNode);
                 if (expansionState != null)
-                    mainform.sunTreeView.Nodes.SetExpansionState(expansionState);
-                mainform.sunTreeView.EndUpdate();
+                    mainForm.sunTreeView.Nodes.SetExpansionState(expansionState);
+                mainForm.sunTreeView.EndUpdate();
             }
         }
 
@@ -88,7 +88,7 @@ namespace SunFileManager
         public void SaveToDisk(ref SunNode node)
         {
             SunFile SaveSunFile = (SunFile)node.Tag;
-            var savedExpansionState = mainform.sunTreeView.Nodes.GetExpansionState();
+            var savedExpansionState = mainForm.sunTreeView.Nodes.GetExpansionState();
 
             SaveFileDialog sfd = new SaveFileDialog()
             {
@@ -126,7 +126,7 @@ namespace SunFileManager
         /// </summary>
         public void ReloadSunFile(SunFile file, Dispatcher currentDispatcher = null)
         {
-            var savedExpansionState = mainform.sunTreeView.Nodes.GetExpansionState();
+            var savedExpansionState = mainForm.sunTreeView.Nodes.GetExpansionState();
             string path = file.FilePath;
             if (currentDispatcher != null)
             {
@@ -141,7 +141,7 @@ namespace SunFileManager
             SunFile loadedSunFile = LoadSunFile(path);
 
             if (loadedSunFile != null)
-                mainform.manager.AddLoadedSunFileToTreeView(loadedSunFile, currentDispatcher, savedExpansionState);
+                mainForm.manager.AddLoadedSunFileToTreeView(loadedSunFile, currentDispatcher, savedExpansionState);
         }
 
         public void UnloadSunFile(SunFile file)
@@ -150,7 +150,7 @@ namespace SunFileManager
             {
                 try
                 {
-                    ((SunNode)mainform.sunTreeView.SelectedNode).DeleteNode();
+                    ((SunNode)mainForm.sunTreeView.SelectedNode).DeleteNode();
                     sunFiles.Remove(file);
                     GC.Collect();
                     GC.WaitForPendingFinalizers();

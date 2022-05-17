@@ -1,4 +1,6 @@
-﻿namespace SunFileManager.GUI.Input
+﻿using System.Windows.Forms;
+
+namespace SunFileManager.GUI.Input
 {
     partial class frmCanvasInputBox
     {

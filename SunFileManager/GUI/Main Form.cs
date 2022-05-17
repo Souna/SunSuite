@@ -39,7 +39,7 @@ namespace SunFileManager
             btnApplyPropertyChanges.Visible = false;
             txtPropertyName.Visible = false;
             txtPropertyValue.Visible = false;
-            mainfrm_panning_PictureBox.Visible = false;
+            panning_PictureBox.Visible = false;
             elementHost1.Visible = false;
             manager = new FileManager(this);
             Program.UserSettings.Load();
@@ -71,7 +71,7 @@ namespace SunFileManager
         /// </summary>
         private void sunDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddSunDirectoryToSelectedNode(sunTreeView.SelectedNode, null);
+            AddSunDirectoryToSelectedNode((SunNode)sunTreeView.SelectedNode, null);
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace SunFileManager
         /// Creates a new Directory under the selected node.
         /// <br>A directory may be created as a top-level directory underneath the SunFile.</br>
         /// </summary>
-        public void AddSunDirectoryToSelectedNode(TreeNode selectedNode, string name)
+        public void AddSunDirectoryToSelectedNode(SunNode selectedNode, string name)
         {
             bool added = false;
             if (selectedNode == null) return;
@@ -284,12 +284,12 @@ namespace SunFileManager
             {
                 if (sunFileParent.SunDirectory == null)
                     CreateMasterDirectory(sunFileParent);
-                ((SunNode)selectedNode).AddObject(new SunDirectory(dirName, sunFileParent.SunDirectory));
+                selectedNode.AddObject(new SunDirectory(dirName, sunFileParent.SunDirectory));
                 added = true;
             }
             else if (obj is SunDirectory sunDirectoryParent)
             {
-                ((SunNode)selectedNode).AddObject(new SunDirectory(dirName, sunDirectoryParent));
+                selectedNode.AddObject(new SunDirectory(dirName, sunDirectoryParent));
                 added = true;
             }
             if (!added)
@@ -298,7 +298,7 @@ namespace SunFileManager
             }
         }
 
-        public void AddSunImageToSelectedNode(TreeNode targetNode, string name)
+        public void AddSunImageToSelectedNode(SunNode targetNode, string name)
         {
             if (targetNode == null) return;
 
@@ -324,7 +324,7 @@ namespace SunFileManager
                     CreateMasterDirectory(sunFileParent);
             }
 
-            ((SunNode)targetNode).AddObject(new SunImage(imgName) { Changed = true });
+            targetNode.AddObject(new SunImage(imgName) { Changed = true });
         }
 
         public void CreateMasterDirectory(SunFile file)
@@ -332,7 +332,7 @@ namespace SunFileManager
             file.SunDirectory = new SunDirectory(file.Name, file);
         }
 
-        public void AddSubPropertyToSelectedNode(TreeNode targetNode, string name)
+        public void AddSubPropertyToSelectedNode(SunNode targetNode, string name)
         {
             if (!(targetNode.Tag is IPropertyContainer)) return;
 
@@ -343,51 +343,58 @@ namespace SunFileManager
                     return;
             }
 
-            ((SunNode)targetNode).AddObject(new SunSubProperty(subPropName));
+            targetNode.AddObject(new SunSubProperty(subPropName));
         }
 
         /// <summary>
-        /// Creates a new Integer property node under a selected node.
+        /// Creates a new Double property node under a selected node.
         /// </summary>
-        public void AddDoublePropertyToSelectedNode(TreeNode targetNode)
+        public void AddDoublePropertyToSelectedNode(SunNode targetNode)
         {
             if (!(targetNode.Tag is IPropertyContainer)) return;
             if (!frmFloatInputBox.Show("Add Double Value", out string name, out double? value))
                 return;
-            ((SunNode)targetNode).AddObject(new SunDoubleProperty(name, (double)value));
+            targetNode.AddObject(new SunDoubleProperty(name, (double)value));
+        }
+
+        /// <summary>
+        /// Creates a new Double property node under a selected node, with a provided name and value.
+        /// </summary>
+        public void AddDoublePropertyToSelectedNode(SunNode targetNode, string name, double value)
+        {
+            if (!(targetNode.Tag is IPropertyContainer)) return;
+            targetNode.AddObject(new SunDoubleProperty(name, value));
         }
 
         /// <summary>
         /// Creates a new Float property node under a selected node.
         /// </summary>
-        public void AddFloatPropertyToSelectedNode(TreeNode targetNode)
+        public void AddFloatPropertyToSelectedNode(SunNode targetNode)
         {
             if (!(targetNode.Tag is IPropertyContainer)) return;
             if (!frmFloatInputBox.Show("Add Float Value", out string name, out double? value))
                 return;
-            ((SunNode)targetNode).AddObject(new SunFloatProperty(name, (float)value));
+            targetNode.AddObject(new SunFloatProperty(name, (float)value));
         }
 
         /// <summary>
         /// Creates a new Float property node under a selected node, with a provided name and value.
         /// </summary>
-        public void AddFloatPropertyToSelectedNode(TreeNode targetNode, string name, float value)
+        public void AddFloatPropertyToSelectedNode(SunNode targetNode, string name, float value)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
-            ((SunNode)targetNode).AddObject(new SunFloatProperty(name, value));
+            targetNode.AddObject(new SunFloatProperty(name, value));
         }
 
         /// <summary>
         /// Creates a node containing a bitmap image or animated gif under a selected node.
         /// </summary>
-        public void AddCanvasPropertyToSelectedNode(TreeNode targetNode)
+        public void AddCanvasPropertyToSelectedNode(SunNode targetNode)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
 
             if (!frmCanvasInputBox.Show("Add Image", out string name, out List<Bitmap> bitmaps, out List<int> gifFrameDelays, out bool isGif, out bool createSubProperty))
                 return;
-
-            SunNode target = (SunNode)targetNode;
 
             int i = 0;
 
@@ -418,8 +425,8 @@ namespace SunFileManager
 
                     i++;
                 }
-                target.AddObject(subProp, true);
-                sunTreeView.SelectedNode = target[subProp.Name];
+                targetNode.AddObject(subProp, true);
+                sunTreeView.SelectedNode = targetNode[subProp.Name];
             }
             else
             {
@@ -439,7 +446,7 @@ namespace SunFileManager
                     // Add default origin (0, 0) property
                     canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));
 
-                    target.AddObject(canvasProp);
+                    targetNode.AddObject(canvasProp);
 
                     i++;
                 }
@@ -451,104 +458,110 @@ namespace SunFileManager
         /// <summary>
         /// Creates a new Integer property node under a selected node.
         /// </summary>
-        public void AddIntPropertyToSelectedNode(TreeNode targetNode)
+        public void AddIntPropertyToSelectedNode(SunNode targetNode)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
             if (!frmDigitInputBox.Show("Add Int Value", out string name, out int? value))
                 return;
-            ((SunNode)targetNode).AddObject(new SunIntProperty(name, (int)value));
+            targetNode.AddObject(new SunIntProperty(name, (int)value));
         }
 
         /// <summary>
         /// Creates a new Integer property node under a selected node, with a provided name and value.
         /// </summary>
-        public void AddIntPropertyToSelectedNode(TreeNode targetNode, string name, int value)
+        public void AddIntPropertyToSelectedNode(SunNode targetNode, string name, int value)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
-            ((SunNode)targetNode).AddObject(new SunIntProperty(name, value));
+            targetNode.AddObject(new SunIntProperty(name, value));
         }
 
         /// <summary>
         /// Creates a new Long property node under a selected node.
         /// </summary>
-        public void AddLongPropertyToSelectedNode(TreeNode targetNode)
+        public void AddLongPropertyToSelectedNode(SunNode targetNode)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
             if (!frmLongInputBox.Show("Add Long Value", out string name, out long? value))
                 return;
-            ((SunNode)targetNode).AddObject(new SunLongProperty(name, (long)value));
+            targetNode.AddObject(new SunLongProperty(name, (long)value));
         }
 
         /// <summary>
         /// Creates a new Long property node under a selected node, with a provided name and value.
         /// </summary>
-        public void AddLongPropertyToSelectedNode(TreeNode targetNode, string name, long value)
+        public void AddLongPropertyToSelectedNode(SunNode targetNode, string name, long value)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
-            ((SunNode)targetNode).AddObject(new SunLongProperty(name, value));
+            targetNode.AddObject(new SunLongProperty(name, value));
         }
 
         /// <summary>
         /// Creates a new Short property node under a selected node.
         /// </summary>
-        public void AddShortPropertyToSelectedNode(TreeNode targetNode)
+        public void AddShortPropertyToSelectedNode(SunNode targetNode)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
             if (!frmDigitInputBox.Show("Add Short Value", out string name, out int? value))
                 return;
-            ((SunNode)targetNode).AddObject(new SunShortProperty(name, (short)value));
+            targetNode.AddObject(new SunShortProperty(name, (short)value));
         }
 
         /// <summary>
         /// Creates a new Short property node under a selected node, with a provided name and value.
         /// </summary>
-        public void AddShortPropertyToSelectedNode(TreeNode targetNode, string name, short value)
+        public void AddShortPropertyToSelectedNode(SunNode targetNode, string name, short value)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
-            ((SunNode)targetNode).AddObject(new SunShortProperty(name, value));
+            targetNode.AddObject(new SunShortProperty(name, value));
         }
 
         /// <summary>
         /// Creates a new Sound property node under a selected node.
         /// </summary>
-        public void AddSoundPropertyToSelectedNode(TreeNode targetNode)
+        public void AddSoundPropertyToSelectedNode(SunNode targetNode)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
             if (!frmSoundInputBox.Show("Add Sound", out string name, out string path))
                 return;
-            ((SunNode)targetNode).AddObject(new SunSoundProperty(name, path));
+            targetNode.AddObject(new SunSoundProperty(name, path));
         }
 
-        public void AddStringPropertyToSelectedNode(TreeNode targetNode)
+        /// <summary>
+        /// Creates a new String property node under a selected node.
+        /// </summary>
+        public void AddStringPropertyToSelectedNode(SunNode targetNode)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
             if (!frmNameValueInputBox.Show("Add String", out string name, out string value)) return;
-            ((SunNode)targetNode).AddObject(new SunStringProperty(name, (string)value));
+            targetNode.AddObject(new SunStringProperty(name, value));
         }
 
-        public void AddStringPropertyToSelectedNode(TreeNode targetNode, string name, string value)
+        /// <summary>
+        /// Creates a new String property node under a selected node, with a provided name and value.
+        /// </summary>
+        public void AddStringPropertyToSelectedNode(SunNode targetNode, string name, string value)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
-            ((SunNode)targetNode).AddObject(new SunStringProperty(name, value));
+            targetNode.AddObject(new SunStringProperty(name, value));
         }
 
         /// <summary>
         /// Creates a new Vector property node under a selected node.
         /// </summary>
-        public void AddVectorPropertyToSelectedNode(TreeNode targetNode)
+        public void AddVectorPropertyToSelectedNode(SunNode targetNode)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
             if (!frmVectorInputBox.Show("Add Vector", out string name, out Point? value)) return;
-            ((SunNode)targetNode).AddObject(new SunVectorProperty(name, new SunIntProperty("X", ((Point)value).X), new SunIntProperty("Y", ((Point)value).Y)));
+            targetNode.AddObject(new SunVectorProperty(name, new SunIntProperty("X", ((Point)value).X), new SunIntProperty("Y", ((Point)value).Y)));
         }
 
         /// <summary>
-        /// Creates a new Integer property node under a selected node, with a provided name and value.
+        /// Creates a new Vector property node under a selected node, with a provided name and value.
         /// </summary>
-        public void AddVectorPropertyToSelectedNode(TreeNode targetNode, string name, Point value)
+        public void AddVectorPropertyToSelectedNode(SunNode targetNode, string name, Point value)
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
-            ((SunNode)targetNode).AddObject(new SunVectorProperty(name, value));
+            targetNode.AddObject(new SunVectorProperty(name, value));
         }
 
         #endregion Adding Directories & Properties
@@ -624,11 +637,10 @@ namespace SunFileManager
             elementHost1.Visible = false;
             soundPlayer.Visibility = System.Windows.Visibility.Collapsed;
 
-            mainfrm_panning_PictureBox.Visible = false;
-            mainfrm_panning_PictureBox.Canvas = null;
+            panning_PictureBox.Visible = false;
+            panning_PictureBox.Canvas = null;
 
             chkAnimateGif.Visible = false;
-            // Do something here about cpu usage
 
             switch (obj)
             {
@@ -696,16 +708,17 @@ namespace SunFileManager
                     txtPropertyValue.Size = new Size(205, 62);
                     txtPropertyValue.TextAlign = HorizontalAlignment.Left;
                     txtPropertyValue.Text = stringProperty.Value;
+                    txtPropertyValue.ScrollBars = ScrollBars.Vertical;
                     btnApplyPropertyChanges.Visible = true;
                     break;
 
                 case SunCanvasProperty canvasProperty:
                     //  Display the image/gif with its attributes.
-                    mainfrm_panning_PictureBox.Visible = true;
+                    panning_PictureBox.Visible = true;
 
                     //mainfrm_panning_PictureBox.Canvas = BitmapToImageSource.ToWinFormsBitmap(canvasProperty.GetBitmap());
 
-                    mainfrm_panning_PictureBox.Canvas = canvasProperty.GetBitmap();
+                    panning_PictureBox.Canvas = canvasProperty.GetBitmap();
 
                     //  Check if selected node is of a gif, if so act accordingly
                     //if (canvasProperty.IsGif/* && canvasProperty.Frames.Count > 0*/)
@@ -842,7 +855,8 @@ namespace SunFileManager
                     break;
 
                 case SunCanvasProperty canvasProperty:
-
+                    // It already changes it internally when you double click the picturebox.
+                    // picPan_MouseDoubleClick
                     break;
 
                 case SunVectorProperty vectorProperty:
@@ -896,8 +910,8 @@ namespace SunFileManager
             manager.sunFiles.Add(file);
             sunTreeView.Nodes.Add(new SunNode(file));
 
-            AddSunImageToSelectedNode(sunTreeView.Nodes[file.Name], "image1");
-            AddIntPropertyToSelectedNode(sunTreeView.Nodes[file.Name].LastNode, "test int", 543210);
+            AddSunImageToSelectedNode((SunNode)sunTreeView.Nodes[file.Name], "image1");
+            AddIntPropertyToSelectedNode((SunNode)sunTreeView.Nodes[file.Name].LastNode, "test int", 543210);
             //openToolStripMenuItem_Click(null, null);
         }
 
