@@ -249,13 +249,13 @@ namespace SunLibrary.SunFileLib.Structure
         {
             Offset = (uint)writer.BaseStream.Position;
 
+            writer.WriteCompressedInt(TopLevelEntryCount);
             if (TopLevelEntryCount == 0)
             {
                 Size = 0;
                 return;
             }
 
-            writer.WriteCompressedInt(TopLevelEntryCount);
             foreach (SunImage img in images)
             {
                 writer.WriteSunObjectValue(img.Name, (byte)SunObjectType.Image);
