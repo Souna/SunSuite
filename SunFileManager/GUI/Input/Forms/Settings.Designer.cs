@@ -54,6 +54,7 @@
             // chkNodeWarnings
             // 
             this.chkNodeWarnings.AutoSize = true;
+            this.chkNodeWarnings.Enabled = false;
             this.chkNodeWarnings.Location = new System.Drawing.Point(12, 71);
             this.chkNodeWarnings.Name = "chkNodeWarnings";
             this.chkNodeWarnings.Size = new System.Drawing.Size(271, 17);

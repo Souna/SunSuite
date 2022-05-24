@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace SunFileManager.Config
+namespace SunLibrary.Config
 {
     public abstract class SettingsBase
     {

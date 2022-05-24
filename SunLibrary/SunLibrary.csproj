@@ -43,7 +43,6 @@
     <Compile Include="SunFileLib\Config\SettingsBase.cs" />
     <Compile Include="SunFileLib\Config\SettingsReader.cs" />
     <Compile Include="SunFileLib\Config\SettingsWriter.cs" />
-    <Compile Include="SunFileLib\Config\UserSettings.cs" />
     <Compile Include="SunFileLib\Properties\SunCanvasProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunDoubleProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunFloatProperty.cs" />

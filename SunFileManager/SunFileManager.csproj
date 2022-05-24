@@ -219,6 +219,7 @@
     <Compile Include="SunMP3Streamer.cs" />
     <Compile Include="SunNode.cs" />
     <Compile Include="TreeViewExtensions.cs" />
+    <Compile Include="UserSettings.cs" />
     <EmbeddedResource Include="GUI\Container\Panning PictureBox.resx">
       <DependentUpon>Panning PictureBox.cs</DependentUpon>
     </EmbeddedResource>
