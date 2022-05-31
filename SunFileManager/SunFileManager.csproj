@@ -212,6 +212,7 @@
     <Compile Include="GUI\SoundPlayer.xaml.cs">
       <DependentUpon>SoundPlayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GUI\TreeViewDragHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SunContextMenuManager.cs" />

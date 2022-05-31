@@ -53,6 +53,7 @@
             this.chkAnimateGif = new System.Windows.Forms.CheckBox();
             this.btnApplyPropertyChanges = new System.Windows.Forms.Button();
             this.lblVectorXVal = new System.Windows.Forms.Label();
+            this.imageListDrag = new System.Windows.Forms.ImageList(this.components);
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             this.soundPlayer = new SunFileManager.GUI.SoundPlayer();
             this.panning_PictureBox = new SunFileManager.GUI.Container.Panning_PictureBox();
@@ -76,7 +77,13 @@
             this.sunTreeView.ShowRootLines = false;
             this.sunTreeView.Size = new System.Drawing.Size(326, 641);
             this.sunTreeView.TabIndex = 0;
+            this.sunTreeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.sunTreeView_ItemDrag);
             this.sunTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.sunTreeView_AfterSelect);
+            this.sunTreeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.sunTreeView_DragDrop);
+            this.sunTreeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.sunTreeView_DragEnter);
+            this.sunTreeView.DragOver += new System.Windows.Forms.DragEventHandler(this.sunTreeView_DragOver);
+            this.sunTreeView.DragLeave += new System.EventHandler(this.sunTreeView_DragLeave);
+            this.sunTreeView.GiveFeedback += new System.Windows.Forms.GiveFeedbackEventHandler(this.sunTreeView_GiveFeedback);
             this.sunTreeView.DoubleClick += new System.EventHandler(this.sunTreeView_DoubleClick);
             this.sunTreeView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sunTreeView_KeyDown);
             this.sunTreeView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.sunTreeView_MouseUp);
@@ -185,14 +192,14 @@
             // 
             this.optionsToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.Property;
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.optionsToolStripMenuItem.Text = "Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
@@ -300,6 +307,12 @@
             this.lblVectorXVal.TabIndex = 13;
             this.lblVectorXVal.Text = "X-Value";
             // 
+            // imageListDrag
+            // 
+            this.imageListDrag.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageListDrag.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageListDrag.TransparentColor = System.Drawing.Color.Transparent;
+            // 
             // elementHost1
             // 
             this.elementHost1.BackColor = System.Drawing.Color.Transparent;
@@ -328,6 +341,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1106, 718);
             this.Controls.Add(this.lblVectorXVal);
             this.Controls.Add(this.btnApplyPropertyChanges);
@@ -385,6 +399,7 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ImageList imageList1;
         private GUI.SoundPlayer soundPlayer;
+        private System.Windows.Forms.ImageList imageListDrag;
     }
 }
 

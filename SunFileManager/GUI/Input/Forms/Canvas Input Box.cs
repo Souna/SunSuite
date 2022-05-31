@@ -16,22 +16,23 @@ namespace SunFileManager.GUI.Input
         // Returns
         private string nameResult = null, defaultText = null;
 
-        private List<Bitmap> bitmapResult = new List<Bitmap>(); // List for ability to accommodate a gif's frames.
-        private List<int> gifFrameDelayResult = new List<int>();
-        private bool gifResult = false; // Bool for whether or not the submission is a gif
+        private List<string> selectedFiles = new List<string>();
+        private List<Bitmap> bitmapResult = new List<Bitmap>(); // List of bitmap images
+        private List<int> gifFrameDelayResult = new List<int>();    // List of gif frame ms delays
+        private List<Bitmap> gifResult = new List<Bitmap>(); // List of gif frames
         private bool createSubPropertyResult = false;
 
         private Image canvas;
         private static frmCanvasInputBox form = null;
 
-        public static bool Show(string title, out string name, out List<Bitmap> bitmaps, out List<int> gifFrameDelays, out bool isGif, out bool createSubProperty)
+        public static bool Show(string title, out string name, out List<Bitmap> bitmaps, out List<int> gifFrameDelays, out List<Bitmap> gifs, out bool createSubProperty)
         {
             form = new frmCanvasInputBox(title);
             bool result = form.ShowDialog() == DialogResult.OK;
             name = form.nameResult;
             bitmaps = form.bitmapResult;
             gifFrameDelays = form.gifFrameDelayResult;
-            isGif = form.gifResult;
+            gifs = form.gifResult;
             createSubProperty = form.createSubPropertyResult;
             return result;
         }
@@ -163,29 +164,30 @@ namespace SunFileManager.GUI.Input
             {
                 if (bitmapResult != null)
                     bitmapResult.Clear();
-                string path = txtCanvasPath.Text;
-                canvas = Image.FromFile(path);
 
-                UpdateFormControls(path);
-
-                //CenterFormOnImageChange();
-                CenterToScreen();
-
-                if (ImageAnimator.CanAnimate(canvas))
+                foreach (string path in selectedFiles)
                 {
-                    //  Decode the gif into individual frames.
-                    Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
-                    GifBitmapDecoder decoder = new GifBitmapDecoder(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-                    foreach (BitmapSource bmp in decoder.Frames)
+                    canvas = Image.FromFile(path);
+
+                    UpdateFormControls(path);
+
+                    CenterToScreen();
+
+                    if (ImageAnimator.CanAnimate(canvas))
                     {
-                        bitmapResult.Add(CreateBitmapFromSource(bmp));
+                        //  Decode the gif into individual frames.
+                        Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+                        GifBitmapDecoder decoder = new GifBitmapDecoder(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+                        foreach (BitmapSource bmp in decoder.Frames)
+                        {
+                            gifResult.Add(CreateBitmapFromSource(bmp));
+                        }
+                        gifFrameDelayResult = GetFrameDelays(canvas);
                     }
-                    gifFrameDelayResult = GetFrameDelays(canvas);
-                    gifResult = true;
-                }
-                else
-                {
-                    bitmapResult.Add((Bitmap)canvas);
+                    else
+                    {
+                        bitmapResult.Add((Bitmap)canvas);
+                    }
                 }
             }
             catch (Exception ex)
@@ -231,11 +233,25 @@ namespace SunFileManager.GUI.Input
             {
                 Title = "Select Canvas File",
                 Filter = "Image File|*.jpg;*.bmp;*.png;*.gif;*.tiff",
-                //SupportMultiDottedExtensions = false
+                Multiselect = true
             };
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                txtCanvasPath.Text = ofd.FileName;
+                selectedFiles.AddRange(ofd.FileNames);
+
+                if (ofd.FileNames.Length == 1)
+                {
+                    txtCanvasPath.Text = ofd.FileNames[0];
+                }
+                else
+                {
+                    string s = null;
+                    foreach (string file in ofd.FileNames)
+                    {
+                        s += "\"" + Path.GetFileName(file) + "\"" + " ";
+                    }
+                    txtCanvasPath.Text = s;
+                }
             }
         }
 
