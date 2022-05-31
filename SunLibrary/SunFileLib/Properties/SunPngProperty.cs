@@ -20,6 +20,13 @@ namespace SunLibrary.SunFileLib.Properties
         internal SunBinaryReader sunReader;
         internal long offset;
 
+        // Different Zlib header values. Little-endian.
+        private static int ZLIB_LOW_COMPRESSION = 0x0178;
+
+        private static int ZLIB_LOW_MEDIUM_COMPRESSION = 0x5E78;
+        private static int ZLIB_MEDIUM_HIGH_COMPRESSION = 0x9C78;
+        private static int ZLIB_BEST_COMPRESSION = 0xDA78;
+
         #endregion Fields
 
         #region Inherited Members
@@ -153,16 +160,12 @@ namespace SunLibrary.SunFileLib.Properties
             try
             {
                 int uncompressedSize = 0;
-                //int x = 0, y = 0, b = 0, g = 0;
                 Bitmap bmp = null;
                 BitmapData bmpData;
-                //SunImage parentImg = ParentImage;
                 byte[] decompressedBuffer;
 
                 BinaryReader reader = new BinaryReader(new MemoryStream(compressedBytes));
-                //MemoryStream dataStream = new MemoryStream();
-                //int blockSize = 0;
-                //int endofPng = compressedBytes.Length;
+                reader.ReadUInt16();    // Read Zlib header. 9c78 most of the time.
 
                 DeflateStream zlib = new DeflateStream(reader.BaseStream, CompressionMode.Decompress);
 
@@ -191,16 +194,16 @@ namespace SunLibrary.SunFileLib.Properties
             zlib.Close();
 
             memoryStream.Position = 0;
-            byte[] newBuffer = new byte[memoryStream.Length];   //+2
-            memoryStream.Read(newBuffer, 0, newBuffer.Length);  //offset = 2, newBuffer.length -2
+            byte[] newBuffer = new byte[memoryStream.Length + 2];   //+2
+            memoryStream.Read(newBuffer, 2, newBuffer.Length - 2);  //offset = 2, newBuffer.length -2
             memoryStream.Close();
             memoryStream.Dispose();
 
             zlib.Dispose();
 
             // Writes zlib medium compression header to start of buffer
-            // Necessary?
-            //Buffer.BlockCopy(new byte[] { 0x78, 0x9C }, 0, newBuffer, 0, 2);
+            Buffer.BlockCopy(new byte[] { 0x78, 0x9C }, 0, newBuffer, 0, 2);
+            //Buffer.BlockCopy(new byte[] { (byte)ZLIB_MEDIUM_HIGH_COMPRESSION }, 0, newBuffer, 0, 1);
 
             return newBuffer;
         }

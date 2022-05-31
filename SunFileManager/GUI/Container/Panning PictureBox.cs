@@ -104,10 +104,15 @@ namespace SunFileManager.GUI.Container
             }
         }
 
+        private void picPan_Paint(object sender, PaintEventArgs e)
+        {
+            DrawBorder(sender, e);
+        }
+
         /// <summary>
         /// Draws the 1px border around the image in the preview.
         /// </summary>
-        private void picPan_Paint(object sender, PaintEventArgs e)
+        private void DrawBorder(object sender, PaintEventArgs e)
         {
             if (picPan.Image == null) return;
             ControlPaint.DrawBorder(e.Graphics, new Rectangle(pnlPan.Location.X, pnlPan.Location.Y, picPan.Image.Width, picPan.Image.Height),

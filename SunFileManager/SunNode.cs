@@ -181,6 +181,7 @@ namespace SunFileManager
                     {
                         node.Expand();
                     }
+
                     return node;
                 }
                 else return null;
@@ -192,6 +193,9 @@ namespace SunFileManager
             }
         }
 
+        /// <summary>
+        /// Checks for duplicates
+        /// </summary>
         public static bool CanNodeBeInserted(SunNode parentNode, string name)
         {
             SunObject obj = (SunObject)parentNode.Tag;

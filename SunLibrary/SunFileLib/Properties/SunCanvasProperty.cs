@@ -19,13 +19,6 @@ namespace SunLibrary.SunFileLib.Properties
         private SunObject parent;
         private SunPngProperty png;
 
-        // Different Zlib header values. Little-endian.
-        private static int ZLIB_LOW_COMPRESSION = 0x0178;
-
-        private static int ZLIB_LOW_MEDIUM_COMPRESSION = 0x5E78;
-        private static int ZLIB_MEDIUM_HIGH_COMPRESSION = 0x9C78;
-        private static int ZLIB_BEST_COMPRESSION = 0xDA78;
-
         #endregion Fields
 
         #region Inherited Members

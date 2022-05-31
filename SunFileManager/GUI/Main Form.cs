@@ -28,6 +28,15 @@ namespace SunFileManager
         public TextBox temporaryYbox = new TextBox();
         private Label lblVectorYVal = new Label();
 
+        // Node being dragged
+        private TreeNode dragNode = null;
+
+        // Temporary drop node for selection
+        private TreeNode tempDropNode = null;
+
+        // Timer for scrolling
+        private Timer timer = new Timer();
+
         public frmFileManager()
         {
             InitializeComponent();
@@ -393,14 +402,14 @@ namespace SunFileManager
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
 
-            if (!frmCanvasInputBox.Show("Add Image", out string name, out List<Bitmap> bitmaps, out List<int> gifFrameDelays, out bool isGif, out bool createSubProperty))
+            if (!frmCanvasInputBox.Show("Add Image", out string name, out List<Bitmap> bitmaps, out List<int> gifFrameDelays, out List<Bitmap> gifs, out bool createSubProperty))
                 return;
 
             int i = 0;
 
             /*
              Make sure this is 100% complete.
-            THis if/else should work perfectly
+            This if/else should work perfectly
             */
             if (createSubProperty)
             {
@@ -413,11 +422,23 @@ namespace SunFileManager
                     pngProp.SetPNG(bmp);
                     canvasProp.PNG = pngProp;
 
-                    if (isGif)
-                    {
-                        int delay = gifFrameDelays[i];
-                        canvasProp.AddProperty(new SunIntProperty("delay", delay));
-                    }
+                    // Add default origin (0, 0) property
+                    canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));
+                    subProp.AddProperty(canvasProp);
+
+                    i++;
+                }
+
+                i = 0;
+                foreach (Bitmap frame in gifs)
+                {
+                    SunCanvasProperty canvasProp = new SunCanvasProperty(i.ToString());
+                    SunPngProperty pngProp = new SunPngProperty();
+                    pngProp.SetPNG(frame);
+                    canvasProp.PNG = pngProp;
+
+                    int delay = gifFrameDelays[i];
+                    canvasProp.AddProperty(new SunIntProperty("delay", delay));
 
                     // Add default origin (0, 0) property
                     canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));
@@ -425,6 +446,7 @@ namespace SunFileManager
 
                     i++;
                 }
+
                 targetNode.AddObject(subProp, true);
                 sunTreeView.SelectedNode = targetNode[subProp.Name];
             }
@@ -432,27 +454,47 @@ namespace SunFileManager
             {
                 foreach (Bitmap bmp in bitmaps)
                 {
-                    SunCanvasProperty canvasProp = new SunCanvasProperty(bitmaps.Count == 1 ? name : (name + i));
+                    SunCanvasProperty canvasProp = new SunCanvasProperty(i.ToString());
                     SunPngProperty pngProp = new SunPngProperty();
                     pngProp.SetPNG(bmp);
                     canvasProp.PNG = pngProp;
 
-                    if (isGif)
-                    {
-                        int delay = gifFrameDelays[i];
-                        canvasProp.AddProperty(new SunIntProperty("delay", delay));
-                    }
-
                     // Add default origin (0, 0) property
                     canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));
 
-                    targetNode.AddObject(canvasProp);
+                    targetNode.AddObject(canvasProp, false);
 
                     i++;
                 }
+
+                i = 0;
+
+                if (gifs.Count > 0)
+                {
+                    SunSubProperty gifSubProp = new SunSubProperty(name + "_gif");
+                    foreach (Bitmap frame in gifs)
+                    {
+                        SunCanvasProperty canvasProp = new SunCanvasProperty(i.ToString());
+                        SunPngProperty pngProp = new SunPngProperty();
+                        pngProp.SetPNG(frame);
+                        canvasProp.PNG = pngProp;
+
+                        int delay = gifFrameDelays[i];
+                        canvasProp.AddProperty(new SunIntProperty("delay", delay));
+
+                        // Add default origin (0, 0) property
+                        canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));
+                        gifSubProp.AddProperty(canvasProp);
+
+                        i++;
+                    }
+                    targetNode.AddObject(gifSubProp);
+                }
             }
+
             bitmaps.Clear();
             gifFrameDelays.Clear();
+            gifs.Clear();
         }
 
         /// <summary>
@@ -871,6 +913,148 @@ namespace SunFileManager
             sunTreeView.SelectedNode.ForeColor = SunNode.NewObjectForeColor;
         }
 
+        private void sunTreeView_DragDrop(object sender, DragEventArgs e)
+        {
+            // Unlock updates
+            TreeViewDragHelper.ImageList_DragLeave(this.sunTreeView.Handle);
+
+            // Get drop node
+            TreeNode dropNode = this.sunTreeView.GetNodeAt(this.sunTreeView.PointToClient(new Point(e.X, e.Y)));
+
+            // If drop node isn't equal to drag node, add drag node as child of drop node
+            if (this.dragNode != dropNode)
+            {
+                // Remove drag node from parent
+                if (this.dragNode.Parent == null)
+                {
+                    this.sunTreeView.Nodes.Remove(this.dragNode);
+                }
+                else
+                {
+                    this.dragNode.Parent.Nodes.Remove(this.dragNode);
+                }
+
+                // Add drag node to drop node
+                dropNode.Nodes.Add(this.dragNode);
+                dropNode.ExpandAll();
+
+                // Set drag node to null
+                this.dragNode = null;
+
+                // Disable scroll timer
+                this.timer.Enabled = false;
+            }
+        }
+
+        private void sunTreeView_DragEnter(object sender, DragEventArgs e)
+        {
+            TreeViewDragHelper.ImageList_DragEnter(this.sunTreeView.Handle, e.X - this.sunTreeView.Left,
+                e.Y - this.sunTreeView.Top);
+
+            // Enable timer for scrolling dragged item
+            this.timer.Enabled = true;
+        }
+
+        private void sunTreeView_DragLeave(object sender, EventArgs e)
+        {
+            TreeViewDragHelper.ImageList_DragLeave(this.sunTreeView.Handle);
+
+            // Disable timer for scrolling dragged item
+            this.timer.Enabled = false;
+        }
+
+        private void sunTreeView_DragOver(object sender, DragEventArgs e)
+        {
+            // Compute drag position and move image
+            Point formP = this.PointToClient(new Point(e.X, e.Y));
+            TreeViewDragHelper.ImageList_DragMove(formP.X - this.sunTreeView.Left, formP.Y - this.sunTreeView.Top);
+
+            // Get actual drop node
+            TreeNode dropNode = this.sunTreeView.GetNodeAt(this.sunTreeView.PointToClient(new Point(e.X, e.Y)));
+            if (dropNode == null)
+            {
+                e.Effect = DragDropEffects.None;
+                return;
+            }
+
+            e.Effect = DragDropEffects.Move;
+
+            // if mouse is on a new node select it
+            if (this.tempDropNode != dropNode)
+            {
+                TreeViewDragHelper.ImageList_DragShowNolock(false);
+                this.sunTreeView.SelectedNode = dropNode;
+                TreeViewDragHelper.ImageList_DragShowNolock(true);
+                tempDropNode = dropNode;
+            }
+
+            // Avoid that drop node is child of drag node
+            TreeNode tmpNode = dropNode;
+            while (tmpNode.Parent != null)
+            {
+                if (tmpNode.Parent == this.dragNode) e.Effect = DragDropEffects.None;
+                tmpNode = tmpNode.Parent;
+            }
+        }
+
+        private void sunTreeView_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            if (e.Effect == DragDropEffects.Move)
+            {
+                // Show pointer cursor while dragging
+                e.UseDefaultCursors = false;
+                this.sunTreeView.Cursor = Cursors.Default;
+            }
+            else e.UseDefaultCursors = true;
+        }
+
+        private void sunTreeView_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            // Get drag node and select it
+            this.dragNode = (TreeNode)e.Item;
+            this.sunTreeView.SelectedNode = this.dragNode;
+
+            // Reset image list used for drag image
+            this.imageListDrag.Images.Clear();
+            this.imageListDrag.ImageSize = new Size(this.dragNode.Bounds.Size.Width + this.sunTreeView.Indent, this.dragNode.Bounds.Height);
+
+            // Create new bitmap
+            // This bitmap will contain the tree node image to be dragged
+            Bitmap bmp = new Bitmap(this.dragNode.Bounds.Width + this.sunTreeView.Indent, this.dragNode.Bounds.Height);
+
+            // Get graphics from bitmap
+            Graphics gfx = Graphics.FromImage(bmp);
+
+            // Draw node icon into the bitmap
+            //gfx.DrawImage(this.imageList1.Images[0], 0, 0);
+            gfx.DrawImage(imageList1.Images[dragNode.ImageIndex], 0, 0);
+
+            // Draw node label into bitmap
+            gfx.DrawString(this.dragNode.Text,
+                this.sunTreeView.Font,
+                new SolidBrush(this.sunTreeView.ForeColor),
+                (float)this.sunTreeView.Indent, 1.0f);
+
+            // Add bitmap to imagelist
+            this.imageListDrag.Images.Add(bmp);
+
+            // Get mouse position in client coordinates
+            Point p = this.sunTreeView.PointToClient(Control.MousePosition);
+
+            // Compute delta between mouse position and node bounds
+            int dx = p.X + this.sunTreeView.Indent - this.dragNode.Bounds.Left;
+            int dy = p.Y - this.dragNode.Bounds.Top;
+
+            // Begin dragging image
+            if (TreeViewDragHelper.ImageList_BeginDrag(this.imageListDrag.Handle, 0, dx, dy))
+            {
+                // Begin dragging
+                this.sunTreeView.DoDragDrop(bmp, DragDropEffects.Move);
+                // End dragging image
+                TreeViewDragHelper.ImageList_EndDrag();
+            }
+        }
+
         #endregion Treeview Input Events
 
         #region Form Input Events
@@ -911,8 +1095,7 @@ namespace SunFileManager
             sunTreeView.Nodes.Add(new SunNode(file));
 
             AddSunImageToSelectedNode((SunNode)sunTreeView.Nodes[file.Name], "image1");
-            AddIntPropertyToSelectedNode((SunNode)sunTreeView.Nodes[file.Name].LastNode, "test int", 543210);
-            //openToolStripMenuItem_Click(null, null);
+            AddCanvasPropertyToSelectedNode((SunNode)sunTreeView.Nodes[file.Name].LastNode);
         }
 
         #endregion Debug
