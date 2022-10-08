@@ -7,6 +7,8 @@ using System.IO;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using MaterialSkin;
+using MaterialSkin.Controls;
 using SunFileManager.Converter;
 using SunFileManager.GUI;
 using SunFileManager.GUI.Input;
@@ -16,7 +18,7 @@ using SunLibrary.SunFileLib.Structure;
 
 namespace SunFileManager
 {
-    public partial class frmFileManager : Form
+    public partial class frmFileManager : MaterialForm
     {
         public static string DefaultPath = "C:\\Users\\SOUND\\Desktop\\New .Sun Files";
         public FileManager manager = null;
@@ -24,6 +26,7 @@ namespace SunFileManager
         public bool AnimateGifs = false;
         public Size defaultTextBoxSize = new Size(205, 29);
         public SoundPlayer mp3Player = null;
+        public frmSettings settingsForm = null;
 
         public TextBox temporaryYbox = new TextBox();
         private Label lblVectorYVal = new Label();
@@ -53,6 +56,11 @@ namespace SunFileManager
             manager = new FileManager(this);
             Program.UserSettings.Load();
             ApplySettings();
+
+            var materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
         }
 
         public void ApplySettings()
@@ -60,9 +68,9 @@ namespace SunFileManager
             //UseDarkMode
             //AutomaticallyParseImages is handled in FileManager.OpenSunFile()
             //DisplayWarnings
-            sunTreeView.ShowLines = Program.UserSettings.DisplayLinesBetweenNodes;
-            sunTreeView.ShowRootLines = Program.UserSettings.DisplayLinesOnRootNodes;
-            sunTreeView.FullRowSelect = Program.UserSettings.HighlightWholeWidth;
+            sunTreeView.ShowRootLines = Program.UserSettings.FileBoxes;
+            sunTreeView.ShowLines = Program.UserSettings.NodeLines;
+            sunTreeView.FullRowSelect = Program.UserSettings.HighlightLine;
         }
 
         #region Toolstrip

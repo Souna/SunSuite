@@ -31,7 +31,7 @@ namespace SunFileManager
                 }
 
                 string error = string.Empty;
-                bool success = f.ParseSunFile(out error, Program.UserSettings.ParseImagesAutomatically);
+                bool success = f.ParseSunFile(out error, Program.UserSettings.AutoParseImages);
 
                 file = f;
                 return success;

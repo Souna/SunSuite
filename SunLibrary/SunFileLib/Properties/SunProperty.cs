@@ -67,6 +67,9 @@ namespace SunLibrary.SunFileLib.Properties
 
         #region Custom Members
 
+        public virtual List<SunProperty> SunProperties
+        { get { return null; } }
+
         public static List<SunProperty> ParsePropertyList(SunBinaryReader reader, SunObject parent, SunImage parentImg)
         {
             int entryCount = reader.ReadCompressedInt();
