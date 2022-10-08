@@ -49,6 +49,7 @@ namespace SunLibrary.Config
                 writer.WriteEndDocument();
                 writer.Flush();
                 writer.Close();
+                Save();
             }
 
             reader.Load(SettingsPath);

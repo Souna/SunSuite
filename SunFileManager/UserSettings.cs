@@ -9,36 +9,36 @@ namespace SunFileManager.Config
 {
     public class UserSettings : SettingsBase
     {
-        public bool UseDark { get; set; }
+        public bool DarkMode { get; set; } = false;
 
-        public bool ParseImagesAutomatically { get; set; }
+        public bool AutoParseImages { get; set; } = false;
 
-        public bool DisplayNodeWarnings { get; set; }
+        public bool NodeWarnings { get; set; } = true;
 
-        public bool DisplayLinesBetweenNodes { get; set; }
+        public bool FileBoxes { get; set; } = true;
 
-        public bool DisplayLinesOnRootNodes { get; set; }
+        public bool NodeLines { get; set; } = true;
 
-        public bool HighlightWholeWidth { get; set; }
+        public bool HighlightLine { get; set; } = false;
 
         public override void WriteSettings(SettingsWriter writer)
         {
-            writer.Write("UseDark", UseDark);
-            writer.Write("ParseImagesAutomatically", ParseImagesAutomatically);
-            writer.Write("DisplayNodeWarnings", DisplayNodeWarnings);
-            writer.Write("DisplayLinesBetweenNodes", DisplayLinesBetweenNodes);
-            writer.Write("DisplayLinesOnRootNodes", DisplayLinesOnRootNodes);
-            writer.Write("HighlightWholeNodeWidth", HighlightWholeWidth);
+            writer.Write("DarkMode", DarkMode);
+            writer.Write("AutoParseImages", AutoParseImages);
+            writer.Write("NodeWarnings", NodeWarnings);
+            writer.Write("FileBoxes", FileBoxes);
+            writer.Write("NodeLines", NodeLines);
+            writer.Write("HighlightLine", HighlightLine);
         }
 
         public override void ReadSettings(SettingsReader reader)
         {
-            UseDark = reader.Read("UseDark", false);
-            ParseImagesAutomatically = reader.Read("ParseImagesAutomatically", true);
-            DisplayNodeWarnings = reader.Read("DisplayNodeWarnings", true);
-            DisplayLinesBetweenNodes = reader.Read("DisplayLinesBetweenNodes", true);
-            DisplayLinesOnRootNodes = reader.Read("DisplayLinesOnRootNodes", true);
-            HighlightWholeWidth = reader.Read("HighlightWholeNodeWidth", false);
+            DarkMode = reader.Read("DarkMode", false);
+            AutoParseImages = reader.Read("AutoParseImages", false);
+            NodeWarnings = reader.Read("NodeWarnings", true);
+            FileBoxes = reader.Read("FileBoxes", true);
+            NodeLines = reader.Read("NodeLines", true);
+            HighlightLine = reader.Read("HighlightLine", false);
         }
     }
 }

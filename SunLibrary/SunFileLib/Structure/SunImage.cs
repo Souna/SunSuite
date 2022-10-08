@@ -80,7 +80,7 @@ namespace SunLibrary.SunFileLib.Structure
         {
             get
             {
-                if (reader != null && !parsed) ParseImage();
+                //if (reader != null && !parsed) ParseImage(); // As of 10/6 I don't see much reason to parse before just sending back obj type = image..
                 return SunObjectType.Image;
             }
         }

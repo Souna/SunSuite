@@ -31,30 +31,30 @@ namespace SunFileManager.GUI.Input.Forms
 
         private void GatherSettings()
         {
-            Program.UserSettings.UseDark = chkDarkMode.Checked;
-            Program.UserSettings.ParseImagesAutomatically = chkAutoParseImages.Checked;
-            Program.UserSettings.DisplayNodeWarnings = chkNodeWarnings.Checked;
-            Program.UserSettings.DisplayLinesBetweenNodes = chkNodeLines.Checked;
-            Program.UserSettings.DisplayLinesOnRootNodes = chkNodeRootLines.Checked;
-            Program.UserSettings.HighlightWholeWidth = chkHighlightWholeWidth.Checked;
+            Program.UserSettings.DarkMode = chkDarkMode.Checked;
+            Program.UserSettings.AutoParseImages = chkAutoParseImages.Checked;
+            Program.UserSettings.NodeWarnings = chkNodeWarnings.Checked;
+            Program.UserSettings.FileBoxes = chkFileBoxes.Checked;
+            Program.UserSettings.NodeLines = radNodeLines.Checked;
+            Program.UserSettings.HighlightLine = radHighlightLine.Checked;
 
             Program.UserSettings.Save();
         }
 
         private void frmSettings_Load(object sender, EventArgs e)
         {
-            chkDarkMode.Checked = Program.UserSettings.UseDark;
-            chkAutoParseImages.Checked = Program.UserSettings.ParseImagesAutomatically;
-            chkNodeWarnings.Checked = Program.UserSettings.DisplayNodeWarnings;
-            chkNodeLines.Checked = Program.UserSettings.DisplayLinesBetweenNodes;
-            chkNodeRootLines.Checked = Program.UserSettings.DisplayLinesOnRootNodes;
-            chkHighlightWholeWidth.Checked = Program.UserSettings.HighlightWholeWidth;
+            chkDarkMode.Checked = Program.UserSettings.DarkMode;
+            chkAutoParseImages.Checked = Program.UserSettings.AutoParseImages;
+            chkNodeWarnings.Checked = Program.UserSettings.NodeWarnings;
+            chkFileBoxes.Checked = Program.UserSettings.FileBoxes;
+            radNodeLines.Checked = Program.UserSettings.NodeLines;
+            radHighlightLine.Checked = Program.UserSettings.HighlightLine;
 
             btnApply.Enabled = false;
         }
 
         private void CheckBox_Checked(object sender, EventArgs e)
-        {
+        { 
             btnApply.Enabled = true;
         }
 
@@ -64,11 +64,13 @@ namespace SunFileManager.GUI.Input.Forms
         {
             GatherSettings();
             ApplyChangedSettings();
+            Dispose();
             Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            Dispose();
             Close();
         }
 

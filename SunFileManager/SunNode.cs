@@ -194,7 +194,7 @@ namespace SunFileManager
         }
 
         /// <summary>
-        /// Checks for duplicates
+        /// Checks for duplicates.
         /// </summary>
         public static bool CanNodeBeInserted(SunNode parentNode, string name)
         {
