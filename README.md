@@ -2,7 +2,7 @@
 
 Work-in-progress custom binary file manager and map creator, aimed at creating a simple 2d sidescroller game project.
 
-The planned game project will load all data (maps, images, sounds, player data) from binary files with a custom format created for this project, which have the file extension ".sun."
+The planned game project will load all data (maps, images, sounds, player data) from binary files with a custom format created exclusively for this project. The binary files have the file extension ".sun."
 
 Tools that will be used to create said game include:
 
