@@ -27,6 +27,7 @@ namespace SunFileManager
         public Size defaultTextBoxSize = new Size(205, 29);
         public SoundPlayer mp3Player = null;
         public frmSettings settingsForm = null;
+        MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
 
         public TextBox temporaryYbox = new TextBox();
         private Label lblVectorYVal = new Label();
@@ -54,18 +55,17 @@ namespace SunFileManager
             panning_PictureBox.Visible = false;
             elementHost1.Visible = false;
             manager = new FileManager(this);
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             Program.UserSettings.Load();
             ApplySettings();
 
-            var materialSkinManager = MaterialSkinManager.Instance;
-            materialSkinManager.AddFormToManage(this);
-            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+            //materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
         }
 
         public void ApplySettings()
         {
-            //UseDarkMode
+            materialSkinManager.Theme = Program.UserSettings.DarkMode? MaterialSkinManager.Themes.DARK : MaterialSkinManager.Themes.LIGHT;
             //AutomaticallyParseImages is handled in FileManager.OpenSunFile()
             //DisplayWarnings
             sunTreeView.ShowRootLines = Program.UserSettings.FileBoxes;

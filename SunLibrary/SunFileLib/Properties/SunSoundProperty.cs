@@ -206,11 +206,11 @@ namespace SunLibrary.SunFileLib.Properties
         public SunSoundProperty(string name, string file)
         {
             this.name = name;
-            Mp3FileReader reader = new Mp3FileReader(file);
-            this.wavFormat = reader.Mp3WaveFormat;
-            this.len_ms = (int)((double)reader.Length * 1000d / (double)reader.WaveFormat.AverageBytesPerSecond);
+            MediaFoundationReader mfreader = new MediaFoundationReader(file);
+            this.wavFormat = mfreader.WaveFormat;
+            this.len_ms = (int)((double)mfreader.Length * 1000d / (double)mfreader.WaveFormat.AverageBytesPerSecond);
             RebuildHeader();
-            reader.Dispose();
+            mfreader.Dispose();
             this.mp3bytes = File.ReadAllBytes(file);
         }
 

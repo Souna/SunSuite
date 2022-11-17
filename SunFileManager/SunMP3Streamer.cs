@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using NAudio.MediaFoundation;
+using NAudio.Wave;
 using SunLibrary.SunFileLib.Properties;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,9 @@ namespace SunFileManager
     {
         private Stream byteStream;
 
-        private Mp3FileReader mpegStream;
+        private StreamMediaFoundationReader mediaFoundationReader;
+        WaveOutEvent wavePlayer = new WaveOutEvent();
         private WaveFileReader waveFileStream;
-
-        private WaveOut wavePlayer;
         private SunSoundProperty sound;
         private bool repeat;
 
@@ -28,11 +28,10 @@ namespace SunFileManager
             this.sound = sound;
             byteStream = new MemoryStream(sound.GetBytes(false));
 
-            wavePlayer = new WaveOut(WaveCallbackInfo.FunctionCallback());
             try
             {
-                mpegStream = new Mp3FileReader(byteStream);
-                wavePlayer.Init(mpegStream);
+                mediaFoundationReader = new StreamMediaFoundationReader(byteStream);
+                wavePlayer.Init(mediaFoundationReader);
             }
             catch (System.InvalidOperationException)
             {
@@ -55,8 +54,8 @@ namespace SunFileManager
         {
             if (repeat && !disposed)
             {
-                if (mpegStream != null)
-                    mpegStream.Seek(0, SeekOrigin.Begin);
+                if (mediaFoundationReader != null)
+                    mediaFoundationReader.Seek(0, SeekOrigin.Begin);
                 else
                     waveFileStream.Seek(0, SeekOrigin.Begin);
 
@@ -79,10 +78,10 @@ namespace SunFileManager
 
             disposed = true;
             wavePlayer.Dispose();
-            if (mpegStream != null)
+            if (mediaFoundationReader != null)
             {
-                mpegStream.Dispose();
-                mpegStream = null;
+                mediaFoundationReader.Dispose();
+                mediaFoundationReader = null;
             }
             if (waveFileStream != null)
             {
@@ -146,8 +145,8 @@ namespace SunFileManager
         {
             get
             {
-                if (mpegStream != null)
-                    return (int)(mpegStream.Position / mpegStream.WaveFormat.AverageBytesPerSecond);
+                if (mediaFoundationReader != null)
+                    return (int)(mediaFoundationReader.Position / mediaFoundationReader.WaveFormat.AverageBytesPerSecond);
                 else if (waveFileStream != null)
                     return (int)(waveFileStream.Position / waveFileStream.WaveFormat.AverageBytesPerSecond);
 
@@ -155,8 +154,8 @@ namespace SunFileManager
             }
             set
             {
-                if (mpegStream != null)
-                    mpegStream.Seek(value * mpegStream.WaveFormat.AverageBytesPerSecond, SeekOrigin.Begin);
+                if (mediaFoundationReader != null)
+                    mediaFoundationReader.Seek(value * mediaFoundationReader.WaveFormat.AverageBytesPerSecond, SeekOrigin.Begin);
                 else if (waveFileStream != null)
                     waveFileStream.Seek(value * waveFileStream.WaveFormat.AverageBytesPerSecond, SeekOrigin.Begin);
             }

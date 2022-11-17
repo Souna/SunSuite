@@ -68,14 +68,14 @@
             this.sunTreeView.HotTracking = true;
             this.sunTreeView.ImageIndex = 0;
             this.sunTreeView.ImageList = this.imageList1;
-            this.sunTreeView.Location = new System.Drawing.Point(13, 27);
+            this.sunTreeView.Location = new System.Drawing.Point(13, 91);
             this.sunTreeView.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.sunTreeView.MinimumSize = new System.Drawing.Size(255, 175);
             this.sunTreeView.Name = "sunTreeView";
             this.sunTreeView.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.sunTreeView.SelectedImageIndex = 0;
             this.sunTreeView.ShowRootLines = false;
-            this.sunTreeView.Size = new System.Drawing.Size(326, 641);
+            this.sunTreeView.Size = new System.Drawing.Size(326, 577);
             this.sunTreeView.TabIndex = 0;
             this.sunTreeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.sunTreeView_ItemDrag);
             this.sunTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.sunTreeView_AfterSelect);
@@ -110,10 +110,10 @@
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
             this.toolsToolStripMenuItem});
-            this.menuStripMain.Location = new System.Drawing.Point(0, 0);
+            this.menuStripMain.Location = new System.Drawing.Point(3, 64);
             this.menuStripMain.Name = "menuStripMain";
             this.menuStripMain.Padding = new System.Windows.Forms.Padding(6, 1, 0, 1);
-            this.menuStripMain.Size = new System.Drawing.Size(1106, 24);
+            this.menuStripMain.Size = new System.Drawing.Size(1100, 24);
             this.menuStripMain.TabIndex = 1;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -192,14 +192,14 @@
             // 
             this.optionsToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.Property;
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.optionsToolStripMenuItem.Text = "Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
@@ -235,7 +235,7 @@
             // txtPropertyValue
             // 
             this.txtPropertyValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPropertyValue.Location = new System.Drawing.Point(418, 62);
+            this.txtPropertyValue.Location = new System.Drawing.Point(418, 137);
             this.txtPropertyValue.Name = "txtPropertyValue";
             this.txtPropertyValue.Size = new System.Drawing.Size(205, 29);
             this.txtPropertyValue.TabIndex = 5;
@@ -246,7 +246,7 @@
             this.lblValue.AutoSize = true;
             this.lblValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblValue.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblValue.Location = new System.Drawing.Point(344, 68);
+            this.lblValue.Location = new System.Drawing.Point(344, 143);
             this.lblValue.Name = "lblValue";
             this.lblValue.Size = new System.Drawing.Size(50, 20);
             this.lblValue.TabIndex = 6;
@@ -257,7 +257,7 @@
             this.lblPropertyName.AutoSize = true;
             this.lblPropertyName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.lblPropertyName.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblPropertyName.Location = new System.Drawing.Point(344, 33);
+            this.lblPropertyName.Location = new System.Drawing.Point(344, 108);
             this.lblPropertyName.Name = "lblPropertyName";
             this.lblPropertyName.Size = new System.Drawing.Size(68, 20);
             this.lblPropertyName.TabIndex = 7;
@@ -266,7 +266,7 @@
             // txtPropertyName
             // 
             this.txtPropertyName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.txtPropertyName.Location = new System.Drawing.Point(418, 27);
+            this.txtPropertyName.Location = new System.Drawing.Point(418, 102);
             this.txtPropertyName.Name = "txtPropertyName";
             this.txtPropertyName.ReadOnly = true;
             this.txtPropertyName.Size = new System.Drawing.Size(205, 29);
@@ -278,7 +278,7 @@
             this.chkAnimateGif.AutoSize = true;
             this.chkAnimateGif.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkAnimateGif.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.chkAnimateGif.Location = new System.Drawing.Point(985, 67);
+            this.chkAnimateGif.Location = new System.Drawing.Point(991, 91);
             this.chkAnimateGif.Name = "chkAnimateGif";
             this.chkAnimateGif.Size = new System.Drawing.Size(109, 29);
             this.chkAnimateGif.TabIndex = 10;
@@ -288,7 +288,7 @@
             // 
             // btnApplyPropertyChanges
             // 
-            this.btnApplyPropertyChanges.Location = new System.Drawing.Point(629, 48);
+            this.btnApplyPropertyChanges.Location = new System.Drawing.Point(629, 123);
             this.btnApplyPropertyChanges.Name = "btnApplyPropertyChanges";
             this.btnApplyPropertyChanges.Size = new System.Drawing.Size(87, 23);
             this.btnApplyPropertyChanges.TabIndex = 12;
@@ -301,7 +301,7 @@
             this.lblVectorXVal.AutoSize = true;
             this.lblVectorXVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVectorXVal.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblVectorXVal.Location = new System.Drawing.Point(414, 103);
+            this.lblVectorXVal.Location = new System.Drawing.Point(414, 178);
             this.lblVectorXVal.Name = "lblVectorXVal";
             this.lblVectorXVal.Size = new System.Drawing.Size(66, 20);
             this.lblVectorXVal.TabIndex = 13;
