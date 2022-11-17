@@ -950,8 +950,6 @@ namespace SunFileManager
                     // Add drag node to drop node
                     dropNode.Nodes.Add(this.dragNode);
 
-                    //dropNode.ExpandAll();
-
                     // Set drag node to null
                     this.dragNode = null;
 
@@ -968,9 +966,9 @@ namespace SunFileManager
                 return false;
             }
 
-            if (drag.Tag is SunDirectory)   // Directories only go inside SunFiles
+            if (drag.Tag is SunDirectory)   // Directories only go inside SunFiles or other Directories
             {
-                if (!(receiver.Tag is SunFile))
+                if (!(receiver.Tag is SunFile || receiver.Tag is SunDirectory))
                     return false;
             }
 
