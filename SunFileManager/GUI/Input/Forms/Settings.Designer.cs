@@ -214,7 +214,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(409, 376);
+            this.ClientSize = new System.Drawing.Size(425, 415);
             this.Controls.Add(this.radHighlightLine);
             this.Controls.Add(this.radNodeLines);
             this.Controls.Add(this.btnApply);

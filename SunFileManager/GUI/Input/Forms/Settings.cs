@@ -44,14 +44,32 @@ namespace SunFileManager.GUI.Input.Forms
 
         private void frmSettings_Load(object sender, EventArgs e)
         {
+            //DetachCheckedEventHandler();
             chkDarkMode.Checked = Program.UserSettings.DarkMode;
             chkAutoParseImages.Checked = Program.UserSettings.AutoParseImages;
             chkNodeWarnings.Checked = Program.UserSettings.NodeWarnings;
             chkFileBoxes.Checked = Program.UserSettings.FileBoxes;
+            //AttachCheckedEventHandler();
             radNodeLines.Checked = Program.UserSettings.NodeLines;
             radHighlightLine.Checked = Program.UserSettings.HighlightLine;
 
             btnApply.Enabled = false;
+        }
+
+        private void DetachCheckedEventHandler()
+        {
+            chkDarkMode.CheckedChanged -= CheckBox_Checked;
+            chkAutoParseImages.CheckedChanged -= CheckBox_Checked;
+            chkNodeWarnings.CheckedChanged -= CheckBox_Checked;
+            chkFileBoxes.CheckedChanged -= CheckBox_Checked;
+        }
+
+        private void AttachCheckedEventHandler()
+        {
+            chkDarkMode.CheckedChanged += CheckBox_Checked;
+            chkAutoParseImages.CheckedChanged += CheckBox_Checked;
+            chkNodeWarnings.CheckedChanged += CheckBox_Checked;
+            chkFileBoxes.CheckedChanged += CheckBox_Checked;
         }
 
         private void CheckBox_Checked(object sender, EventArgs e)

@@ -33,10 +33,10 @@ namespace SunFileManager
         private Label lblVectorYVal = new Label();
 
         // Node being dragged
-        private TreeNode dragNode = null;
+        private SunNode dragNode = null;
 
         // Temporary drop node for selection
-        private TreeNode tempDropNode = null;
+        private SunNode tempDropNode = null;
 
         // Timer for scrolling
         private Timer timer = new Timer();
@@ -57,6 +57,7 @@ namespace SunFileManager
             manager = new FileManager(this);
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
             Program.UserSettings.Load();
             ApplySettings();
 
@@ -927,40 +928,78 @@ namespace SunFileManager
             TreeViewDragHelper.ImageList_DragLeave(this.sunTreeView.Handle);
 
             // Get drop node
-            TreeNode dropNode = this.sunTreeView.GetNodeAt(this.sunTreeView.PointToClient(new Point(e.X, e.Y)));
+            SunNode dropNode = (SunNode)this.sunTreeView.GetNodeAt(this.sunTreeView.PointToClient(new Point(e.X, e.Y)));
 
-            // If drop node isn't equal to drag node, add drag node as child of drop node
-            if (this.dragNode != dropNode)
+            if (CanDragDropNode(dragNode, dropNode))
             {
-                // Remove drag node from parent
-                if (this.dragNode.Parent == null)
+                // If drop node isn't equal to drag node, add drag node as child of drop node
+                if (this.dragNode != dropNode)
                 {
-                    this.sunTreeView.Nodes.Remove(this.dragNode);
+                    // Remove drag node from parent
+                    if (this.dragNode.Parent == null)
+                    {
+                        this.sunTreeView.Nodes.Remove(this.dragNode);
+                    }
+                    else
+                    {
+                        this.dragNode.Parent.Nodes.Remove(this.dragNode);
+                    }
+
+                    dragNode.ForeColor = SunNode.NewObjectForeColor;
+
+                    // Add drag node to drop node
+                    dropNode.Nodes.Add(this.dragNode);
+
+                    //dropNode.ExpandAll();
+
+                    // Set drag node to null
+                    this.dragNode = null;
+
+                    // Disable scroll timer
+                    this.timer.Enabled = false;
                 }
-                else
-                {
-                    this.dragNode.Parent.Nodes.Remove(this.dragNode);
-                }
-
-                // Add drag node to drop node
-                dropNode.Nodes.Add(this.dragNode);
-                dropNode.ExpandAll();
-
-                // Set drag node to null
-                this.dragNode = null;
-
-                // Disable scroll timer
-                this.timer.Enabled = false;
             }
+        }
+
+        private bool CanDragDropNode(SunNode drag, SunNode receiver)
+        {
+            if (drag.Tag is SunFile)    // SunFiles cannot be moved
+            {
+                return false;
+            }
+
+            if (drag.Tag is SunDirectory)   // Directories only go inside SunFiles
+            {
+                if (!(receiver.Tag is SunFile))
+                    return false;
+            }
+
+            if (drag.Tag is SunImage)   // Images only go inside Directories
+            {
+                if (!(receiver.Tag is SunDirectory))
+                    return false;
+            }
+
+            if (drag.Tag is SunProperty)
+            {
+                if (drag.Tag is IPropertyContainer) // If we are dragging a special property, i.e SubProperty/SunCanvasProperty, they can only go inside an IPropertyContainer
+                    if (!(receiver.Tag is IPropertyContainer))
+                        return false;
+                else if (!(receiver.Tag is IPropertyContainer)) // If we are dragging a normal property
+                        return false;
+            }
+
+            return true;
         }
 
         private void sunTreeView_DragEnter(object sender, DragEventArgs e)
         {
             TreeViewDragHelper.ImageList_DragEnter(this.sunTreeView.Handle, e.X - this.sunTreeView.Left,
                 e.Y - this.sunTreeView.Top);
-
             // Enable timer for scrolling dragged item
             this.timer.Enabled = true;
+
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
         }
 
         private void sunTreeView_DragLeave(object sender, EventArgs e)
@@ -978,7 +1017,7 @@ namespace SunFileManager
             TreeViewDragHelper.ImageList_DragMove(formP.X - this.sunTreeView.Left, formP.Y - this.sunTreeView.Top);
 
             // Get actual drop node
-            TreeNode dropNode = this.sunTreeView.GetNodeAt(this.sunTreeView.PointToClient(new Point(e.X, e.Y)));
+            SunNode dropNode = (SunNode)this.sunTreeView.GetNodeAt(this.sunTreeView.PointToClient(new Point(e.X, e.Y)));
             if (dropNode == null)
             {
                 e.Effect = DragDropEffects.None;
@@ -1019,7 +1058,7 @@ namespace SunFileManager
         private void sunTreeView_ItemDrag(object sender, ItemDragEventArgs e)
         {
             // Get drag node and select it
-            this.dragNode = (TreeNode)e.Item;
+            this.dragNode = (SunNode)e.Item;
             this.sunTreeView.SelectedNode = this.dragNode;
 
             // Reset image list used for drag image
