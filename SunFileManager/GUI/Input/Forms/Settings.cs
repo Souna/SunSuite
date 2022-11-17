@@ -1,4 +1,5 @@
-﻿using SunFileManager.Config;
+﻿using MaterialSkin.Controls;
+using SunFileManager.Config;
 using SunFileManager.Properties;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Windows.Forms;
 
 namespace SunFileManager.GUI.Input.Forms
 {
-    public partial class frmSettings : Form
+    public partial class frmSettings : MaterialForm
     {
         private frmFileManager mainForm = null;
 
