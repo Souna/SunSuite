@@ -209,6 +209,21 @@ namespace SunFileManager
         }
 
         /// <summary>
+        /// Checks for duplicates
+        /// </summary>
+        public static bool CanNodeBeInserted(SunNode parentNode, SunNode newNode)
+        {
+            SunObject obj = (SunObject)parentNode.Tag;
+            if (obj is IPropertyContainer container)
+                return container[newNode.Name] == null;
+            else if (obj is SunDirectory directory)
+                return directory[newNode.Name] == null;
+            else if (obj is SunFile file)
+                return file.SunDirectory[newNode.Name] == null;
+            else return false;
+        }
+
+        /// <summary>
         /// Adds a <b>SunObject</b> as a child of the selected node.
         /// </summary>
         private bool AddObjectInternal(SunObject newObject)

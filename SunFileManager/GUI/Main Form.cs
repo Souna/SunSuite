@@ -924,6 +924,7 @@ namespace SunFileManager
 
         private void sunTreeView_DragDrop(object sender, DragEventArgs e)
         {
+            // Currently doesn't actually update the contents of nodes when you hit save. They stay the same as if you never moved anything.
             // Unlock updates
             TreeViewDragHelper.ImageList_DragLeave(this.sunTreeView.Handle);
 
@@ -935,6 +936,8 @@ namespace SunFileManager
                 // If drop node isn't equal to drag node, add drag node as child of drop node
                 if (this.dragNode != dropNode)
                 {
+                    if (!(SunNode.CanNodeBeInserted(dropNode, dragNode)))
+                        return;
                     // Remove drag node from parent
                     if (this.dragNode.Parent == null)
                     {
@@ -1071,7 +1074,6 @@ namespace SunFileManager
             Graphics gfx = Graphics.FromImage(bmp);
 
             // Draw node icon into the bitmap
-            //gfx.DrawImage(this.imageList1.Images[0], 0, 0);
             gfx.DrawImage(imageList1.Images[dragNode.ImageIndex], 0, 0);
 
             // Draw node label into bitmap
