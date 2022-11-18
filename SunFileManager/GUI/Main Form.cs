@@ -97,7 +97,9 @@ namespace SunFileManager
         /// </summary>
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new frmSettings(this).ShowDialog();
+            settingsForm = new frmSettings(this);
+            materialSkinManager.AddFormToManage(settingsForm);
+            settingsForm.ShowDialog();
         }
 
         /// <summary>
@@ -922,6 +924,9 @@ namespace SunFileManager
             sunTreeView.SelectedNode.ForeColor = SunNode.NewObjectForeColor;
         }
 
+        /// <summary>
+        /// Occurs when a drag-and-drop operation is completed.
+        /// </summary>
         private void sunTreeView_DragDrop(object sender, DragEventArgs e)
         {
             // Currently doesn't actually update the contents of nodes when you hit save. They stay the same as if you never moved anything.
@@ -936,22 +941,17 @@ namespace SunFileManager
                 // If drop node isn't equal to drag node, add drag node as child of drop node
                 if (this.dragNode != dropNode)
                 {
-                    if (!(SunNode.CanNodeBeInserted(dropNode, dragNode)))
+                    if (!SunNode.CanNodeBeInserted(dropNode, dragNode))
                         return;
-                    // Remove drag node from parent
-                    if (this.dragNode.Parent == null)
-                    {
-                        this.sunTreeView.Nodes.Remove(this.dragNode);
-                    }
-                    else
-                    {
-                        this.dragNode.Parent.Nodes.Remove(this.dragNode);
-                    }
 
-                    dragNode.ForeColor = SunNode.NewObjectForeColor;
+                    // Make, and then call DeepClone method here
+                    SunNode newNode = (SunNode)dragNode.Clone();
 
-                    // Add drag node to drop node
-                    dropNode.Nodes.Add(this.dragNode);
+                    // Remove OG drag node from parent
+                    this.dragNode.DeleteNode();
+
+                    newNode.ForeColor = SunNode.NewObjectForeColor;
+                    dropNode.Nodes.Add(newNode);
 
                     // Set drag node to null
                     this.dragNode = null;
@@ -961,7 +961,13 @@ namespace SunFileManager
                 }
             }
         }
-
+        
+        /// <summary>
+        /// Determines if the node you are dragging is compatible with the node you are adding it under.
+        /// </summary>
+        /// <param name="drag">The node you are moving</param>
+        /// <param name="receiver">The node you are moving the new node under</param>
+        /// <returns>True if you move a node under a 'compatible' node.</returns>
         private bool CanDragDropNode(SunNode drag, SunNode receiver)
         {
             if (drag.Tag is SunFile)    // SunFiles cannot be moved
@@ -993,6 +999,9 @@ namespace SunFileManager
             return true;
         }
 
+        /// <summary>
+        /// Occurs when the mouse drags an item into the client area for this Control.
+        /// </summary>
         private void sunTreeView_DragEnter(object sender, DragEventArgs e)
         {
             TreeViewDragHelper.ImageList_DragEnter(this.sunTreeView.Handle, e.X - this.sunTreeView.Left,
@@ -1003,6 +1012,9 @@ namespace SunFileManager
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
         }
 
+        /// <summary>
+        /// Occurs when an object is dragged out of the control's bounds.
+        /// </summary>
         private void sunTreeView_DragLeave(object sender, EventArgs e)
         {
             TreeViewDragHelper.ImageList_DragLeave(this.sunTreeView.Handle);
@@ -1011,6 +1023,9 @@ namespace SunFileManager
             this.timer.Enabled = false;
         }
 
+        /// <summary>
+        /// Occurs when an object is dragged over the control's bounds.
+        /// </summary>
         private void sunTreeView_DragOver(object sender, DragEventArgs e)
         {
             // Compute drag position and move image
@@ -1045,6 +1060,10 @@ namespace SunFileManager
             }
         }
 
+        /// <summary>
+        /// Occurs when the mouse drags an item.
+        /// The system requests that the Control provides feedback to that effect.
+        /// </summary>
         private void sunTreeView_GiveFeedback(object sender, GiveFeedbackEventArgs e)
         {
             if (e.Effect == DragDropEffects.Move)
@@ -1056,6 +1075,9 @@ namespace SunFileManager
             else e.UseDefaultCursors = true;
         }
 
+        /// <summary>
+        /// Occurs when the user begins dragging an item.
+        /// </summary>
         private void sunTreeView_ItemDrag(object sender, ItemDragEventArgs e)
         {
             // Get drag node and select it
