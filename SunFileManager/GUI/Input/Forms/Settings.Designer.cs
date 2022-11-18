@@ -121,7 +121,7 @@
             this.btnOk.Depth = 0;
             this.btnOk.HighEmphasis = true;
             this.btnOk.Icon = null;
-            this.btnOk.Location = new System.Drawing.Point(65, 264);
+            this.btnOk.Location = new System.Drawing.Point(91, 284);
             this.btnOk.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnOk.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnOk.Name = "btnOk";
@@ -141,7 +141,7 @@
             this.btnCancel.Depth = 0;
             this.btnCancel.HighEmphasis = true;
             this.btnCancel.Icon = null;
-            this.btnCancel.Location = new System.Drawing.Point(156, 264);
+            this.btnCancel.Location = new System.Drawing.Point(165, 284);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
@@ -161,7 +161,7 @@
             this.btnApply.Depth = 0;
             this.btnApply.HighEmphasis = true;
             this.btnApply.Icon = null;
-            this.btnApply.Location = new System.Drawing.Point(260, 264);
+            this.btnApply.Location = new System.Drawing.Point(250, 284);
             this.btnApply.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnApply.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnApply.Name = "btnApply";
@@ -214,7 +214,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(425, 415);
+            this.ClientSize = new System.Drawing.Size(409, 329);
             this.Controls.Add(this.radHighlightLine);
             this.Controls.Add(this.radNodeLines);
             this.Controls.Add(this.btnApply);

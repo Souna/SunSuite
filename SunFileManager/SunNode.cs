@@ -209,7 +209,7 @@ namespace SunFileManager
         }
 
         /// <summary>
-        /// Checks for duplicates
+        /// Checks if the parent node already contains a child node with the same name
         /// </summary>
         public static bool CanNodeBeInserted(SunNode parentNode, SunNode newNode)
         {
