@@ -47,6 +47,11 @@ namespace SunLibrary.SunFileLib.Properties
             }
         }
 
+        public override SunProperty DeepClone()
+        {
+            SunFloatProperty clone = new SunFloatProperty(Name, Value);
+            return clone;
+        }
         #endregion SunProperty
 
         #region SunObject

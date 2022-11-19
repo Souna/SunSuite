@@ -484,6 +484,28 @@ namespace SunLibrary.SunFileLib.Structure
             }
         }
 
+        public SunDirectory DeepClone()
+        {
+            SunDirectory result = (SunDirectory)MemberwiseClone();
+            result.SubDirectories.Clear();
+            result.SunImages.Clear();
+            foreach (SunDirectory dir in SubDirectories)
+                result.SubDirectories.Add(dir.DeepClone());
+            foreach (SunImage img in SunImages)
+                result.SunImages.Add(img.DeepClone());
+            return result;
+        }
+
+        /// <summary>
+        /// Returns amount of images under this directory.
+        /// </summary>
+        public int CountImages()
+        {
+            int result = images.Count;
+            foreach (SunDirectory subdir in SubDirectories)
+                result += subdir.CountImages();
+            return result;
+        }
         #endregion Custom Members
     }
 }

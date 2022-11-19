@@ -42,6 +42,11 @@ namespace SunLibrary.SunFileLib.Properties
             writer.WriteCompressedInt(Value);
         }
 
+        public override SunProperty DeepClone()
+        {
+            SunIntProperty clone = new SunIntProperty(Name, Value);
+            return clone;
+        }
         #endregion SunProperty
 
         #region SunObject

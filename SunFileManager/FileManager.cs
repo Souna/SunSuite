@@ -118,7 +118,7 @@ namespace SunFileManager
 
             SunFile loadedSunFile = LoadSunFile(sfd.FileName);
             if (loadedSunFile != null)
-                AddLoadedSunFileToTreeView(loadedSunFile, Dispatcher.CurrentDispatcher, savedExpansionState);  //make a setting
+                AddLoadedSunFileToTreeView(loadedSunFile, Dispatcher.CurrentDispatcher, savedExpansionState);
         }
 
         /// <summary>

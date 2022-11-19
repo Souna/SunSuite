@@ -64,6 +64,12 @@ namespace SunLibrary.SunFileLib.Properties
             throw new NotImplementedException("Cannot write PNG Property");
         }
 
+        public override SunProperty DeepClone()
+        {
+            SunPngProperty clone = new SunPngProperty();
+            clone.SetPNG(GetPNG(false));
+            return clone;
+        }
         #endregion Inherited Members
 
         #region Custom Members
