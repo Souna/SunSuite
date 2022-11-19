@@ -90,6 +90,17 @@ namespace SunLibrary.SunFileLib.Properties
             writer.Write(canvasBytes);
         }
 
+        public override SunProperty DeepClone()
+        {
+            SunCanvasProperty clone = new SunCanvasProperty(name);
+            foreach (SunProperty prop in properties)
+            {
+                clone.AddProperty(prop.DeepClone());
+            }
+            clone.PNG = (SunPngProperty)PNG.DeepClone();
+            return clone;
+        }
+
         #endregion SunProperty
 
         #region SunObject

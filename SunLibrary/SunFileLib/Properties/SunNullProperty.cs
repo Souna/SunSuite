@@ -37,6 +37,11 @@ namespace SunLibrary.SunFileLib.Properties
             writer.Write((byte)SunPropertyType.Null);
         }
 
+        public override SunProperty DeepClone()
+        {
+            SunNullProperty clone = new SunNullProperty(Name);
+            return clone;
+        }
         #endregion SunProperty
 
         #region SunObject

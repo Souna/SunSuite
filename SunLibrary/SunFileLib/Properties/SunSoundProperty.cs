@@ -66,6 +66,11 @@ namespace SunLibrary.SunFileLib.Properties
             writer.Write(data);
         }
 
+        public override SunProperty DeepClone()
+        {
+            SunSoundProperty clone = new SunSoundProperty(this);
+            return clone;
+        }
         #endregion SunProperty
 
         #region SunObject

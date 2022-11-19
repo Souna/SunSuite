@@ -194,6 +194,14 @@ namespace SunLibrary.SunFileLib.Structure
         public uint Offset
         { get { return offset; } set { offset = value; } }
 
+        public SunImage DeepClone()
+        {
+            if (reader != null && !parsed) ParseImage();
+            SunImage clone = new SunImage(name) { changed = true };
+            foreach (SunProperty prop in properties)
+                clone.AddProperty(prop.DeepClone());
+            return clone;
+        }
         #endregion Custom Members
 
         #region Parsing Methods
@@ -252,7 +260,6 @@ namespace SunLibrary.SunFileLib.Structure
                 reader.BaseStream.Position = position;
             }
         }
-
         #endregion Parsing Methods
     }
 }

@@ -39,6 +39,8 @@ namespace SunLibrary.SunFileLib.Properties
 
         public abstract void WriteValue(SunBinaryWriter writer);
 
+        public abstract SunProperty DeepClone();
+
         #endregion Members
 
         #region Inherited Members

@@ -42,6 +42,11 @@ namespace SunLibrary.SunFileLib.Properties
             writer.Write(Value);
         }
 
+        public override SunProperty DeepClone()
+        {
+            SunShortProperty clone = new SunShortProperty(Name, Value);
+            return clone;
+        }
         #endregion SunProperty
 
         #region SunObject

@@ -166,11 +166,12 @@ namespace SunLibrary.SunFileLib.Structure
                 {
                     sunWriter.Write((byte)Header.Identifier[i]);
                 }
-                //Bloat trash
+
                 for (int i = 0; i < Header.Ascii.Length; i++)
                 {
                     sunWriter.Write((byte)Header.Ascii[i]);
                 }
+
                 sunWriter.Write((long)Header.FileSize);
                 sunWriter.Write(Header.FileStart);
                 sunWriter.WriteNullTerminatedString(Header.Copyright);
@@ -188,6 +189,7 @@ namespace SunLibrary.SunFileLib.Structure
                     sunDir.SaveImages(sunWriter, fileStream);
                     fileStream.Close();
                 }
+
                 File.Delete(tempFile);
                 sunWriter.Close();
                 GC.Collect();
