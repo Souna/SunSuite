@@ -8,24 +8,30 @@ namespace SunLibrary.SunFileLib.Structure.Data
 {
     public enum ItemTypes
     {
-        None,
-        Backgrounds,
-        Tiles,
-        Footholds,
-        Objects
+        None = 0,
+        Backgrounds = 1,
+        Tiles = 2,
+        Footholds = 3,
+        Objects = 4
     }
 
-    public enum FieldType
+    [Flags]
+    public enum FieldLimit  // Where we would define any field limits/forced behavior
     {
-        DEFAULT
+        FIELD_OPTION_NONE = 0
     }
 
-    public static class PortalType
+    public enum FieldType   // Where we'd define whether or not a map is of a specific type which would have its own rules
+    {
+        DEFAULT = 0
+    }
+
+    public static class PortalType  // Definitions for different types of portals available for use on maps
     {
         public const string
-            STARTPOINT = "sp",
-            VISIBLE = "pv",
-            INVISIBLE = "pi";
+            SPAWN_POINT = "portal_spawnPoint",
+            VISIBLE = "portal_visible",
+            INVISIBLE = "portal_invisible";
     }
 
     public enum BackgroundType

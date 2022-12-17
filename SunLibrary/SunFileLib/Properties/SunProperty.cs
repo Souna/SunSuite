@@ -6,7 +6,7 @@ using SunLibrary.SunFileLib.Util;
 namespace SunLibrary.SunFileLib.Properties
 {
     /// <summary>
-    /// Base class for defining the properties associated with different Nodes.
+    /// Base class for defining the properties within the SunFiles.
     /// </summary>
     public abstract class SunProperty : SunObject
     {

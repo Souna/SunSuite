@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SunCreator.MapEditor.UndoRedo
+namespace SunEditor.Map_Editor.Instance.Shapes
 {
-    public class UndoRedoBatch
+    public abstract class EmptyRectangle
     {
     }
 }

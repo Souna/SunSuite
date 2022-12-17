@@ -9,6 +9,9 @@ using SunLibrary.SunFileLib.Util;
 
 namespace SunLibrary.SunFileLib.Properties
 {
+    /// <summary>
+    /// The PNG property inside of the SunCanvasProperty.
+    /// </summary>
     public class SunPngProperty : SunProperty
     {
         #region Fields
@@ -152,7 +155,7 @@ namespace SunLibrary.SunFileLib.Properties
 
                 if (!saveInMemory)
                 {
-                    //were removing the reference to compressedBytes, so a backup for the ret value is needed
+                    //we're removing the reference to compressedBytes, so a backup for the ret value is needed
                     byte[] returnBytes = compressedBytes;
                     compressedBytes = null;
                     return returnBytes;

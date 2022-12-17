@@ -119,6 +119,7 @@ namespace SunLibrary.SunFileLib.Structure
         {
             if (reader != null && !parsed) ParseImage();
             prop.Parent = null;
+            prop.Dispose();
             properties.Remove(prop);
         }
 

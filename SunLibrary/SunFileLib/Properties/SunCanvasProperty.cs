@@ -49,7 +49,7 @@ namespace SunLibrary.SunFileLib.Properties
 
         /// <summary>
         /// Returns the type of the Property
-        /// <br>Image = 8</br>
+        /// <br>Canvas = 8</br>
         /// </summary>
         public override SunPropertyType PropertyType
         { get { return SunPropertyType.Canvas; } }

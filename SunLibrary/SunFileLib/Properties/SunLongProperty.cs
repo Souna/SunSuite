@@ -6,7 +6,6 @@ namespace SunLibrary.SunFileLib.Properties
     /// <summary>
     /// A 64-bit Integer property represented as a signed byte.
     /// If the byte value is <b>-128</b> the value is the int (4 bytes) that follows it.
-    /// <br>A SunLongProperty may be associated with a SunDirectory or SunCanvasProperty.</br>
     /// </summary>
     public class SunLongProperty : SunProperty
     {
