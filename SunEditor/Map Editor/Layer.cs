@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SunCreator.MapEditor.Instance
+namespace SunEditor.Map_Editor
 {
-    public interface ISnappable
+    public class Layer
     {
-        void DoSnap();
     }
 }

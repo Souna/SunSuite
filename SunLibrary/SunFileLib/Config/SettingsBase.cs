@@ -28,13 +28,10 @@ namespace SunLibrary.Config
         ///
         /// You must implement ReadSettings for any data to be read.
         /// </summary>
-        public void Load()
+        public void Load(string path)
         {
             SettingsReader reader = new SettingsReader();
 
-            // Get "My Documents" folder
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            path = Path.Combine(path, "SunSettings", "SunFileManager");
             SettingsPath = Path.Combine(path, "Settings.xml");
 
             // Create folder if it doesn't already exist

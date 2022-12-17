@@ -41,7 +41,7 @@ namespace SunFileManager
         // Timer for scrolling
         private Timer timer = new Timer();
 
-        public frmFileManager()
+        public frmFileManager(string sunfileToLoad)
         {
             InitializeComponent();
             chkAnimateGif.Visible = false;
@@ -58,10 +58,20 @@ namespace SunFileManager
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-            Program.UserSettings.Load();
+            Program.UserSettings.Load(Program.settingsPath);
             ApplySettings();
 
             //materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+
+            //Load a SunFile from double clicking it
+            if (sunfileToLoad != null && File.Exists(sunfileToLoad))
+            {
+                SunFile f = manager.LoadSunFile(sunfileToLoad);
+                if (f != null)
+                {
+                    manager.AddLoadedSunFileToTreeView(f, null, null);
+                }
+            }
         }
 
         public void ApplySettings()
@@ -924,12 +934,13 @@ namespace SunFileManager
             sunTreeView.SelectedNode.ForeColor = SunNode.NewObjectForeColor;
         }
 
+        #region DragDrop
         /// <summary>
         /// Occurs when a drag-and-drop operation is completed.
         /// </summary>
         private void sunTreeView_DragDrop(object sender, DragEventArgs e)
         {
-            // Currently doesn't actually update the contents of nodes when you hit save. They stay the same as if you never moved anything.
+            return;
             // Unlock updates
             TreeViewDragHelper.ImageList_DragLeave(this.sunTreeView.Handle);
 
@@ -944,29 +955,33 @@ namespace SunFileManager
                     if (!SunNode.CanNodeBeInserted(dropNode, dragNode))
                         return;
 
-                    // Make, and then call DeepClone method here
-                    SunNode newNode = (SunNode)dragNode.Clone();
+                    //SunNode newNode = SunNode.CloneJson(dragNode);
+                    //SunNode newNode = SunNode.DeepCopy(dragNode);
 
+
+                    dragNode.ForeColor = SunNode.NewObjectForeColor;
+                    dropNode.AddObject((SunObject)dragNode.Tag, false);
+                    
                     // Remove OG drag node from parent
-                    this.dragNode.DeleteNode();
-
-                    newNode.ForeColor = SunNode.NewObjectForeColor;
-                    dropNode.Nodes.Add(newNode);
-
+                    // We need to be able to do this without removing the node from its new parent
+                    // ATM I am struggling to work this out because any changes made to the old node also affect the new one
+                    // I learned this is because by default C# makes reference types for objects
+                    dragNode.DeleteNode();
+                    
                     // Set drag node to null
-                    this.dragNode = null;
+                    dragNode = null;
 
                     // Disable scroll timer
-                    this.timer.Enabled = false;
+                    timer.Enabled = false;
                 }
             }
         }
         
         /// <summary>
-        /// Determines if the node you are dragging is compatible with the node you are adding it under.
+        /// Determines if the node you are dragging is compatible with the node you are moving it under.
         /// </summary>
         /// <param name="drag">The node you are moving</param>
-        /// <param name="receiver">The node you are moving the new node under</param>
+        /// <param name="receiver">The new parent node for the one you are dragging</param>
         /// <returns>True if you move a node under a 'compatible' node.</returns>
         private bool CanDragDropNode(SunNode drag, SunNode receiver)
         {
@@ -1004,6 +1019,7 @@ namespace SunFileManager
         /// </summary>
         private void sunTreeView_DragEnter(object sender, DragEventArgs e)
         {
+            return;
             TreeViewDragHelper.ImageList_DragEnter(this.sunTreeView.Handle, e.X - this.sunTreeView.Left,
                 e.Y - this.sunTreeView.Top);
             // Enable timer for scrolling dragged item
@@ -1017,6 +1033,7 @@ namespace SunFileManager
         /// </summary>
         private void sunTreeView_DragLeave(object sender, EventArgs e)
         {
+            return;
             TreeViewDragHelper.ImageList_DragLeave(this.sunTreeView.Handle);
 
             // Disable timer for scrolling dragged item
@@ -1028,6 +1045,7 @@ namespace SunFileManager
         /// </summary>
         private void sunTreeView_DragOver(object sender, DragEventArgs e)
         {
+            return;
             // Compute drag position and move image
             Point formP = this.PointToClient(new Point(e.X, e.Y));
             TreeViewDragHelper.ImageList_DragMove(formP.X - this.sunTreeView.Left, formP.Y - this.sunTreeView.Top);
@@ -1083,6 +1101,7 @@ namespace SunFileManager
             // Get drag node and select it
             this.dragNode = (SunNode)e.Item;
             this.sunTreeView.SelectedNode = this.dragNode;
+            return;
 
             // Reset image list used for drag image
             this.imageListDrag.Images.Clear();
@@ -1123,8 +1142,9 @@ namespace SunFileManager
                 TreeViewDragHelper.ImageList_EndDrag();
             }
         }
+        #endregion DragDrop
 
-        #endregion Treeview Input Events
+#endregion Treeview Input Events
 
         #region Form Input Events
 

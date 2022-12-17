@@ -22,7 +22,7 @@ namespace SunLibrary.SunFileLib.Properties
 
         /// <summary>
         /// Returns the type of the Property.
-        /// <br>Float = 5</br>
+        /// <br>Double = 6</br>
         /// </summary>
         public override SunPropertyType PropertyType
         { get { return SunPropertyType.Double; } }

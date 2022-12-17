@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SunCreator.MapEditor.Instance
+namespace SunEditor.Map_Editor.Instance.Interface
 {
     public interface ISerializableSelector
     {

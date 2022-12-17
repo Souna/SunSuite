@@ -4,6 +4,9 @@ using System.Windows.Forms;
 using SunLibrary.SunFileLib.Properties;
 using SunLibrary.SunFileLib.Structure;
 using SunFileManager.GUI;
+using Newtonsoft.Json;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SunFileManager
 {
@@ -12,6 +15,7 @@ namespace SunFileManager
     /// <para>Provides methods for parsing child SunNodes, adding and removing SunNodes,
     /// <br>returning top level node of current selection, and returning a SunNode's underlying type.</br></para>
     /// </summary>
+    [Serializable]
     public class SunNode : TreeNode
     {
         private bool isSunObjectAddedManually = false;
@@ -30,6 +34,13 @@ namespace SunFileManager
             ParseChilds(sourceObject);
         }
 
+        public SunNode()
+        {
+        }
+
+        /// <summary>
+        /// Sets the icon for each TreeView node based on its underlying type.
+        /// </summary>
         public void SetNodeImage(SunObject obj)
         {
             switch (obj.ObjectType)
@@ -194,7 +205,7 @@ namespace SunFileManager
         }
 
         /// <summary>
-        /// Checks for duplicates.
+        /// Checks if the parent node already contains a child node with the same name
         /// </summary>
         public static bool CanNodeBeInserted(SunNode parentNode, string name)
         {
@@ -412,6 +423,45 @@ namespace SunFileManager
                 //}
                 return null;
             }
+        }
+
+        public SunNode DeepClone()
+        {
+            SunNode clone = (SunNode)MemberwiseClone();
+            return clone;
+        }
+
+        public static T DeepCopy<T>(T other)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(ms, other);
+                ms.Position = 0;
+                return (T)formatter.Deserialize(ms);
+            }
+        }
+
+        /// <summary>
+        /// Perform a deep Copy of the object, using Json as a serialization method. NOTE: Private members are not cloned using this method.
+        /// </summary>
+        /// <typeparam name="T">The type of object being copied.</typeparam>
+        /// <param name="source">The object instance to copy.</param>
+        /// <returns>The copied object.</returns>
+        public static T CloneJson<T>(T source)
+        {
+            // Don't serialize a null object, simply return the default for that object
+            if (ReferenceEquals(source, null)) return default;
+
+            // initialize inner objects individually
+            // for example in default constructor some list property initialized with some values,
+            // but in 'source' these items are cleaned -
+            // without ObjectCreationHandling.Replace default constructor values will be added to result
+            var deserializeSettings = new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace };
+
+            var output = JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source), deserializeSettings);
+
+            return output;
         }
     }
 }

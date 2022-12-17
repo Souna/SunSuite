@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SunLibrary.Config.SettingsBase" Collapsed="true">
+    <Position X="38.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAgIACAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SunFileLib\Config\SettingsBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.Config.SettingsReader" Collapsed="true">
+    <Position X="40.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAABAAAAAAAQAAgAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>SunFileLib\Config\SettingsReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.Config.SettingsWriter" Collapsed="true">
+    <Position X="35" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAQAAAAAAAAQAAAAAAEAEAAAA=</HashCode>
+      <FileName>SunFileLib\Config\SettingsWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Properties.SunCanvasProperty" Collapsed="true">
+    <Position X="14.5" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIQQQAAAiAACgBACAAAQAQAAIEEGAAYAICCAQAAAAE=</HashCode>
+      <FileName>SunFileLib\Properties\SunCanvasProperty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Properties.SunDoubleProperty" Collapsed="true">
+    <Position X="21.25" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAiAAAgBEAAAAQAQAAIAEAAAAAIAiAQAAAAA=</HashCode>
+      <FileName>SunFileLib\Properties\SunDoubleProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Properties.SunFloatProperty" Collapsed="true">
+    <Position X="23.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAiAAAgBEAAAAQAQAAIAEAAAAAIAiAQAAAAA=</HashCode>
+      <FileName>SunFileLib\Properties\SunFloatProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Properties.SunIntProperty" Collapsed="true">
+    <Position X="28" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAiAAAgBEAAAAQAQAAIAEAAAAAIAiAQAAAAA=</HashCode>
+      <FileName>SunFileLib\Properties\SunIntProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Properties.SunLongProperty" Collapsed="true">
+    <Position X="3.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAiAAAgBEAAAAQAQAAIAEAAAAAIAiAQAAAAA=</HashCode>
+      <FileName>SunFileLib\Properties\SunLongProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Properties.SunNullProperty" Collapsed="true">
+    <Position X="7.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAiAAAgBAAAAAQAQAAIAEAAAAAIACAQAAAAA=</HashCode>
+      <FileName>SunFileLib\Properties\SunNullProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Properties.SunPngProperty" Collapsed="true">
+    <Position X="19" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACQAAABBCBAAgRAQAAAwEQBAYAAAAIAAAgGAwAAAUA=</HashCode>
+      <FileName>SunFileLib\Properties\SunPngProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Properties.SunProperty" Collapsed="true">
+    <Position X="15.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAQQAAgAAAgAACAACBAAAAIAQAAAAAMCCAQAAAAA=</HashCode>
+      <FileName>SunFileLib\Properties\SunProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Properties.SunShortProperty" Collapsed="true">
+    <Position X="25.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAiAAAgBEAAAAQAQAAIAEAAAAAIAiAQAAAAA=</HashCode>
+      <FileName>SunFileLib\Properties\SunShortProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Properties.SunSoundProperty" Collapsed="true">
+    <Position X="16.75" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BAOAAAQgAiQAAgBAAAABYARAApAEAAAAAIRGAQAQoQA=</HashCode>
+      <FileName>SunFileLib\Properties\SunSoundProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Properties.SunStringProperty" Collapsed="true">
+    <Position X="5.5" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAiAAAgBAAAAAQAQAAIAEAAAAAIAiAQAAAAA=</HashCode>
+      <FileName>SunFileLib\Properties\SunStringProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Properties.SunSubProperty" Collapsed="true">
+    <Position X="10" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAQQAAAiAAAgBACAAAQAQAAIAEAAAYAICCAQAAAAA=</HashCode>
+      <FileName>SunFileLib\Properties\SunSubProperty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Properties.SunVectorProperty" Collapsed="true">
+    <Position X="12.25" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAiAAAgBEAAAAQAQAAIAEAAAAAIBiAQAAYAA=</HashCode>
+      <FileName>SunFileLib\Properties\SunVectorProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Structure.Data.PortalType" Collapsed="true">
+    <Position X="36.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgACAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>SunFileLib\Structure\Data\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Structure.Data.MapInfo" Collapsed="true">
+    <Position X="40.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAoAgAAEAEAIAAAAAIAAAAAAAABAQAAAAAAAAAAA=</HashCode>
+      <FileName>SunFileLib\Structure\Data\MapInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Structure.SunDirectory" Collapsed="true">
+    <Position X="1" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kASAACAAEyAAkABCCIAAVgQAGMIUAAQQQIAAABASgAA=</HashCode>
+      <FileName>SunFileLib\Structure\SunDirectory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Structure.SunFile" Collapsed="true">
+    <Position X="30.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FQAAAAQAAiAAAAAACAICRAQAAAAEAAAAEIBAAAAAAAI=</HashCode>
+      <FileName>SunFileLib\Structure\SunFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Structure.SunHeader" Collapsed="true">
+    <Position X="35" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAABAAAAAABAAAAAIAAAAEEAAQBAAAEAQQAAAAA=</HashCode>
+      <FileName>SunFileLib\Structure\SunHeader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Structure.SunImage" Collapsed="true">
+    <Position X="32.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAKgQQAAAjAAgABADIDARwQACIIEAAAYAICABABQoBA=</HashCode>
+      <FileName>SunFileLib\Structure\SunImage.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Structure.SunObject" Collapsed="true">
+    <Position X="16.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAiAAAAAACAAARAQAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>SunFileLib\Structure\SunObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Structure.SunPropertyExtended" Collapsed="true">
+    <Position X="13.25" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SunFileLib\Structure\SunPropertyExtended.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Util.ByteUtils" Collapsed="true">
+    <Position X="35" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCAAAAAAAAAAAAABAAAAggAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>SunFileLib\Util\ByteUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Util.ErrorLogger" Collapsed="true">
+    <Position X="38.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAEAgAAAAAAEAAAAAAgAA=</HashCode>
+      <FileName>SunFileLib\Util\ErrorLogger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Util.Error" Collapsed="true">
+    <Position X="36.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>SunFileLib\Util\ErrorLogger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Util.SunBinaryReader" Collapsed="true">
+    <Position X="36.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAABAIAEAAAACAAQAAAAAAAAQAAAQAAAAAAAAA=</HashCode>
+      <FileName>SunFileLib\Util\SunBinaryReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Util.SunBinaryWriter" Collapsed="true">
+    <Position X="38.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAECAAAAAAAAAAAAQACAAAAAAAIAAAAAAABAAAAAA=</HashCode>
+      <FileName>SunFileLib\Util\SunBinaryWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Util.SunFileHelper" Collapsed="true">
+    <Position X="40.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>SunFileLib\Util\SunFileHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SunLibrary.SunFileLib.Util.SunTool" Collapsed="true">
+    <Position X="36.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAgAAAgAAAAIAEAABAAAAAAAAAAAAAAAAACAIAA=</HashCode>
+      <FileName>SunFileLib\Util\SunTool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ObjectCopier" Collapsed="true">
+    <Position X="35" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>SunFileLib\Util\ObjectCopier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="SunLibrary.SunFileLib.Structure.IPropertyContainer" Collapsed="true">
+    <Position X="35" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAQQAAAAAAAAAACAAAAAAAAAAAAAAYAACAAAAAAAA=</HashCode>
+      <FileName>SunFileLib\Structure\IPropertyContainer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="SunLibrary.SunFileLib.Properties.SunPropertyType" Collapsed="true">
+    <Position X="36.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAiAQAIAAAAAAAACAAABBEIAAAAgECA=</HashCode>
+      <FileName>SunFileLib\Properties\SunPropertyType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SunLibrary.SunFileLib.Structure.Data.ItemTypes" Collapsed="true">
+    <Position X="40.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAEAAAAAAAMAAAAAAAEAAAA=</HashCode>
+      <FileName>SunFileLib\Structure\Data\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SunLibrary.SunFileLib.Structure.Data.FieldType" Collapsed="true">
+    <Position X="38.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SunFileLib\Structure\Data\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SunLibrary.SunFileLib.Structure.Data.BackgroundType" Collapsed="true">
+    <Position X="35" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGAAAAAAAAABCAAAAAAAAAACEAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>SunFileLib\Structure\Data\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SunLibrary.SunFileLib.Structure.SunObjectType" Collapsed="true">
+    <Position X="35" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAEABAAAAAAAQAAAAA=</HashCode>
+      <FileName>SunFileLib\Structure\SunObjectType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SunLibrary.SunFileLib.Util.ErrorLevel" Collapsed="true">
+    <Position X="36.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAQAAAAEAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SunFileLib\Util\ErrorLogger.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

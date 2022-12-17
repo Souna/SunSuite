@@ -10,7 +10,7 @@ using System.Runtime.Serialization;
 namespace SunLibrary.SunFileLib.Properties
 {
     /// <summary>
-    /// A SunProperty that contains data for an MP3 file
+    /// A SunProperty that contains data for an MP3 file.
     /// </summary>
     public class SunSoundProperty : SunPropertyExtended
     {

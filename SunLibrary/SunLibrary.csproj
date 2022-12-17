@@ -9,12 +9,13 @@
     <OutputType>Library</OutputType>
     <RootNamespace>SunLibrary</RootNamespace>
     <AssemblyName>SunLibrary</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -40,6 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +74,7 @@
     <Compile Include="SunFileLib\Structure\SunPropertyExtended.cs" />
     <Compile Include="SunFileLib\Util\ByteUtils.cs" />
     <Compile Include="SunFileLib\Util\ErrorLogger.cs" />
+    <Compile Include="SunFileLib\Util\ObjectCopier.cs" />
     <Compile Include="SunFileLib\Util\SunBinaryReader.cs" />
     <Compile Include="SunFileLib\Util\SunBinaryWriter.cs" />
     <Compile Include="SunFileLib\Util\SunFileHelper.cs" />

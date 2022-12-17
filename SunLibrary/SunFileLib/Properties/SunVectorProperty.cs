@@ -6,7 +6,6 @@ namespace SunLibrary.SunFileLib.Properties
 {
     /// <summary>
     /// A SunProperty that contains an x and a y value.
-    /// <br>A SunVectorProperty may be associated with a SunDirectory or SunCanvasProperty.</br>
     /// </summary>
     public class SunVectorProperty : SunPropertyExtended
     {

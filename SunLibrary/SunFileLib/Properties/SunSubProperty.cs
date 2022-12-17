@@ -75,6 +75,7 @@ namespace SunLibrary.SunFileLib.Properties
         public void RemoveProperty(SunProperty prop)
         {
             prop.Parent = null;
+            prop.Dispose();
             properties.Remove(prop);
         }
 
