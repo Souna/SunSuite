@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -15,13 +16,14 @@ using SunFileManager.GUI.Input;
 using SunFileManager.GUI.Input.Forms;
 using SunLibrary.SunFileLib.Properties;
 using SunLibrary.SunFileLib.Structure;
+using Path = System.IO.Path;
 
 namespace SunFileManager
 {
     public partial class frmFileManager : MaterialForm
     {
         public static string DefaultPath = "C:\\Users\\SOUND\\Desktop\\New .Sun Files";
-        public FileManager manager = null;
+        public static FileManager manager = null;
         public SunContextMenuManager contextMenuManager = null;
         public bool AnimateGifs = false;
         public Size defaultTextBoxSize = new Size(205, 29);
@@ -64,6 +66,12 @@ namespace SunFileManager
             //materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
 
             //Load a SunFile from double clicking it
+            LoadFile(sunfileToLoad);
+        }
+
+        public static void LoadFile(string sunfileToLoad)
+        {
+            Console.WriteLine("Loading " + sunfileToLoad);
             if (sunfileToLoad != null && File.Exists(sunfileToLoad))
             {
                 SunFile f = manager.LoadSunFile(sunfileToLoad);

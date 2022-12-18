@@ -97,7 +97,7 @@ namespace SunFileManager
                 {
                     foreach (SunNode node in GetNodes(sender))
                     {
-                        mainform.manager.UnloadSunFile((SunFile)node.Tag);
+                        frmFileManager.manager.UnloadSunFile((SunFile)node.Tag);
                     }
                 }));
 
@@ -106,7 +106,7 @@ namespace SunFileManager
                 {
                     foreach (SunNode node in GetNodes(sender))
                     {
-                        mainform.manager.ReloadSunFile((SunFile)node.Tag);
+                        frmFileManager.manager.ReloadSunFile((SunFile)node.Tag);
                     }
                 }));
 

@@ -79,7 +79,7 @@ namespace SunFileManager.GUI
             SunFile file = new SunFile(name, fullpath);
 
             mainform.sunTreeView.Nodes.Add(new SunNode(file));
-            mainform.manager.sunFiles.Add(file);
+            frmFileManager.manager.sunFiles.Add(file);
             Close();
         }
 

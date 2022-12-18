@@ -219,7 +219,7 @@ namespace SunLibrary.SunFileLib.Structure
                 return true;
             }
 
-            lock (reader) // for multi threaded XMLWZ export.
+            lock (reader)
             {
                 this.parseEverything = parseEverything;
                 reader.BaseStream.Position = offset + 1;
