@@ -89,6 +89,51 @@ namespace SunLibrary.SunFileLib.Properties
         public override SunFile SunFileParent
         { get { return Parent.SunFileParent; } }
 
+        public override int GetInt()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override short GetShort()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override long GetLong()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override float GetFloat()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override double GetDouble()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string GetString()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Point GetPoint()
+        {
+            return new Point(x.Value, y.Value);
+        }
+
+        public override Bitmap GetBitmap()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override byte[] GetBytes()
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion SunObject
 
         #endregion Inherited Members
@@ -155,11 +200,6 @@ namespace SunLibrary.SunFileLib.Properties
             this.x = x;
             this.y = y;
             Parent = sunParent;
-        }
-
-        public Point GetPoint()
-        {
-            return new Point(x.Value, y.Value);
         }
 
         public override string ToString()

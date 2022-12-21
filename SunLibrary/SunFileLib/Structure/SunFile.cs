@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using SunLibrary.SunFileLib.Structure;
@@ -96,6 +97,51 @@ namespace SunLibrary.SunFileLib.Structure
             path = null;
             name = null;
             SunDirectory.Dispose();
+        }
+
+        public override int GetInt()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override short GetShort()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override long GetLong()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override float GetFloat()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetDouble()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GetString()
+        {
+            return Name;
+        }
+
+        public override Point GetPoint()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Bitmap GetBitmap()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override byte[] GetBytes()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion Inherited Members

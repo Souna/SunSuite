@@ -1,33 +1,30 @@
-﻿using System;
+﻿using SunLibrary.SunFileLib.Structure;
+using SunLibrary.SunFileLib.Util;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SunLibrary.SunFileLib.Structure;
-using SunLibrary.SunFileLib.Util;
 
 namespace SunLibrary.SunFileLib.Properties
 {
     /// <summary>
-    /// A property that contains a set of properties
+    /// A property that contains extended properties
     /// </summary>
-    public class SunSubProperty : SunPropertyExtended, IPropertyContainer
+    public class SunConvexProperty : SunPropertyExtended, IPropertyContainer
     {
         #region Fields
-
         internal List<SunProperty> properties = new List<SunProperty>();
         internal string name;
         internal SunObject parent;
-
         #endregion Fields
 
         #region Inherited Members
 
         #region SunProperty
-
         public override SunPropertyType PropertyType
-        { get { return SunPropertyType.SubProperty; } }
+        { get { return SunPropertyType.Convex; } }
 
         public override void SetValue(object value)
         {
@@ -47,24 +44,38 @@ namespace SunLibrary.SunFileLib.Properties
 
         public override void WriteValue(SunBinaryWriter writer)
         {
-            WriteValue(writer);
+            writer.Write((byte)SunPropertyType.Convex);
+            WritePropertyList(writer, properties);
         }
 
         public override SunProperty DeepClone()
         {
-            SunSubProperty clone = new SunSubProperty(Name);
+            SunConvexProperty clone = new SunConvexProperty(Name);
             foreach (SunProperty prop in properties)
                 clone.AddProperty(prop.DeepClone());
             return clone;
         }
+
+        public override SunProperty this[string name]
+        {
+            get
+            {
+                foreach (SunProperty prop in properties)
+                    if (prop.Name.ToLower() == name.ToLower())
+                        return prop;
+                return null;
+            }
+        }
+
         #endregion SunProperty
 
         #region IPropertyContainer
-
         public void AddProperty(SunProperty prop)
         {
+            if (!(prop is SunPropertyExtended))
+                throw new Exception("Property is not extended");
             prop.Parent = this;
-            properties.Add(prop);
+            properties.Add((SunPropertyExtended)prop);
         }
 
         public void AddProperties(List<SunProperty> props)
@@ -76,42 +87,19 @@ namespace SunLibrary.SunFileLib.Properties
         public void RemoveProperty(SunProperty prop)
         {
             prop.Parent = null;
-            prop.Dispose();
             properties.Remove(prop);
         }
 
         public void ClearProperties()
         {
-            foreach (SunProperty prop in properties) prop.Parent = null;
+            foreach (SunProperty prop in properties)
+                prop.Parent = null;
             properties.Clear();
         }
 
-        public List<SunProperty> SunProperties
+        public override List<SunProperty> SunProperties
         {
-            get
-            {
-                return properties;
-            }
-        }
-
-        public override SunProperty this[string name]
-        {
-            get
-            {
-                foreach (SunProperty p in properties)
-                    if (p.Name.ToLower() == name.ToLower())
-                        return p;
-                //throw new KeyNotFoundException("A SunProperty with the specified name was not found: " + name);
-                return null;
-            }
-            set
-            {
-                if (value != null)
-                {
-                    value.Name = name;
-                    AddProperty(value);
-                }
-            }
+            get { return properties; }
         }
 
         #endregion IPropertyContainer
@@ -198,14 +186,15 @@ namespace SunLibrary.SunFileLib.Properties
 
         #region Custom Members
 
-        public SunSubProperty()
-        { }
+        public SunConvexProperty()
+        {
 
-        public SunSubProperty(string name)
+        }
+
+        public SunConvexProperty(string name)
         {
             this.name = name;
         }
-
         #endregion Custom Members
     }
 }

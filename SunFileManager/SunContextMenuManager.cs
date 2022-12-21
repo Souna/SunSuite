@@ -40,8 +40,10 @@ namespace SunFileManager
         private readonly ToolStripMenuItem AddDoubleProperty;
         private readonly ToolStripMenuItem AddFloatProperty;
         private readonly ToolStripMenuItem AddCanvasProperty;
+        private readonly ToolStripMenuItem AddConvexProperty;
         private readonly ToolStripMenuItem AddIntProperty;
         private readonly ToolStripMenuItem AddLongProperty;
+        private readonly ToolStripMenuItem AddLinkProperty;
         private readonly ToolStripMenuItem AddShortProperty;
         private readonly ToolStripMenuItem AddSoundProperty;
         private readonly ToolStripMenuItem AddStringProperty;
@@ -97,7 +99,7 @@ namespace SunFileManager
                 {
                     foreach (SunNode node in GetNodes(sender))
                     {
-                        mainform.manager.UnloadSunFile((SunFile)node.Tag);
+                        frmFileManager.manager.UnloadSunFile((SunFile)node.Tag);
                     }
                 }));
 
@@ -106,7 +108,7 @@ namespace SunFileManager
                 {
                     foreach (SunNode node in GetNodes(sender))
                     {
-                        mainform.manager.ReloadSunFile((SunFile)node.Tag);
+                        frmFileManager.manager.ReloadSunFile((SunFile)node.Tag);
                     }
                 }));
 
@@ -188,6 +190,12 @@ namespace SunFileManager
                     mainform.AddCanvasPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
                 }));
 
+            AddConvexProperty = new ToolStripMenuItem("Convex", Resources.folderblue, new EventHandler(
+                delegate (object sender, EventArgs e)
+                {
+                    mainform.AddConvexPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode, null);
+                }));
+
             AddIntProperty = new ToolStripMenuItem("Int               4 bytes", Resources.Input, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
@@ -198,6 +206,12 @@ namespace SunFileManager
                 delegate (object sender, EventArgs e)
                 {
                     mainform.AddLongPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
+                }));
+
+            AddLinkProperty = new ToolStripMenuItem("Link", Resources.Input, new EventHandler(
+                delegate (object sender, EventArgs e)
+                {
+                    mainform.AddLinkPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
                 }));
 
             AddShortProperty = new ToolStripMenuItem("Short          2 bytes", Resources.Input, new EventHandler(
@@ -288,7 +302,12 @@ namespace SunFileManager
                 }
                 else if (node.Tag is IPropertyContainer)
                 {
-                    AddSubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddSubProperty, AddDigitPropertySubMenu, AddCanvasProperty, AddStringProperty, AddSoundProperty, AddVectorProperty });
+                    if (node.Tag is SunConvexProperty) // If we right-clicked a Convex property, we only want to be able to add extended properties
+                    {
+                        AddSubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddSubProperty, AddCanvasProperty, AddConvexProperty, AddSoundProperty, AddVectorProperty });
+                    }
+                    else
+                        AddSubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddSubProperty, AddDigitPropertySubMenu, AddCanvasProperty, AddConvexProperty, AddSoundProperty, AddStringProperty, AddVectorProperty });
 
                     //  Populate "Digit" add menu.
                     AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddShortProperty, AddIntProperty, AddLongProperty, new ToolStripSeparator(), AddFloatProperty, AddDoubleProperty });

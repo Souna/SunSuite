@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Drawing;
 using SunLibrary.SunFileLib.Properties;
 using SunLibrary.SunFileLib.Structure;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SunLibrary.SunFileLib.Structure
 {
@@ -9,6 +11,8 @@ namespace SunLibrary.SunFileLib.Structure
     /// </summary>
     public abstract class SunObject : IDisposable
     {
+        private object _tag = null;
+
         public abstract void Dispose();
 
         /// <summary>
@@ -35,6 +39,27 @@ namespace SunLibrary.SunFileLib.Structure
         /// Deletes object from its parent.
         /// </summary>
         public abstract void Remove();
+
+        /// <summary>
+        /// Casting functions
+        /// </summary>
+        public abstract int GetInt();
+
+        public abstract short GetShort();
+
+        public abstract long GetLong();
+
+        public abstract float GetFloat();
+
+        public abstract double GetDouble();
+
+        public abstract string GetString();
+
+        public abstract Point GetPoint();
+
+        public abstract Bitmap GetBitmap();
+
+        public abstract byte[] GetBytes();
 
         /// <summary>
         /// Returns the SunObject by name.
@@ -80,6 +105,12 @@ namespace SunLibrary.SunFileLib.Structure
                 }
                 return result;
             }
+        }
+
+        public virtual object SETag
+        {
+            get { return _tag; }
+            set { _tag = value; }
         }
     }
 }

@@ -141,7 +141,7 @@ namespace SunFileManager
             SunFile loadedSunFile = LoadSunFile(path);
 
             if (loadedSunFile != null)
-                mainForm.manager.AddLoadedSunFileToTreeView(loadedSunFile, currentDispatcher, savedExpansionState);
+                frmFileManager.manager.AddLoadedSunFileToTreeView(loadedSunFile, currentDispatcher, savedExpansionState);
         }
 
         public void UnloadSunFile(SunFile file)

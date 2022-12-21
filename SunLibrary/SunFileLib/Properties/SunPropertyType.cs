@@ -24,6 +24,7 @@
         Sound = 10,
         SubProperty = 11,
         Extended = 12,
+        Convex = 14,
 
         #endregion Extended
     }

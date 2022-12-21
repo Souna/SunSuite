@@ -148,6 +148,51 @@ namespace SunLibrary.SunFileLib.Properties
         public override SunFile SunFileParent
         { get { return Parent.SunFileParent; } }
 
+        public override int GetInt()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override short GetShort()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override long GetLong()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override float GetFloat()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override double GetDouble()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override string GetString()
+        {
+            return Name;
+        }
+
+        public override Point GetPoint()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Bitmap GetBitmap()
+        {
+            return PNG.GetPNG(false);
+        }
+
+        public override byte[] GetBytes()
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion SunObject
 
         #region IPropertyContainer
@@ -270,11 +315,6 @@ namespace SunLibrary.SunFileLib.Properties
         public Point GetCanvasOriginPosition()
         {
             return new Point(0, 0);
-        }
-
-        public Bitmap GetBitmap()
-        {
-            return PNG.GetPNG(false);
         }
 
         #endregion Custom Members
