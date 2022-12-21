@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Xml.Linq;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using SunFileManager.Converter;
@@ -71,7 +72,6 @@ namespace SunFileManager
 
         public static void LoadFile(string sunfileToLoad)
         {
-            Console.WriteLine("Loading " + sunfileToLoad);
             if (sunfileToLoad != null && File.Exists(sunfileToLoad))
             {
                 SunFile f = manager.LoadSunFile(sunfileToLoad);
@@ -525,6 +525,24 @@ namespace SunFileManager
             gifFrameDelays.Clear();
             gifs.Clear();
         }
+        
+        /// <summary>
+        /// Creates a new Convex property under a selected node.
+        /// </summary>
+        public void AddConvexPropertyToSelectedNode(SunNode targetNode, string name)
+        {
+            if (!(targetNode.Tag is IPropertyContainer)) return;
+
+            string convexPropName = name;
+            if (name == string.Empty || name == null)
+            {
+                if (!frmNameInputBox.Show("Add Convex Property", out convexPropName))
+                    return;
+            }
+
+            targetNode.AddObject(new SunConvexProperty(convexPropName));
+
+        }
 
         /// <summary>
         /// Creates a new Integer property node under a selected node.
@@ -564,6 +582,11 @@ namespace SunFileManager
         {
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
             targetNode.AddObject(new SunLongProperty(name, value));
+        }
+
+        public void AddLinkPropertyToSelectedNode(SunNode targetNode)
+        {
+            //todo
         }
 
         /// <summary>
@@ -1185,14 +1208,13 @@ namespace SunFileManager
         private void btnCreateTestFile_Click(object sender, EventArgs e)
         {
             sunTreeView.Focus();
-            string name = "map.sun";
+            string name = "test.sun";
             var fullpath = Path.Combine(DefaultPath, name);
             SunFile file = new SunFile(name, fullpath);
             manager.sunFiles.Add(file);
             sunTreeView.Nodes.Add(new SunNode(file));
 
             AddSunImageToSelectedNode((SunNode)sunTreeView.Nodes[file.Name], "image1");
-            AddCanvasPropertyToSelectedNode((SunNode)sunTreeView.Nodes[file.Name].LastNode);
         }
 
         #endregion Debug

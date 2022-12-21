@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -94,6 +95,51 @@ namespace SunLibrary.SunFileLib.Structure
             {
                 ((SunDirectory)Parent).RemoveImage(this);
             }
+        }
+
+        public override int GetInt()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override short GetShort()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override long GetLong()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override float GetFloat()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetDouble()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GetString()
+        {
+            return Name;
+        }
+
+        public override Point GetPoint()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Bitmap GetBitmap()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override byte[] GetBytes()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion SunObject
@@ -261,6 +307,7 @@ namespace SunLibrary.SunFileLib.Structure
                 reader.BaseStream.Position = position;
             }
         }
+
         #endregion Parsing Methods
     }
 }

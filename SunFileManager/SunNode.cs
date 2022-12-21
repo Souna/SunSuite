@@ -98,6 +98,7 @@ namespace SunFileManager
                             break;
 
                         case SunPropertyType.SubProperty:
+                        case SunPropertyType.Convex:
                             ImageIndex = 9;
                             SelectedImageIndex = 9;
                             break;

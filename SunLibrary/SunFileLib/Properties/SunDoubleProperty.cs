@@ -1,5 +1,6 @@
 ﻿using SunLibrary.SunFileLib.Structure;
 using SunLibrary.SunFileLib.Util;
+using System.Drawing;
 
 namespace SunLibrary.SunFileLib.Properties
 {
@@ -85,6 +86,51 @@ namespace SunLibrary.SunFileLib.Properties
         /// </summary>
         public override SunFile SunFileParent
         { get { return Parent.SunFileParent; } }
+
+        public override int GetInt()
+        {
+            return (int)val;
+        }
+
+        public override short GetShort()
+        {
+            return (short)val;
+        }
+
+        public override long GetLong()
+        {
+            return (long)val;
+        }
+
+        public override float GetFloat()
+        {
+            return (float)val;
+        }
+
+        public override double GetDouble()
+        {
+            return val;
+        }
+
+        public override string GetString()
+        {
+            return val.ToString();
+        }
+
+        public override Point GetPoint()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Bitmap GetBitmap()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override byte[] GetBytes()
+        {
+            throw new System.NotImplementedException();
+        }
 
         #endregion SunObject
 

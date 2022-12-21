@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Runtime.Serialization;
+using System.Drawing;
 
 namespace SunLibrary.SunFileLib.Properties
 {
@@ -104,6 +105,51 @@ namespace SunLibrary.SunFileLib.Properties
         /// </summary>
         public override SunFile SunFileParent
         { get { return Parent.SunFileParent; } }
+
+        public override int GetInt()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override short GetShort()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override long GetLong()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override float GetFloat()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetDouble()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GetString()
+        {
+            return Name;
+        }
+
+        public override Point GetPoint()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Bitmap GetBitmap()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override byte[] GetBytes()
+        {
+            return GetBytes(false);
+        }
 
         #endregion SunObject
 

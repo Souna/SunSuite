@@ -49,6 +49,7 @@
     <Compile Include="SunFileLib\Config\SettingsReader.cs" />
     <Compile Include="SunFileLib\Config\SettingsWriter.cs" />
     <Compile Include="SunFileLib\Properties\SunCanvasProperty.cs" />
+    <Compile Include="SunFileLib\Properties\SunConvexProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunDoubleProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunFloatProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunIntProperty.cs" />
@@ -64,7 +65,9 @@
     <Compile Include="SunFileLib\Properties\SunVectorProperty.cs" />
     <Compile Include="SunFileLib\Structure\Data\MapInfo.cs" />
     <Compile Include="SunFileLib\Structure\Data\Enums.cs" />
+    <Compile Include="SunFileLib\Structure\InfoTool.cs" />
     <Compile Include="SunFileLib\Structure\IPropertyContainer.cs" />
+    <Compile Include="SunFileLib\Structure\SunBool.cs" />
     <Compile Include="SunFileLib\Structure\SunDirectory.cs" />
     <Compile Include="SunFileLib\Structure\SunFile.cs" />
     <Compile Include="SunFileLib\Structure\SunHeader.cs" />
@@ -225,6 +228,7 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.AccessControl.6.0.0\lib\net461\System.Security.AccessControl.dll</HintPath>
     </Reference>
