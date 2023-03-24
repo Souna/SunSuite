@@ -48,11 +48,13 @@
     <Compile Include="SunFileLib\Config\SettingsBase.cs" />
     <Compile Include="SunFileLib\Config\SettingsReader.cs" />
     <Compile Include="SunFileLib\Config\SettingsWriter.cs" />
+    <Compile Include="SunFileLib\Config\WzSettings.cs" />
     <Compile Include="SunFileLib\Properties\SunCanvasProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunConvexProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunDoubleProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunFloatProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunIntProperty.cs" />
+    <Compile Include="SunFileLib\Properties\SunLinkProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunLongProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunNullProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunPngProperty.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="SunFileLib\Properties\SunStringProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunSubProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunVectorProperty.cs" />
+    <Compile Include="SunFileLib\Structure\Data\Data.cs" />
     <Compile Include="SunFileLib\Structure\Data\MapInfo.cs" />
     <Compile Include="SunFileLib\Structure\Data\Enums.cs" />
     <Compile Include="SunFileLib\Structure\InfoTool.cs" />
@@ -81,7 +84,10 @@
     <Compile Include="SunFileLib\Util\SunBinaryReader.cs" />
     <Compile Include="SunFileLib\Util\SunBinaryWriter.cs" />
     <Compile Include="SunFileLib\Util\SunFileHelper.cs" />
+    <Compile Include="SunFileLib\Util\SunImageResource.cs" />
+    <Compile Include="SunFileLib\Util\SunSerializer.cs" />
     <Compile Include="SunFileLib\Util\SunTool.cs" />
+    <Compile Include="SunFileLib\Util\XmlUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Costura, Version=5.7.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -269,9 +275,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.6.4\build\Fody.targets" Condition="Exists('..\packages\Fody.6.6.4\build\Fody.targets')" />

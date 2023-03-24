@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using SunLibrary.SunFileLib.Properties;
+﻿using SunLibrary.SunFileLib.Properties;
+using System.Collections.Generic;
 
 namespace SunLibrary.SunFileLib.Structure
 {

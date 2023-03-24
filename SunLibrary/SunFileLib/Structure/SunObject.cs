@@ -1,8 +1,6 @@
-﻿using System;
+﻿using SunLibrary.SunFileLib.Properties;
+using System;
 using System.Drawing;
-using SunLibrary.SunFileLib.Properties;
-using SunLibrary.SunFileLib.Structure;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SunLibrary.SunFileLib.Structure
 {
@@ -12,6 +10,7 @@ namespace SunLibrary.SunFileLib.Structure
     public abstract class SunObject : IDisposable
     {
         private object _tag = null;
+        private object _tag2 = null;
 
         public abstract void Dispose();
 
@@ -107,10 +106,22 @@ namespace SunLibrary.SunFileLib.Structure
             }
         }
 
+        /// <summary>
+        /// Used in Editor to save already parsed images
+        /// </summary>
         public virtual object SETag
         {
             get { return _tag; }
             set { _tag = value; }
+        }
+
+        /// <summary>
+        /// Used in Map Simulator to save already parsed textures
+        /// </summary>
+        public virtual object MapSimTag
+        {
+            get { return _tag2; }
+            set { _tag2 = value; }
         }
     }
 }

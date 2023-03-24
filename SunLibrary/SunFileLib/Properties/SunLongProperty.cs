@@ -37,7 +37,6 @@ namespace SunLibrary.SunFileLib.Properties
 
         public override void WriteValue(SunBinaryWriter writer)
         {
-            //writer.Write(Name);
             writer.Write((byte)SunPropertyType.Long);
             writer.WriteCompressedLong(Value);
         }
@@ -47,6 +46,7 @@ namespace SunLibrary.SunFileLib.Properties
             SunLongProperty clone = new SunLongProperty(Name, Value);
             return clone;
         }
+
         #endregion SunProperty
 
         #region SunObject

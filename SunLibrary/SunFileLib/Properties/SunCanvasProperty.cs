@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using SunLibrary.SunFileLib.Structure;
+﻿using SunLibrary.SunFileLib.Structure;
 using SunLibrary.SunFileLib.Util;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace SunLibrary.SunFileLib.Properties
 {

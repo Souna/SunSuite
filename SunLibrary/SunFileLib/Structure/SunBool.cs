@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SunLibrary.SunFileLib.Structure
 {
@@ -16,6 +12,7 @@ namespace SunLibrary.SunFileLib.Structure
 
         [DataMember]
         private byte val { get; set; }
+
         public static implicit operator SunBool(byte value)
         {
             return new SunBool
@@ -88,8 +85,10 @@ namespace SunLibrary.SunFileLib.Structure
                 {
                     case False:
                         return false;
+
                     case True:
                         return true;
+
                     case NotExist:
                     default:
                         throw new Exception("Tried to get value of nonexistant bool");

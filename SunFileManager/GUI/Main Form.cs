@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using System.Xml.Linq;
-using MaterialSkin;
+﻿using MaterialSkin;
 using MaterialSkin.Controls;
-using SunFileManager.Converter;
 using SunFileManager.GUI;
 using SunFileManager.GUI.Input;
 using SunFileManager.GUI.Input.Forms;
 using SunLibrary.SunFileLib.Properties;
 using SunLibrary.SunFileLib.Structure;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+using System.Windows.Threading;
 using Path = System.IO.Path;
 
 namespace SunFileManager
@@ -30,7 +24,7 @@ namespace SunFileManager
         public Size defaultTextBoxSize = new Size(205, 29);
         public SoundPlayer mp3Player = null;
         public frmSettings settingsForm = null;
-        MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
+        private MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
 
         public TextBox temporaryYbox = new TextBox();
         private Label lblVectorYVal = new Label();
@@ -84,7 +78,7 @@ namespace SunFileManager
 
         public void ApplySettings()
         {
-            materialSkinManager.Theme = Program.UserSettings.DarkMode? MaterialSkinManager.Themes.DARK : MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.Theme = Program.UserSettings.DarkMode ? MaterialSkinManager.Themes.DARK : MaterialSkinManager.Themes.LIGHT;
             //AutomaticallyParseImages is handled in FileManager.OpenSunFile()
             //DisplayWarnings
             sunTreeView.ShowRootLines = Program.UserSettings.FileBoxes;
@@ -299,15 +293,15 @@ namespace SunFileManager
         /// Creates a new Directory under the selected node.
         /// <br>A directory may be created as a top-level directory underneath the SunFile.</br>
         /// </summary>
-        public void AddSunDirectoryToSelectedNode(SunNode selectedNode, string name)
+        public void AddSunDirectoryToSelectedNode(SunNode targetNode, string name)
         {
             bool added = false;
-            if (selectedNode == null) return;
-            SunObject obj = (SunObject)selectedNode.Tag;
+            if (targetNode == null) return;
+            SunObject obj = (SunObject)targetNode.Tag;
 
-            if (!(selectedNode.Tag is SunDirectory) && !(selectedNode.Tag is SunFile))
+            if (!(targetNode.Tag is SunDirectory) && !(targetNode.Tag is SunFile))
             {
-                MessageBox.Show("Tag is " + selectedNode.Tag.ToString());
+                MessageBox.Show("Error: Selected node is " + targetNode.GetTypeName() + ", can't add Directory to this type");
                 return;
             }
 
@@ -322,12 +316,12 @@ namespace SunFileManager
             {
                 if (sunFileParent.SunDirectory == null)
                     CreateMasterDirectory(sunFileParent);
-                selectedNode.AddObject(new SunDirectory(dirName, sunFileParent.SunDirectory));
+                targetNode.AddObject(new SunDirectory(dirName, sunFileParent.SunDirectory));
                 added = true;
             }
             else if (obj is SunDirectory sunDirectoryParent)
             {
-                selectedNode.AddObject(new SunDirectory(dirName, sunDirectoryParent));
+                targetNode.AddObject(new SunDirectory(dirName, sunDirectoryParent));
                 added = true;
             }
             if (!added)
@@ -342,7 +336,7 @@ namespace SunFileManager
 
             if (!(targetNode.Tag is SunDirectory) && !(targetNode.Tag is SunFile))
             {
-                MessageBox.Show("Tag is " + targetNode.Tag.ToString());
+                MessageBox.Show("Error: Selected node is " + targetNode.GetTypeName() + ", can't add Image to this type");
                 return;
             }
 
@@ -525,23 +519,18 @@ namespace SunFileManager
             gifFrameDelays.Clear();
             gifs.Clear();
         }
-        
+
         /// <summary>
         /// Creates a new Convex property under a selected node.
         /// </summary>
-        public void AddConvexPropertyToSelectedNode(SunNode targetNode, string name)
+        public void AddConvexPropertyToSelectedNode(SunNode targetNode)
         {
             if (!(targetNode.Tag is IPropertyContainer)) return;
 
-            string convexPropName = name;
-            if (name == string.Empty || name == null)
-            {
-                if (!frmNameInputBox.Show("Add Convex Property", out convexPropName))
-                    return;
-            }
+            if (!frmNameInputBox.Show("Add Convex Property", out string convexPropName))
+                return;
 
             targetNode.AddObject(new SunConvexProperty(convexPropName));
-
         }
 
         /// <summary>
@@ -584,9 +573,14 @@ namespace SunFileManager
             targetNode.AddObject(new SunLongProperty(name, value));
         }
 
+        /// <summary>
+        /// Creates a new Link property node under a selected node.
+        /// </summary>
         public void AddLinkPropertyToSelectedNode(SunNode targetNode)
         {
-            //todo
+            if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
+            if (!frmNameValueInputBox.Show("Add Link", out string name, out string value)) return;
+            targetNode.AddObject(new SunLinkProperty(name, value));
         }
 
         /// <summary>
@@ -881,6 +875,21 @@ namespace SunFileManager
                 case SunSubProperty subProperty:
                     break;
 
+                case SunLinkProperty linkProperty:
+                    lblPropertyName.Visible = true;
+                    txtPropertyName.Visible = true;
+                    lblValue.Visible = true;
+
+                    txtPropertyName.Text = linkProperty.Name;
+                    txtPropertyValue.Visible = true;
+                    txtPropertyValue.Multiline = true;
+                    txtPropertyValue.Size = new Size(205, 62);
+                    txtPropertyValue.TextAlign = HorizontalAlignment.Left;
+                    txtPropertyValue.Text = linkProperty.Value;
+                    txtPropertyValue.ScrollBars = ScrollBars.Vertical;
+                    btnApplyPropertyChanges.Visible = true;
+                    break;
+
                 default:
                     break;
             }
@@ -948,6 +957,10 @@ namespace SunFileManager
                     ((SunStringProperty)obj).Value = txtPropertyValue.Text;
                     break;
 
+                case SunLinkProperty linkProperty:
+                    ((SunLinkProperty)obj).Value = txtPropertyValue.Text;
+                    break;
+
                 case SunCanvasProperty canvasProperty:
                     // It already changes it internally when you double click the picturebox.
                     // picPan_MouseDoubleClick
@@ -966,6 +979,7 @@ namespace SunFileManager
         }
 
         #region DragDrop
+
         /// <summary>
         /// Occurs when a drag-and-drop operation is completed.
         /// </summary>
@@ -989,16 +1003,15 @@ namespace SunFileManager
                     //SunNode newNode = SunNode.CloneJson(dragNode);
                     //SunNode newNode = SunNode.DeepCopy(dragNode);
 
-
                     dragNode.ForeColor = SunNode.NewObjectForeColor;
                     dropNode.AddObject((SunObject)dragNode.Tag, false);
-                    
+
                     // Remove OG drag node from parent
                     // We need to be able to do this without removing the node from its new parent
                     // ATM I am struggling to work this out because any changes made to the old node also affect the new one
                     // I learned this is because by default C# makes reference types for objects
                     dragNode.DeleteNode();
-                    
+
                     // Set drag node to null
                     dragNode = null;
 
@@ -1007,7 +1020,7 @@ namespace SunFileManager
                 }
             }
         }
-        
+
         /// <summary>
         /// Determines if the node you are dragging is compatible with the node you are moving it under.
         /// </summary>
@@ -1038,7 +1051,7 @@ namespace SunFileManager
                 if (drag.Tag is IPropertyContainer) // If we are dragging a special property, i.e SubProperty/SunCanvasProperty, they can only go inside an IPropertyContainer
                     if (!(receiver.Tag is IPropertyContainer))
                         return false;
-                else if (!(receiver.Tag is IPropertyContainer)) // If we are dragging a normal property
+                    else if (!(receiver.Tag is IPropertyContainer)) // If we are dragging a normal property
                         return false;
             }
 
@@ -1173,9 +1186,10 @@ namespace SunFileManager
                 TreeViewDragHelper.ImageList_EndDrag();
             }
         }
+
         #endregion DragDrop
 
-#endregion Treeview Input Events
+        #endregion Treeview Input Events
 
         #region Form Input Events
 

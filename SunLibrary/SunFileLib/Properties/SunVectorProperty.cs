@@ -1,6 +1,6 @@
-﻿using System.Drawing;
-using SunLibrary.SunFileLib.Structure;
+﻿using SunLibrary.SunFileLib.Structure;
 using SunLibrary.SunFileLib.Util;
+using System.Drawing;
 
 namespace SunLibrary.SunFileLib.Properties
 {
@@ -54,6 +54,7 @@ namespace SunLibrary.SunFileLib.Properties
             SunVectorProperty clone = new SunVectorProperty(Name, X, Y);
             return clone;
         }
+
         #endregion SunProperty
 
         #region SunObject

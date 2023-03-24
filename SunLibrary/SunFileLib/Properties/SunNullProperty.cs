@@ -44,6 +44,7 @@ namespace SunLibrary.SunFileLib.Properties
             SunNullProperty clone = new SunNullProperty(Name);
             return clone;
         }
+
         #endregion SunProperty
 
         #region SunObject

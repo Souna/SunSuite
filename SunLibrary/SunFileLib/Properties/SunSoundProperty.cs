@@ -1,12 +1,12 @@
-﻿using SunLibrary.SunFileLib.Structure;
+﻿using NAudio.Wave;
+using SunLibrary.SunFileLib.Structure;
 using SunLibrary.SunFileLib.Util;
-using NAudio.Wave;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Runtime.Serialization;
-using System.Drawing;
+using System.Text;
 
 namespace SunLibrary.SunFileLib.Properties
 {
@@ -72,6 +72,7 @@ namespace SunLibrary.SunFileLib.Properties
             SunSoundProperty clone = new SunSoundProperty(this);
             return clone;
         }
+
         #endregion SunProperty
 
         #region SunObject

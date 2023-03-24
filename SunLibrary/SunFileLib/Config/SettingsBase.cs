@@ -2,12 +2,7 @@
  Thanks to http://www.blackbeltcoder.com/Articles/winforms/a-custom-settings-class-for-winforms
 */
 
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace SunLibrary.Config

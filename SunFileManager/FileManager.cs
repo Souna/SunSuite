@@ -1,10 +1,10 @@
-﻿using System;
+﻿using SunFileManager.Comparer;
+using SunLibrary.SunFileLib.Structure;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Threading;
-using SunFileManager.Comparer;
-using SunLibrary.SunFileLib.Structure;
 
 namespace SunFileManager
 {
@@ -17,6 +17,10 @@ namespace SunFileManager
         public FileManager(Form form)
         {
             mainForm = form as frmFileManager;
+        }
+
+        public FileManager()
+        {
         }
 
         private bool OpenSunFile(string path, out SunFile file)

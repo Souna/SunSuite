@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SunLibrary.SunFileLib.Structure;
+using System;
 using System.IO;
 using System.Windows.Forms;
-using SunLibrary.SunFileLib.Structure;
 
 namespace SunFileManager.GUI
 {

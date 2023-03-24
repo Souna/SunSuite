@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using SunLibrary.SunFileLib.Structure;
+using System.Collections;
 using System.IO;
-using SunLibrary.SunFileLib.Structure;
 
 namespace SunLibrary.SunFileLib.Util
 {

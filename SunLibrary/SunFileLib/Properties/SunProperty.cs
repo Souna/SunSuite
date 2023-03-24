@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using SunLibrary.SunFileLib.Structure;
+﻿using SunLibrary.SunFileLib.Structure;
 using SunLibrary.SunFileLib.Util;
+using System;
+using System.Collections.Generic;
 
 namespace SunLibrary.SunFileLib.Properties
 {
@@ -158,10 +158,13 @@ namespace SunLibrary.SunFileLib.Properties
                     return subProp;
 
                 case 14:
-                    SunConvexProperty convexProperty = new SunConvexProperty(name) { Parent = parent};
+                    SunConvexProperty convexProperty = new SunConvexProperty(name) { Parent = parent };
                     reader.BaseStream.Position++; //To jump over 04 (bc convex is also a IPropertyContainer)
                     convexProperty.AddProperties(ParsePropertyList(reader, convexProperty, convexProperty.ParentImage));
                     return convexProperty;
+
+                case 15:
+                    return new SunLinkProperty(name, reader.ReadString()) { Parent = parent };
 
                 default:
                     throw new Exception("Error occured parsing extended property");

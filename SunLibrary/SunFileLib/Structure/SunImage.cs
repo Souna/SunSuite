@@ -1,12 +1,8 @@
-﻿using System;
+﻿using SunLibrary.SunFileLib.Properties;
+using SunLibrary.SunFileLib.Util;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SunLibrary.SunFileLib.Properties;
-using SunLibrary.SunFileLib.Structure;
-using SunLibrary.SunFileLib.Util;
 
 namespace SunLibrary.SunFileLib.Structure
 {
@@ -249,6 +245,43 @@ namespace SunLibrary.SunFileLib.Structure
                 clone.AddProperty(prop.DeepClone());
             return clone;
         }
+
+        /// <summary>
+        /// Gets a SunProperty from a path
+        /// </summary>
+        /// <param name="path">path to object</param>
+        /// <returns>the selected SunProperty</returns>
+        public SunProperty GetFromPath(string path)
+        {
+            if (reader != null) if (!parsed) ParseImage();
+
+            string[] segments = path.Split(new char[1] { '/' }, System.StringSplitOptions.RemoveEmptyEntries);
+            if (segments[0] == "..")
+            {
+                return null;
+            }
+
+            SunProperty ret = null;
+            for (int x = 0; x < segments.Length; x++)
+            {
+                bool foundChild = false;
+                foreach (SunProperty iwp in (ret == null ? this.properties : ret.SunProperties))
+                {
+                    if (iwp.Name == segments[x])
+                    {
+                        ret = iwp;
+                        foundChild = true;
+                        break;
+                    }
+                }
+                if (!foundChild)
+                {
+                    return null;
+                }
+            }
+            return ret;
+        }
+
         #endregion Custom Members
 
         #region Parsing Methods
