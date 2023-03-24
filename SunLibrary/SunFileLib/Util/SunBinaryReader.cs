@@ -1,6 +1,6 @@
-﻿using System.IO;
+﻿using SunLibrary.SunFileLib.Structure;
+using System.IO;
 using System.Text;
-using SunLibrary.SunFileLib.Structure;
 
 namespace SunLibrary.SunFileLib.Util
 {

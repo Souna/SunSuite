@@ -25,6 +25,7 @@
         SubProperty = 11,
         Extended = 12,
         Convex = 14,
+        Link = 15
 
         #endregion Extended
     }

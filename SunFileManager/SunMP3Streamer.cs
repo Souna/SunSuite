@@ -1,12 +1,7 @@
-﻿using NAudio.MediaFoundation;
-using NAudio.Wave;
+﻿using NAudio.Wave;
 using SunLibrary.SunFileLib.Properties;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SunFileManager
 {
@@ -15,7 +10,7 @@ namespace SunFileManager
         private Stream byteStream;
 
         private StreamMediaFoundationReader mediaFoundationReader;
-        WaveOutEvent wavePlayer = new WaveOutEvent();
+        private WaveOutEvent wavePlayer = new WaveOutEvent();
         private WaveFileReader waveFileStream;
         private SunSoundProperty sound;
         private bool repeat;

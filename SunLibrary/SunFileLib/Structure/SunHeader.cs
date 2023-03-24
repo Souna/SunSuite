@@ -58,6 +58,11 @@
             set { filestart = value; }
         }
 
+        public void RecalculateFileStart()
+        {//                                FileSize      + FileStart
+            filestart = (uint)(identifier.Length + sizeof(ulong) + sizeof(uint) + copyright.Length + 1);
+        }
+
         /// <summary>
         /// Initializes the default SunHeader.
         /// </summary>

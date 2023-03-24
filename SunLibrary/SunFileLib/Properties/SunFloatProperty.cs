@@ -1,6 +1,5 @@
 ﻿using SunLibrary.SunFileLib.Structure;
 using SunLibrary.SunFileLib.Util;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace SunLibrary.SunFileLib.Properties
@@ -54,6 +53,7 @@ namespace SunLibrary.SunFileLib.Properties
             SunFloatProperty clone = new SunFloatProperty(Name, Value);
             return clone;
         }
+
         #endregion SunProperty
 
         #region SunObject

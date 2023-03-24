@@ -193,7 +193,7 @@ namespace SunFileManager
             AddConvexProperty = new ToolStripMenuItem("Convex", Resources.folderblue, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
-                    mainform.AddConvexPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode, null);
+                    mainform.AddConvexPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
                 }));
 
             AddIntProperty = new ToolStripMenuItem("Int               4 bytes", Resources.Input, new EventHandler(
@@ -208,7 +208,7 @@ namespace SunFileManager
                     mainform.AddLongPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
                 }));
 
-            AddLinkProperty = new ToolStripMenuItem("Link", Resources.Input, new EventHandler(
+            AddLinkProperty = new ToolStripMenuItem("Link", Resources.String, new EventHandler(
                 delegate (object sender, EventArgs e)
                 {
                     mainform.AddLinkPropertyToSelectedNode((SunNode)mainform.sunTreeView.SelectedNode);
@@ -304,10 +304,10 @@ namespace SunFileManager
                 {
                     if (node.Tag is SunConvexProperty) // If we right-clicked a Convex property, we only want to be able to add extended properties
                     {
-                        AddSubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddSubProperty, AddCanvasProperty, AddConvexProperty, AddSoundProperty, AddVectorProperty });
+                        AddSubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddSubProperty, AddCanvasProperty, AddConvexProperty, AddLinkProperty, AddSoundProperty, AddVectorProperty });
                     }
                     else
-                        AddSubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddSubProperty, AddDigitPropertySubMenu, AddCanvasProperty, AddConvexProperty, AddSoundProperty, AddStringProperty, AddVectorProperty });
+                        AddSubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddSubProperty, AddDigitPropertySubMenu, AddCanvasProperty, AddConvexProperty, AddLinkProperty, AddSoundProperty, AddStringProperty, AddVectorProperty });
 
                     //  Populate "Digit" add menu.
                     AddDigitPropertySubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddShortProperty, AddIntProperty, AddLongProperty, new ToolStripSeparator(), AddFloatProperty, AddDoubleProperty });

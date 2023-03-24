@@ -1,12 +1,11 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using Newtonsoft.Json;
 using SunLibrary.SunFileLib.Properties;
 using SunLibrary.SunFileLib.Structure;
-using SunFileManager.GUI;
-using Newtonsoft.Json;
+using System;
+using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Forms;
 
 namespace SunFileManager
 {
@@ -77,6 +76,7 @@ namespace SunFileManager
                             break;
 
                         case SunPropertyType.String:
+                        case SunPropertyType.Link:
                             ImageIndex = 5;
                             SelectedImageIndex = 5;
                             break;

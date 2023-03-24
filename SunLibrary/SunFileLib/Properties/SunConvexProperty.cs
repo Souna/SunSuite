@@ -3,9 +3,6 @@ using SunLibrary.SunFileLib.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SunLibrary.SunFileLib.Properties
 {
@@ -15,14 +12,17 @@ namespace SunLibrary.SunFileLib.Properties
     public class SunConvexProperty : SunPropertyExtended, IPropertyContainer
     {
         #region Fields
+
         internal List<SunProperty> properties = new List<SunProperty>();
         internal string name;
         internal SunObject parent;
+
         #endregion Fields
 
         #region Inherited Members
 
         #region SunProperty
+
         public override SunPropertyType PropertyType
         { get { return SunPropertyType.Convex; } }
 
@@ -70,6 +70,7 @@ namespace SunLibrary.SunFileLib.Properties
         #endregion SunProperty
 
         #region IPropertyContainer
+
         public void AddProperty(SunProperty prop)
         {
             if (!(prop is SunPropertyExtended))
@@ -188,13 +189,13 @@ namespace SunLibrary.SunFileLib.Properties
 
         public SunConvexProperty()
         {
-
         }
 
         public SunConvexProperty(string name)
         {
             this.name = name;
         }
+
         #endregion Custom Members
     }
 }

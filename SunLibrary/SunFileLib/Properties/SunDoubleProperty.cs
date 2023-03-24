@@ -53,6 +53,7 @@ namespace SunLibrary.SunFileLib.Properties
             SunDoubleProperty clone = new SunDoubleProperty(Name, Value);
             return clone;
         }
+
         #endregion SunProperty
 
         #region SunObject

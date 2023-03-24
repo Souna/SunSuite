@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -173,6 +171,7 @@ namespace SunFileManager.GUI.Input
 
                     CenterToScreen();
 
+                    // *Might not be the best way to recognize animated images*
                     if (ImageAnimator.CanAnimate(canvas))
                     {
                         //  Decode the gif into individual frames.
@@ -206,6 +205,7 @@ namespace SunFileManager.GUI.Input
             for (int i = 0; i < frameCount; i++)
             {
                 image.SelectActiveFrame(dimension, i);
+                //                                                     (MSDN: 0x5100	PropertyTagFrameDelay)
                 int delay = BitConverter.ToInt32(image.GetPropertyItem(20736).Value, index) * 10;
                 if (delay == 0) delay = 100;
                 frameDelayList.Add(delay);

@@ -1,15 +1,5 @@
 ﻿using MaterialSkin.Controls;
-using SunFileManager.Config;
-using SunFileManager.Properties;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SunFileManager.GUI.Input.Forms
@@ -73,7 +63,7 @@ namespace SunFileManager.GUI.Input.Forms
         }
 
         private void CheckBox_Checked(object sender, EventArgs e)
-        { 
+        {
             btnApply.Enabled = true;
         }
 

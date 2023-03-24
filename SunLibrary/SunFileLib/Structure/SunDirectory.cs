@@ -1,8 +1,8 @@
-﻿using System;
+﻿using SunLibrary.SunFileLib.Util;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using SunLibrary.SunFileLib.Util;
 
 namespace SunLibrary.SunFileLib.Structure
 {
@@ -171,6 +171,11 @@ namespace SunLibrary.SunFileLib.Structure
 
         public SunDirectory()
         {
+        }
+
+        public SunDirectory(string dirName)
+        {
+            name = dirName;
         }
 
         /// <summary>
@@ -552,6 +557,7 @@ namespace SunLibrary.SunFileLib.Structure
                 result += subdir.CountImages();
             return result;
         }
+
         #endregion Custom Members
     }
 }

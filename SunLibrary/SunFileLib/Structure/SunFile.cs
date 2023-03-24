@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SunLibrary.SunFileLib.Util;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using SunLibrary.SunFileLib.Structure;
-using SunLibrary.SunFileLib.Util;
 
 namespace SunLibrary.SunFileLib.Structure
 {

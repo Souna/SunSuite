@@ -1,11 +1,11 @@
-﻿using System;
+﻿using SunLibrary.SunFileLib.Structure;
+using SunLibrary.SunFileLib.Util;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
-using SunLibrary.SunFileLib.Structure;
-using SunLibrary.SunFileLib.Util;
 
 namespace SunLibrary.SunFileLib.Properties
 {
@@ -122,6 +122,7 @@ namespace SunLibrary.SunFileLib.Properties
         }
 
         #endregion SunObject Cast Values
+
         #endregion Inherited Members
 
         #region Custom Members
