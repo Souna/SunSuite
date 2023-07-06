@@ -61,7 +61,7 @@ namespace HaCreator.Wz
         public static string GetMobNameById(string id)
         {
             id = RemoveLeadingZeros(id);
-            SunObject obj = Program.WzManager.String["Mob.img"][id];
+            SunObject obj = Program.SfManager.String["Mob.img"][id];
             if (obj == null)
             {
                 return "";
@@ -77,7 +77,7 @@ namespace HaCreator.Wz
         public static string GetNpcNameById(string id)
         {
             id = RemoveLeadingZeros(id);
-            SunObject obj = Program.WzManager.String["Npc.img"][id];
+            SunObject obj = Program.SfManager.String["Npc.img"][id];
             if (obj == null)
             {
                 return "";
@@ -93,7 +93,7 @@ namespace HaCreator.Wz
         public static SunSubProperty GetMapStringProp(string id)
         {
             id = RemoveLeadingZeros(id);
-            SunImage mapNameParent = (SunImage)Program.WzManager.String["Map.img"];
+            SunImage mapNameParent = (SunImage)Program.SfManager.String["Map.img"];
             foreach (SunSubProperty mapNameCategory in mapNameParent.SunProperties)
             {
                 SunSubProperty mapNameDirectory = (SunSubProperty)mapNameCategory[id];

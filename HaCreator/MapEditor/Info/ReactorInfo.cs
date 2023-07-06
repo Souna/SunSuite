@@ -44,7 +44,7 @@ namespace HaCreator.MapEditor.Info
             SunStringProperty link = (SunStringProperty)((SunSubProperty)((SunImage)ParentObject)["info"])["link"];
             if (link != null)
             {
-                LinkedImage = (SunImage)Program.WzManager["reactor"][link.Value + ".img"];
+                LinkedImage = (SunImage)Program.SfManager["reactor"][link.Value + ".img"];
                 ExtractPNGFromImage(LinkedImage);
             }
             else

@@ -134,7 +134,7 @@ namespace HaCreator.GUI
         private List<string> SearchMapWzForObj(string l2)
         {
             List<string> result = new List<string>();
-            foreach (SunDirectory mapDir in ((SunDirectory)Program.WzManager["map"]["Map"]).SubDirectories)
+            foreach (SunDirectory mapDir in ((SunDirectory)Program.SfManager["map"]["Map"]).SubDirectories)
             {
                 foreach (SunImage mapImg in mapDir.SunImages)
                 {

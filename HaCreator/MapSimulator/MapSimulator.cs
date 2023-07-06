@@ -265,7 +265,7 @@ namespace HaCreator.MapSimulator
             if (mapBoard.MiniMap == null) mapBoard.RegenerateMinimap();
             MapSimulator result = new MapSimulator(mapBoard);
             List<SunObject> usedProps = new List<SunObject>();
-            SunDirectory MapFile = Program.WzManager["map"];
+            SunDirectory MapFile = Program.SfManager["map"];
             SunDirectory tileDir = (SunDirectory)MapFile["Tile"];
             GraphicsDevice device = result.DxDevice;
             foreach (LayeredItem tileObj in mapBoard.BoardItems.TileObjs)

@@ -152,30 +152,30 @@ namespace HaCreator.GUI
             {
                 if (mapBrowser.SelectedItem == "MapLogin")
                 {
-                    mapImage = (SunImage)Program.WzManager["ui"]["MapLogin.img"];
+                    mapImage = (SunImage)Program.SfManager["ui"]["MapLogin.img"];
                     mapName = streetName = categoryName = "MapLogin";
                 }
                 else if (mapBrowser.SelectedItem == "MapLogin1")
                 {
-                    mapImage = (SunImage)Program.WzManager["ui"]["MapLogin1.img"];
+                    mapImage = (SunImage)Program.SfManager["ui"]["MapLogin1.img"];
                     mapName = streetName = categoryName = "MapLogin1";
                 }
                 else if (mapBrowser.SelectedItem == "CashShopPreview")
                 {
-                    mapImage = (SunImage)Program.WzManager["ui"]["CashShopPreview.img"];
+                    mapImage = (SunImage)Program.SfManager["ui"]["CashShopPreview.img"];
                     mapName = streetName = categoryName = "CashShopPreview";
                 }
                 else
                 {
                     string mapid = mapBrowser.SelectedItem.Substring(0, 9);
                     string mapcat = "Map" + mapid.Substring(0, 1);
-                    if (Program.WzManager.SunFiles.ContainsKey("map002"))//i hate nexon so much
+                    if (Program.SfManager.SunFiles.ContainsKey("map002"))//i hate nexon so much
                     {
-                        mapImage = (SunImage)Program.WzManager["map002"]["Map"][mapcat][mapid + ".img"];
+                        mapImage = (SunImage)Program.SfManager["map002"]["Map"][mapcat][mapid + ".img"];
                     }
                     else
                     {
-                        mapImage = (SunImage)Program.WzManager["map"]["Map"][mapcat][mapid + ".img"];
+                        mapImage = (SunImage)Program.SfManager["map"]["Map"][mapcat][mapid + ".img"];
                     }
                     strMapProp = SunInfoTools.GetMapStringProp(mapid);
                     mapName = SunInfoTools.GetMapName(strMapProp);

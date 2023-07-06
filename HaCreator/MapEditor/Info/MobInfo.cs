@@ -46,7 +46,7 @@ namespace HaCreator.MapEditor.Info
             SunStringProperty link = (SunStringProperty)((SunSubProperty)((SunImage)ParentObject)["info"])["link"];
             if (link != null)
             {
-                LinkedImage = (SunImage)Program.WzManager["mob"][link.Value + ".img"];
+                LinkedImage = (SunImage)Program.SfManager["mob"][link.Value + ".img"];
                 ExtractPNGFromImage(LinkedImage);
             }
             else
@@ -57,7 +57,7 @@ namespace HaCreator.MapEditor.Info
 
         public static MobInfo Get(string id)
         {
-            SunImage mobImage = (SunImage)Program.WzManager["mob"][id + ".img"];
+            SunImage mobImage = (SunImage)Program.SfManager["mob"][id + ".img"];
             if (mobImage == null)
                 return null;
             if (!mobImage.Parsed)

@@ -57,10 +57,10 @@ namespace HaCreator.Wz
                 try
                 {
                     string cat = "Map" + image.Name.Substring(0, 1);
-                    SunDirectory mapDir = (SunDirectory)Program.WzManager["map"]["Map"];
-                    if (Program.WzManager.SunFiles.ContainsKey("map002"))//i hate nexon so much
+                    SunDirectory mapDir = (SunDirectory)Program.SfManager["map"]["Map"];
+                    if (Program.SfManager.SunFiles.ContainsKey("map002"))//i hate nexon so much
                     {
-                        mapDir = (SunDirectory)Program.WzManager["map002"]["Map"];
+                        mapDir = (SunDirectory)Program.SfManager["map002"]["Map"];
                     }
                     SunDirectory catDir = (SunDirectory)mapDir[cat];
                     if (catDir == null)
@@ -74,20 +74,20 @@ namespace HaCreator.Wz
                         mapImg.Remove();
                     }
                     catDir.AddImage(image);
-                    Program.WzManager.SetUpdated("map", image);
+                    Program.SfManager.SetUpdated("map", image);
                 }
                 catch (NullReferenceException exp) { throw new Exception("Map img must exist in wz file / evil kms hellworld map002 error"); }
             }
             else
             {
-                SunDirectory mapDir = (SunDirectory)Program.WzManager["ui"];
+                SunDirectory mapDir = (SunDirectory)Program.SfManager["ui"];
                 SunImage mapImg = (SunImage)mapDir[image.Name];
                 if (mapImg != null)
                 {
                     mapImg.Remove();
                 }
                 mapDir.AddImage(image);
-                Program.WzManager.SetUpdated("ui", image);
+                Program.SfManager.SetUpdated("ui", image);
             }
         }
 
@@ -96,34 +96,34 @@ namespace HaCreator.Wz
             board.MapInfo.Save(image, board.VRRectangle == null ? (System.Drawing.Rectangle?)null : new System.Drawing.Rectangle(board.VRRectangle.X, board.VRRectangle.Y, board.VRRectangle.Width, board.VRRectangle.Height));
             if (board.MapInfo.mapType == MapType.RegularMap)
             {
-                SunImage strMapImg = (SunImage)Program.WzManager.String["Map.img"];
+                SunImage strMapImg = (SunImage)Program.SfManager.String["Map.img"];
                 SunSubProperty strCatProp = (SunSubProperty)strMapImg[board.MapInfo.strCategoryName];
                 if (strCatProp == null)
                 {
                     strCatProp = new SunSubProperty();
                     strMapImg[board.MapInfo.strCategoryName] = strCatProp;
-                    Program.WzManager.SetUpdated("string", strMapImg);
+                    Program.SfManager.SetUpdated("string", strMapImg);
                 }
                 SunSubProperty strMapProp = (SunSubProperty)strCatProp[board.MapInfo.id.ToString()];
                 if (strMapProp == null)
                 {
                     strMapProp = new SunSubProperty();
                     strCatProp[board.MapInfo.id.ToString()] = strMapProp;
-                    Program.WzManager.SetUpdated("string", strMapImg);
+                    Program.SfManager.SetUpdated("string", strMapImg);
                 }
                 SunStringProperty strMapName = (SunStringProperty)strMapProp["mapName"];
                 if (strMapName == null)
                 {
                     strMapName = new SunStringProperty();
                     strMapProp["mapName"] = strMapName;
-                    Program.WzManager.SetUpdated("string", strMapImg);
+                    Program.SfManager.SetUpdated("string", strMapImg);
                 }
                 SunStringProperty strStreetName = (SunStringProperty)strMapProp["streetName"];
                 if (strStreetName == null)
                 {
                     strStreetName = new SunStringProperty();
                     strMapProp["streetName"] = strStreetName;
-                    Program.WzManager.SetUpdated("string", strMapImg);
+                    Program.SfManager.SetUpdated("string", strMapImg);
                 }
                 UpdateString(strMapName, board.MapInfo.strMapName, strMapImg);
                 UpdateString(strStreetName, board.MapInfo.strStreetName, strMapImg);
@@ -135,7 +135,7 @@ namespace HaCreator.Wz
             if (strProp.Value != val)
             {
                 strProp.Value = val;
-                Program.WzManager.SetUpdated("string", img);
+                Program.SfManager.SetUpdated("string", img);
             }
         }
 
@@ -345,14 +345,14 @@ namespace HaCreator.Wz
             }
             bool retainTooltipStrings = true;
             SunSubProperty tooltipParent = new SunSubProperty();
-            SunImage strTooltipImg = (SunImage)Program.WzManager.String["ToolTipHelp.img"];
+            SunImage strTooltipImg = (SunImage)Program.SfManager.String["ToolTipHelp.img"];
             SunSubProperty strTooltipCat = (SunSubProperty)strTooltipImg["Mapobject"];
             SunSubProperty strTooltipParent = (SunSubProperty)strTooltipCat[board.MapInfo.id.ToString()];
             if (strTooltipParent == null)
             {
                 strTooltipParent = new SunSubProperty();
                 strTooltipCat[board.MapInfo.id.ToString()] = strTooltipParent;
-                Program.WzManager.SetUpdated("string", strTooltipImg);
+                Program.SfManager.SetUpdated("string", strTooltipImg);
                 retainTooltipStrings = false;
             }
 
@@ -374,7 +374,7 @@ namespace HaCreator.Wz
             // If they do not, we need to update string.wz and rebuild the string tooltip props
             if (!retainTooltipStrings)
             {
-                Program.WzManager.SetUpdated("string", strTooltipImg);
+                Program.SfManager.SetUpdated("string", strTooltipImg);
                 strTooltipParent.ClearProperties();
             }
 
@@ -399,7 +399,7 @@ namespace HaCreator.Wz
                         if (titleProp == null)
                         {
                             titleProp = new SunStringProperty();
-                            Program.WzManager.SetUpdated("string", strTooltipImg);
+                            Program.SfManager.SetUpdated("string", strTooltipImg);
                         }
                         UpdateString(titleProp, ttInst.Title, strTooltipImg);
                     }
@@ -409,7 +409,7 @@ namespace HaCreator.Wz
                         if (descProp == null)
                         {
                             descProp = new SunStringProperty();
-                            Program.WzManager.SetUpdated("string", strTooltipImg);
+                            Program.SfManager.SetUpdated("string", strTooltipImg);
                         }
                         UpdateString(descProp, ttInst.Desc, strTooltipImg);
                     }

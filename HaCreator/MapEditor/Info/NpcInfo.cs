@@ -52,7 +52,7 @@ namespace HaCreator.MapEditor.Info
             SunStringProperty link = (SunStringProperty)((SunSubProperty)((SunImage)ParentObject)["info"])["link"];
             if (link != null)
             {
-                LinkedImage = (SunImage)Program.WzManager["npc"][link.Value + ".img"];
+                LinkedImage = (SunImage)Program.SfManager["npc"][link.Value + ".img"];
                 ExtractPNGFromImage(LinkedImage);
             }
             else
@@ -63,7 +63,7 @@ namespace HaCreator.MapEditor.Info
 
         public static NpcInfo Get(string id)
         {
-            SunImage npcImage = (SunImage)Program.WzManager["npc"][id + ".img"];
+            SunImage npcImage = (SunImage)Program.SfManager["npc"][id + ".img"];
             if (npcImage == null)
                 return null;
             if (!npcImage.Parsed)

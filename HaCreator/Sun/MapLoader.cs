@@ -479,7 +479,7 @@ namespace HaCreator.Wz
                 return;
             }
 
-            SunImage tooltipsStringImage = (SunImage)Program.WzManager.String["ToolTipHelp.img"];
+            SunImage tooltipsStringImage = (SunImage)Program.SfManager.String["ToolTipHelp.img"];
             if (!tooltipsStringImage.Parsed)
             {
                 tooltipsStringImage.ParseImage();

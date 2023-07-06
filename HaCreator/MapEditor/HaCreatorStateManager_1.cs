@@ -446,7 +446,7 @@ namespace HaCreator.MapEditor
             HaRepacker.GUI.MainForm mf = new HaRepacker.GUI.MainForm(null, false, firstRun);
             mf.unloadAllToolStripMenuItem.Visible = false;
             mf.reloadAllToolStripMenuItem.Visible = false;
-            foreach (KeyValuePair<string, SunFile> entry in Program.WzManager.SunFiles)
+            foreach (KeyValuePair<string, SunFile> entry in Program.SfManager.SunFiles)
                 mf.Interop_AddLoadedSunFileToManager(entry.Value);
             ww.EndWait();
             lock (multiBoard)

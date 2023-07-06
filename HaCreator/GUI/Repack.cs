@@ -22,9 +22,9 @@ namespace HaCreator.GUI
         {
             InitializeComponent();
             infoLabel.Text = "Files to repack:\r\n";
-            foreach (SunFile sunf in Program.WzManager.SunFiles.Values)
+            foreach (SunFile sunf in Program.SfManager.SunFiles.Values)
             {
-                if (Program.WzManager.SunFilesUpdated[sunf])
+                if (Program.SfManager.SunFilesUpdated[sunf])
                 {
                     toRepack.Add(sunf);
                     infoLabel.Text += sunf.Name + "\r\n";
@@ -72,7 +72,7 @@ namespace HaCreator.GUI
         {
             Invoke((Action)delegate { ChangeRepackState("Deleting old backups..."); });
             // Prepare directories
-            string rootDir = Path.Combine(Program.WzManager.BaseDir, "HaCreator");
+            string rootDir = Path.Combine(Program.SfManager.BaseDir, "HaCreator");
             string backupDir = Path.Combine(rootDir, "Backup");
             string orgBackupDir = Path.Combine(rootDir, "Original");
             string XMLDir = Path.Combine(rootDir, "XML");
@@ -98,7 +98,7 @@ namespace HaCreator.GUI
             // Save XMLs
             // We have to save XMLs first, otherwise the SunImages will already be disposed when we reach this code
             Invoke((Action)delegate { ChangeRepackState("Saving XMLs..."); });
-            foreach (SunImage img in Program.WzManager.updatedImages)
+            foreach (SunImage img in Program.SfManager.updatedImages)
             {
                 try
                 {
