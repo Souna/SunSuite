@@ -30,7 +30,7 @@ namespace HaCreator.MapEditor.Info
 
         private void ExtractPNGFromImage(SunImage image)
         {
-            SunCanvasProperty npcImage = WzInfoTools.GetNpcImage(image);
+            SunCanvasProperty npcImage = SunInfoTools.GetNpcImage(image);
             if (npcImage != null)
             {
                 Image = npcImage.PNG.GetPNG(false);
@@ -38,7 +38,7 @@ namespace HaCreator.MapEditor.Info
                 {
                     Image = global::HaCreator.Properties.Resources.placeholder;
                 }
-                Origin = WzInfoTools.VectorToSystemPoint((SunVectorProperty)npcImage["origin"]);
+                Origin = SunInfoTools.VectorToSystemPoint((SunVectorProperty)npcImage["origin"]);
             }
             else
             {
@@ -77,8 +77,8 @@ namespace HaCreator.MapEditor.Info
 
         private static NpcInfo Load(SunImage parentObject)
         {
-            string id = WzInfoTools.RemoveExtension(parentObject.Name);
-            return new NpcInfo(null, new System.Drawing.Point(), id, WzInfoTools.GetNpcNameById(id), parentObject);
+            string id = SunInfoTools.RemoveExtension(parentObject.Name);
+            return new NpcInfo(null, new System.Drawing.Point(), id, SunInfoTools.GetNpcNameById(id), parentObject);
         }
 
         public override BoardItem CreateInstance(Layer layer, Board board, int x, int y, int z, bool flip)

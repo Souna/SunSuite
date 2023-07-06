@@ -48,7 +48,7 @@
     <Compile Include="SunFileLib\Config\SettingsBase.cs" />
     <Compile Include="SunFileLib\Config\SettingsReader.cs" />
     <Compile Include="SunFileLib\Config\SettingsWriter.cs" />
-    <Compile Include="SunFileLib\Config\WzSettings.cs" />
+    <Compile Include="SunFileLib\Config\WzSettingsManager.cs" />
     <Compile Include="SunFileLib\Properties\SunCanvasProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunConvexProperty.cs" />
     <Compile Include="SunFileLib\Properties\SunDoubleProperty.cs" />

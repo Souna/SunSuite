@@ -67,11 +67,11 @@ namespace HaCreator.MapEditor.Info
         {
             SunProperty zProp = parentObject["z"];
             int z = zProp == null ? 0 : InfoTool.GetInt(zProp);
-            TileInfo result = new TileInfo(parentObject.PNG.GetPNG(false), WzInfoTools.VectorToSystemPoint((SunVectorProperty)parentObject["origin"]), tS, u, no, mag.HasValue ? mag.Value : 1, z, parentObject);
+            TileInfo result = new TileInfo(parentObject.PNG.GetPNG(false), SunInfoTools.VectorToSystemPoint((SunVectorProperty)parentObject["origin"]), tS, u, no, mag.HasValue ? mag.Value : 1, z, parentObject);
             SunConvexProperty footholds = (SunConvexProperty)parentObject["foothold"];
             if (footholds != null)
                 foreach (SunVectorProperty foothold in footholds.SunProperties)
-                    result.footholdOffsets.Add(WzInfoTools.VectorToXNAPoint(foothold));
+                    result.footholdOffsets.Add(SunInfoTools.VectorToXNAPoint(foothold));
             if (UserSettings.FixFootholdMispositions)
             {
                 FixFootholdMispositions(result);

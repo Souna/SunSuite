@@ -28,11 +28,11 @@ namespace HaCreator.MapEditor.Info
 
         private void ExtractPNGFromImage(SunImage image)
         {
-            SunCanvasProperty mobImage = WzInfoTools.GetMobImage(image);
+            SunCanvasProperty mobImage = SunInfoTools.GetMobImage(image);
             if (mobImage != null)
             {
                 Image = mobImage.PNG.GetPNG(false);
-                Origin = WzInfoTools.VectorToSystemPoint((SunVectorProperty)mobImage["origin"]);
+                Origin = SunInfoTools.VectorToSystemPoint((SunVectorProperty)mobImage["origin"]);
             }
             else
             {
@@ -71,8 +71,8 @@ namespace HaCreator.MapEditor.Info
 
         private static MobInfo Load(SunImage parentObject)
         {
-            string id = WzInfoTools.RemoveExtension(parentObject.Name);
-            return new MobInfo(null, new System.Drawing.Point(), id, WzInfoTools.GetMobNameById(id), parentObject);
+            string id = SunInfoTools.RemoveExtension(parentObject.Name);
+            return new MobInfo(null, new System.Drawing.Point(), id, SunInfoTools.GetMobNameById(id), parentObject);
         }
 
         public override BoardItem CreateInstance(Layer layer, Board board, int x, int y, int z, bool flip)

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunFileManager", "SunFileMa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunLibrary", "SunLibrary\SunLibrary.csproj", "{0DA8B121-D068-4EC3-BCBF-A0CAA6F83EFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaCreator", "HaCreator\HaCreator.csproj", "{56B9FF0F-AD8C-48D9-B2FB-C2BED2EA62FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunEditor", "HaCreator\SunEditor.csproj", "{56B9FF0F-AD8C-48D9-B2FB-C2BED2EA62FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

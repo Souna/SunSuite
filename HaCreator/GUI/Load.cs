@@ -177,10 +177,10 @@ namespace HaCreator.GUI
                     {
                         mapImage = (SunImage)Program.WzManager["map"]["Map"][mapcat][mapid + ".img"];
                     }
-                    strMapProp = WzInfoTools.GetMapStringProp(mapid);
-                    mapName = WzInfoTools.GetMapName(strMapProp);
-                    streetName = WzInfoTools.GetMapStreetName(strMapProp);
-                    categoryName = WzInfoTools.GetMapCategoryName(strMapProp);
+                    strMapProp = SunInfoTools.GetMapStringProp(mapid);
+                    mapName = SunInfoTools.GetMapName(strMapProp);
+                    streetName = SunInfoTools.GetMapStreetName(strMapProp);
+                    categoryName = SunInfoTools.GetMapCategoryName(strMapProp);
                 }
             }
             loader.CreateMapFromImage(mapImage, mapName, streetName, categoryName, strMapProp, Tabs, multiBoard, rightClickHandler);

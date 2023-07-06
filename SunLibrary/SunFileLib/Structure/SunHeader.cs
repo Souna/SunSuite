@@ -59,8 +59,8 @@
         }
 
         public void RecalculateFileStart()
-        {//                                FileSize      + FileStart
-            filestart = (uint)(identifier.Length + sizeof(ulong) + sizeof(uint) + copyright.Length + 1);
+        {//                           Sig + ascii (112) + filesize (8) + filestart (8) + copyright + 1
+            filestart = (uint)(identifier.Length + 112 + sizeof(ulong) + sizeof(uint) + copyright.Length + 1);
         }
 
         /// <summary>

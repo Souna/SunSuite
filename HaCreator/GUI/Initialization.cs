@@ -40,7 +40,6 @@ namespace HaCreator.GUI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ApplicationSettings.MapleVersionIndex = versionBox.SelectedIndex;
             ApplicationSettings.MapleFolderIndex = pathBox.SelectedIndex;
             string wzPath = pathBox.Text;
 
@@ -54,24 +53,6 @@ namespace HaCreator.GUI
                 ApplicationSettings.MapleFolder = ApplicationSettings.MapleFolder == "" ? wzPath : (ApplicationSettings.MapleFolder + "," + wzPath);
             }
 
-            /* short version = -1;
-             if (versionBox.SelectedIndex != 3)
-             {
-                 string testFile = File.Exists(Path.Combine(wzPath, "Data.wz")) ? "Data.wz" : "Item.wz";
-                 try
-                 {
-                     fileVersion = WzTool.DetectMapleVersion(Path.Combine(wzPath, testFile), out version);
-                 }
-                 catch (Exception ex)
-                 {
-                     HaRepackerLib.Warning.Error("Error initializing " + testFile + " (" + ex.Message + ").\r\nCheck that the directory is valid and the file is not in use.");
-                     return;
-                 }
-             }
-             else
-             {*/
-            //  }
-
             InitializeSunFiles(wzPath);
 
             Hide();
@@ -84,93 +65,73 @@ namespace HaCreator.GUI
         private void InitializeSunFiles(string wzPath)
         {
             Program.WzManager = new FileManager(wzPath);
-            if (Program.WzManager.HasDataFile)//currently always false
+
+            textBox2.Text = "Initializing String.wz...";
+            Application.DoEvents();
+            Program.WzManager.LoadSunFile("string");
+            Program.WzManager.ExtractMaps();
+
+            textBox2.Text = "Initializing Mob.wz...";
+            Application.DoEvents();
+            Program.WzManager.LoadSunFile("mob");
+            Program.WzManager.ExtractMobFile();
+
+            textBox2.Text = "Initializing Npc.wz...";
+            Application.DoEvents();
+            Program.WzManager.LoadSunFile("npc");
+            Program.WzManager.ExtractNpcFile();
+
+            textBox2.Text = "Initializing Reactor.wz...";
+            Application.DoEvents();
+            Program.WzManager.LoadSunFile("reactor");
+            Program.WzManager.ExtractReactorFile();
+
+            textBox2.Text = "Initializing Sound.wz...";
+            Application.DoEvents();
+            Program.WzManager.LoadSunFile("sound");
+            Program.WzManager.ExtractSoundFile();
+
+            textBox2.Text = "Initializing Map.wz...";
+            Application.DoEvents();
+            Program.WzManager.LoadSunFile("map");
+            Program.WzManager.ExtractMapMarks();
+            Program.WzManager.ExtractPortals();
+            Program.WzManager.ExtractTileSets();
+            Program.WzManager.ExtractObjSets();
+            Program.WzManager.ExtractBackgroundSets();
+
+            if (Program.WzManager.LoadSunFile("map001"))
             {
-                textBox2.Text = "Initializing Data.wz...";
+                textBox2.Text = "Initializing Map001.wz...";
                 Application.DoEvents();
-                Program.WzManager.LoadDataSunFile("data");
-                Program.WzManager.ExtractMaps();
-                //Program.WzManager.ExtractItems();
-                Program.WzManager.ExtractMobFile();
-                Program.WzManager.ExtractNpcFile();
-                Program.WzManager.ExtractReactorFile();
-                Program.WzManager.ExtractSoundFile();
-                Program.WzManager.ExtractMapMarks();
-                Program.WzManager.ExtractPortals();
-                Program.WzManager.ExtractTileSets();
-                Program.WzManager.ExtractObjSets();
                 Program.WzManager.ExtractBackgroundSets();
+                Program.WzManager.ExtractObjSets();
             }
-            else
+
+            if (Program.WzManager.LoadSunFile("map002")) //kms now stores main map key here
             {
-                textBox2.Text = "Initializing String.wz...";
+                textBox2.Text = "Initializing Map002.wz...";
                 Application.DoEvents();
-                Program.WzManager.LoadSunFile("string");
-                Program.WzManager.ExtractMaps();
-
-                textBox2.Text = "Initializing Mob.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadSunFile("mob");
-                Program.WzManager.ExtractMobFile();
-
-                textBox2.Text = "Initializing Npc.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadSunFile("npc");
-                Program.WzManager.ExtractNpcFile();
-
-                textBox2.Text = "Initializing Reactor.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadSunFile("reactor");
-                Program.WzManager.ExtractReactorFile();
-
-                textBox2.Text = "Initializing Sound.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadSunFile("sound");
-                Program.WzManager.ExtractSoundFile();
-
-                textBox2.Text = "Initializing Map.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadSunFile("map");
-                Program.WzManager.ExtractMapMarks();
-                Program.WzManager.ExtractPortals();
-                Program.WzManager.ExtractTileSets();
-                Program.WzManager.ExtractObjSets();
                 Program.WzManager.ExtractBackgroundSets();
-
-                if (Program.WzManager.LoadSunFile("map001"))
-                {
-                    textBox2.Text = "Initializing Map001.wz...";
-                    Application.DoEvents();
-                    Program.WzManager.ExtractBackgroundSets();
-                    Program.WzManager.ExtractObjSets();
-                }
-
-                if (Program.WzManager.LoadSunFile("map002")) //kms now stores main map key here
-                {
-                    textBox2.Text = "Initializing Map002.wz...";
-                    Application.DoEvents();
-                    Program.WzManager.ExtractBackgroundSets();
-                    Program.WzManager.ExtractObjSets();
-                }
-
-                if (Program.WzManager.LoadSunFile("map2"))
-                {
-                    textBox2.Text = "Initializing Map2.wz...";
-                    Application.DoEvents();
-                    Program.WzManager.ExtractBackgroundSets();
-                    Program.WzManager.ExtractObjSets();
-                }
-                textBox2.Text = "Initializing UI.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadSunFile("ui");
+                Program.WzManager.ExtractObjSets();
             }
+
+            if (Program.WzManager.LoadSunFile("map2"))
+            {
+                textBox2.Text = "Initializing Map2.wz...";
+                Application.DoEvents();
+                Program.WzManager.ExtractBackgroundSets();
+                Program.WzManager.ExtractObjSets();
+            }
+            textBox2.Text = "Initializing UI.wz...";
+            Application.DoEvents();
+            Program.WzManager.LoadSunFile("ui");
         }
 
         private static readonly string[] commonMaplePaths = new string[] { @"C:\Nexon\MapleStory", @"C:\Program Files\WIZET\MapleStory", @"C:\MapleStory" };
 
         private void Initialization_Load(object sender, EventArgs e)
         {
-            versionBox.SelectedIndex = 0;
             try
             {
                 string[] paths = ApplicationSettings.MapleFolder.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -191,7 +152,6 @@ namespace HaCreator.GUI
             catch
             {
             }
-            versionBox.SelectedIndex = ApplicationSettings.MapleVersionIndex;
             if (pathBox.Items.Count < ApplicationSettings.MapleFolderIndex + 1)
             {
                 pathBox.SelectedIndex = pathBox.Items.Count - 1;

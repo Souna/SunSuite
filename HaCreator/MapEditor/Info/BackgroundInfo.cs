@@ -42,8 +42,8 @@ namespace HaCreator.MapEditor.Info
 
         private static BackgroundInfo Load(SunProperty parentObject, string bS, bool ani, string no)
         {
-            SunCanvasProperty frame0 = ani ? (SunCanvasProperty)WzInfoTools.GetRealProperty(parentObject["0"]) : (SunCanvasProperty)WzInfoTools.GetRealProperty(parentObject);
-            return new BackgroundInfo(frame0.PNG.GetPNG(false), WzInfoTools.VectorToSystemPoint((SunVectorProperty)frame0["origin"]), bS, ani, no, parentObject);
+            SunCanvasProperty frame0 = ani ? (SunCanvasProperty)SunInfoTools.GetRealProperty(parentObject["0"]) : (SunCanvasProperty)SunInfoTools.GetRealProperty(parentObject);
+            return new BackgroundInfo(frame0.PNG.GetPNG(false), SunInfoTools.VectorToSystemPoint((SunVectorProperty)frame0["origin"]), bS, ani, no, parentObject);
         }
 
         public override BoardItem CreateInstance(Layer layer, Board board, int x, int y, int z, bool flip)

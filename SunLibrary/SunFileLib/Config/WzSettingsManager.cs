@@ -31,15 +31,15 @@ namespace MapleLib.WzLib
         private Type appSettingsType;
         private Type xnaColorType = null;
 
-        public WzSettingsManager(string wzPath, Type userSettingsType, Type appSettingsType)
+        public WzSettingsManager(string sfPath, Type userSettingsType, Type appSettingsType)
         {
-            this.sfPath = wzPath;
+            this.sfPath = sfPath;
             this.userSettingsType = userSettingsType;
             this.appSettingsType = appSettingsType;
         }
 
-        public WzSettingsManager(string wzPath, Type userSettingsType, Type appSettingsType, Type xnaColorType)
-            : this(wzPath, userSettingsType, appSettingsType)
+        public WzSettingsManager(string sfPath, Type userSettingsType, Type appSettingsType, Type xnaColorType)
+            : this(sfPath, userSettingsType, appSettingsType)
         {
             this.xnaColorType = xnaColorType;
         }
@@ -111,7 +111,7 @@ namespace MapleLib.WzLib
             }
         }
 
-        private void CreateWzProp(IPropertyContainer parent, SunPropertyType propType, string propName, object value)
+        private void CreateSunProp(IPropertyContainer parent, SunPropertyType propType, string propName, object value)
         {
             SunProperty addedProp;
             switch (propType)
@@ -145,8 +145,9 @@ namespace MapleLib.WzLib
 
                 case SunPropertyType.Vector:
                     addedProp = new SunVectorProperty(propName);
-                    ((SunVectorProperty)addedProp).X = new SunIntProperty("X");
-                    ((SunVectorProperty)addedProp).Y = new SunIntProperty("Y");
+                    if (addedProp.Parent == null) addedProp.Parent = (SunImage)parent;
+                    ((SunVectorProperty)addedProp).X = new SunIntProperty("X") { Parent = (SunImage)parent };
+                    ((SunVectorProperty)addedProp).Y = new SunIntProperty("Y") { Parent = (SunImage)parent };
                     break;
                 /*case WzPropertyType.Lua: // probably dont allow the user to create custom Lua for now..
                     {
@@ -156,11 +157,18 @@ namespace MapleLib.WzLib
                 default:
                     throw new NotSupportedException("Not supported type");
             }
+            if (addedProp.Parent == null)
+            {
+                if (parent is SunImage)
+                {
+                    addedProp.Parent = (SunImage)parent;
+                }
+            }
             addedProp.SetValue(value);
             parent.AddProperty(addedProp);
         }
 
-        private void SetWzProperty(SunImage parentImage, string propName, SunPropertyType propType, object value)
+        private void SetSunProperty(SunImage parentImage, string propName, SunPropertyType propType, object value)
         {
             SunProperty property = parentImage[propName];
             if (property != null)
@@ -170,11 +178,11 @@ namespace MapleLib.WzLib
                 else
                 {
                     property.Remove();
-                    CreateWzProp(parentImage, propType, propName, value);
+                    CreateSunProp(parentImage, propType, propName, value);
                 }
             }
             else
-                CreateWzProp(parentImage, propType, propName, value);
+                CreateSunProp(parentImage, propType, propName, value);
         }
 
         private void SaveSettingsImage(SunImage settingsImage, Type settingsHolderType)
@@ -191,7 +199,7 @@ namespace MapleLib.WzLib
         {
             string settingName = fieldInfo.Name;
             if (fieldInfo.FieldType.BaseType != null && fieldInfo.FieldType.BaseType.FullName == "System.Enum")
-                SetWzProperty(settingsImage, settingName, SunPropertyType.Int, fieldInfo.GetValue(null));
+                SetSunProperty(settingsImage, settingName, SunPropertyType.Int, fieldInfo.GetValue(null));
             else switch (fieldInfo.FieldType.FullName)
                 {
                     //case "Microsoft.Xna.Framework.Graphics.Color":
@@ -199,43 +207,46 @@ namespace MapleLib.WzLib
                         object xnaColor = fieldInfo.GetValue(null);
                         //for some odd reason .NET requires casting the result to uint before it can be
                         //casted to double
-                        SetWzProperty(settingsImage, settingName, SunPropertyType.Double, (double)(uint)xnaColor.GetType().GetProperty("PackedValue").GetValue(xnaColor, null));
+                        SetSunProperty(settingsImage, settingName, SunPropertyType.Double, (double)(uint)xnaColor.GetType().GetProperty("PackedValue").GetValue(xnaColor, null));
                         break;
 
                     case "System.Drawing.Color":
-                        SetWzProperty(settingsImage, settingName, SunPropertyType.Double, (double)((System.Drawing.Color)fieldInfo.GetValue(null)).ToArgb());
+                        SetSunProperty(settingsImage, settingName, SunPropertyType.Double, (double)((System.Drawing.Color)fieldInfo.GetValue(null)).ToArgb());
                         break;
 
                     case "System.Int32":
-                        SetWzProperty(settingsImage, settingName, SunPropertyType.Int, fieldInfo.GetValue(null));
+                        SetSunProperty(settingsImage, settingName, SunPropertyType.Int, fieldInfo.GetValue(null));
                         break;
 
                     case "System.Double":
-                        SetWzProperty(settingsImage, settingName, SunPropertyType.Double, fieldInfo.GetValue(null));
+                        SetSunProperty(settingsImage, settingName, SunPropertyType.Double, fieldInfo.GetValue(null));
                         break;
 
                     case "Single":
-                        SetWzProperty(settingsImage, settingName, SunPropertyType.Float, fieldInfo.GetValue(null));
+                        SetSunProperty(settingsImage, settingName, SunPropertyType.Float, fieldInfo.GetValue(null));
                         break;
 
                     case "System.Drawing.Size":
-                        SetWzProperty(settingsImage, settingName, SunPropertyType.Vector, fieldInfo.GetValue(null));
+                        SetSunProperty(settingsImage, settingName, SunPropertyType.Vector, fieldInfo.GetValue(null));
                         break;
 
                     case "System.String":
-                        SetWzProperty(settingsImage, settingName, SunPropertyType.String, fieldInfo.GetValue(null));
+                        SetSunProperty(settingsImage, settingName, SunPropertyType.String, fieldInfo.GetValue(null));
                         break;
 
                     case "System.Drawing.Bitmap":
-                        SetWzProperty(settingsImage, settingName, SunPropertyType.Canvas, fieldInfo.GetValue(null));
+                        SetSunProperty(settingsImage, settingName, SunPropertyType.Canvas, fieldInfo.GetValue(null));
                         break;
 
                     case "System.Boolean":
-                        SetWzProperty(settingsImage, settingName, SunPropertyType.Int, (bool)fieldInfo.GetValue(null) ? 1 : 0);
+                        SetSunProperty(settingsImage, settingName, SunPropertyType.Int, (bool)fieldInfo.GetValue(null) ? 1 : 0);
                         break;
                 }
         }
 
+        /// <summary>
+        /// to-do
+        /// </summary>
         public void Load()
         {
             if (File.Exists(sfPath))
@@ -275,10 +286,10 @@ namespace MapleLib.WzLib
                 SunFile = new SunFile();
                 SunFile.Header.Copyright = "Based on settings file generated by MapleLib's WzSettings module created by haha01haha01";
                 SunFile.Header.RecalculateFileStart();  //make sure this is good
-                SunImage US = new SunImage("UserSettings.img") { Changed = true, Parsed = true };
-                SunImage AS = new SunImage("ApplicationSettings.img") { Changed = true, Parsed = true };
-                SunFile.SunDirectory.SunImages.Add(US);
-                SunFile.SunDirectory.SunImages.Add(AS);
+                SunImage UserSettings = new SunImage("UserSettings.img") { Changed = true, Parsed = true };
+                SunImage AppSettings = new SunImage("ApplicationSettings.img") { Changed = true, Parsed = true };
+                SunFile.SunDirectory.SunImages.Add(UserSettings);
+                SunFile.SunDirectory.SunImages.Add(AppSettings);
             }
             SaveSettingsImage((SunImage)SunFile["UserSettings.img"], userSettingsType);
             SaveSettingsImage((SunImage)SunFile["ApplicationSettings.img"], appSettingsType);

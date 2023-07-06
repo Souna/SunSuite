@@ -156,7 +156,7 @@ namespace HaCreator.GUI
                                 InfoTool.GetOptionalString(obj["l1"]) == UserObjectsManager.l1 &&
                                 InfoTool.GetOptionalString(obj["l2"]) == l2)
                             {
-                                result.Add(WzInfoTools.RemoveExtension(mapImg.Name));
+                                result.Add(SunInfoTools.RemoveExtension(mapImg.Name));
                                 fastForwardToNext = true;
                                 break;
                             }
