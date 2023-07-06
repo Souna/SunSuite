@@ -38,7 +38,7 @@ namespace SunLibrary.SunFileLib.Properties
             else
             {
                 x.Value = ((Size)value).Width;
-                x.Value = ((Size)value).Height;
+                y.Value = ((Size)value).Height;
             }
         }
 

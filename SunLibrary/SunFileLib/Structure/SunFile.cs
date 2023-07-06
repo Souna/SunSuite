@@ -158,6 +158,8 @@ namespace SunLibrary.SunFileLib.Structure
 
         public SunFile()
         {
+            this.header = SunHeader.Default();
+            sunDir = new SunDirectory();
         }
 
         /// <summary>

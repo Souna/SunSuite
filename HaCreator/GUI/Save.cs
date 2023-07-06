@@ -68,7 +68,7 @@ namespace HaCreator.GUI
                 statusLabel.Text = "Out of range";
                 saveButton.Enabled = false;
             }
-            else if (WzInfoTools.GetMapStringProp(id.ToString()) != null)
+            else if (SunInfoTools.GetMapStringProp(id.ToString()) != null)
             {
                 statusLabel.Text = "WARNING: Will overwrite existing map";
                 saveButton.Enabled = true;

@@ -26,11 +26,11 @@ namespace HaCreator.MapEditor.Info
 
         private void ExtractPNGFromImage(SunImage image)
         {
-            SunCanvasProperty reactorImage = WzInfoTools.GetReactorImage(image);
+            SunCanvasProperty reactorImage = SunInfoTools.GetReactorImage(image);
             if (reactorImage != null)
             {
                 Image = reactorImage.PNG.GetPNG(false);
-                Origin = WzInfoTools.VectorToSystemPoint((SunVectorProperty)reactorImage["origin"]);
+                Origin = SunInfoTools.VectorToSystemPoint((SunVectorProperty)reactorImage["origin"]);
             }
             else
             {
@@ -44,7 +44,7 @@ namespace HaCreator.MapEditor.Info
             SunStringProperty link = (SunStringProperty)((SunSubProperty)((SunImage)ParentObject)["info"])["link"];
             if (link != null)
             {
-                LinkedImage = (SunImage)Program.WzManager["reactor"][link.Value + ".img"];
+                LinkedImage = (SunImage)Program.SfManager["reactor"][link.Value + ".img"];
                 ExtractPNGFromImage(LinkedImage);
             }
             else
@@ -62,7 +62,7 @@ namespace HaCreator.MapEditor.Info
 
         public static ReactorInfo Load(SunImage parentObject)
         {
-            return new ReactorInfo(null, new System.Drawing.Point(), WzInfoTools.RemoveExtension(parentObject.Name), parentObject);
+            return new ReactorInfo(null, new System.Drawing.Point(), SunInfoTools.RemoveExtension(parentObject.Name), parentObject);
         }
 
         public override BoardItem CreateInstance(Layer layer, Board board, int x, int y, int z, bool flip)

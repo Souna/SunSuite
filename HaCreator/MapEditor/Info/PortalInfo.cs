@@ -26,7 +26,7 @@ namespace HaCreator.MapEditor.Info
 
         public static PortalInfo Load(SunCanvasProperty parentObject)
         {
-            PortalInfo portal = new PortalInfo(parentObject.Name, parentObject.PNG.GetPNG(false), WzInfoTools.VectorToSystemPoint((SunVectorProperty)parentObject["origin"]), parentObject);
+            PortalInfo portal = new PortalInfo(parentObject.Name, parentObject.PNG.GetPNG(false), SunInfoTools.VectorToSystemPoint((SunVectorProperty)parentObject["origin"]), parentObject);
             Program.InfoManager.Portals.Add(portal.type, portal);
             return portal;
         }

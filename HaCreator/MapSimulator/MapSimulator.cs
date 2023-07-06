@@ -180,7 +180,7 @@ namespace HaCreator.MapSimulator
 
         private static MapItem CreateMapItemFromProperty(SunProperty source, int x, int y, int mapCenterX, int mapCenterY, GraphicsDevice device, ref List<SunObject> usedProps, bool flip)
         {
-            source = WzInfoTools.GetRealProperty(source);
+            source = SunInfoTools.GetRealProperty(source);
             if (source is SunSubProperty && ((SunSubProperty)source).SunProperties.Count == 1)
                 source = ((SunSubProperty)source).SunProperties[0];
             if (source is SunCanvasProperty) //one-frame
@@ -198,7 +198,7 @@ namespace HaCreator.MapSimulator
                 SunCanvasProperty frameProp;
                 int i = 0;
                 List<DXObject> frames = new List<DXObject>();
-                while ((frameProp = (SunCanvasProperty)WzInfoTools.GetRealProperty(source[(i++).ToString()])) != null)
+                while ((frameProp = (SunCanvasProperty)SunInfoTools.GetRealProperty(source[(i++).ToString()])) != null)
                 {
                     int? delay = InfoTool.GetOptionalInt(frameProp["delay"]);
                     if (delay == null) delay = 100;
@@ -217,7 +217,7 @@ namespace HaCreator.MapSimulator
 
         public static BackgroundItem CreateBackgroundFromProperty(SunProperty source, int x, int y, int rx, int ry, int cx, int cy, int a, BackgroundType type, bool front, int mapCenterX, int mapCenterY, GraphicsDevice device, ref List<SunObject> usedProps, bool flip)
         {
-            source = WzInfoTools.GetRealProperty(source);
+            source = SunInfoTools.GetRealProperty(source);
             if (source is SunSubProperty && ((SunSubProperty)source).SunProperties.Count == 1)
                 source = ((SunSubProperty)source).SunProperties[0];
             if (source is SunCanvasProperty) //one-frame
@@ -235,7 +235,7 @@ namespace HaCreator.MapSimulator
                 SunCanvasProperty frameProp;
                 int i = 0;
                 List<DXObject> frames = new List<DXObject>();
-                while ((frameProp = (SunCanvasProperty)WzInfoTools.GetRealProperty(source[(i++).ToString()])) != null)
+                while ((frameProp = (SunCanvasProperty)SunInfoTools.GetRealProperty(source[(i++).ToString()])) != null)
                 {
                     int? delay = InfoTool.GetOptionalInt(frameProp["delay"]);
                     if (delay == null) delay = 100;
@@ -265,7 +265,7 @@ namespace HaCreator.MapSimulator
             if (mapBoard.MiniMap == null) mapBoard.RegenerateMinimap();
             MapSimulator result = new MapSimulator(mapBoard);
             List<SunObject> usedProps = new List<SunObject>();
-            SunDirectory MapFile = Program.WzManager["map"];
+            SunDirectory MapFile = Program.SfManager["map"];
             SunDirectory tileDir = (SunDirectory)MapFile["Tile"];
             GraphicsDevice device = result.DxDevice;
             foreach (LayeredItem tileObj in mapBoard.BoardItems.TileObjs)

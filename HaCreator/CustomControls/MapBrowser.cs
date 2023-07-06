@@ -57,7 +57,7 @@ namespace HaCreator.CustomControls
 
         public void InitializeMaps(bool special)
         {
-            mapLogin1 = Program.WzManager["ui"]["MapLogin1.img"] != null;
+            mapLogin1 = Program.SfManager["ui"]["MapLogin1.img"] != null;
             foreach (KeyValuePair<string, string> map in Program.InfoManager.Maps)
             {
                 maps.Add(map.Key + " - " + map.Value);
@@ -118,13 +118,13 @@ namespace HaCreator.CustomControls
                 string mapid = ((string)mapNamesBox.SelectedItem).Substring(0, 9);
                 string mapcat = "Map" + mapid.Substring(0, 1);
                 SunImage mapImage = null;
-                if (Program.WzManager.SunFiles.ContainsKey("map002"))//i hate nexon so much
+                if (Program.SfManager.SunFiles.ContainsKey("map002"))//i hate nexon so much
                 {
-                    mapImage = (SunImage)Program.WzManager["map002"]["Map"][mapcat][mapid + ".img"];
+                    mapImage = (SunImage)Program.SfManager["map002"]["Map"][mapcat][mapid + ".img"];
                 }
                 else
                 {
-                    mapImage = (SunImage)Program.WzManager["map"]["Map"][mapcat][mapid + ".img"];
+                    mapImage = (SunImage)Program.SfManager["map"]["Map"][mapcat][mapid + ".img"];
                 }
                 if (mapImage == null)
                 {

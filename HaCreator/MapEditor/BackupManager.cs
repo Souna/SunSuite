@@ -6,6 +6,7 @@
 
 using HaCreator.MapEditor.Input;
 using HaCreator.Wz;
+using HaCreator.MapEditor;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;

@@ -55,7 +55,7 @@ namespace HaCreator.MapEditor.Info
             List<XNA.Point> result = new List<XNA.Point>();
             foreach (SunVectorProperty point in prop.SunProperties)
             {
-                result.Add(WzInfoTools.VectorToXNAPoint(point));
+                result.Add(SunInfoTools.VectorToXNAPoint(point));
             }
             return result;
         }
@@ -89,8 +89,8 @@ namespace HaCreator.MapEditor.Info
 
         private static ObjectInfo Load(SunSubProperty parentObject, string oS, string l0, string l1, string l2)
         {
-            SunCanvasProperty frame1 = (SunCanvasProperty)WzInfoTools.GetRealProperty(parentObject["0"]);
-            ObjectInfo result = new ObjectInfo(frame1.PNG.GetPNG(false), WzInfoTools.VectorToSystemPoint((SunVectorProperty)frame1["origin"]), oS, l0, l1, l2, parentObject);
+            SunCanvasProperty frame1 = (SunCanvasProperty)SunInfoTools.GetRealProperty(parentObject["0"]);
+            ObjectInfo result = new ObjectInfo(frame1.PNG.GetPNG(false), SunInfoTools.VectorToSystemPoint((SunVectorProperty)frame1["origin"]), oS, l0, l1, l2, parentObject);
             SunProperty chairs = parentObject["seat"];
             SunProperty ropes = frame1["rope"];
             SunProperty ladders = frame1["ladder"];

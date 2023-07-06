@@ -25,11 +25,11 @@ namespace HaCreator.GUI.EditorPanels
             InitializeComponent();
 
             ImageViewer[] commonItems = new ImageViewer[] {
-                miscItemsContainer.Add(CreateColoredBitmap(WzInfoTools.XNAToDrawingColor(UserSettings.FootholdColor)), "Foothold", true),
-                miscItemsContainer.Add(CreateColoredBitmap(WzInfoTools.XNAToDrawingColor(UserSettings.RopeColor)), "Rope", true),
-                miscItemsContainer.Add(CreateColoredBitmap(WzInfoTools.XNAToDrawingColor(UserSettings.ChairColor)), "Chair", true),
-                miscItemsContainer.Add(CreateColoredBitmap(WzInfoTools.XNAToDrawingColor(UserSettings.ToolTipColor)), "Tooltip", true),
-                miscItemsContainer.Add(CreateColoredBitmap(WzInfoTools.XNAToDrawingColor(UserSettings.MiscColor)), "Clock", true)
+                miscItemsContainer.Add(CreateColoredBitmap(SunInfoTools.XNAToDrawingColor(UserSettings.FootholdColor)), "Foothold", true),
+                miscItemsContainer.Add(CreateColoredBitmap(SunInfoTools.XNAToDrawingColor(UserSettings.RopeColor)), "Rope", true),
+                miscItemsContainer.Add(CreateColoredBitmap(SunInfoTools.XNAToDrawingColor(UserSettings.ChairColor)), "Chair", true),
+                miscItemsContainer.Add(CreateColoredBitmap(SunInfoTools.XNAToDrawingColor(UserSettings.ToolTipColor)), "Tooltip", true),
+                miscItemsContainer.Add(CreateColoredBitmap(SunInfoTools.XNAToDrawingColor(UserSettings.MiscColor)), "Clock", true)
             };
             foreach (ImageViewer item in commonItems)
             {

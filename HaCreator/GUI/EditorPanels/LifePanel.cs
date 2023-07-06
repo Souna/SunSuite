@@ -93,7 +93,7 @@ namespace HaCreator.GUI.EditorPanels
                 else if (npcRButton.Checked)
                 {
                     string id = ((string)lifeListBox.SelectedItem).Substring(0, ((string)lifeListBox.SelectedItem).IndexOf(" - "));
-                    NpcInfo info = WzInfoTools.GetNpcInfoById(id);
+                    NpcInfo info = SunInfoTools.GetNpcInfoById(id);
                     if (info == null)
                     {
                         lifePictureBox.Image = null;
@@ -110,7 +110,7 @@ namespace HaCreator.GUI.EditorPanels
                 else if (mobRButton.Checked)
                 {
                     string id = ((string)lifeListBox.SelectedItem).Substring(0, ((string)lifeListBox.SelectedItem).IndexOf(" - "));
-                    MobInfo info = WzInfoTools.GetMobInfoById(id);
+                    MobInfo info = SunInfoTools.GetMobInfoById(id);
                     if (info == null)
                     {
                         lifePictureBox.Image = null;

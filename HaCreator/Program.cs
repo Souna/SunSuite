@@ -18,7 +18,7 @@ namespace HaCreator
 {
     internal static class Program
     {
-        public static FileManager WzManager;
+        public static FileManager SfManager;
         public static WzInformationManager InfoManager;
         public static WzSettingsManager SettingsManager;
         public const string Version = "2.2.0";
@@ -36,7 +36,7 @@ namespace HaCreator
 
         public static string GetLocalSettingsPath()
         {
-            return Path.Combine(GetLocalSettingsFolder(), "Settings.wz");
+            return Path.Combine(GetLocalSettingsFolder(), "Settings.sun");
         }
 
         /// <summary>

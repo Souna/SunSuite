@@ -30,7 +30,7 @@ namespace HaCreator.GUI
 
         private bool IsPathCommon(string path)
         {
-            foreach (string commonPath in commonMaplePaths)
+            foreach (string commonPath in commonSfPaths)
             {
                 if (commonPath == path)
                     return true;
@@ -40,39 +40,20 @@ namespace HaCreator.GUI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ApplicationSettings.MapleVersionIndex = versionBox.SelectedIndex;
-            ApplicationSettings.MapleFolderIndex = pathBox.SelectedIndex;
-            string wzPath = pathBox.Text;
+            ApplicationSettings.SunFileFolderIndex = pathBox.SelectedIndex;
+            string sfPath = pathBox.Text;
 
-            if (wzPath == "Select Maple Folder")
+            if (sfPath == "Select SunFile Folder")
             {
-                MessageBox.Show("Please select the maple folder.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please select the folder containing the SunFiles.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (!ApplicationSettings.MapleFolder.Contains(wzPath) && !IsPathCommon(wzPath))
+            if (!ApplicationSettings.SunFileFolder.Contains(sfPath) && !IsPathCommon(sfPath))
             {
-                ApplicationSettings.MapleFolder = ApplicationSettings.MapleFolder == "" ? wzPath : (ApplicationSettings.MapleFolder + "," + wzPath);
+                ApplicationSettings.SunFileFolder = ApplicationSettings.SunFileFolder == "" ? sfPath : (ApplicationSettings.SunFileFolder + "," + sfPath);
             }
 
-            /* short version = -1;
-             if (versionBox.SelectedIndex != 3)
-             {
-                 string testFile = File.Exists(Path.Combine(wzPath, "Data.wz")) ? "Data.wz" : "Item.wz";
-                 try
-                 {
-                     fileVersion = WzTool.DetectMapleVersion(Path.Combine(wzPath, testFile), out version);
-                 }
-                 catch (Exception ex)
-                 {
-                     HaRepackerLib.Warning.Error("Error initializing " + testFile + " (" + ex.Message + ").\r\nCheck that the directory is valid and the file is not in use.");
-                     return;
-                 }
-             }
-             else
-             {*/
-            //  }
-
-            InitializeSunFiles(wzPath);
+            InitializeSunFiles(sfPath);
 
             Hide();
             Application.DoEvents();
@@ -81,104 +62,61 @@ namespace HaCreator.GUI
             Application.Exit();
         }
 
-        private void InitializeSunFiles(string wzPath)
+        private void InitializeSunFiles(string sfPath)
         {
-            Program.WzManager = new FileManager(wzPath);
-            if (Program.WzManager.HasDataFile)//currently always false
-            {
-                textBox2.Text = "Initializing Data.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadDataSunFile("data");
-                Program.WzManager.ExtractMaps();
-                //Program.WzManager.ExtractItems();
-                Program.WzManager.ExtractMobFile();
-                Program.WzManager.ExtractNpcFile();
-                Program.WzManager.ExtractReactorFile();
-                Program.WzManager.ExtractSoundFile();
-                Program.WzManager.ExtractMapMarks();
-                Program.WzManager.ExtractPortals();
-                Program.WzManager.ExtractTileSets();
-                Program.WzManager.ExtractObjSets();
-                Program.WzManager.ExtractBackgroundSets();
-            }
-            else
-            {
-                textBox2.Text = "Initializing String.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadSunFile("string");
-                Program.WzManager.ExtractMaps();
+            Program.SfManager = new FileManager(sfPath);
 
-                textBox2.Text = "Initializing Mob.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadSunFile("mob");
-                Program.WzManager.ExtractMobFile();
+            txtStatus.Text = "Initializing String.wz...";
+            Application.DoEvents();
+            Program.SfManager.LoadSunFile("string");
+            Program.SfManager.ExtractMaps();
 
-                textBox2.Text = "Initializing Npc.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadSunFile("npc");
-                Program.WzManager.ExtractNpcFile();
+            txtStatus.Text = "Initializing Mob.wz...";
+            Application.DoEvents();
+            Program.SfManager.LoadSunFile("mob");
+            Program.SfManager.ExtractMobFile();
 
-                textBox2.Text = "Initializing Reactor.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadSunFile("reactor");
-                Program.WzManager.ExtractReactorFile();
+            txtStatus.Text = "Initializing Npc.wz...";
+            Application.DoEvents();
+            Program.SfManager.LoadSunFile("npc");
+            Program.SfManager.ExtractNpcFile();
 
-                textBox2.Text = "Initializing Sound.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadSunFile("sound");
-                Program.WzManager.ExtractSoundFile();
+            txtStatus.Text = "Initializing Reactor.wz...";
+            Application.DoEvents();
+            Program.SfManager.LoadSunFile("reactor");
+            Program.SfManager.ExtractReactorFile();
 
-                textBox2.Text = "Initializing Map.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadSunFile("map");
-                Program.WzManager.ExtractMapMarks();
-                Program.WzManager.ExtractPortals();
-                Program.WzManager.ExtractTileSets();
-                Program.WzManager.ExtractObjSets();
-                Program.WzManager.ExtractBackgroundSets();
+            txtStatus.Text = "Initializing Sound.wz...";
+            Application.DoEvents();
+            Program.SfManager.LoadSunFile("sound");
+            Program.SfManager.ExtractSoundFile();
 
-                if (Program.WzManager.LoadSunFile("map001"))
-                {
-                    textBox2.Text = "Initializing Map001.wz...";
-                    Application.DoEvents();
-                    Program.WzManager.ExtractBackgroundSets();
-                    Program.WzManager.ExtractObjSets();
-                }
+            txtStatus.Text = "Initializing Map.wz...";
+            Application.DoEvents();
+            Program.SfManager.LoadSunFile("map");
+            Program.SfManager.ExtractMapMarks();
+            Program.SfManager.ExtractPortals();
+            Program.SfManager.ExtractTileSets();
+            Program.SfManager.ExtractObjSets();
+            Program.SfManager.ExtractBackgroundSets();
 
-                if (Program.WzManager.LoadSunFile("map002")) //kms now stores main map key here
-                {
-                    textBox2.Text = "Initializing Map002.wz...";
-                    Application.DoEvents();
-                    Program.WzManager.ExtractBackgroundSets();
-                    Program.WzManager.ExtractObjSets();
-                }
-
-                if (Program.WzManager.LoadSunFile("map2"))
-                {
-                    textBox2.Text = "Initializing Map2.wz...";
-                    Application.DoEvents();
-                    Program.WzManager.ExtractBackgroundSets();
-                    Program.WzManager.ExtractObjSets();
-                }
-                textBox2.Text = "Initializing UI.wz...";
-                Application.DoEvents();
-                Program.WzManager.LoadSunFile("ui");
-            }
+            txtStatus.Text = "Initializing UI.wz...";
+            Application.DoEvents();
+            Program.SfManager.LoadSunFile("ui");
         }
 
-        private static readonly string[] commonMaplePaths = new string[] { @"C:\Nexon\MapleStory", @"C:\Program Files\WIZET\MapleStory", @"C:\MapleStory" };
+        private static readonly string[] commonSfPaths = new string[] { @"C:\Users\lapto\Desktop\stuff\NewSunFiles" };
 
         private void Initialization_Load(object sender, EventArgs e)
         {
-            versionBox.SelectedIndex = 0;
             try
             {
-                string[] paths = ApplicationSettings.MapleFolder.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                string[] paths = ApplicationSettings.SunFileFolder.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 foreach (string x in paths)
                 {
                     pathBox.Items.Add(x);
                 }
-                foreach (string path in commonMaplePaths)
+                foreach (string path in commonSfPaths)
                 {
                     if (Directory.Exists(path))
                     {
@@ -191,14 +129,13 @@ namespace HaCreator.GUI
             catch
             {
             }
-            versionBox.SelectedIndex = ApplicationSettings.MapleVersionIndex;
-            if (pathBox.Items.Count < ApplicationSettings.MapleFolderIndex + 1)
+            if (pathBox.Items.Count < ApplicationSettings.SunFileFolderIndex + 1)
             {
                 pathBox.SelectedIndex = pathBox.Items.Count - 1;
             }
             else
             {
-                pathBox.SelectedIndex = ApplicationSettings.MapleFolderIndex;
+                pathBox.SelectedIndex = ApplicationSettings.SunFileFolderIndex;
             }
         }
 
@@ -234,7 +171,7 @@ namespace HaCreator.GUI
             {
                 MapLoader loader = new MapLoader();
                 string mapcat = "Map" + mapid.Substring(0, 1);
-                SunImage mapImage = (SunImage)Program.WzManager["map"]["Map"][mapcat][mapid + ".img"];
+                SunImage mapImage = (SunImage)Program.SfManager["map"]["Map"][mapcat][mapid + ".img"];
                 if (mapImage == null)
                 {
                     continue;

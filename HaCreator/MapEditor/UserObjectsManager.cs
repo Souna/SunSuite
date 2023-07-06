@@ -149,7 +149,7 @@ namespace HaCreator.MapEditor
         {
             if (newObjects.Count == 0)
                 return;
-            SunDirectory objsDir = (SunDirectory)Program.WzManager["map"]["Obj"];
+            SunDirectory objsDir = (SunDirectory)Program.SfManager["map"]["Obj"];
             if (objsDir[oS + ".img"] == null)
                 objsDir[oS + ".img"] = Program.InfoManager.ObjectSets[oS];
             SetOsUpdated();
@@ -178,7 +178,7 @@ namespace HaCreator.MapEditor
 
         private void SetOsUpdated()
         {
-            Program.WzManager.SetUpdated("map", Program.InfoManager.ObjectSets[oS]);
+            Program.SfManager.SetUpdated("map", Program.InfoManager.ObjectSets[oS]);
         }
 
         private bool IsNameValid(string name)
