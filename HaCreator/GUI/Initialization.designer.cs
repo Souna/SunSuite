@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Initialization));
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnInitializeFiles = new System.Windows.Forms.Button();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.label3 = new System.Windows.Forms.Label();
             this.txtStatus = new System.Windows.Forms.TextBox();
@@ -38,15 +38,15 @@
             this.debugButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // btnInitializeFiles
             // 
-            this.button1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.button1.Location = new System.Drawing.Point(12, 39);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(375, 28);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Initialize";
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnInitializeFiles.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnInitializeFiles.Location = new System.Drawing.Point(12, 39);
+            this.btnInitializeFiles.Name = "btnInitializeFiles";
+            this.btnInitializeFiles.Size = new System.Drawing.Size(375, 28);
+            this.btnInitializeFiles.TabIndex = 1;
+            this.btnInitializeFiles.Text = "Initialize";
+            this.btnInitializeFiles.Click += new System.EventHandler(this.btnInitializeFiles_Click);
             // 
             // toolStripProgressBar1
             // 
@@ -90,7 +90,7 @@
             // 
             // debugButton
             // 
-            this.debugButton.Location = new System.Drawing.Point(183, 36);
+            this.debugButton.Location = new System.Drawing.Point(195, 38);
             this.debugButton.Name = "debugButton";
             this.debugButton.Size = new System.Drawing.Size(213, 46);
             this.debugButton.TabIndex = 15;
@@ -109,7 +109,7 @@
             this.Controls.Add(this.pathBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtStatus);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnInitializeFiles);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
@@ -126,7 +126,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnInitializeFiles;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtStatus;
