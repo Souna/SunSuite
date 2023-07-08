@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HaEditor));
             this.vS2015LightTheme = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+            this.dockPanel.Theme = this.vS2015LightTheme;
             this.panel1 = new System.Windows.Forms.Panel();
             this.wpfHost = new System.Windows.Forms.Integration.ElementHost();
             this.ribbon = new HaCreator.GUI.HaRibbon();

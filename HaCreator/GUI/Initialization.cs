@@ -66,43 +66,47 @@ namespace HaCreator.GUI
         {
             Program.SfManager = new FileManager(sfPath);
 
-            txtStatus.Text = "Initializing String.wz...";
+            txtStatus.Text = "Initializing test.sun...";
             Application.DoEvents();
-            Program.SfManager.LoadSunFile("string");
-            Program.SfManager.ExtractMaps();
+            Program.SfManager.LoadSunFile("test");
 
-            txtStatus.Text = "Initializing Mob.wz...";
-            Application.DoEvents();
-            Program.SfManager.LoadSunFile("mob");
-            Program.SfManager.ExtractMobFile();
+            //txtStatus.Text = "Initializing String.wz...";
+            //Application.DoEvents();
+            //Program.SfManager.LoadSunFile("string");
+            //Program.SfManager.ExtractMaps();
 
-            txtStatus.Text = "Initializing Npc.wz...";
-            Application.DoEvents();
-            Program.SfManager.LoadSunFile("npc");
-            Program.SfManager.ExtractNpcFile();
+            //txtStatus.Text = "Initializing Mob.wz...";
+            //Application.DoEvents();
+            //Program.SfManager.LoadSunFile("mob");
+            //Program.SfManager.ExtractMobFile();
 
-            txtStatus.Text = "Initializing Reactor.wz...";
-            Application.DoEvents();
-            Program.SfManager.LoadSunFile("reactor");
-            Program.SfManager.ExtractReactorFile();
+            //txtStatus.Text = "Initializing Npc.wz...";
+            //Application.DoEvents();
+            //Program.SfManager.LoadSunFile("npc");
+            //Program.SfManager.ExtractNpcFile();
 
-            txtStatus.Text = "Initializing Sound.wz...";
-            Application.DoEvents();
-            Program.SfManager.LoadSunFile("sound");
-            Program.SfManager.ExtractSoundFile();
+            //txtStatus.Text = "Initializing Reactor.wz...";
+            //Application.DoEvents();
+            //Program.SfManager.LoadSunFile("reactor");
+            //Program.SfManager.ExtractReactorFile();
 
-            txtStatus.Text = "Initializing Map.wz...";
-            Application.DoEvents();
-            Program.SfManager.LoadSunFile("map");
-            Program.SfManager.ExtractMapMarks();
-            Program.SfManager.ExtractPortals();
-            Program.SfManager.ExtractTileSets();
-            Program.SfManager.ExtractObjSets();
-            Program.SfManager.ExtractBackgroundSets();
+            //txtStatus.Text = "Initializing Sound.wz...";
+            //Application.DoEvents();
+            //Program.SfManager.LoadSunFile("sound");
+            //Program.SfManager.ExtractSoundFile();
 
-            txtStatus.Text = "Initializing UI.wz...";
-            Application.DoEvents();
-            Program.SfManager.LoadSunFile("ui");
+            //txtStatus.Text = "Initializing Map.wz...";
+            //Application.DoEvents();
+            //Program.SfManager.LoadSunFile("map");
+            //Program.SfManager.ExtractMapMarks();
+            //Program.SfManager.ExtractPortals();
+            //Program.SfManager.ExtractTileSets();
+            //Program.SfManager.ExtractObjSets();
+            //Program.SfManager.ExtractBackgroundSets();
+
+            //txtStatus.Text = "Initializing UI.wz...";
+            //Application.DoEvents();
+            //Program.SfManager.LoadSunFile("ui");
         }
 
         private static readonly string[] commonSfPaths = new string[] { @"C:\Users\lapto\Desktop\stuff\NewSunFiles" };
@@ -124,7 +128,7 @@ namespace HaCreator.GUI
                     }
                 }
                 if (pathBox.Items.Count == 0)
-                    pathBox.Items.Add("Select Maple Folder");
+                    pathBox.Items.Add("Select SunFile Folder");
             }
             catch
             {

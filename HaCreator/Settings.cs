@@ -76,12 +76,9 @@ namespace HaCreator
         public static string SunFileFolder = ""; //D:\\WZ Sandbox\\Royals
         public static int SunFileFolderIndex = 0;
         public static System.Drawing.Size LastMapSize = new System.Drawing.Size(800, 800);
-        public static int lastRadioIndex = 3;
         public static bool randomTiles = true;
         public static bool InfoMode = false;
         public static int lastDefaultLayer = 0;
         public static bool lastAllLayers = true;
-        public static string LastHamPath = "";
-        public static string LastXmlPath = "";
     }
 }

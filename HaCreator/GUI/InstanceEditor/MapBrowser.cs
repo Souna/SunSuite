@@ -48,7 +48,7 @@ namespace HaCreator.GUI.InstanceEditor
 
         private void MapBrowser_Load(object sender, EventArgs e)
         {
-            mapBrowserCtrl.InitializeMaps(false);
+            mapBrowserCtrl.InitializeMaps();
         }
     }
 }
