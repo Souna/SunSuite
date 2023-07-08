@@ -232,29 +232,11 @@ namespace HaCreator.Wz
         //this handling sucks but nexon naming is not consistent enough to handle much better idk
         public void ExtractBackgroundSets()
         {
-            SunDirectory bgParent1 = (SunDirectory)this["map"]["Back"];
+            SunDirectory bgParent1 = (SunDirectory)this["test"]["Back"];
             if (bgParent1 != null)
             {
                 foreach (SunImage bgset in bgParent1.SunImages)
                     Program.InfoManager.BackgroundSets[SunInfoTools.RemoveExtension(bgset.Name)] = bgset;
-            }
-            if (this.SunFiles.ContainsKey("map001"))
-            {
-                SunDirectory bgParent2 = (SunDirectory)this["map001"]["Back"];
-                if (bgParent2 != null)
-                {
-                    foreach (SunImage bgset in bgParent2.SunImages)
-                        Program.InfoManager.BackgroundSets[SunInfoTools.RemoveExtension(bgset.Name)] = bgset;
-                }
-            }
-            if (this.SunFiles.ContainsKey("map2"))
-            {
-                SunDirectory bgParent3 = (SunDirectory)this["map2"]["Back"];
-                if (bgParent3 != null)
-                {
-                    foreach (SunImage bgset in bgParent3.SunImages)
-                        Program.InfoManager.BackgroundSets[SunInfoTools.RemoveExtension(bgset.Name)] = bgset;
-                }
             }
         }
 

@@ -30,40 +30,36 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Load));
             this.loadButton = new System.Windows.Forms.Button();
-            this.WZSelect = new System.Windows.Forms.RadioButton();
             this.searchBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.mapBrowser = new HaCreator.CustomControls.MapBrowser();
             this.SuspendLayout();
             // 
             // loadButton
             // 
             this.loadButton.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.loadButton.Enabled = false;
             this.loadButton.Location = new System.Drawing.Point(171, 492);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(200, 32);
             this.loadButton.TabIndex = 9;
-            this.loadButton.Text = "Load";
+            this.loadButton.Text = "Start";
             this.loadButton.Click += new System.EventHandler(this.loadButton_Click);
-            // 
-            // WZSelect
-            // 
-            this.WZSelect.AutoSize = true;
-            this.WZSelect.Checked = true;
-            this.WZSelect.Location = new System.Drawing.Point(12, 13);
-            this.WZSelect.Name = "WZSelect";
-            this.WZSelect.Size = new System.Drawing.Size(43, 17);
-            this.WZSelect.TabIndex = 6;
-            this.WZSelect.TabStop = true;
-            this.WZSelect.Text = "WZ";
-            this.WZSelect.UseVisualStyleBackColor = true;
             // 
             // searchBox
             // 
-            this.searchBox.Location = new System.Drawing.Point(65, 12);
+            this.searchBox.Location = new System.Drawing.Point(86, 12);
             this.searchBox.Name = "searchBox";
-            this.searchBox.Size = new System.Drawing.Size(200, 20);
+            this.searchBox.Size = new System.Drawing.Size(179, 20);
             this.searchBox.TabIndex = 7;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(68, 13);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Map Search:";
             // 
             // mapBrowser
             // 
@@ -77,9 +73,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(559, 532);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.mapBrowser);
             this.Controls.Add(this.searchBox);
-            this.Controls.Add(this.WZSelect);
             this.Controls.Add(this.loadButton);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -88,7 +84,7 @@
             this.MaximizeBox = false;
             this.Name = "Load";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Load";
+            this.Text = "Load Map";
             this.Load += new System.EventHandler(this.Load_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Load_KeyDown);
             this.ResumeLayout(false);
@@ -99,8 +95,8 @@
         #endregion
 
         private System.Windows.Forms.Button loadButton;
-        private System.Windows.Forms.RadioButton WZSelect;
         private System.Windows.Forms.TextBox searchBox;
         private CustomControls.MapBrowser mapBrowser;
+        private System.Windows.Forms.Label label1;
     }
 }

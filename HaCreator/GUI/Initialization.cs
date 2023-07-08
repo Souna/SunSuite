@@ -38,7 +38,7 @@ namespace HaCreator.GUI
             return false;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnInitializeFiles_Click(object sender, EventArgs e)
         {
             ApplicationSettings.SunFileFolderIndex = pathBox.SelectedIndex;
             string sfPath = pathBox.Text;
@@ -69,6 +69,8 @@ namespace HaCreator.GUI
             txtStatus.Text = "Initializing test.sun...";
             Application.DoEvents();
             Program.SfManager.LoadSunFile("test");
+            //Program.SfManager.ExtractMaps();
+            Program.SfManager.ExtractBackgroundSets();
 
             //txtStatus.Text = "Initializing String.wz...";
             //Application.DoEvents();
@@ -203,7 +205,7 @@ namespace HaCreator.GUI
         {
             if (e.KeyCode == Keys.Enter)
             {
-                button1_Click(null, null);
+                btnInitializeFiles_Click(null, null);
             }
             else if (e.KeyCode == Keys.Escape)
             {

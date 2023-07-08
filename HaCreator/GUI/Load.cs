@@ -41,6 +41,9 @@ namespace HaCreator.GUI
             this.mapBrowser.InitializeMaps();
         }
 
+        /// <summary>
+        /// Fires when you click Start after selecting a map in the list
+        /// </summary>
         private void loadButton_Click(object sender, EventArgs e)
         {
             //Hide();
@@ -52,16 +55,13 @@ namespace HaCreator.GUI
             SunImage mapImage = null;
             string mapName = null, streetName = "", categoryName = "";
             SunSubProperty strMapProp = null;
-            if (WZSelect.Checked)
-            {
-                string mapid = mapBrowser.SelectedItem.Substring(0, 9);
-                string mapcat = "Map" + mapid.Substring(0, 1);
-                mapImage = (SunImage)Program.SfManager["map"]["Map"][mapcat][mapid + ".img"];
-                strMapProp = SunInfoTools.GetMapStringProp(mapid);
-                mapName = SunInfoTools.GetMapName(strMapProp);
-                streetName = SunInfoTools.GetMapStreetName(strMapProp);
-                categoryName = SunInfoTools.GetMapCategoryName(strMapProp);
-            }
+            string mapid = "1"/*mapBrowser.SelectedItem.Substring(0, 9);*/;
+            string mapcat = "Map" + mapid/*.Substring(0, 1)*/;
+            mapImage = (SunImage)Program.SfManager["test"]["Map"][mapcat][mapid + ".img"];   //Look inside test.sun/Map/Map1/1.img
+            strMapProp = SunInfoTools.GetMapStringProp(mapid);
+            mapName = SunInfoTools.GetMapName(strMapProp);
+            streetName = SunInfoTools.GetMapStreetName(strMapProp);
+            categoryName = SunInfoTools.GetMapCategoryName(strMapProp);
             loader.CreateMapFromImage(mapImage, mapName, streetName, categoryName, strMapProp, Tabs, multiBoard, rightClickHandler);
             DialogResult = DialogResult.OK;
             ww.EndWait();
