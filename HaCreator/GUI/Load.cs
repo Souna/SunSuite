@@ -38,80 +38,7 @@ namespace HaCreator.GUI
 
         private void Load_Load(object sender, EventArgs e)
         {
-            switch (ApplicationSettings.lastRadioIndex)
-            {
-                case 0:
-                    HAMSelect.Checked = true;
-                    HAMBox.Text = ApplicationSettings.LastHamPath;
-                    break;
-
-                case 1:
-                    XMLSelect.Checked = true;
-                    XMLBox.Text = ApplicationSettings.LastXmlPath;
-                    break;
-
-                case 2:
-                    WZSelect.Checked = true;
-                    break;
-            }
-            this.mapBrowser.InitializeMaps(true);
-        }
-
-        private void selectionChanged(object sender, EventArgs e)
-        {
-            if (HAMSelect.Checked)
-            {
-                ApplicationSettings.lastRadioIndex = 0;
-                HAMBox.Enabled = true;
-                XMLBox.Enabled = false;
-                searchBox.Enabled = false;
-                mapBrowser.IsEnabled = false;
-                loadButton.Enabled = true;
-            }
-            else if (XMLSelect.Checked)
-            {
-                ApplicationSettings.lastRadioIndex = 1;
-                HAMBox.Enabled = false;
-                XMLBox.Enabled = true;
-                searchBox.Enabled = false;
-                mapBrowser.IsEnabled = false;
-                loadButton.Enabled = XMLBox.Text != "";
-            }
-            else if (WZSelect.Checked)
-            {
-                ApplicationSettings.lastRadioIndex = 2;
-                HAMBox.Enabled = false;
-                XMLBox.Enabled = false;
-                searchBox.Enabled = true;
-                mapBrowser.IsEnabled = true;
-                loadButton.Enabled = mapBrowser.LoadAvailable;
-            }
-        }
-
-        private void browseXML_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Title = "Select XML to load...";
-            dialog.Filter = "eXtensible Markup Language file (*.xml)|*.xml";
-            if (dialog.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
-            XMLBox.Text = dialog.FileName;
-            loadButton.Enabled = true;
-        }
-
-        private void browseHAM_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Title = "Select Map to load...";
-            dialog.Filter = "HaCreator Map File (*.ham)|*.ham";
-            if (dialog.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
-            HAMBox.Text = dialog.FileName;
-            loadButton.Enabled = true;
+            this.mapBrowser.InitializeMaps();
         }
 
         private void loadButton_Click(object sender, EventArgs e)
@@ -125,63 +52,15 @@ namespace HaCreator.GUI
             SunImage mapImage = null;
             string mapName = null, streetName = "", categoryName = "";
             SunSubProperty strMapProp = null;
-            if (HAMSelect.Checked)
+            if (WZSelect.Checked)
             {
-                loader.CreateMapFromHam(multiBoard, Tabs, File.ReadAllText(HAMBox.Text), rightClickHandler);
-                DialogResult = DialogResult.OK;
-                ww.EndWait();
-                Close();
-                return;
-            }
-            else if (XMLSelect.Checked)
-            {
-                try
-                {
-                    mapImage = (SunImage)new SunXmlDeserializer(false, null).ParseXML(XMLBox.Text)[0];
-                }
-                catch
-                {
-                    //Warning.Error("Error while loading XML. Aborted.");
-                    ErrorLogger.Log(ErrorLevel.Critical, "Error while loading XML. Aborted.");
-                    ww.EndWait();
-                    Show();
-                    return;
-                }
-            }
-            else if (WZSelect.Checked)
-            {
-                if (mapBrowser.SelectedItem == "MapLogin")
-                {
-                    mapImage = (SunImage)Program.SfManager["ui"]["MapLogin.img"];
-                    mapName = streetName = categoryName = "MapLogin";
-                }
-                else if (mapBrowser.SelectedItem == "MapLogin1")
-                {
-                    mapImage = (SunImage)Program.SfManager["ui"]["MapLogin1.img"];
-                    mapName = streetName = categoryName = "MapLogin1";
-                }
-                else if (mapBrowser.SelectedItem == "CashShopPreview")
-                {
-                    mapImage = (SunImage)Program.SfManager["ui"]["CashShopPreview.img"];
-                    mapName = streetName = categoryName = "CashShopPreview";
-                }
-                else
-                {
-                    string mapid = mapBrowser.SelectedItem.Substring(0, 9);
-                    string mapcat = "Map" + mapid.Substring(0, 1);
-                    if (Program.SfManager.SunFiles.ContainsKey("map002"))//i hate nexon so much
-                    {
-                        mapImage = (SunImage)Program.SfManager["map002"]["Map"][mapcat][mapid + ".img"];
-                    }
-                    else
-                    {
-                        mapImage = (SunImage)Program.SfManager["map"]["Map"][mapcat][mapid + ".img"];
-                    }
-                    strMapProp = SunInfoTools.GetMapStringProp(mapid);
-                    mapName = SunInfoTools.GetMapName(strMapProp);
-                    streetName = SunInfoTools.GetMapStreetName(strMapProp);
-                    categoryName = SunInfoTools.GetMapCategoryName(strMapProp);
-                }
+                string mapid = mapBrowser.SelectedItem.Substring(0, 9);
+                string mapcat = "Map" + mapid.Substring(0, 1);
+                mapImage = (SunImage)Program.SfManager["map"]["Map"][mapcat][mapid + ".img"];
+                strMapProp = SunInfoTools.GetMapStringProp(mapid);
+                mapName = SunInfoTools.GetMapName(strMapProp);
+                streetName = SunInfoTools.GetMapStreetName(strMapProp);
+                categoryName = SunInfoTools.GetMapCategoryName(strMapProp);
             }
             loader.CreateMapFromImage(mapImage, mapName, streetName, categoryName, strMapProp, Tabs, multiBoard, rightClickHandler);
             DialogResult = DialogResult.OK;
@@ -204,16 +83,6 @@ namespace HaCreator.GUI
             {
                 loadButton_Click(null, null);
             }
-        }
-
-        private void HAMBox_TextChanged(object sender, EventArgs e)
-        {
-            ApplicationSettings.LastHamPath = HAMBox.Text;
-        }
-
-        private void XMLBox_TextChanged(object sender, EventArgs e)
-        {
-            ApplicationSettings.LastXmlPath = XMLBox.Text;
         }
     }
 }

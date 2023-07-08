@@ -17,7 +17,6 @@ namespace HaCreator.CustomControls
 {
     public partial class MapBrowser : UserControl
     {
-        private bool mapLogin1 = false;
         private bool load = false;
         private List<string> maps = new List<string>();
 
@@ -55,23 +54,13 @@ namespace HaCreator.CustomControls
 
         public event MapSelectChangedDelegate SelectionChanged;
 
-        public void InitializeMaps(bool special)
+        public void InitializeMaps()
         {
-            mapLogin1 = Program.SfManager["ui"]["MapLogin1.img"] != null;
             foreach (KeyValuePair<string, string> map in Program.InfoManager.Maps)
             {
                 maps.Add(map.Key + " - " + map.Value);
             }
             maps.Sort();
-            if (special)
-            {
-                maps.Insert(0, "CashShopPreview");
-                maps.Insert(0, "MapLogin");
-                if (mapLogin1)
-                {
-                    maps.Insert(0, "MapLogin1");
-                }
-            }
 
             object[] mapsObjs = maps.Cast<object>().ToArray();
             mapNamesBox.Items.AddRange(mapsObjs);
