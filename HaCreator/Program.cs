@@ -4,6 +4,7 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this
 * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+//How to install xna because this shit is impossible to find now
 //https://flatredball.com/visual-studio-2019-xna-setup
 
 using HaCreator.MapEditor;

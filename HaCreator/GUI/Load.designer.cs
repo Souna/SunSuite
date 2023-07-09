@@ -32,17 +32,18 @@
             this.loadButton = new System.Windows.Forms.Button();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnStart = new System.Windows.Forms.Button();
             this.mapBrowser = new HaCreator.CustomControls.MapBrowser();
             this.SuspendLayout();
             // 
             // loadButton
             // 
             this.loadButton.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.loadButton.Location = new System.Drawing.Point(171, 492);
+            this.loadButton.Location = new System.Drawing.Point(12, 482);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(200, 32);
             this.loadButton.TabIndex = 9;
-            this.loadButton.Text = "Start";
+            this.loadButton.Text = "Load";
             this.loadButton.Click += new System.EventHandler(this.loadButton_Click);
             // 
             // searchBox
@@ -61,6 +62,16 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "Map Search:";
             // 
+            // btnStart
+            // 
+            this.btnStart.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnStart.Location = new System.Drawing.Point(345, 482);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(200, 32);
+            this.btnStart.TabIndex = 11;
+            this.btnStart.Text = "Start Without Map";
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
             // mapBrowser
             // 
             this.mapBrowser.Location = new System.Drawing.Point(12, 36);
@@ -73,6 +84,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(559, 532);
+            this.Controls.Add(this.btnStart);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.mapBrowser);
             this.Controls.Add(this.searchBox);
@@ -98,5 +110,6 @@
         private System.Windows.Forms.TextBox searchBox;
         private CustomControls.MapBrowser mapBrowser;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnStart;
     }
 }
