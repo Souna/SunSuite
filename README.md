@@ -1,13 +1,13 @@
 # Suite of game development tools
 
-Work-in-progress custom binary file manager and map creator, aimed at creating a simple 2d sidescroller game project.
+This GitHub project offers a collection of game development tools. Currently a work-in-progress, the project includes a custom binary file manager and map creator designed specifically for creating simple 2D sidescroller games.
 
-The planned game project will load all data (maps, images, sounds, player data) from binary files with a custom format created exclusively for this project. The binary files have the file extension ".sun."
+The envisioned game project relies on binary files with a unique ".sun" extension to load all game data, such as maps, images, sounds, and player data. These binary files follow a custom format tailored exclusively for this project.
 
-Tools that will be used to create said game include:
+The following tools are being developed as part of this project:
 
-- ☀SunFileManager (Creates and modifies the binary files in which all game data is stored. Displays file contents in an easy-to-understand hierarchical treeview structure.)
+☀ SunFileManager: This tool allows you to create and modify the binary files that store all game data. It presents the contents of the files in a user-friendly hierarchical treeview structure, making it easy to understand and navigate. This project is based on HaRepacker, which is a custom tool by Haha01Haha01, created for MapleStory file editing.
 
-- ☀SunMapCreator (A drag-and-drop map creator which enables you to freely place game assets in any manner, and save their positions + properties to the SunFiles in order to create a playable game map.)
+☀ SunMapCreator: With this drag-and-drop map creator, you can freely place game assets in any arrangement. It enables you to save asset positions and properties to the SunFiles, which in turn creates a playable game map. This project is also heavily based on HaCreator, which is a custom map editor for MapleStory, created by Haha01Haha01.
 
-- ☀Unnamed Game (The ultimate goal of this project is to have a completely working 2d sidescrolling game using the above described tools and leveraging the power of the olc::PixelGameEngine.)
+☀ Unnamed Game: The ultimate objective of this project is to develop a fully functional 2D sidescrolling game by utilizing the aforementioned tools and harnessing the capabilities of the olc::PixelGameEngine by OneLoneCoder.
