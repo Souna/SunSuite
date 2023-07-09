@@ -42,7 +42,7 @@ namespace HaCreator.GUI
         }
 
         /// <summary>
-        /// Fires when you click Start after selecting a map in the list
+        /// Fires when you click load after selecting a map in the list
         /// </summary>
         private void loadButton_Click(object sender, EventArgs e)
         {
@@ -66,6 +66,19 @@ namespace HaCreator.GUI
             DialogResult = DialogResult.OK;
             ww.EndWait();
             Close();
+        }
+
+        /// <summary>
+        /// Fires when you click the start button without selecting a map
+        /// </summary>
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            Application.DoEvents();
+            MapLoader loader = new MapLoader();
+            //loader.LoadBackgrounds();
+            DialogResult = DialogResult.OK;
+            Close();
+
         }
 
         private void mapBrowser_SelectionChanged()
