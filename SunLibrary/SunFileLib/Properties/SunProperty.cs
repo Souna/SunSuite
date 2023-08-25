@@ -110,7 +110,7 @@ namespace SunLibrary.SunFileLib.Properties
                         properties.Add(new SunStringProperty(name, reader.ReadString()) { Parent = parent });
                         break;
 
-                    case 12:    // Extended Properties (Canvas/Vector/Sound/Sub)
+                    case 12:    // Extended Properties (Canvas/Vector/Sound/Sub/Convex/Link)
                         int endOfBlock = (int)(reader.ReadUInt32() + reader.BaseStream.Position);
                         SunProperty extendedProperty = ParseExtendedProperty(reader, name, parent);
                         properties.Add(extendedProperty);

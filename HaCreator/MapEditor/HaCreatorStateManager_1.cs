@@ -673,6 +673,11 @@ namespace HaCreator.MapEditor
             }
         }
 
+        public void StartWithoutMap()
+        {
+
+        }
+
         private void ribbon_NewPlatformClicked()
         {
             lock (multiBoard)

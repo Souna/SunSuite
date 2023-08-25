@@ -20,7 +20,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-
 using XNA = Microsoft.Xna.Framework;
 
 namespace HaCreator.Wz
@@ -664,9 +663,9 @@ namespace HaCreator.Wz
         public ContextMenuStrip CreateStandardMapMenu(EventHandler[] rightClickHandler)
         {
             ContextMenuStrip result = new ContextMenuStrip();
-            result.Items.Add(new ToolStripMenuItem("Edit map info...", Properties.Resources.mapEditMenu, rightClickHandler[0]));
-            result.Items.Add(new ToolStripMenuItem("Add VR", Properties.Resources.mapEditMenu, rightClickHandler[1]));
-            result.Items.Add(new ToolStripMenuItem("Add Minimap", Properties.Resources.mapEditMenu, rightClickHandler[2]));
+            result.Items.Add(new ToolStripMenuItem("Edit map info...", HaRepacker.Properties.Resources.mapEditMenu, rightClickHandler[0]));
+            result.Items.Add(new ToolStripMenuItem("Add VR", HaRepacker.Properties.Resources.mapEditMenu, rightClickHandler[1]));
+            result.Items.Add(new ToolStripMenuItem("Add Minimap", HaRepacker.Properties.Resources.mapEditMenu, rightClickHandler[2]));
             return result;
         }
 

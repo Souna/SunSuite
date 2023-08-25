@@ -68,7 +68,8 @@ namespace HaCreator.GUI
 
             txtStatus.Text = "Initializing test.sun...";
             Application.DoEvents();
-            Program.SfManager.LoadSunFile("test");
+            if (!Program.SfManager.LoadSunFile("GeneralAssetTest"))
+                return;
             //Program.SfManager.ExtractMaps();
             Program.SfManager.ExtractBackgroundSets();
 
@@ -151,7 +152,7 @@ namespace HaCreator.GUI
             {
                 ShowNewFolderButton = true,
                 //   RootFolder = Environment.SpecialFolder.ProgramFilesX86,
-                Description = "Select the MapleStory folder."
+                Description = "Select the Game folder."
             })
             {
                 if (mapleSelect.ShowDialog() != DialogResult.OK)
