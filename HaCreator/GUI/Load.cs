@@ -9,6 +9,7 @@
 
 using HaCreator.MapEditor;
 using HaCreator.Wz;
+using Microsoft.Xna.Framework;
 using SunLibrary.SunFileLib.Properties;
 using SunLibrary.SunFileLib.Structure;
 using SunLibrary.SunFileLib.Util;
@@ -57,7 +58,8 @@ namespace HaCreator.GUI
             SunSubProperty strMapProp = null;
             string mapid = "1"/*mapBrowser.SelectedItem.Substring(0, 9);*/;
             string mapcat = "Map" + mapid/*.Substring(0, 1)*/;
-            mapImage = (SunImage)Program.SfManager["test"]["Map"][mapcat][mapid + ".img"];   //Look inside test.sun/Map/Map1/1.img
+                                                    //Look inside GeneralAssetTest.sun/Map/Map1/1.img
+            mapImage = (SunImage)Program.SfManager["GeneralAssetTest"]["Map"][mapcat][mapid + ".img"];
             strMapProp = SunInfoTools.GetMapStringProp(mapid);
             mapName = SunInfoTools.GetMapName(strMapProp);
             streetName = SunInfoTools.GetMapStreetName(strMapProp);
@@ -76,6 +78,7 @@ namespace HaCreator.GUI
             Application.DoEvents();
             MapLoader loader = new MapLoader();
             //loader.LoadBackgrounds();
+            loader.CreateMap(string.Empty, string.Empty, loader.CreateStandardMapMenu(rightClickHandler), new Point(), new Point(), 8, Tabs, multiBoard);
             DialogResult = DialogResult.OK;
             Close();
 

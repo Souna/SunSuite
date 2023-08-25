@@ -7,6 +7,7 @@
 using HaCreator.MapEditor.Info;
 using SunLibrary.SunFileLib.Properties;
 using SunLibrary.SunFileLib.Structure;
+using SunLibrary.SunFileLib.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -61,6 +62,8 @@ namespace HaCreator.Wz
             }
             catch (Exception e)
             {
+                ErrorLogger.Log(ErrorLevel.Critical, e.Message);
+                MessageBox.Show("Error occured @ LoadSunFile: " + e.Message, "Error Loading File", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return false;
             }
         }
@@ -235,7 +238,7 @@ namespace HaCreator.Wz
 
         public void ExtractBackgroundSets()
         {
-            SunDirectory bgParent1 = (SunDirectory)this["test"]["Back"];
+            SunDirectory bgParent1 = (SunDirectory)this["GeneralAssetTest"]["Back"];
             if (bgParent1 != null)
             {
                 foreach (SunImage bgset in bgParent1.SunImages)

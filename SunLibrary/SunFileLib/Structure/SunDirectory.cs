@@ -494,19 +494,7 @@ namespace SunLibrary.SunFileLib.Structure
                 int fileSize = reader.ReadCompressedInt();
                 int checksum = reader.ReadCompressedInt();
                 uint offset = reader.ReadOffset();
-                if (type == 3)  //directory
-                {
-                    SunDirectory subDir = new SunDirectory(reader, fileName, sunFile);
-                    subDir.Size = fileSize;
-                    subDir.Checksum = checksum;
-                    subDir.Offset = offset;
-                    subDir.Parent = this;
-                    subDirs.Add(subDir);
-
-                    //if (lazyParse)
-                    //    break;
-                }
-                else if (type == 2)
+                if (type == 2) // Image
                 {
                     SunImage img = new SunImage(fileName, reader);
                     img.Size = fileSize;
@@ -514,9 +502,15 @@ namespace SunLibrary.SunFileLib.Structure
                     img.Offset = offset;
                     img.Parent = this;  //how does this line tell how many properties are in the img???
                     images.Add(img);
-
-                    //if (lazyParse)
-                    //    break;
+                }
+                else if (type == 3)  // Directory
+                {
+                    SunDirectory subDir = new SunDirectory(reader, fileName, sunFile);
+                    subDir.Size = fileSize;
+                    subDir.Checksum = checksum;
+                    subDir.Offset = offset;
+                    subDir.Parent = this;
+                    subDirs.Add(subDir);
                 }
             }
 
