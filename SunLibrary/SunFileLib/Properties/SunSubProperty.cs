@@ -84,7 +84,7 @@ namespace SunLibrary.SunFileLib.Properties
             properties.Clear();
         }
 
-        public List<SunProperty> SunProperties
+        public override List<SunProperty> SunProperties
         {
             get
             {

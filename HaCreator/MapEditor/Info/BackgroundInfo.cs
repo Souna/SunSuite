@@ -29,21 +29,21 @@ namespace HaCreator.MapEditor.Info
             _no = no;
         }
 
-        public static BackgroundInfo Get(string bS, bool ani, string no)
+        public static BackgroundInfo Get(string backgroundSet, bool ani, string no)
         {
-            if (!Program.InfoManager.BackgroundSets.ContainsKey(bS))
+            if (!Program.InfoManager.BackgroundSets.ContainsKey(backgroundSet))
                 return null;
-            SunImage bgSetImg = Program.InfoManager.BackgroundSets[bS];
+            SunImage bgSetImg = Program.InfoManager.BackgroundSets[backgroundSet];
             SunProperty bgInfoProp = bgSetImg[ani ? "ani" : "back"][no];
             if (bgInfoProp.SETag == null)
-                bgInfoProp.SETag = Load(bgInfoProp, bS, ani, no);
+                bgInfoProp.SETag = Load(bgInfoProp, backgroundSet, ani, no);
             return (BackgroundInfo)bgInfoProp.SETag;
         }
 
-        private static BackgroundInfo Load(SunProperty parentObject, string bS, bool ani, string no)
+        private static BackgroundInfo Load(SunProperty parentObject, string backgroundSet, bool ani, string no)
         {
             SunCanvasProperty frame0 = ani ? (SunCanvasProperty)SunInfoTools.GetRealProperty(parentObject["0"]) : (SunCanvasProperty)SunInfoTools.GetRealProperty(parentObject);
-            return new BackgroundInfo(frame0.PNG.GetPNG(false), SunInfoTools.VectorToSystemPoint((SunVectorProperty)frame0["origin"]), bS, ani, no, parentObject);
+            return new BackgroundInfo(frame0.PNG.GetPNG(false), SunInfoTools.VectorToSystemPoint((SunVectorProperty)frame0["origin"]), backgroundSet, ani, no, parentObject);
         }
 
         public override BoardItem CreateInstance(Layer layer, Board board, int x, int y, int z, bool flip)
@@ -56,7 +56,7 @@ namespace HaCreator.MapEditor.Info
             return new BackgroundInstance(this, board, x, y, z, rx, ry, cx, cy, type, a, front, flip);
         }
 
-        public string bS
+        public string backgroundSet
         {
             get
             {

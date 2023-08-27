@@ -419,97 +419,109 @@ namespace SunFileManager
         }
 
         /// <summary>
-        /// Creates a node containing a bitmap image or animated gif under a selected node.
+        /// Creates nodes containing a bitmap image or animated gif under a selected node.
         /// </summary>
         public void AddCanvasPropertyToSelectedNode(SunNode targetNode)
         {
+            /*
+             * Either way when you add a .gif, a subproperty is created and it's placed inside.
+             * The code for this method can very much be improved but for now it works as needed
+             * If you're adding a single canvas you can choose its name
+             * If you're adding multiple canvases at once the names start at 0 and increment
+             */
             if (targetNode == null || !(targetNode.Tag is IPropertyContainer)) return;
 
-            if (!frmCanvasInputBox.Show("Add Image", out string name, out List<Bitmap> bitmaps, out List<int> gifFrameDelays, out List<Bitmap> gifs, out bool createSubProperty))
+            if (!frmCanvasInputBox.Show("Add Image", out string name, out List<Bitmap> bitmaps, out List<int> gifFrameDelays, out List<Bitmap> gifFrames, out bool createSubProperty))
                 return;
 
-            int i = 0;
+            int imageIndex = 0;
+            // If this is 0 then there's no existing nodes under target node
+            int lastImageIndex = targetNode.LastNode != null ?  targetNode.LastNode.Index + 1 : 0;
 
-            /*
-             Make sure this is 100% complete.
-            This if/else should work perfectly
-            */
             if (createSubProperty)
             {
                 SunSubProperty subProp = new SunSubProperty(name);
 
                 foreach (Bitmap bmp in bitmaps)
                 {
-                    SunCanvasProperty canvasProp = new SunCanvasProperty(i.ToString());
                     SunPngProperty pngProp = new SunPngProperty();
                     pngProp.SetPNG(bmp);
-                    canvasProp.PNG = pngProp;
-
-                    // Add default origin (0, 0) property
-                    canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));
+                    SunCanvasProperty canvasProp = new SunCanvasProperty((lastImageIndex + imageIndex).ToString())
+                    {
+                        PNG = pngProp 
+                    };
+                    canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));    //Create default origin prop
                     subProp.AddProperty(canvasProp);
 
-                    i++;
+                    imageIndex++;
                 }
 
-                i = 0;
-                foreach (Bitmap frame in gifs)
+                imageIndex = 0; // reset image index
+
+                foreach (Bitmap frame in gifFrames)
                 {
-                    SunCanvasProperty canvasProp = new SunCanvasProperty(i.ToString());
+                    SunCanvasProperty canvasProp = new SunCanvasProperty(imageIndex.ToString());
                     SunPngProperty pngProp = new SunPngProperty();
                     pngProp.SetPNG(frame);
                     canvasProp.PNG = pngProp;
-
-                    int delay = gifFrameDelays[i];
+                    int delay = gifFrameDelays[imageIndex];
                     canvasProp.AddProperty(new SunIntProperty("delay", delay));
-
-                    // Add default origin (0, 0) property
-                    canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));
+                    canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));    //Create default origin prop
                     subProp.AddProperty(canvasProp);
 
-                    i++;
+                    imageIndex++;
                 }
-
                 targetNode.AddObject(subProp, true);
                 sunTreeView.SelectedNode = targetNode[subProp.Name];
             }
             else
             {
-                foreach (Bitmap bmp in bitmaps)
+                if (bitmaps.Count == 1)
                 {
-                    SunCanvasProperty canvasProp = new SunCanvasProperty(i.ToString());
+                    SunPngProperty pngProp = new SunPngProperty();
+                    pngProp.SetPNG(bitmaps[0]);
+                    SunCanvasProperty canvasProp = new SunCanvasProperty(name)
+                    { 
+                        PNG = pngProp 
+                    };
+                    if (targetNode.Nodes.ContainsKey(name))
+                    {
+                        canvasProp.Name = (lastImageIndex + imageIndex).ToString();
+                    }
+                    canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));    //Create default origin prop
+                    targetNode.AddObject(canvasProp, false);
+                }
+                else foreach (Bitmap bmp in bitmaps)
+                {
                     SunPngProperty pngProp = new SunPngProperty();
                     pngProp.SetPNG(bmp);
-                    canvasProp.PNG = pngProp;
-
-                    // Add default origin (0, 0) property
-                    canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));
-
+                    SunCanvasProperty canvasProp = new SunCanvasProperty((lastImageIndex + imageIndex).ToString())
+                    {
+                        PNG = pngProp 
+                    };
+                    canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));    //Create default origin prop
                     targetNode.AddObject(canvasProp, false);
 
-                    i++;
+                    imageIndex++;
                 }
 
-                i = 0;
+                imageIndex = 0; // reset image index
 
-                if (gifs.Count > 0)
+                if (gifFrames.Count > 0)
                 {
-                    SunSubProperty gifSubProp = new SunSubProperty(name + "_gif");
-                    foreach (Bitmap frame in gifs)
+                    SunSubProperty gifSubProp = new SunSubProperty(name);
+                    foreach (Bitmap frame in gifFrames)
                     {
-                        SunCanvasProperty canvasProp = new SunCanvasProperty(i.ToString());
+                        SunCanvasProperty canvasProp = new SunCanvasProperty(imageIndex.ToString());
                         SunPngProperty pngProp = new SunPngProperty();
                         pngProp.SetPNG(frame);
                         canvasProp.PNG = pngProp;
-
-                        int delay = gifFrameDelays[i];
+                        int delay = gifFrameDelays[imageIndex];
                         canvasProp.AddProperty(new SunIntProperty("delay", delay));
-
-                        // Add default origin (0, 0) property
-                        canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));
+                        canvasProp.AddProperty(new SunVectorProperty("origin", new SunIntProperty("X", 0), new SunIntProperty("Y", 0)));    //Create default origin prop
                         gifSubProp.AddProperty(canvasProp);
 
-                        i++;
+                        imageIndex++;
                     }
                     targetNode.AddObject(gifSubProp);
                 }
@@ -517,7 +529,7 @@ namespace SunFileManager
 
             bitmaps.Clear();
             gifFrameDelays.Clear();
-            gifs.Clear();
+            gifFrames.Clear();
         }
 
         /// <summary>
@@ -1229,6 +1241,8 @@ namespace SunFileManager
             sunTreeView.Nodes.Add(new SunNode(file));
 
             AddSunImageToSelectedNode((SunNode)sunTreeView.Nodes[file.Name], "image1");
+
+            
         }
 
         #endregion Debug

@@ -40,7 +40,7 @@ namespace HaCreator.GUI.EditorPanels
             if (bgSetListBox.SelectedItem == null)
                 return;
             bgImageContainer.Controls.Clear();
-
+            // img should be parsed by this point
             SunProperty parentProp = Program.InfoManager.BackgroundSets[(string)bgSetListBox.SelectedItem][aniBg.Checked ? "ani" : "back"];
             if (parentProp == null || parentProp.SunProperties == null)
                 return;
