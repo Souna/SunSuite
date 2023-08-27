@@ -7,7 +7,7 @@
     <ProjectGuid>{56B9FF0F-AD8C-48D9-B2FB-C2BED2EA62FE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>HaRepacker</RootNamespace>
-    <AssemblyName>HaRepacker</AssemblyName>
+    <AssemblyName>SunEditor</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -52,6 +52,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>HaCreator.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>sun.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -677,6 +680,7 @@
     <Resource Include="Images\wz.ico" />
     <Content Include="Resources\mapEditMenu.png" />
     <Content Include="Resources\placeholder.bmp" />
+    <Content Include="sun.ico" />
     <Content Include="ThirdParty\ColorPickerLicense.png" />
     <Content Include="ThirdParty\HaRepackerLib.dll" />
   </ItemGroup>

@@ -77,8 +77,7 @@ namespace HaCreator.GUI
         {
             Application.DoEvents();
             MapLoader loader = new MapLoader();
-            //loader.LoadBackgrounds();
-            loader.CreateMap(string.Empty, string.Empty, loader.CreateStandardMapMenu(rightClickHandler), new Point(), new Point(), 8, Tabs, multiBoard);
+            loader.CreateBlankMap(rightClickHandler, Tabs, multiBoard);
             DialogResult = DialogResult.OK;
             Close();
 

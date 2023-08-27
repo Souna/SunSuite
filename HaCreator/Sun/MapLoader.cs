@@ -20,6 +20,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using XNA = Microsoft.Xna.Framework;
 
 namespace HaCreator.Wz
@@ -801,6 +802,11 @@ namespace HaCreator.Wz
                 }
                 ErrorLogger.ClearErrors();
             }
+        }
+
+        public void CreateBlankMap(EventHandler[] rightClickHandler, PageCollection Tabs, MultiBoard multiBoard)
+        {
+            CreateMap("Empty Map", "Ex Tooltip txt", CreateStandardMapMenu(rightClickHandler), new Point(), new Point(), 8, Tabs, multiBoard);
         }
 
         public void CreateMap(string text, string tooltip, ContextMenuStrip menu, Point size, Point center, int layers, HaCreator.ThirdParty.TabPages.PageCollection Tabs, MultiBoard multiBoard)

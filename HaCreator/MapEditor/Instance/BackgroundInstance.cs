@@ -255,7 +255,7 @@ namespace HaCreator.MapEditor.Instance
             result.ry = _ry;
             result.front = _front;
             result.type = _type;
-            result.bs = baseInfo.bS;
+            result.bs = baseInfo.backgroundSet;
             result.ani = baseInfo.ani;
             result.no = baseInfo.no;
         }
