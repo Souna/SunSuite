@@ -21,10 +21,10 @@ namespace HaCreator.MapEditor.Info
                              * Map.sun/Back/${backgroundSet}.img/back/${no}.
                              * Otherwise, it is loaded from Map.sun/Back/${backgroundSet}.img/ani/${no}.*/
 
-        public BackgroundInfo(Bitmap image, System.Drawing.Point origin, string bS, bool ani, string no, SunObject parentObject)
+        public BackgroundInfo(Bitmap image, System.Drawing.Point origin, string backgroundSet, bool ani, string no, SunObject parentObject)
             : base(image, origin, parentObject)
         {
-            _backgroundSet = bS;
+            _backgroundSet = backgroundSet;
             _ani = ani;
             _no = no;
         }
