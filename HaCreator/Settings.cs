@@ -55,8 +55,8 @@ namespace HaCreator
         public static int FontSize = 15;
         public static System.Drawing.FontStyle FontStyle = System.Drawing.FontStyle.Regular;
         public static int dotDescriptionBoxSize = 100;
-        public static int ImageViewerHeight = 100;
-        public static int ImageViewerWidth = 100;
+        public static int ImageViewerHeight = 150;
+        public static int ImageViewerWidth = 150;
 
         public static bool useMiniMap = true;
         public static bool useSnapping = true;

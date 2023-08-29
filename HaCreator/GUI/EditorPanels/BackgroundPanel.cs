@@ -12,8 +12,11 @@ using SunLibrary.SunFileLib.Structure;
 using SunLibrary.SunFileLib.Structure.Data;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
+using System.Windows.Media;
 using WeifenLuo.WinFormsUI.Docking;
+using Color = System.Drawing.Color;
 
 namespace HaCreator.GUI.EditorPanels
 {
@@ -49,7 +52,8 @@ namespace HaCreator.GUI.EditorPanels
                 BackgroundInfo bgInfo = BackgroundInfo.Get((string)bgSetListBox.SelectedItem, aniBg.Checked, prop.Name);
                 if (bgInfo == null)
                     continue;
-                ImageViewer item = bgImageContainer.Add(bgInfo.Image, prop.Name, true);
+                ImageViewer item = bgImageContainer.Add(bgInfo.Image, prop.Name, true, Color.Black);
+                //item.BorderStyle = BorderStyle.Fixed3D;
                 item.Tag = bgInfo;
                 item.MouseDown += new MouseEventHandler(bgItem_Click);
                 item.MouseUp += new MouseEventHandler(ImageViewer.item_MouseUp);
