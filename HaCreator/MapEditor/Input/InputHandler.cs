@@ -377,17 +377,17 @@ namespace HaCreator.MapEditor.Input
                             bool needsLayer = false;
 
                             // Make sure we dont have any tS conflicts
-                            string tS = null;
+                            string tileSet = null;
                             foreach (ISerializable item in items)
                             {
                                 if (item is TileInstance)
                                 {
                                     TileInstance tile = (TileInstance)item;
-                                    string currtS = ((TileInfo)tile.BaseInfo).tS;
-                                    if (currtS != tS)
+                                    string currentTileSet = ((TileInfo)tile.BaseInfo).TileSet;
+                                    if (currentTileSet != tileSet)
                                     {
-                                        if (tS == null)
-                                            tS = currtS;
+                                        if (tileSet == null)
+                                            tileSet = currentTileSet;
                                         else
                                         {
                                             MessageBox.Show("Clipboard contains two tiles with different tile sets, cannot paste.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -405,7 +405,7 @@ namespace HaCreator.MapEditor.Input
                                 MessageBox.Show("Layered items in clipboard and no layer/platform selected, cannot paste.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;
                             }
-                            if (tS != null && selectedBoard.SelectedLayer.tS != null && tS != selectedBoard.SelectedLayer.tS)
+                            if (tileSet != null && selectedBoard.SelectedLayer.tS != null && tileSet != selectedBoard.SelectedLayer.tS)
                             {
                                 MessageBox.Show("Clipboard contains tile in a different set than the current selected layer, cannot paste.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;

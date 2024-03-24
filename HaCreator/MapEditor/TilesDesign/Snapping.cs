@@ -15,17 +15,17 @@ namespace HaCreator.MapEditor.TilesDesign
         static TileSnap()
         {
             tileCats = new Dictionary<string, MapTileDesign>();
-            tileCats["bsc"] = new bsc();
-            tileCats["edU"] = new edU();
-            tileCats["edD"] = new edD();
-            tileCats["enH0"] = new enH0();
-            tileCats["enH1"] = new enH1();
-            tileCats["enV0"] = new enV0();
-            tileCats["enV1"] = new enV1();
-            tileCats["slLD"] = new slLD();
-            tileCats["slLU"] = new slLU();
-            tileCats["slRD"] = new slRD();
-            tileCats["slRU"] = new slRU();
+            tileCats["basic"] = new basic();
+            tileCats["floatTop"] = new floatTop();
+            tileCats["floatBtm"] = new floatBtm();
+            tileCats["platTop"] = new platTop();
+            tileCats["platBtm"] = new platBtm();
+            tileCats["wallL"] = new wallL();
+            tileCats["wallR"] = new wallR();
+            tileCats["slopeLD"] = new slopeLD();
+            tileCats["slopeLU"] = new slopeLU();
+            tileCats["slopeRD"] = new slopeRD();
+            tileCats["slopeRU"] = new slopeRU();
         }
     }
 }

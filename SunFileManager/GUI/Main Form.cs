@@ -5,10 +5,12 @@ using SunFileManager.GUI.Input;
 using SunFileManager.GUI.Input.Forms;
 using SunLibrary.SunFileLib.Properties;
 using SunLibrary.SunFileLib.Structure;
+using SunLibrary.SunFileLib.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using Path = System.IO.Path;
@@ -36,7 +38,10 @@ namespace SunFileManager
         private SunNode tempDropNode = null;
 
         // Timer for scrolling
-        private Timer timer = new Timer();
+        private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+
+        private bool threadDone = false;
+        private System.Threading.Thread runningThread = null;
 
         public frmFileManager(string sunfileToLoad)
         {
@@ -122,6 +127,25 @@ namespace SunFileManager
             new frmHelp().ShowDialog();
         }
 
+        /// <summary>
+        /// Allows for exporting of images and sound straight to desktop
+        /// </summary>
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string outPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            SunNode node = (SunNode)sunTreeView.SelectedNode;
+            if (!(node.Tag is SunObject)) return;
+            List<SunObject> objs = new List<SunObject>
+            {
+                (SunObject)node.Tag
+            };
+
+            SunPngMp3Serializer serializer = new SunPngMp3Serializer();
+            threadDone = false;
+            runningThread = new Thread(new ParameterizedThreadStart(RunSunObjExtraction));
+            runningThread.Start((object)new object[] { objs, outPath, serializer });
+        }
         #endregion Toolstrip
 
         #region Loading, Unloading & Saving
@@ -245,6 +269,21 @@ namespace SunFileManager
             }
         }
 
+        private void RunSunObjExtraction(object param)
+        {
+            List<SunObject> objsToDump = (List<SunObject>)((object[])param)[0];
+            string path = (string)((object[])param)[1];
+            ProgressingSunSerializer serializer = (ProgressingSunSerializer)((object[])param)[2];
+
+            if (serializer is ISunObjectSerializer)
+            {
+                foreach (SunObject obj in objsToDump)
+                {
+                    ((ISunObjectSerializer)serializer).SerializeObject(obj, path);
+                }
+            }
+            threadDone = true;
+        }
         #endregion Loading, Unloading & Saving
 
         #region Treeview Node Manipulation

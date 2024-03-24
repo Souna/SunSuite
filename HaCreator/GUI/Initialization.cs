@@ -70,8 +70,9 @@ namespace HaCreator.GUI
             Application.DoEvents();
             if (!Program.SfManager.LoadSunFile("GeneralAssetTest"))
                 return;
-            //Program.SfManager.ExtractMaps();
+            //Program.SfManager.ExtractMaps();  //Extracts map names from string.sun/wz
             Program.SfManager.ExtractBackgroundSets();
+            Program.SfManager.ExtractTileSets();
 
             //txtStatus.Text = "Initializing String.wz...";
             //Application.DoEvents();

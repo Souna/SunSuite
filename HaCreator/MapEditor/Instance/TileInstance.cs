@@ -31,21 +31,21 @@ namespace HaCreator.MapEditor.Instance
         {
             lock (board.ParentControl)
             {
-                if (layer.tS != null && layer.tS != baseInfo.tS)
+                if (layer.tS != null && layer.tS != baseInfo.TileSet)
                 {
                     Board.BoardItems.TileObjs.Remove(this);
                     layer.Items.Remove(this);
                     throw new Exception("tile added to a layer with different tS");
                 }
-                else layer.tS = baseInfo.tS;
+                else layer.tS = baseInfo.TileSet;
             }
         }
 
         public List<Tuple<double, TileInstance, MapTileDesignPotential>> FindSnappableTiles(float threshold, Predicate<TileInstance> pred = null)
         {
             List<Tuple<double, TileInstance, MapTileDesignPotential>> result = new List<Tuple<double, TileInstance, MapTileDesignPotential>>();
-            MapTileDesign tilegroup = (MapTileDesign)TileSnap.tileCats[baseInfo.u];
-            int mag = baseInfo.mag;
+            MapTileDesign tilegroup = TileSnap.tileCats[baseInfo.Type];
+            int mag = baseInfo.Mag;
             float first_threshold = MultiBoard.FirstSnapVerification * mag;
             foreach (BoardItem item in Board.BoardItems.Items)
             {
@@ -67,7 +67,7 @@ namespace HaCreator.MapEditor.Instance
                         continue;
                     foreach (MapTileDesignPotential snapInfo in tilegroup.potentials)
                     {
-                        if (snapInfo.type != tile.baseInfo.u) continue;
+                        if (snapInfo.type != tile.baseInfo.Type) continue;
                         double distance = InputHandler.Distance(this.X - tile.X + snapInfo.x * mag, this.Y - tile.Y + snapInfo.y * mag);
                         if (distance > threshold) continue;
                         result.Add(new Tuple<double, TileInstance, MapTileDesignPotential>(distance, tile, snapInfo));
@@ -97,7 +97,7 @@ namespace HaCreator.MapEditor.Instance
             }
 
             // Move all selected items to snap
-            int mag = baseInfo.mag;
+            int mag = baseInfo.Mag;
             TileInstance closestTile = candidates[best].Item2;
             MapTileDesignPotential closestInfo = candidates[best].Item3;
             SnapMoveAllMouseBoundItems(new XNA.Point(closestTile.X - closestInfo.x * mag, closestTile.Y - closestInfo.y * mag));
@@ -186,9 +186,9 @@ namespace HaCreator.MapEditor.Instance
         protected void UpdateSerializedForm(SerializationForm result)
         {
             base.UpdateSerializedForm(result);
-            result.ts = baseInfo.tS;
-            result.u = baseInfo.u;
-            result.no = baseInfo.no;
+            result.ts = baseInfo.TileSet;
+            result.u = baseInfo.Type;
+            result.no = baseInfo.No;
         }
 
         public TileInstance(Board board, SerializationForm json)

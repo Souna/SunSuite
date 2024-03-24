@@ -172,9 +172,9 @@ namespace HaCreator.Collections
                                 {
                                     TileInfo ai = (TileInfo)a.BaseInfo;
                                     TileInfo bi = (TileInfo)b.BaseInfo;
-                                    if (ai.z > bi.z)
+                                    if (ai.Z > bi.Z)
                                         return 1;
-                                    else if (ai.z < bi.z)
+                                    else if (ai.Z < bi.Z)
                                         return -1;
                                     else
                                     {
