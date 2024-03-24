@@ -25,21 +25,21 @@
 
 namespace HaCreator.MapEditor.TilesDesign
 {
-    internal class edD : MapTileDesign
+    internal class floatTop : MapTileDesign
     {
-        public edD()
+        public floatTop()
         {
-            type = "edD";
+            type = "floatTop";
 
-            potentials.Add(new MapTileDesignPotential("enH1", -90, 0));
-            potentials.Add(new MapTileDesignPotential("enH1", 0, 0));
-            potentials.Add(new MapTileDesignPotential("enV0", 0, -60));
-            potentials.Add(new MapTileDesignPotential("enV1", 0, -60));
-            potentials.Add(new MapTileDesignPotential("edU", 0, 0));
-            potentials.Add(new MapTileDesignPotential("slLD", 90, 0));
-            potentials.Add(new MapTileDesignPotential("slLD", 0, -60));
-            potentials.Add(new MapTileDesignPotential("slRD", -90, 0));
-            potentials.Add(new MapTileDesignPotential("slRD", 0, -60));
+            potentials.Add(new MapTileDesignPotential("platTop", -90, 0));
+            potentials.Add(new MapTileDesignPotential("platTop", 0, 0));
+            potentials.Add(new MapTileDesignPotential("wallL", 0, 0));
+            potentials.Add(new MapTileDesignPotential("wallR", 0, 0));
+            potentials.Add(new MapTileDesignPotential("floatBtm", 0, 0));
+            potentials.Add(new MapTileDesignPotential("slopeLU", 90, 0));
+            potentials.Add(new MapTileDesignPotential("slopeLU", 0, 60));
+            potentials.Add(new MapTileDesignPotential("slopeRU", -90, 0));
+            potentials.Add(new MapTileDesignPotential("slopeRU", 0, 60));
         }
     }
 }

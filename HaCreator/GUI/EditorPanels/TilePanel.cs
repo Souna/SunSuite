@@ -116,13 +116,13 @@ namespace HaCreator.GUI.EditorPanels
                         infoToAdd = ((TileInfo[])item.Tag)[0];
                     else
                         infoToAdd = (TileInfo)item.Tag;
-                    if (infoToAdd.tS != layer.tS)
+                    if (infoToAdd.TileSet != layer.tS)
                     {
                         if (MessageBox.Show("This action will change the layer's tS. Proceed?", "Layer tS Change", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != System.Windows.Forms.DialogResult.Yes)
                             return;
                         List<UndoRedoAction> actions = new List<UndoRedoAction>();
-                        actions.Add(UndoRedoManager.LayerTSChanged(layer, layer.tS, infoToAdd.tS));
-                        layer.ReplaceTS(infoToAdd.tS);
+                        actions.Add(UndoRedoManager.LayerTSChanged(layer, layer.tS, infoToAdd.TileSet));
+                        layer.ReplaceTS(infoToAdd.TileSet);
                         hcsm.MultiBoard.SelectedBoard.UndoRedoMan.AddUndoBatch(actions);
                     }
                 }

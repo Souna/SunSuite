@@ -64,7 +64,7 @@ namespace HaCreator.GUI
         {
             if (layer.tS == null) return true;
             foreach (BoardItem item in items)
-                if (item is TileInstance && ((TileInfo)item.BaseInfo).tS != layer.tS) return false;
+                if (item is TileInstance && ((TileInfo)item.BaseInfo).TileSet != layer.tS) return false;
             return true;
         }
 

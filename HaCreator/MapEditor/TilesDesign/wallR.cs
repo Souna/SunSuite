@@ -25,22 +25,22 @@
 
 namespace HaCreator.MapEditor.TilesDesign
 {
-    internal class enV1 : MapTileDesign
+    internal class wallR : MapTileDesign
     {
-        public enV1()
+        public wallR()
         {
-            type = "enV1";
+            type = "wallR";
 
-            potentials.Add(new MapTileDesignPotential("bsc", -90, 0));
-            potentials.Add(new MapTileDesignPotential("enH0", 0, 60));
-            potentials.Add(new MapTileDesignPotential("enH1", 0, 0));
-            potentials.Add(new MapTileDesignPotential("enV0", 0, 0));
-            potentials.Add(new MapTileDesignPotential("enV1", 0, -60));
-            potentials.Add(new MapTileDesignPotential("enV1", 0, 60));
-            potentials.Add(new MapTileDesignPotential("edU", 0, 0));
-            potentials.Add(new MapTileDesignPotential("edD", 0, 60));
-            potentials.Add(new MapTileDesignPotential("slLU", 0, 60));
-            potentials.Add(new MapTileDesignPotential("slLD", 0, 0));
+            potentials.Add(new MapTileDesignPotential("basic", -90, 0));
+            potentials.Add(new MapTileDesignPotential("platTop", 0, 60));
+            potentials.Add(new MapTileDesignPotential("platBtm", 0, 0));
+            potentials.Add(new MapTileDesignPotential("wallL", 0, 0));
+            potentials.Add(new MapTileDesignPotential("wallR", 0, -60));
+            potentials.Add(new MapTileDesignPotential("wallR", 0, 60));
+            potentials.Add(new MapTileDesignPotential("floatTop", 0, 0));
+            potentials.Add(new MapTileDesignPotential("floatBtm", 0, 60));
+            potentials.Add(new MapTileDesignPotential("slopeLU", 0, 60));
+            potentials.Add(new MapTileDesignPotential("slopeLD", 0, 0));
         }
     }
 }

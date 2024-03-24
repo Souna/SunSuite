@@ -239,8 +239,8 @@ namespace HaCreator.Wz
                     tile["x"] = InfoTool.SetInt(tileInst.X);
                     tile["y"] = InfoTool.SetInt(tileInst.Y);
                     tile["zM"] = InfoTool.SetInt(tileInst.PlatformNumber);
-                    tile["u"] = InfoTool.SetString(tileInfo.u);
-                    tile["no"] = InfoTool.SetInt(int.Parse(tileInfo.no));
+                    tile["u"] = InfoTool.SetString(tileInfo.Type);
+                    tile["no"] = InfoTool.SetInt(int.Parse(tileInfo.No));
 
                     tileParent[j.ToString()] = tile;
                 }
@@ -922,7 +922,7 @@ namespace HaCreator.Wz
             board.BoardItems.FHAnchors.Sort(new Comparison<FootholdAnchor>(FootholdAnchor.FHAnchorSorter));
 
             // Merge foothold anchors
-            // This sorts out all foothold inconsistencies in all non-edU tiles
+            // This sorts out all foothold inconsistencies in all non-floatTop tiles
             for (int i = 0; i < board.BoardItems.FHAnchors.Count - 1; i++)
             {
                 FootholdAnchor a = board.BoardItems.FHAnchors[i];
@@ -936,12 +936,12 @@ namespace HaCreator.Wz
                     FootholdAnchor.MergeAnchors(a, b); // Transfer lines from b to a
                     b.RemoveItem(null); // Remove b
                     i--; // Fix index after we removed b
-                    // Note: We are unlinking b from its parent. If b's parent is an edU tile, this will cause the edU to be irregular
-                    // and thus it will not get fixed in the next step. To counter this, FHAnchorSorter makes sure edU-children always come first.
+                    // Note: We are unlinking b from its parent. If b's parent is an floatTop tile, this will cause the floatTop to be irregular
+                    // and thus it will not get fixed in the next step. To counter this, FHAnchorSorter makes sure floatTop-children always come first.
                 }
             }
 
-            // Organize edU tiles
+            // Organize floatTop tiles
             foreach (LayeredItem li in board.BoardItems.TileObjs)
             {
                 if (!(li is TileInstance))
@@ -950,8 +950,8 @@ namespace HaCreator.Wz
                 }
                 TileInstance tileInst = (TileInstance)li;
                 TileInfo tileInfo = (TileInfo)li.BaseInfo;
-                // Ensure that the tile is an edU, that it was created by the user in this session, and that it doesnt have some messed up foothold structure we can't deal with
-                if (tileInfo.u == "edU" && tileInst.BoundItemsList.Count >= 4)
+                // Ensure that the tile is an floatTop, that it was created by the user in this session, and that it doesnt have some messed up foothold structure we can't deal with
+                if (tileInfo.Type == "floatTop" && tileInst.BoundItemsList.Count >= 4)
                 {
                     int nitems = tileInst.BoundItemsList.Count;
                     if (tileInst.BoundItemsList[0].Y != tileInst.BoundItemsList[nitems - 1].Y ||
@@ -961,8 +961,8 @@ namespace HaCreator.Wz
                         continue;
                     }
 
-                    // Only work with snapped edU's
-                    if (tileInst.FindSnappableTiles(0, x => ((TileInfo)x.BaseInfo).u == "enH0" || ((TileInfo)x.BaseInfo).u == "slLU" || ((TileInfo)x.BaseInfo).u == "slRU").Count == 0)
+                    // Only work with snapped floatTop's
+                    if (tileInst.FindSnappableTiles(0, x => ((TileInfo)x.BaseInfo).Type == "platTop" || ((TileInfo)x.BaseInfo).Type == "slopeLU" || ((TileInfo)x.BaseInfo).Type == "slopeRU").Count == 0)
                     {
                         continue;
                     }

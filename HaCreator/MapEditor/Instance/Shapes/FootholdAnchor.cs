@@ -81,9 +81,9 @@ namespace HaCreator.MapEditor.Instance.Shapes
                             return -1;
                         else
                         {
-                            if (c.Parent != null && c.Parent is TileInstance && ((TileInfo)c.Parent.BaseInfo).u == "edU")
+                            if (c.Parent != null && c.Parent is TileInstance && ((TileInfo)c.Parent.BaseInfo).Type == "floatTop")
                                 return -1;
-                            else if (d.Parent != null && d.Parent is TileInstance && ((TileInfo)d.Parent.BaseInfo).u == "edU")
+                            else if (d.Parent != null && d.Parent is TileInstance && ((TileInfo)d.Parent.BaseInfo).Type == "floatTop")
                                 return 1;
                             else
                                 return 0;

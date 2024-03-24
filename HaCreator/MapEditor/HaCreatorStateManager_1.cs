@@ -727,7 +727,7 @@ namespace HaCreator.MapEditor
         {
             if (item is TileInstance)
             {
-                return "Tile:" + lineBreak + ((TileInfo)item.BaseInfo).tS + @"\" + ((TileInfo)item.BaseInfo).u + @"\" + ((TileInfo)item.BaseInfo).no;
+                return "Tile:" + lineBreak + ((TileInfo)item.BaseInfo).TileSet + @"\" + ((TileInfo)item.BaseInfo).Type + @"\" + ((TileInfo)item.BaseInfo).No;
             }
             else if (item is ObjectInstance)
             {

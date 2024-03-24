@@ -202,7 +202,7 @@ namespace HaCreator.Wz
 
         public void ExtractTileSets()
         {
-            SunDirectory tileParent = (SunDirectory)this["map"]["Tile"];
+            SunDirectory tileParent = (SunDirectory)this["GeneralAssetTest"]["Tile"];
             foreach (SunImage tileset in tileParent.SunImages)
                 Program.InfoManager.TileSets[SunInfoTools.RemoveExtension(tileset.Name)] = tileset;
         }
@@ -214,25 +214,6 @@ namespace HaCreator.Wz
             {
                 foreach (SunImage objset in objParent1.SunImages)
                     Program.InfoManager.ObjectSets[SunInfoTools.RemoveExtension(objset.Name)] = objset;
-            }
-
-            if (this.SunFiles.ContainsKey("map001"))
-            {
-                SunDirectory objParent2 = (SunDirectory)this["map001"]["Obj"];
-                if (objParent2 != null)
-                {
-                    foreach (SunImage objset in objParent2.SunImages)
-                        Program.InfoManager.ObjectSets[SunInfoTools.RemoveExtension(objset.Name)] = objset;
-                }
-            }
-            if (this.SunFiles.ContainsKey("map2"))
-            {
-                SunDirectory objParent3 = (SunDirectory)this["map2"]["Obj"];
-                if (objParent3 != null)
-                {
-                    foreach (SunImage objset in objParent3.SunImages)
-                        Program.InfoManager.ObjectSets[SunInfoTools.RemoveExtension(objset.Name)] = objset;
-                }
             }
         }
 

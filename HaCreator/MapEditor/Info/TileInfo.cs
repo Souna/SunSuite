@@ -17,57 +17,57 @@ namespace HaCreator.MapEditor.Info
 {
     public class TileInfo : MapleDrawableInfo
     {
-        private string _tS;
-        private string _u;
+        private string _tileSet;
+        private string _type;
         private string _no;
         private int _mag;
         private int _z;
         private List<XNA.Point> footholdOffsets = new List<XNA.Point>();
 
-        public TileInfo(Bitmap image, System.Drawing.Point origin, string tS, string u, string no, int mag, int z, SunObject parentObject)
+        public TileInfo(Bitmap image, System.Drawing.Point origin, string tileSet, string type, string no, int mag, int z, SunObject parentObject)
             : base(image, origin, parentObject)
         {
-            this._tS = tS;
-            this._u = u;
+            this._tileSet = tileSet;
+            this._type = type;
             this._no = no;
             this._mag = mag;
             this._z = z;
         }
 
-        public static TileInfo Get(string tS, string u, string no)
+        public static TileInfo Get(string tileSet, string type, string no)
         {
-            int? mag = InfoTool.GetOptionalInt(Program.InfoManager.TileSets[tS]["info"]["mag"]);
-            return Get(tS, u, no, mag);
+            int? mag = InfoTool.GetOptionalInt(Program.InfoManager.TileSets[tileSet]["info"]["mag"]);
+            return Get(tileSet, type, no, mag);
         }
 
-        public static TileInfo GetWithDefaultNo(string tS, string u, string no, string defaultNo)
+        public static TileInfo GetWithDefaultNo(string tileSet, string type, string no, string defaultNo)
         {
-            int? mag = InfoTool.GetOptionalInt(Program.InfoManager.TileSets[tS]["info"]["mag"]);
-            SunProperty prop = Program.InfoManager.TileSets[tS][u];
+            int? mag = InfoTool.GetOptionalInt(Program.InfoManager.TileSets[tileSet]["info"]["mag"]);
+            SunProperty prop = Program.InfoManager.TileSets[tileSet][type];
             SunProperty tileInfoProp = prop[no];
             if (tileInfoProp == null)
             {
                 tileInfoProp = prop[defaultNo];
             }
             if (tileInfoProp.SETag == null)
-                tileInfoProp.SETag = TileInfo.Load((SunCanvasProperty)tileInfoProp, tS, u, no, mag);
+                tileInfoProp.SETag = TileInfo.Load((SunCanvasProperty)tileInfoProp, tileSet, type, no, mag);
             return (TileInfo)tileInfoProp.SETag;
         }
 
         // Optimized version, for cases where you already know the mag (e.g. mass loading tiles of the same tileSet)
-        public static TileInfo Get(string tS, string u, string no, int? mag)
+        public static TileInfo Get(string tileSet, string type, string no, int? mag)
         {
-            SunProperty tileInfoProp = Program.InfoManager.TileSets[tS][u][no];
+            SunProperty tileInfoProp = Program.InfoManager.TileSets[tileSet][type][no];
             if (tileInfoProp.SETag == null)
-                tileInfoProp.SETag = TileInfo.Load((SunCanvasProperty)tileInfoProp, tS, u, no, mag);
+                tileInfoProp.SETag = TileInfo.Load((SunCanvasProperty)tileInfoProp, tileSet, type, no, mag);
             return (TileInfo)tileInfoProp.SETag;
         }
 
-        private static TileInfo Load(SunCanvasProperty parentObject, string tS, string u, string no, int? mag)
+        private static TileInfo Load(SunCanvasProperty parentObject, string tileSet, string type, string no, int? mag)
         {
             SunProperty zProp = parentObject["z"];
             int z = zProp == null ? 0 : InfoTool.GetInt(zProp);
-            TileInfo result = new TileInfo(parentObject.PNG.GetPNG(false), SunInfoTools.VectorToSystemPoint((SunVectorProperty)parentObject["origin"]), tS, u, no, mag.HasValue ? mag.Value : 1, z, parentObject);
+            TileInfo result = new TileInfo(parentObject.PNG.GetPNG(false), SunInfoTools.VectorToSystemPoint((SunVectorProperty)parentObject["origin"]), tileSet, type, no, mag.HasValue ? mag.Value : 1, z, parentObject);
             SunConvexProperty footholds = (SunConvexProperty)parentObject["foothold"];
             if (footholds != null)
                 foreach (SunVectorProperty foothold in footholds.SunProperties)
@@ -88,34 +88,34 @@ namespace HaCreator.MapEditor.Info
 
         private static void FixFootholdMispositions(TileInfo result)
         {
-            switch (result.u)
+            switch (result.Type)
             {
-                case "enV0":
+                case "wallL":
                     MoveFootholdY(result, true, false, 60);
                     MoveFootholdY(result, false, true, 60);
                     break;
 
-                case "enV1":
+                case "wallR":
                     MoveFootholdY(result, true, true, 60);
                     MoveFootholdY(result, false, false, 60);
                     break;
 
-                case "enH0":
+                case "platTop":
                     MoveFootholdX(result, true, true, 90);
                     MoveFootholdX(result, false, false, 90);
                     break;
 
-                case "slLU":
+                case "slopeLU":
                     MoveFootholdX(result, true, false, -90);
                     MoveFootholdX(result, false, true, -90);
                     break;
 
-                case "slRU":
+                case "slopeRU":
                     MoveFootholdX(result, true, true, 90);
                     MoveFootholdX(result, false, false, 90);
                     break;
 
-                case "edU":
+                case "floatTop":
                     MoveFootholdY(result, true, false, 0);
                     MoveFootholdY(result, false, false, 0);
                     break;
@@ -127,7 +127,7 @@ namespace HaCreator.MapEditor.Info
             if (result.footholdOffsets.Count < 1)
                 return;
             int idx = first ? 0 : result.footholdOffsets.Count - 1;
-            int y = top ? 0 : (height * result.mag);
+            int y = top ? 0 : (height * result.Mag);
             if (result.footholdOffsets[idx].Y != y)
             {
                 result.footholdOffsets[idx] = new XNA.Point(result.footholdOffsets[idx].X, y);
@@ -139,7 +139,7 @@ namespace HaCreator.MapEditor.Info
             if (result.footholdOffsets.Count < 1)
                 return;
             int idx = first ? 0 : result.footholdOffsets.Count - 1;
-            int x = left ? 0 : (width * result.mag);
+            int x = left ? 0 : (width * result.Mag);
             if (result.footholdOffsets[idx].X != x)
             {
                 result.footholdOffsets[idx] = new XNA.Point(x, result.footholdOffsets[idx].Y);
@@ -177,31 +177,31 @@ namespace HaCreator.MapEditor.Info
             return instance;
         }
 
-        public string tS
+        public string TileSet
         {
             get
             {
-                return _tS;
+                return _tileSet;
             }
             set
             {
-                this._tS = value;
+                this._tileSet = value;
             }
         }
 
-        public string u
+        public string Type
         {
             get
             {
-                return _u;
+                return _type;
             }
             set
             {
-                this._u = value;
+                this._type = value;
             }
         }
 
-        public string no
+        public string No
         {
             get
             {
@@ -213,7 +213,7 @@ namespace HaCreator.MapEditor.Info
             }
         }
 
-        public int mag
+        public int Mag
         {
             get { return _mag; }
             set { _mag = value; }
@@ -227,7 +227,7 @@ namespace HaCreator.MapEditor.Info
             }
         }
 
-        public int z
+        public int Z
         { get { return _z; } set { _z = value; } }
     }
 }

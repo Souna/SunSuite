@@ -22,19 +22,19 @@ namespace HaCreator.GUI
             InitializeComponent();
             targetListBox = target;
             List<string> sortedTileSets = new List<string>();
-            foreach (KeyValuePair<string, SunImage> tS in Program.InfoManager.TileSets)
-                sortedTileSets.Add(tS.Key);
+            foreach (KeyValuePair<string, SunImage> tileSet in Program.InfoManager.TileSets)
+                sortedTileSets.Add(tileSet.Key);
             sortedTileSets.Sort();
-            foreach (string tS in sortedTileSets)
+            foreach (string tileSet in sortedTileSets)
             {
-                SunImage tSImage = Program.InfoManager.TileSets[tS];
-                if (!tSImage.Parsed) tSImage.ParseImage();
-                SunProperty enh0 = tSImage["enH0"];
-                if (enh0 == null) continue;
-                SunCanvasProperty image = (SunCanvasProperty)enh0["0"];
+                SunImage tileSetImage = Program.InfoManager.TileSets[tileSet];
+                if (!tileSetImage.Parsed) tileSetImage.ParseImage();
+                SunProperty platTop = tileSetImage["platTop"];
+                if (platTop == null) continue;
+                SunCanvasProperty image = (SunCanvasProperty)platTop["0"];
                 if (image == null) continue;
                 //image.PNG.GetPNG(true);
-                ImageViewer item = koolkLVContainer.Add(image.PNG.GetPNG(true), tS, true);
+                ImageViewer item = koolkLVContainer.Add(image.PNG.GetPNG(true), tileSet, true);
                 item.MouseDown += new MouseEventHandler(item_Click);
                 item.MouseDoubleClick += new MouseEventHandler(item_DoubleClick);
             }

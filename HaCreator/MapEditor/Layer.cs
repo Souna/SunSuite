@@ -77,7 +77,7 @@ namespace HaCreator.MapEditor
                     {
                         TileInstance tile = (TileInstance)item;
                         TileInfo tileBase = (TileInfo)tile.BaseInfo;
-                        TileInfo tileInfo = TileInfo.GetWithDefaultNo(newTS, tileBase.u, tileBase.no, "0");
+                        TileInfo tileInfo = TileInfo.GetWithDefaultNo(newTS, tileBase.Type, tileBase.No, "0");
                         tile.SetBaseInfo(tileInfo);
                     }
                 }
@@ -95,7 +95,7 @@ namespace HaCreator.MapEditor
             foreach (LayeredItem item in items)
                 if (item is TileInstance)
                 {
-                    tS = ((TileInfo)item.BaseInfo).tS;
+                    tS = ((TileInfo)item.BaseInfo).TileSet;
                     return;
                 }
             tS = null;
