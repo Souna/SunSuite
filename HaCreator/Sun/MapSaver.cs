@@ -57,11 +57,8 @@ namespace HaCreator.Wz
                 try
                 {
                     string cat = "Map" + image.Name.Substring(0, 1);
-                    SunDirectory mapDir = (SunDirectory)Program.SfManager["map"]["Map"];
-                    if (Program.SfManager.SunFiles.ContainsKey("map002"))//i hate nexon so much
-                    {
-                        mapDir = (SunDirectory)Program.SfManager["map002"]["Map"];
-                    }
+                    SunDirectory mapDir = (SunDirectory)Program.SfManager["GeneralAssetTest"]["Map"];
+
                     SunDirectory catDir = (SunDirectory)mapDir[cat];
                     if (catDir == null)
                     {
@@ -74,7 +71,7 @@ namespace HaCreator.Wz
                         mapImg.Remove();
                     }
                     catDir.AddImage(image);
-                    Program.SfManager.SetUpdated("map", image);
+                    Program.SfManager.SetUpdated("GeneralAssetTest", image);
                 }
                 catch (NullReferenceException exp) { throw new Exception("Map img must exist in wz file / evil kms hellworld map002 error"); }
             }
