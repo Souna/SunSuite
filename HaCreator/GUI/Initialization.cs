@@ -74,10 +74,10 @@ namespace HaCreator.GUI
             Program.SfManager.ExtractBackgroundSets();
             Program.SfManager.ExtractTileSets();
 
-            //txtStatus.Text = "Initializing String.wz...";
-            //Application.DoEvents();
-            //Program.SfManager.LoadSunFile("string");
-            //Program.SfManager.ExtractMaps();
+            txtStatus.Text = "Initializing String.sun...";
+            Application.DoEvents();
+            Program.SfManager.LoadSunFile("string");
+            Program.SfManager.ExtractMaps();
 
             //txtStatus.Text = "Initializing Mob.wz...";
             //Application.DoEvents();

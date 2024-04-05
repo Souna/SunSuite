@@ -628,6 +628,7 @@ namespace HaCreator.MapEditor
             lock (multiBoard)
             {
                 new Save(multiBoard.SelectedBoard).ShowDialog();
+                new Repack().ShowDialog();
             }
         }
 

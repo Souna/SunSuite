@@ -97,24 +97,24 @@ namespace HaCreator.GUI
 
             // Save XMLs
             // We have to save XMLs first, otherwise the SunImages will already be disposed when we reach this code
-            Invoke((Action)delegate { ChangeRepackState("Saving XMLs..."); });
-            foreach (SunImage img in Program.SfManager.updatedImages)
-            {
-                try
-                {
-                    string xmlPath = Path.Combine(XMLDir, img.FullPath);
-                    string xmlPathDir = Path.GetDirectoryName(xmlPath);
-                    if (!Directory.Exists(xmlPathDir))
-                        Directory.CreateDirectory(xmlPathDir);
-                    SunClassicXmlSerializer xmlSer = new SunClassicXmlSerializer(0, LineBreak.None, false);
-                    xmlSer.SerializeImage(img, xmlPath);
-                }
-                catch (Exception e)
-                {
-                    ShowErrorMessageThreadSafe(e, "XMLs");
-                    return;
-                }
-            }
+            //Invoke((Action)delegate { ChangeRepackState("Saving XMLs..."); });
+            //foreach (SunImage img in Program.SfManager.updatedImages)
+            //{
+            //    try
+            //    {
+            //        string xmlPath = Path.Combine(XMLDir, img.FullPath);
+            //        string xmlPathDir = Path.GetDirectoryName(xmlPath);
+            //        if (!Directory.Exists(xmlPathDir))
+            //            Directory.CreateDirectory(xmlPathDir);
+            //        SunClassicXmlSerializer xmlSer = new SunClassicXmlSerializer(0, LineBreak.None, false);
+            //        xmlSer.SerializeImage(img, xmlPath);
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        ShowErrorMessageThreadSafe(e, "XMLs");
+            //        return;
+            //    }
+            //}
 
             // Save WZ Files
             foreach (SunFile wzf in toRepack)
