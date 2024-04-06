@@ -171,7 +171,7 @@ namespace SunFileManager
 
             // Fill list with selected filepaths.
             foreach (string path in ofd.FileNames)
-                sunFilePathsToLoad.Add(path.ToLower());
+                sunFilePathsToLoad.Add(path/*.ToLower()*/);
 
             List<SunFile> loadedSunFiles = new List<SunFile>();
 

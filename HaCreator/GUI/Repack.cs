@@ -117,15 +117,15 @@ namespace HaCreator.GUI
             //}
 
             // Save WZ Files
-            foreach (SunFile wzf in toRepack)
+            foreach (SunFile sf in toRepack)
             {
-                Invoke((Action)delegate { ChangeRepackState("Saving " + wzf.Name + "..."); });
-                string orgFile = wzf.FilePath;
+                Invoke((Action)delegate { ChangeRepackState("Saving " + sf.Name + "..."); });
+                string orgFile = sf.FilePath;
                 string tmpFile = orgFile + "$tmp";
                 try
                 {
-                    wzf.SaveToDisk(tmpFile);
-                    wzf.Dispose();
+                    sf.SaveToDisk(tmpFile);
+                    sf.Dispose();
                     string buPath = Path.Combine(orgBackupDir, Path.GetFileName(orgFile));
                     // Try to backup to /Originals/ First, if there is already a file there, we are not original, so just backup to /Backup/
                     if (File.Exists(buPath))
@@ -137,7 +137,7 @@ namespace HaCreator.GUI
                 }
                 catch (Exception e)
                 {
-                    ShowErrorMessageThreadSafe(e, wzf.Name);
+                    ShowErrorMessageThreadSafe(e, sf.Name);
                     return;
                 }
             }

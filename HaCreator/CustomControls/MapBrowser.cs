@@ -106,15 +106,7 @@ namespace HaCreator.CustomControls
             {
                 string mapid = ((string)mapNamesBox.SelectedItem).Substring(0, 9);
                 string mapcat = "Map" + mapid.Substring(0, 1);
-                SunImage mapImage = null;
-                if (Program.SfManager.SunFiles.ContainsKey("map002"))//i hate nexon so much
-                {
-                    mapImage = (SunImage)Program.SfManager["map002"]["Map"][mapcat][mapid + ".img"];
-                }
-                else
-                {
-                    mapImage = (SunImage)Program.SfManager["map"]["Map"][mapcat][mapid + ".img"];
-                }
+                SunImage mapImage = (SunImage)Program.SfManager["Map"]["Map"][mapcat][mapid + ".img"];
                 if (mapImage == null)
                 {
                     linkLabel.Visible = false;

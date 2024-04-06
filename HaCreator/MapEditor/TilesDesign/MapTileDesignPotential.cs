@@ -30,6 +30,8 @@ namespace HaCreator.MapEditor.TilesDesign
         public string type;
         public int x, y;
 
+        // Within each tile class, it reads:
+        // Tile [type] can snap to my origin position at [type]'s [x,y]
         public MapTileDesignPotential(string type, int x, int y)
         {
             this.type = type;

@@ -56,11 +56,11 @@ namespace HaCreator.GUI
             SunImage mapImage = null;
             string mapName = null, streetName = "", categoryName = "";
             SunSubProperty strMapProp = null;
-            string mapid = "1"/*mapBrowser.SelectedItem.Substring(0, 9);*/;
-            string mapcat = "Map" + mapid/*.Substring(0, 1)*/;
-                                                    //Look inside GeneralAssetTest.sun/Map/Map1/1.img
-            mapImage = (SunImage)Program.SfManager["GeneralAssetTest"]["Map"][mapcat][mapid + ".img"];
-            strMapProp = SunInfoTools.GetMapStringProp(mapid);
+            string mapId = mapBrowser.SelectedItem.Substring(0, 9);
+            string mapCategory = "Map" + mapId.Substring(0, 1);
+                                                    //Look inside Map.sun/Map/Map1/1.img
+            mapImage = (SunImage)Program.SfManager["Map"]["Map"][mapCategory][mapId + ".img"];
+            strMapProp = SunInfoTools.GetMapStringProp(mapId);
             mapName = SunInfoTools.GetMapName(strMapProp);
             streetName = SunInfoTools.GetMapStreetName(strMapProp);
             categoryName = SunInfoTools.GetMapCategoryName(strMapProp);

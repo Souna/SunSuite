@@ -66,9 +66,9 @@ namespace HaCreator.GUI
         {
             Program.SfManager = new FileManager(sfPath);
 
-            txtStatus.Text = "Initializing test.sun...";
+            txtStatus.Text = "Initializing Map.sun...";
             Application.DoEvents();
-            if (!Program.SfManager.LoadSunFile("GeneralAssetTest"))
+            if (!Program.SfManager.LoadSunFile("Map"))
                 return;
             //Program.SfManager.ExtractMaps();  //Extracts map names from string.sun/wz
             Program.SfManager.ExtractBackgroundSets();

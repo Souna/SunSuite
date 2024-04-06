@@ -44,7 +44,7 @@ namespace HaCreator.MapEditor.Instance
         public List<Tuple<double, TileInstance, MapTileDesignPotential>> FindSnappableTiles(float threshold, Predicate<TileInstance> pred = null)
         {
             List<Tuple<double, TileInstance, MapTileDesignPotential>> result = new List<Tuple<double, TileInstance, MapTileDesignPotential>>();
-            MapTileDesign tilegroup = TileSnap.tileCats[baseInfo.Type];
+            MapTileDesign tilegroup = TileSnap.tileCategories[baseInfo.Type];
             int mag = baseInfo.Mag;
             float first_threshold = MultiBoard.FirstSnapVerification * mag;
             foreach (BoardItem item in Board.BoardItems.Items)
