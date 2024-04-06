@@ -78,6 +78,7 @@
             this.mapBrowser.Name = "mapBrowser";
             this.mapBrowser.Size = new System.Drawing.Size(533, 440);
             this.mapBrowser.TabIndex = 8;
+            this.mapBrowser.SelectionChanged += new HaCreator.CustomControls.MapBrowser.MapSelectChangedDelegate(this.mapBrowser_SelectionChanged);
             // 
             // Load
             // 

@@ -630,6 +630,10 @@ namespace HaCreator.MapEditor
                 new Save(multiBoard.SelectedBoard).ShowDialog();
                 new Repack().ShowDialog();
             }
+            if (Program.Restarting && CloseRequested != null)
+            {
+                CloseRequested.Invoke();
+            }
         }
 
         public EventHandler[] MakeRightClickHandler()

@@ -111,9 +111,9 @@ namespace HaCreator.Wz
             int mostRight = int.MinValue, mostLeft = int.MaxValue, mostTop = int.MaxValue, mostBottom = int.MinValue;
             foreach (SunSubProperty fhLayer in fhParent.SunProperties)
             {
-                foreach (SunSubProperty fhCat in fhLayer.SunProperties)
+                foreach (SunSubProperty fhCategory in fhLayer.SunProperties)
                 {
-                    foreach (SunSubProperty fh in fhCat.SunProperties)
+                    foreach (SunSubProperty fh in fhCategory.SunProperties)
                     {
                         int x1 = InfoTool.GetInt(fh["x1"]);
                         int x2 = InfoTool.GetInt(fh["x2"]);

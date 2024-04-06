@@ -74,7 +74,7 @@ namespace HaCreator.GUI
             sortedMarks.Sort();
             foreach (string mark in sortedMarks)
                 markBox.Items.Add(mark);
-            markBox.SelectedIndex = 0;
+            markBox.SelectedIndex = -1;
 
             switch (info.mapType)
             {

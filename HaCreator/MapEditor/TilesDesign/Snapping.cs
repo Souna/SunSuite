@@ -10,22 +10,22 @@ namespace HaCreator.MapEditor.TilesDesign
 {
     public static class TileSnap
     {
-        public static Dictionary<string, MapTileDesign> tileCats;
+        public static Dictionary<string, MapTileDesign> tileCategories;
 
         static TileSnap()
         {
-            tileCats = new Dictionary<string, MapTileDesign>();
-            tileCats["basic"] = new basic();
-            tileCats["floatTop"] = new floatTop();
-            tileCats["floatBtm"] = new floatBtm();
-            tileCats["platTop"] = new platTop();
-            tileCats["platBtm"] = new platBtm();
-            tileCats["wallL"] = new wallL();
-            tileCats["wallR"] = new wallR();
-            tileCats["slopeLD"] = new slopeLD();
-            tileCats["slopeLU"] = new slopeLU();
-            tileCats["slopeRD"] = new slopeRD();
-            tileCats["slopeRU"] = new slopeRU();
+            tileCategories = new Dictionary<string, MapTileDesign>();
+            tileCategories["basic"] = new basic();
+            tileCategories["floatTop"] = new floatTop();
+            tileCategories["floatBtm"] = new floatBtm();
+            tileCategories["platTop"] = new platTop();
+            tileCategories["platBtm"] = new platBtm();
+            tileCategories["wallL"] = new wallL();
+            tileCategories["wallR"] = new wallR();
+            tileCategories["slopeLD"] = new slopeLD();
+            tileCategories["slopeLU"] = new slopeLU();
+            tileCategories["slopeRD"] = new slopeRD();
+            tileCategories["slopeRU"] = new slopeRU();
         }
     }
 }

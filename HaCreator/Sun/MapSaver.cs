@@ -56,13 +56,13 @@ namespace HaCreator.Wz
             {
                 try
                 {
-                    string cat = "Map" + image.Name.Substring(0, 1);
-                    SunDirectory mapDir = (SunDirectory)Program.SfManager["GeneralAssetTest"]["Map"];
+                    string mapCategory = "Map" + image.Name.Substring(0, 1);
+                    SunDirectory mapDir = (SunDirectory)Program.SfManager["Map"]["Map"];
 
-                    SunDirectory catDir = (SunDirectory)mapDir[cat];
+                    SunDirectory catDir = (SunDirectory)mapDir[mapCategory];
                     if (catDir == null)
                     {
-                        catDir = new SunDirectory(cat);
+                        catDir = new SunDirectory(mapCategory);
                         mapDir.AddDirectory(catDir);
                     }
                     SunImage mapImg = (SunImage)catDir[image.Name];
@@ -71,7 +71,7 @@ namespace HaCreator.Wz
                         mapImg.Remove();
                     }
                     catDir.AddImage(image);
-                    Program.SfManager.SetUpdated("GeneralAssetTest", image);
+                    Program.SfManager.SetUpdated("Map", image);
                 }
                 catch (NullReferenceException exp) { throw new Exception("Map img must exist in wz file / evil kms hellworld map002 error"); }
             }
@@ -94,18 +94,18 @@ namespace HaCreator.Wz
             if (board.MapInfo.mapType == MapType.RegularMap)
             {
                 SunImage strMapImg = (SunImage)Program.SfManager.String["Map.img"];
-                SunSubProperty strCatProp = (SunSubProperty)strMapImg[board.MapInfo.strCategoryName];
-                if (strCatProp == null)
+                SunSubProperty strCategoryProp = (SunSubProperty)strMapImg[board.MapInfo.strCategoryName];
+                if (strCategoryProp == null)
                 {
-                    strCatProp = new SunSubProperty();
-                    strMapImg[board.MapInfo.strCategoryName] = strCatProp;
+                    strCategoryProp = new SunSubProperty();
+                    strMapImg[board.MapInfo.strCategoryName] = strCategoryProp;
                     Program.SfManager.SetUpdated("string", strMapImg);
                 }
-                SunSubProperty strMapProp = (SunSubProperty)strCatProp[board.MapInfo.id.ToString()];
+                SunSubProperty strMapProp = (SunSubProperty)strCategoryProp[board.MapInfo.id.ToString()];
                 if (strMapProp == null)
                 {
                     strMapProp = new SunSubProperty();
-                    strCatProp[board.MapInfo.id.ToString()] = strMapProp;
+                    strCategoryProp[board.MapInfo.id.ToString()] = strMapProp;
                     Program.SfManager.SetUpdated("string", strMapImg);
                 }
                 SunStringProperty strMapName = (SunStringProperty)strMapProp["mapName"];
@@ -343,12 +343,12 @@ namespace HaCreator.Wz
             bool retainTooltipStrings = true;
             SunSubProperty tooltipParent = new SunSubProperty();
             SunImage strTooltipImg = (SunImage)Program.SfManager.String["ToolTipHelp.img"];
-            SunSubProperty strTooltipCat = (SunSubProperty)strTooltipImg["Mapobject"];
-            SunSubProperty strTooltipParent = (SunSubProperty)strTooltipCat[board.MapInfo.id.ToString()];
+            SunSubProperty strTooltipCategory = (SunSubProperty)strTooltipImg["Mapobject"];
+            SunSubProperty strTooltipParent = (SunSubProperty)strTooltipCategory[board.MapInfo.id.ToString()];
             if (strTooltipParent == null)
             {
                 strTooltipParent = new SunSubProperty();
-                strTooltipCat[board.MapInfo.id.ToString()] = strTooltipParent;
+                strTooltipCategory[board.MapInfo.id.ToString()] = strTooltipParent;
                 Program.SfManager.SetUpdated("string", strTooltipImg);
                 retainTooltipStrings = false;
             }

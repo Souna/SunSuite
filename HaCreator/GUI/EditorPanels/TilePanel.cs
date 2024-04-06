@@ -68,18 +68,18 @@ namespace HaCreator.GUI.EditorPanels
                     return;
                 SunImage tileSetImage = Program.InfoManager.TileSets[selectedSetName];
                 int? mag = InfoTool.GetOptionalInt(tileSetImage["info"]["mag"]);
-                foreach (SunSubProperty tCat in tileSetImage.SunProperties)
+                foreach (SunSubProperty tileCategory in tileSetImage.SunProperties)
                 {
-                    if (tCat.Name == "info") continue;
+                    if (tileCategory.Name == "info") continue;
                     if (ApplicationSettings.randomTiles)
                     {
-                        SunCanvasProperty canvasProp = (SunCanvasProperty)tCat["0"];
+                        SunCanvasProperty canvasProp = (SunCanvasProperty)tileCategory["0"];
                         if (canvasProp == null) continue;
-                        ImageViewer item = tileImagesContainer.Add(canvasProp.PNG.GetPNG(false), tCat.Name, true);
-                        TileInfo[] randomInfos = new TileInfo[tCat.SunProperties.Count];
+                        ImageViewer item = tileImagesContainer.Add(canvasProp.PNG.GetPNG(false), tileCategory.Name, true);
+                        TileInfo[] randomInfos = new TileInfo[tileCategory.SunProperties.Count];
                         for (int i = 0; i < randomInfos.Length; i++)
                         {
-                            randomInfos[i] = TileInfo.Get((string)tileSetList.SelectedItem, tCat.Name, tCat.SunProperties[i].Name, mag);
+                            randomInfos[i] = TileInfo.Get((string)tileSetList.SelectedItem, tileCategory.Name, tileCategory.SunProperties[i].Name, mag);
                         }
                         item.Tag = randomInfos;
                         item.MouseDown += new MouseEventHandler(tileItem_Click);
@@ -87,10 +87,10 @@ namespace HaCreator.GUI.EditorPanels
                     }
                     else
                     {
-                        foreach (SunCanvasProperty tile in tCat.SunProperties)
+                        foreach (SunCanvasProperty tile in tileCategory.SunProperties)
                         {
-                            ImageViewer item = tileImagesContainer.Add(tile.PNG.GetPNG(false), tCat.Name + "/" + tile.Name, true);
-                            item.Tag = TileInfo.Get((string)tileSetList.SelectedItem, tCat.Name, tile.Name, mag);
+                            ImageViewer item = tileImagesContainer.Add(tile.PNG.GetPNG(false), tileCategory.Name + "/" + tile.Name, true);
+                            item.Tag = TileInfo.Get((string)tileSetList.SelectedItem, tileCategory.Name, tile.Name, mag);
                             item.MouseDown += new MouseEventHandler(tileItem_Click);
                             item.MouseUp += new MouseEventHandler(ImageViewer.item_MouseUp);
                         }
