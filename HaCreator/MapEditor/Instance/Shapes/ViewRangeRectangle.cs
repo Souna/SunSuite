@@ -10,9 +10,9 @@ using XNA = Microsoft.Xna.Framework;
 
 namespace HaCreator.MapEditor.Instance.Shapes
 {
-    public class VRRectangle : MapleEmptyRectangle
+    public class ViewRangeRectangle : MapleEmptyRectangle
     {
-        public VRRectangle(Board board, XNA.Rectangle rect)
+        public ViewRangeRectangle(Board board, XNA.Rectangle rect)
             : base(board, rect)
         {
         }
@@ -32,14 +32,14 @@ namespace HaCreator.MapEditor.Instance.Shapes
             lock (board.ParentControl)
             {
                 base.RemoveItem(null);
-                board.VRRectangle = null;
+                board.ViewRangeRectangle = null;
             }
         }
 
-        public VRRectangle(Board board, SerializationForm json)
+        public ViewRangeRectangle(Board board, SerializationForm json)
             : base(board, new XNA.Rectangle(json.x0, json.y0, json.x1 - json.x0, json.y1 - json.y0))
         {
-            board.VRRectangle = this;
+            board.ViewRangeRectangle = this;
         }
     }
 }

@@ -31,13 +31,13 @@ namespace HaCreator.MapEditor.Instance
         {
             lock (board.ParentControl)
             {
-                if (layer.tS != null && layer.tS != baseInfo.TileSet)
+                if (layer.tileSet != null && layer.tileSet != baseInfo.TileSet)
                 {
                     Board.BoardItems.TileObjs.Remove(this);
                     layer.Items.Remove(this);
                     throw new Exception("tile added to a layer with different tS");
                 }
-                else layer.tS = baseInfo.TileSet;
+                else layer.tileSet = baseInfo.TileSet;
             }
         }
 

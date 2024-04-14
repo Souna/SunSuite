@@ -240,7 +240,7 @@ namespace HaCreator.MapEditor.Input
                                             askedVr = true;
                                             if (MessageBox.Show("This will remove the map's VR. This is not undoable, you must re-add VR from the map's main menu. Continue?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                                             {
-                                                selectedBoard.VRRectangle.RemoveItem(null);
+                                                selectedBoard.ViewRangeRectangle.RemoveItem(null);
                                             }
                                         }
                                     }
@@ -405,7 +405,7 @@ namespace HaCreator.MapEditor.Input
                                 MessageBox.Show("Layered items in clipboard and no layer/platform selected, cannot paste.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;
                             }
-                            if (tileSet != null && selectedBoard.SelectedLayer.tS != null && tileSet != selectedBoard.SelectedLayer.tS)
+                            if (tileSet != null && selectedBoard.SelectedLayer.tileSet != null && tileSet != selectedBoard.SelectedLayer.tileSet)
                             {
                                 MessageBox.Show("Clipboard contains tile in a different set than the current selected layer, cannot paste.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;

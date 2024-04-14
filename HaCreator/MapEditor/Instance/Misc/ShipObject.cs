@@ -155,7 +155,7 @@ namespace HaCreator.MapEditor.Instance.Misc
         protected void UpdateSerializedForm(SerializationForm result)
         {
             base.UpdateSerializedForm(result);
-            result.os = baseInfo.oS;
+            result.os = baseInfo.objectSet;
             result.l0 = baseInfo.l0;
             result.l1 = baseInfo.l1;
             result.l2 = baseInfo.l2;

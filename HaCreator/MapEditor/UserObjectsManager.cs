@@ -110,7 +110,7 @@ namespace HaCreator.MapEditor
                     if (li is ObjectInstance)
                     {
                         ObjectInfo oi = (ObjectInfo)li.BaseInfo;
-                        if (oi.oS == oS && oi.l0 == l0 && oi.l1 == l1 && oi.l2 == l2)
+                        if (oi.objectSet == oS && oi.l0 == l0 && oi.l1 == l1 && oi.l2 == l2)
                         {
                             li.RemoveItem(null);
                             i--;

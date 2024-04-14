@@ -30,12 +30,12 @@ namespace HaCreator.GUI.EditorPanels
             InitializeComponent();
 
             List<string> sortedBgSets = new List<string>();
-            foreach (KeyValuePair<string, SunImage> bS in Program.InfoManager.BackgroundSets)
-                sortedBgSets.Add(bS.Key);
+            foreach (KeyValuePair<string, SunImage> backgroundSet in Program.InfoManager.BackgroundSets)
+                sortedBgSets.Add(backgroundSet.Key);
 
             sortedBgSets.Sort();
-            foreach (string bS in sortedBgSets)
-                bgSetListBox.Items.Add(bS);
+            foreach (string backgroundSet in sortedBgSets)
+                bgSetListBox.Items.Add(backgroundSet);
         }
 
         private void bgSetListBox_SelectedIndexChanged(object sender, EventArgs e)

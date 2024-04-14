@@ -108,7 +108,7 @@ namespace SunLibrary.SunFileLib.Structure.Data
         public List<SunProperty> additionalNonInfoProps = new List<SunProperty>();
         public string strMapName = "<Untitled>";
         public string strStreetName = "<Untitled>";
-        public string strCategoryName = "SunEditor"; // In MS, this is the continent/area the map is located in. E.G. El Nath = Ossyria, Sleepywood = victoria
+        public string strCategoryName = "Dev"; // In MS, this is the continent/area the map is located in. E.G. El Nath = Ossyria, Sleepywood = victoria
         public int id = 0;
 
         //Editor related, not actual properties

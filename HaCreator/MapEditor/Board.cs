@@ -46,10 +46,10 @@ namespace HaCreator.MapEditor
         private ItemTypes visibleTypes;
         private ItemTypes editedTypes;
         private bool loading = false;
-        private VRRectangle vrRect = null;
-        private MinimapRectangle mmRect = null;
+        private ViewRangeRectangle viewRangeRect = null;
+        private MinimapRectangle miniMapRect = null;
         private ContextMenuStrip menu = null;
-        private SerializationManager serMan = null;
+        private SerializationManager serializationMan = null;
         private HaCreator.ThirdParty.TabPages.TabPage page = null;
         private bool dirty;
         private int uid;
@@ -74,7 +74,7 @@ namespace HaCreator.MapEditor
             boardItems = new BoardItemsManager(this);
             undoRedoMan = new UndoRedoManager(this);
             mouse = new Mouse(this);
-            serMan = new SerializationManager(this);
+            serializationMan = new SerializationManager(this);
         }
 
         #region Methods
@@ -156,6 +156,7 @@ namespace HaCreator.MapEditor
 
         public void RenderBoard(SpriteBatch sprite)
         {
+            
             if (mapInfo == null)
                 return;
             int xShift = centerPoint.X - hScroll;
@@ -181,9 +182,9 @@ namespace HaCreator.MapEditor
             }
 
             // Render VR if it exists
-            if (VRRectangle != null && (sel.visibleTypes & VRRectangle.Type) != 0)
+            if (ViewRangeRectangle != null && (sel.visibleTypes & ViewRangeRectangle.Type) != 0)
             {
-                VRRectangle.Draw(sprite, xShift, yShift, sel);
+                ViewRangeRectangle.Draw(sprite, xShift, yShift, sel);
             }
             // Render minimap rectangle
             if (MinimapRectangle != null && (sel.visibleTypes & MinimapRectangle.Type) != 0)
@@ -365,24 +366,24 @@ namespace HaCreator.MapEditor
             get { return minimapArea; }
         }
 
-        public VRRectangle VRRectangle
+        public ViewRangeRectangle ViewRangeRectangle
         {
-            get { return vrRect; }
+            get { return viewRangeRect; }
             set
             {
-                vrRect = value;
+                viewRangeRect = value;
                 menu.Items[1].Enabled = value == null;
             }
         }
 
         public MinimapRectangle MinimapRectangle
         {
-            get { return mmRect; }
+            get { return miniMapRect; }
             set
             {
-                mmRect = value;
+                miniMapRect = value;
                 menu.Items[2].Enabled = value == null;
-                parent.OnMinimapStateChanged(this, mmRect != null);
+                parent.OnMinimapStateChanged(this, miniMapRect != null);
             }
         }
 
@@ -463,7 +464,7 @@ namespace HaCreator.MapEditor
 
         public SerializationManager SerializationManager
         {
-            get { return serMan; }
+            get { return serializationMan; }
         }
 
         public HaCreator.ThirdParty.TabPages.TabPage TabPage

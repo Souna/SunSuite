@@ -205,7 +205,7 @@ namespace HaCreator.MapEditor.Instance
 
         public new class SerializationForm : LayeredItem.SerializationForm
         {
-            public string os, l0, l1, l2;
+            public string objectSet, l0, l1, l2;
             public bool flip;
             public SunBool r;
             public string name;
@@ -225,7 +225,7 @@ namespace HaCreator.MapEditor.Instance
         protected void UpdateSerializedForm(SerializationForm result)
         {
             base.UpdateSerializedForm(result);
-            result.os = baseInfo.oS;
+            result.objectSet = baseInfo.objectSet;
             result.l0 = baseInfo.l0;
             result.l1 = baseInfo.l1;
             result.l2 = baseInfo.l2;
@@ -246,7 +246,7 @@ namespace HaCreator.MapEditor.Instance
         public ObjectInstance(Board board, SerializationForm json)
             : base(board, json)
         {
-            baseInfo = ObjectInfo.Get(json.os, json.l0, json.l1, json.l2);
+            baseInfo = ObjectInfo.Get(json.objectSet, json.l0, json.l1, json.l2);
             flip = json.flip;
             _r = json.r;
             name = json.name;

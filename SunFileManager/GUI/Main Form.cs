@@ -19,7 +19,9 @@ namespace SunFileManager
 {
     public partial class frmFileManager : MaterialForm
     {
-        public static string DefaultPath = "C:\\Users\\SOUND\\Desktop\\New .Sun Files";
+        //Declare a variable to point to a folder called "New .Sun Files" on the desktop
+
+        public static string DefaultPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         public static FileManager manager = null;
         public SunContextMenuManager contextMenuManager = null;
         public bool AnimateGifs = false;
@@ -1272,18 +1274,27 @@ namespace SunFileManager
 
         private void btnCreateTestFile_Click(object sender, EventArgs e)
         {
-            sunTreeView.Focus();
-            string name = "test.sun";
-            var fullpath = Path.Combine(DefaultPath, name);
-            SunFile file = new SunFile(name, fullpath);
+            //sunTreeView.Focus();
+            //string name = "test.sun";
+            //var fullpath = Path.Combine(DefaultPath, name);
+            //SunFile file = new SunFile(name, fullpath);
+            //manager.sunFiles.Add(file);
+            //sunTreeView.Nodes.Add(new SunNode(file));
+
+            //AddSunImageToSelectedNode((SunNode)sunTreeView.Nodes[file.Name], "image1");
+
+            SunFile file = manager.LoadSunFile(Path.Combine(DefaultPath + "\\stuff" + "\\NewSunFiles", "Map.sun"));
             manager.sunFiles.Add(file);
             sunTreeView.Nodes.Add(new SunNode(file));
-
-            AddSunImageToSelectedNode((SunNode)sunTreeView.Nodes[file.Name], "image1");
-
-            
+        }
+        private void btnOpenStringFile_Click(object sender, EventArgs e)
+        {
+            SunFile file = manager.LoadSunFile(Path.Combine(DefaultPath + "\\stuff" + "\\NewSunFiles", "String.sun"));
+            manager.sunFiles.Add(file);
+            sunTreeView.Nodes.Add(new SunNode(file));
         }
 
         #endregion Debug
+
     }
 }

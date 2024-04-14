@@ -245,11 +245,11 @@ namespace HaCreator.MapEditor
                 selectedBoard.RenderBoard(sprite);
                 if (selectedBoard.MapSize.X < DxContainer.Width)
                 {
-                    DrawLine(sprite, new Vector2(MapSize.X, 0), new Vector2(MapSize.X, DxContainer.Height), Color.Black);
+                    DrawLine(sprite, new Vector2(MapSize.X, 0), new Vector2(MapSize.X, DxContainer.Height), Color.Red);
                 }
                 if (selectedBoard.MapSize.Y < DxContainer.Height)
                 {
-                    DrawLine(sprite, new Vector2(0, MapSize.Y), new Vector2(DxContainer.Width, MapSize.Y), Color.Black);
+                    DrawLine(sprite, new Vector2(0, MapSize.Y), new Vector2(DxContainer.Width, MapSize.Y), Color.Red);
                 }
             }
 #if FPS_TEST
@@ -720,7 +720,7 @@ namespace HaCreator.MapEditor
                 if (MapSize.X > DxContainer.Width)
                 {
                     hScrollBar.Enabled = true;
-                    hScrollBar.Maximum = MapSize.X - DxContainer.Width;
+                    hScrollBar.Maximum = (MapSize.X - DxContainer.Width) + 50;
                     hScrollBar.Minimum = 0;
                     if (hScrollBar.Maximum < selectedBoard.hScroll)
                     {
@@ -742,7 +742,7 @@ namespace HaCreator.MapEditor
                 if (MapSize.Y > DxContainer.Height)
                 {
                     vScrollBar.Enabled = true;
-                    vScrollBar.Maximum = MapSize.Y - DxContainer.Height;
+                    vScrollBar.Maximum = (MapSize.Y - DxContainer.Height) + 50;
                     vScrollBar.Minimum = 0;
                     if (vScrollBar.Maximum < selectedBoard.vScroll)
                     {

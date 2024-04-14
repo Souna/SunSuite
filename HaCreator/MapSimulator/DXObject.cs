@@ -278,7 +278,7 @@ namespace HaCreator.MapSimulator
 
                 case BackgroundType.VerticalMovingHVTiles:
                     DrawHVCopies(sprite, simWidth, simHeight, X, Y + (int)bgMoveShiftY, _cx, _cy, frame);
-                    IncreaseShiftX(_cy);
+                    IncreaseShiftY(_cy);
                     break;
             }
         }

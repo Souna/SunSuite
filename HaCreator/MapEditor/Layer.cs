@@ -18,7 +18,7 @@ namespace HaCreator.MapEditor
         private SortedSet<int> zms = new SortedSet<int>();
         private int num;
         private Board board;
-        private string _tS = null;
+        private string _tileSet = null;
 
         public Layer(Board board)
         {
@@ -48,16 +48,16 @@ namespace HaCreator.MapEditor
             }
         }
 
-        public string tS
+        public string tileSet
         {
-            get { return _tS; }
+            get { return _tileSet; }
             set
             {
                 lock (board.ParentControl)
                 {
-                    if (_tS != value)
+                    if (_tileSet != value)
                     {
-                        _tS = value;
+                        _tileSet = value;
                         if (!board.Loading)
                         {
                             board.ParentControl.LayerTSChanged(this);
@@ -67,7 +67,7 @@ namespace HaCreator.MapEditor
             }
         }
 
-        public void ReplaceTS(string newTS)
+        public void ReplaceTileSet(string newTS)
         {
             lock (board.ParentControl)
             {
@@ -82,7 +82,7 @@ namespace HaCreator.MapEditor
                     }
                 }
             }
-            this.tS = newTS;
+            this.tileSet = newTS;
         }
 
         public static Layer GetLayerByNum(Board board, int num)
@@ -95,10 +95,10 @@ namespace HaCreator.MapEditor
             foreach (LayeredItem item in items)
                 if (item is TileInstance)
                 {
-                    tS = ((TileInfo)item.BaseInfo).TileSet;
+                    tileSet = ((TileInfo)item.BaseInfo).TileSet;
                     return;
                 }
-            tS = null;
+            tileSet = null;
         }
 
         public void RecheckZM()
@@ -118,7 +118,7 @@ namespace HaCreator.MapEditor
 
         public override string ToString()
         {
-            return LayerNumber.ToString() + (tS != null ? (" - " + tS) : "");
+            return LayerNumber.ToString() + (tileSet != null ? (" - " + tileSet) : "");
         }
     }
 }

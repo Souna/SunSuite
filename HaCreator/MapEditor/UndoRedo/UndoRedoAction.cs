@@ -147,7 +147,7 @@ namespace HaCreator.MapEditor.UndoRedo
                     string ts_old = (string)ParamA;
                     string ts_new = (string)ParamB;
                     Layer l = (Layer)ParamC;
-                    l.ReplaceTS(ts_old);
+                    l.ReplaceTileSet(ts_old);
                     break;
 
                 case UndoRedoType.zMChanged:

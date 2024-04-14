@@ -109,20 +109,20 @@ namespace HaCreator.GUI.EditorPanels
                     return;
                 }
                 Layer layer = hcsm.MultiBoard.SelectedBoard.SelectedLayer;
-                if (layer.tS != null)
+                if (layer.tileSet != null)
                 {
                     TileInfo infoToAdd = null;
                     if (ApplicationSettings.randomTiles)
                         infoToAdd = ((TileInfo[])item.Tag)[0];
                     else
                         infoToAdd = (TileInfo)item.Tag;
-                    if (infoToAdd.TileSet != layer.tS)
+                    if (infoToAdd.TileSet != layer.tileSet)
                     {
                         if (MessageBox.Show("This action will change the layer's tS. Proceed?", "Layer tS Change", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != System.Windows.Forms.DialogResult.Yes)
                             return;
                         List<UndoRedoAction> actions = new List<UndoRedoAction>();
-                        actions.Add(UndoRedoManager.LayerTSChanged(layer, layer.tS, infoToAdd.TileSet));
-                        layer.ReplaceTS(infoToAdd.TileSet);
+                        actions.Add(UndoRedoManager.LayerTSChanged(layer, layer.tileSet, infoToAdd.TileSet));
+                        layer.ReplaceTileSet(infoToAdd.TileSet);
                         hcsm.MultiBoard.SelectedBoard.UndoRedoMan.AddUndoBatch(actions);
                     }
                 }

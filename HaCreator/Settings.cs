@@ -72,7 +72,7 @@ namespace HaCreator
     public static class ApplicationSettings
     {
         public static ItemTypes theoreticalVisibleTypes = ItemTypes.All; // These two are marked theoretical because the visible\edited types in effect (Board.VisibleTypes\EditedTypes)
-        public static ItemTypes theoreticalEditedTypes = ItemTypes.All ^ ItemTypes.Backgrounds; // are subject to the current mode of operation
+        public static ItemTypes theoreticalEditedTypes = ItemTypes.All; // are subject to the current mode of operation
         public static string SunFileFolder = ""; //D:\\WZ Sandbox\\Royals
         public static int SunFileFolderIndex = 0;
         public static System.Drawing.Size LastMapSize = new System.Drawing.Size(800, 800);

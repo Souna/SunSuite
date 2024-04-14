@@ -112,7 +112,7 @@ namespace HaCreator.MapEditor
                 // No need to also include FootholdLines beacuse they will be included through their anchors
                 serData.items = SerializeList(board.BoardItems.Items);
                 serData.info = JsonConvert.SerializeObject(board.MapInfo);
-                serData.vr = JsonConvert.SerializeObject(board.VRRectangle == null ? null : board.VRRectangle.Serialize());
+                serData.vr = JsonConvert.SerializeObject(board.ViewRangeRectangle == null ? null : board.ViewRangeRectangle.Serialize());
                 serData.minimap = JsonConvert.SerializeObject(board.MinimapRectangle == null ? null : board.MinimapRectangle.Serialize());
                 serData.center = SerializePoint(board.CenterPoint);
                 serData.size = SerializePoint(board.MapSize);
@@ -137,7 +137,7 @@ namespace HaCreator.MapEditor
             board.CenterPoint = DeserializePoint(serData.center);
             MapleEmptyRectangle.SerializationForm vrSer = JsonConvert.DeserializeObject<MapleEmptyRectangle.SerializationForm>(serData.vr);
             MapleEmptyRectangle.SerializationForm mmSer = JsonConvert.DeserializeObject<MapleEmptyRectangle.SerializationForm>(serData.minimap);
-            board.VRRectangle = vrSer == null ? null : new VRRectangle(board, vrSer);
+            board.ViewRangeRectangle = vrSer == null ? null : new ViewRangeRectangle(board, vrSer);
             board.MinimapRectangle = mmSer == null ? null : new MinimapRectangle(board, mmSer);
             board.MapInfo = JsonConvert.DeserializeObject<MapInfo>(serData.info);
             foreach (ISerializable item in DeserializeList(serData.items))

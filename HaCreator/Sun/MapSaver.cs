@@ -90,7 +90,7 @@ namespace HaCreator.Wz
 
         private void SaveMapInfo()
         {
-            board.MapInfo.Save(image, board.VRRectangle == null ? (System.Drawing.Rectangle?)null : new System.Drawing.Rectangle(board.VRRectangle.X, board.VRRectangle.Y, board.VRRectangle.Width, board.VRRectangle.Height));
+            board.MapInfo.Save(image, board.ViewRangeRectangle == null ? (System.Drawing.Rectangle?)null : new System.Drawing.Rectangle(board.ViewRangeRectangle.X, board.ViewRangeRectangle.Y, board.ViewRangeRectangle.Width, board.ViewRangeRectangle.Height));
             if (board.MapInfo.mapType == MapType.RegularMap)
             {
                 SunImage strMapImg = (SunImage)Program.SfManager.String["Map.img"];
@@ -163,9 +163,9 @@ namespace HaCreator.Wz
 
                 // Info
                 Layer l = board.Layers[layer];
-                if (l.tS != null)
+                if (l.tileSet != null)
                 {
-                    infoProp["tS"] = InfoTool.SetString(l.tS);
+                    infoProp["tileSet"] = InfoTool.SetString(l.tileSet);
                 }
                 layerProp["info"] = infoProp;
 
@@ -185,7 +185,7 @@ namespace HaCreator.Wz
                         obj["y"] = InfoTool.SetInt(objInst.Y);
                         obj["z"] = InfoTool.SetInt(objInst.Z);
                         obj["zM"] = InfoTool.SetInt(objInst.PlatformNumber);
-                        obj["oS"] = InfoTool.SetString(objInfo.oS);
+                        obj["objectSet"] = InfoTool.SetString(objInfo.objectSet);
                         obj["l0"] = InfoTool.SetString(objInfo.l0);
                         obj["l1"] = InfoTool.SetString(objInfo.l1);
                         obj["l2"] = InfoTool.SetString(objInfo.l2);
@@ -236,8 +236,8 @@ namespace HaCreator.Wz
                     tile["x"] = InfoTool.SetInt(tileInst.X);
                     tile["y"] = InfoTool.SetInt(tileInst.Y);
                     tile["zM"] = InfoTool.SetInt(tileInst.PlatformNumber);
-                    tile["u"] = InfoTool.SetString(tileInfo.Type);
-                    tile["no"] = InfoTool.SetInt(int.Parse(tileInfo.No));
+                    tile["tileType"] = InfoTool.SetString(tileInfo.Type);
+                    tile["variant"] = InfoTool.SetInt(int.Parse(tileInfo.No));
 
                     tileParent[j.ToString()] = tile;
                 }
@@ -295,7 +295,7 @@ namespace HaCreator.Wz
 
                 portal["x"] = InfoTool.SetInt(portalInst.X);
                 portal["y"] = InfoTool.SetInt(portalInst.Y);
-                portal["pt"] = InfoTool.SetInt(Program.InfoManager.PortalIdByType[portalInst.pt]);
+                portal["portalType"] = InfoTool.SetInt(Program.InfoManager.PortalIdByType[portalInst.pt]);
                 portal["tm"] = InfoTool.SetInt(portalInst.tm);
                 portal["tn"] = InfoTool.SetString(portalInst.tn);
                 portal["pn"] = InfoTool.SetString(portalInst.pn);
@@ -452,10 +452,10 @@ namespace HaCreator.Wz
                 bgProp["a"] = InfoTool.SetInt(bgInst.a);
                 bgProp["type"] = InfoTool.SetInt((int)bgInst.type);
                 bgProp["front"] = InfoTool.SetOptionalBool(bgInst.front);
-                bgProp["f"] = InfoTool.SetOptionalBool(bgInst.Flip);
-                bgProp["bS"] = InfoTool.SetString(bgInfo.backgroundSet);
+                bgProp["flip"] = InfoTool.SetOptionalBool(bgInst.Flip);
+                bgProp["backgroundSet"] = InfoTool.SetString(bgInfo.backgroundSet);
                 bgProp["ani"] = InfoTool.SetBool(bgInfo.ani);
-                bgProp["no"] = InfoTool.SetInt(int.Parse(bgInfo.no));
+                bgProp["bgNumber"] = InfoTool.SetInt(int.Parse(bgInfo.no));
                 bgParent[i.ToString()] = bgProp;
             }
             image["back"] = bgParent;
@@ -755,7 +755,7 @@ namespace HaCreator.Wz
                     ShipObject ship = (ShipObject)item;
                     ObjectInfo shipInfo = (ObjectInfo)ship.BaseInfo;
                     SunSubProperty shipProp = new SunSubProperty();
-                    shipProp["shipObj"] = InfoTool.SetString("Map/Obj/" + shipInfo.oS + ".img/" + shipInfo.l0 + "/" + shipInfo.l1 + "/" + shipInfo.l2);
+                    shipProp["shipObj"] = InfoTool.SetString("Map/Obj/" + shipInfo.objectSet + ".img/" + shipInfo.l0 + "/" + shipInfo.l1 + "/" + shipInfo.l2);
                     shipProp["x"] = InfoTool.SetInt(ship.UnflippedX);
                     shipProp["y"] = InfoTool.SetInt(ship.Y);
                     shipProp["z"] = InfoTool.SetOptionalInt(ship.zValue);
@@ -775,7 +775,7 @@ namespace HaCreator.Wz
                     Healer healer = (Healer)item;
                     ObjectInfo healerInfo = (ObjectInfo)healer.BaseInfo;
                     SunSubProperty healerProp = new SunSubProperty();
-                    healerProp["healer"] = InfoTool.SetString("Map/Obj/" + healerInfo.oS + ".img/" + healerInfo.l0 + "/" + healerInfo.l1 + "/" + healerInfo.l2);
+                    healerProp["healer"] = InfoTool.SetString("Map/Obj/" + healerInfo.objectSet + ".img/" + healerInfo.l0 + "/" + healerInfo.l1 + "/" + healerInfo.l2);
                     healerProp["x"] = InfoTool.SetInt(healer.X);
                     healerProp["yMin"] = InfoTool.SetInt(healer.yMin);
                     healerProp["yMax"] = InfoTool.SetInt(healer.yMax);
@@ -790,7 +790,7 @@ namespace HaCreator.Wz
                     Pulley pulley = (Pulley)item;
                     ObjectInfo pulleyInfo = (ObjectInfo)pulley.BaseInfo;
                     SunSubProperty pulleyProp = new SunSubProperty();
-                    pulleyProp["pulley"] = InfoTool.SetString("Map/Obj/" + pulleyInfo.oS + ".img/" + pulleyInfo.l0 + "/" + pulleyInfo.l1 + "/" + pulleyInfo.l2);
+                    pulleyProp["pulley"] = InfoTool.SetString("Map/Obj/" + pulleyInfo.objectSet + ".img/" + pulleyInfo.l0 + "/" + pulleyInfo.l1 + "/" + pulleyInfo.l2);
                     pulleyProp["x"] = InfoTool.SetInt(pulley.X);
                     pulleyProp["y"] = InfoTool.SetInt(pulley.Y);
                     image["pulley"] = pulleyProp;
