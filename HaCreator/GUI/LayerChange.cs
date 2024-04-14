@@ -62,9 +62,9 @@ namespace HaCreator.GUI
 
         private bool LayerCapableOfHoldingSelectedItems(Layer layer)
         {
-            if (layer.tS == null) return true;
+            if (layer.tileSet == null) return true;
             foreach (BoardItem item in items)
-                if (item is TileInstance && ((TileInfo)item.BaseInfo).TileSet != layer.tS) return false;
+                if (item is TileInstance && ((TileInfo)item.BaseInfo).TileSet != layer.tileSet) return false;
             return true;
         }
 

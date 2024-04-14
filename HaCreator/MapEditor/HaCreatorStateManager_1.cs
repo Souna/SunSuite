@@ -341,11 +341,11 @@ namespace HaCreator.MapEditor
                     Microsoft.Xna.Framework.Point mapCenter, mapSize, minimapCenter, minimapSize;
                     bool hasVR, hasMinimap;
                     MapLoader.GetMapDimensions(selectedBoard.MapInfo.Image, out VR, out mapCenter, out mapSize, out minimapCenter, out minimapSize, out hasVR, out hasMinimap);
-                    selectedBoard.VRRectangle = new VRRectangle(selectedBoard, VR);
+                    selectedBoard.ViewRangeRectangle = new ViewRangeRectangle(selectedBoard, VR);
                 }
                 else
                 {
-                    selectedBoard.VRRectangle = new VRRectangle(selectedBoard, new Microsoft.Xna.Framework.Rectangle(-selectedBoard.CenterPoint.X + 100, -selectedBoard.CenterPoint.Y + 100, selectedBoard.MapSize.X - 200, selectedBoard.MapSize.Y - 200));
+                    selectedBoard.ViewRangeRectangle = new ViewRangeRectangle(selectedBoard, new Microsoft.Xna.Framework.Rectangle(-selectedBoard.CenterPoint.X + 100, -selectedBoard.CenterPoint.Y + 100, selectedBoard.MapSize.X - 200, selectedBoard.MapSize.Y - 200));
                 }
             }
         }
@@ -521,7 +521,7 @@ namespace HaCreator.MapEditor
         private void ribbon_MapSimulationClicked()
         {
             multiBoard.DeviceReady = false;
-            MapSimulator.MapSimulator.CreateMapSimulator(multiBoard.SelectedBoard).ShowDialog();
+            MapSimulator.MapSimulator.CreateMapSimulator(multiBoard.SelectedBoard).Show();
             multiBoard.DeviceReady = true;
         }
 
@@ -736,7 +736,7 @@ namespace HaCreator.MapEditor
             }
             else if (item is ObjectInstance)
             {
-                return "Object:" + lineBreak + ((ObjectInfo)item.BaseInfo).oS + @"\" + ((ObjectInfo)item.BaseInfo).l0 + @"\" + ((ObjectInfo)item.BaseInfo).l1 + @"\" + ((ObjectInfo)item.BaseInfo).l2;
+                return "Object:" + lineBreak + ((ObjectInfo)item.BaseInfo).objectSet + @"\" + ((ObjectInfo)item.BaseInfo).l0 + @"\" + ((ObjectInfo)item.BaseInfo).l1 + @"\" + ((ObjectInfo)item.BaseInfo).l2;
             }
             else if (item is BackgroundInstance)
             {

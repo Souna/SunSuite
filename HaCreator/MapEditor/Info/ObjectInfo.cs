@@ -18,7 +18,7 @@ namespace HaCreator.MapEditor.Info
 {
     public class ObjectInfo : MapleDrawableInfo
     {
-        private string _oS;
+        private string _objectSet;
         private string _l0;
         private string _l1;
         private string _l2;
@@ -28,23 +28,23 @@ namespace HaCreator.MapEditor.Info
         private List<XNA.Point> chairOffsets = null;
         private bool connect;
 
-        public ObjectInfo(Bitmap image, System.Drawing.Point origin, string oS, string l0, string l1, string l2, SunObject parentObject)
+        public ObjectInfo(Bitmap image, System.Drawing.Point origin, string objectSet, string l0, string l1, string l2, SunObject parentObject)
             : base(image, origin, parentObject)
         {
-            this._oS = oS;
+            this._objectSet = objectSet;
             this._l0 = l0;
             this._l1 = l1;
             this._l2 = l2;
-            this.connect = oS.StartsWith("connect");
+            this.connect = objectSet.StartsWith("connect");
         }
 
-        public static ObjectInfo Get(string oS, string l0, string l1, string l2)
+        public static ObjectInfo Get(string objectSet, string l0, string l1, string l2)
         {
             try
             {
-                SunProperty objInfoProp = Program.InfoManager.ObjectSets[oS][l0][l1][l2];
+                SunProperty objInfoProp = Program.InfoManager.ObjectSets[objectSet][l0][l1][l2];
                 if (objInfoProp.SETag == null)
-                    objInfoProp.SETag = ObjectInfo.Load((SunSubProperty)objInfoProp, oS, l0, l1, l2);
+                    objInfoProp.SETag = ObjectInfo.Load((SunSubProperty)objInfoProp, objectSet, l0, l1, l2);
                 return (ObjectInfo)objInfoProp.SETag;
             }
             catch (KeyNotFoundException e) { return null; }
@@ -87,10 +87,10 @@ namespace HaCreator.MapEditor.Info
             return result;
         }
 
-        private static ObjectInfo Load(SunSubProperty parentObject, string oS, string l0, string l1, string l2)
+        private static ObjectInfo Load(SunSubProperty parentObject, string objectSet, string l0, string l1, string l2)
         {
             SunCanvasProperty frame1 = (SunCanvasProperty)SunInfoTools.GetRealProperty(parentObject["0"]);
-            ObjectInfo result = new ObjectInfo(frame1.PNG.GetPNG(false), SunInfoTools.VectorToSystemPoint((SunVectorProperty)frame1["origin"]), oS, l0, l1, l2, parentObject);
+            ObjectInfo result = new ObjectInfo(frame1.PNG.GetPNG(false), SunInfoTools.VectorToSystemPoint((SunVectorProperty)frame1["origin"]), objectSet, l0, l1, l2, parentObject);
             SunProperty chairs = parentObject["seat"];
             SunProperty ropes = frame1["rope"];
             SunProperty ladders = frame1["ladder"];
@@ -155,15 +155,15 @@ namespace HaCreator.MapEditor.Info
             return instance;
         }
 
-        public string oS
+        public string objectSet
         {
             get
             {
-                return _oS;
+                return _objectSet;
             }
             set
             {
-                this._oS = value;
+                this._objectSet = value;
             }
         }
 

@@ -5,20 +5,21 @@ namespace SunLibrary.SunFileLib.Structure.Data
     [Flags]
     public enum ItemTypes
     {
-        None = 0,
-        Backgrounds = 1,
-        Tiles = 2,
-        Footholds = 3,
-        Objects = 4,
-        Mobs = 5,
-        NPCs = 6,
-        Reactors = 7,
-        Portals = 8,
-        Ropes = 9,
-        Chairs = 10,
-        ToolTips = 11,
-        Misc = 12,
-        All = 13
+        None = 0x0,
+        Tiles = 0x1,
+        Objects = 0x2,
+        Mobs = 0x4,
+        NPCs = 0x8,
+        Ropes = 0x10,
+        Footholds = 0x20,
+        Portals = 0x40,
+        Chairs = 0x80,
+        Reactors = 0x100,
+        ToolTips = 0x200,
+        Backgrounds = 0x400,
+        Misc = 0x800,
+
+        All = 0xFFF
     }
 
     // Where we would define any field limits/forced behavior

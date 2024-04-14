@@ -117,7 +117,7 @@ namespace HaCreator.GUI
                     if (li is ObjectInstance)
                     {
                         ObjectInfo oi = (ObjectInfo)li.BaseInfo;
-                        if (oi.oS == UserObjectsManager.oS &&
+                        if (oi.objectSet == UserObjectsManager.oS &&
                             oi.l0 == UserObjectsManager.l0 &&
                             oi.l1 == UserObjectsManager.l1 &&
                             oi.l2 == l2)

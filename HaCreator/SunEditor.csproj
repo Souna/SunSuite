@@ -389,7 +389,7 @@
     <Compile Include="MapEditor\Instance\Shapes\ToolTipLine.cs" />
     <Compile Include="MapEditor\Instance\Shapes\VRDot.cs" />
     <Compile Include="MapEditor\Instance\Shapes\VRLine.cs" />
-    <Compile Include="MapEditor\Instance\Shapes\VRRectangle.cs" />
+    <Compile Include="MapEditor\Instance\Shapes\ViewRangeRectangle.cs" />
     <Compile Include="MapEditor\Instance\TileInstance.cs" />
     <Compile Include="MapEditor\Layer.cs" />
     <Compile Include="MapEditor\MultiBoard.cs">
@@ -618,6 +618,9 @@
       <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ThirdParty\Better.resx">
+      <DependentUpon>Better.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ThirdParty\ImageViewer.resx">
       <DependentUpon>ImageViewer.cs</DependentUpon>
     </EmbeddedResource>
@@ -678,6 +681,7 @@
     <Resource Include="Images\Untitled1.png" />
     <Resource Include="Images\UserObjs.png" />
     <Resource Include="Images\wz.ico" />
+    <Resource Include="Images\sun.ico" />
     <Content Include="Resources\mapEditMenu.png" />
     <Content Include="Resources\placeholder.bmp" />
     <Content Include="sun.ico" />

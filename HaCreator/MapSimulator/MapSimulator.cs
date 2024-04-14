@@ -56,12 +56,14 @@ namespace HaCreator.MapSimulator
                 audio = new SunMP3Streamer(Program.InfoManager.BGMs[mapBoard.MapInfo.bgm], true);
             mapCenter = mapBoard.CenterPoint;
             minimapPos = new Point((int)Math.Round((mapBoard.MinimapPosition.X + mapCenter.X) / (double)mapBoard.mag), (int)Math.Round((mapBoard.MinimapPosition.Y + mapCenter.Y) / (double)mapBoard.mag));
-            if (mapBoard.VRRectangle == null) vr = new Rectangle(0, 0, mapBoard.MapSize.X, mapBoard.MapSize.Y);
-            else vr = new Rectangle(mapBoard.VRRectangle.X + mapCenter.X, mapBoard.VRRectangle.Y + mapCenter.Y, mapBoard.VRRectangle.Width, mapBoard.VRRectangle.Height);
+            if (mapBoard.ViewRangeRectangle == null) vr = new Rectangle(0, 0, mapBoard.MapSize.X, mapBoard.MapSize.Y);
+            else vr = new Rectangle(mapBoard.ViewRangeRectangle.X + mapCenter.X, mapBoard.ViewRangeRectangle.Y + mapCenter.Y, mapBoard.ViewRangeRectangle.Width, mapBoard.ViewRangeRectangle.Height);
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque, true);
             InitializeComponent();
-            width = UserSettings.XGAResolution ? 1024 : 800; //1024
-            height = UserSettings.XGAResolution ? 768 : 600; //768
+            //width = UserSettings.XGAResolution ? 1024 : 800; //1024
+            //height = UserSettings.XGAResolution ? 768 : 600; //768
+            width = 1366;
+            height = 768;
             this.Width = width;
             this.Height = height;
 #if FULLSCREEN

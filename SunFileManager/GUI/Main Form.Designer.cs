@@ -41,9 +41,10 @@
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sunDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnCreateTestFile = new System.Windows.Forms.Button();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnOpenMapFile = new System.Windows.Forms.Button();
             this.lblSelectedNodeType = new System.Windows.Forms.Label();
             this.cmsNodes = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.txtPropertyValue = new System.Windows.Forms.TextBox();
@@ -54,10 +55,10 @@
             this.btnApplyPropertyChanges = new System.Windows.Forms.Button();
             this.lblVectorXVal = new System.Windows.Forms.Label();
             this.imageListDrag = new System.Windows.Forms.ImageList(this.components);
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             this.soundPlayer = new SunFileManager.GUI.SoundPlayer();
             this.panning_PictureBox = new SunFileManager.GUI.Container.Panning_PictureBox();
+            this.btnOpenStringFile = new System.Windows.Forms.Button();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -189,32 +190,39 @@
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 22);
             this.toolsToolStripMenuItem.Text = "&Tools";
             // 
-            // optionsToolStripMenuItem
+            // exportToolStripMenuItem
             // 
-            this.optionsToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.Property;
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.optionsToolStripMenuItem.Text = "Options...";
-            this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
             this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
-            // btnCreateTestFile
+            // optionsToolStripMenuItem
             // 
-            this.btnCreateTestFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnCreateTestFile.Location = new System.Drawing.Point(11, 692);
-            this.btnCreateTestFile.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnCreateTestFile.Name = "btnCreateTestFile";
-            this.btnCreateTestFile.Size = new System.Drawing.Size(110, 21);
-            this.btnCreateTestFile.TabIndex = 3;
-            this.btnCreateTestFile.Text = "Test File";
-            this.btnCreateTestFile.UseVisualStyleBackColor = true;
-            this.btnCreateTestFile.Click += new System.EventHandler(this.btnCreateTestFile_Click);
+            this.optionsToolStripMenuItem.Image = global::SunFileManager.Properties.Resources.Property;
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.optionsToolStripMenuItem.Text = "Options...";
+            this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
+            // 
+            // btnOpenMapFile
+            // 
+            this.btnOpenMapFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnOpenMapFile.Location = new System.Drawing.Point(11, 692);
+            this.btnOpenMapFile.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnOpenMapFile.Name = "btnOpenMapFile";
+            this.btnOpenMapFile.Size = new System.Drawing.Size(110, 21);
+            this.btnOpenMapFile.TabIndex = 3;
+            this.btnOpenMapFile.Text = "Open Map";
+            this.btnOpenMapFile.UseVisualStyleBackColor = true;
+            this.btnOpenMapFile.Click += new System.EventHandler(this.btnCreateTestFile_Click);
             // 
             // lblSelectedNodeType
             // 
@@ -314,13 +322,6 @@
             this.imageListDrag.ImageSize = new System.Drawing.Size(16, 16);
             this.imageListDrag.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // exportToolStripMenuItem
-            // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exportToolStripMenuItem.Text = "Export";
-            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
-            // 
             // elementHost1
             // 
             this.elementHost1.BackColor = System.Drawing.Color.Transparent;
@@ -345,12 +346,25 @@
             this.panning_PictureBox.Size = new System.Drawing.Size(762, 605);
             this.panning_PictureBox.TabIndex = 9;
             // 
+            // btnOpenStringFile
+            // 
+            this.btnOpenStringFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnOpenStringFile.Location = new System.Drawing.Point(125, 692);
+            this.btnOpenStringFile.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnOpenStringFile.Name = "btnOpenStringFile";
+            this.btnOpenStringFile.Size = new System.Drawing.Size(110, 21);
+            this.btnOpenStringFile.TabIndex = 14;
+            this.btnOpenStringFile.Text = "Open String";
+            this.btnOpenStringFile.UseVisualStyleBackColor = true;
+            this.btnOpenStringFile.Click += new System.EventHandler(this.btnOpenStringFile_Click);
+            // 
             // frmFileManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1106, 718);
+            this.Controls.Add(this.btnOpenStringFile);
             this.Controls.Add(this.lblVectorXVal);
             this.Controls.Add(this.btnApplyPropertyChanges);
             this.Controls.Add(this.elementHost1);
@@ -361,7 +375,7 @@
             this.Controls.Add(this.txtPropertyName);
             this.Controls.Add(this.txtPropertyValue);
             this.Controls.Add(this.lblSelectedNodeType);
-            this.Controls.Add(this.btnCreateTestFile);
+            this.Controls.Add(this.btnOpenMapFile);
             this.Controls.Add(this.sunTreeView);
             this.Controls.Add(this.menuStripMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -390,7 +404,7 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sunDirectoryToolStripMenuItem;
-        private System.Windows.Forms.Button btnCreateTestFile;
+        private System.Windows.Forms.Button btnOpenMapFile;
         private System.Windows.Forms.Label lblSelectedNodeType;
         private System.Windows.Forms.ContextMenuStrip cmsNodes;
         private System.Windows.Forms.TextBox txtPropertyValue;
@@ -409,6 +423,7 @@
         private GUI.SoundPlayer soundPlayer;
         private System.Windows.Forms.ImageList imageListDrag;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.Button btnOpenStringFile;
     }
 }
 

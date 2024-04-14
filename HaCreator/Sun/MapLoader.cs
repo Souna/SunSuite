@@ -104,7 +104,7 @@ namespace HaCreator.Wz
             }
         }
 
-        private static bool GetMapVR(SunImage mapImage, ref System.Drawing.Rectangle? VR)
+        private static bool GetMapViewRange(SunImage mapImage, ref System.Drawing.Rectangle? VR)
         {
             SunSubProperty fhParent = (SunSubProperty)mapImage["foothold"];
             if (fhParent == null) { VR = null; return false; }
@@ -147,16 +147,16 @@ namespace HaCreator.Wz
             for (int layer = 0; layer <= 7; layer++)
             {
                 SunSubProperty layerProp = (SunSubProperty)mapImage[layer.ToString()];
-                SunProperty tSprop = layerProp["info"]["tS"];
-                string tS = null;
-                if (tSprop != null) tS = InfoTool.GetString(tSprop);
+                SunProperty tileSetprop = layerProp["info"]["tileSet"];
+                string tileSet = null;
+                if (tileSetprop != null) tileSet = InfoTool.GetString(tileSetprop);
                 foreach (SunProperty obj in layerProp["obj"].SunProperties)
                 {
                     int x = InfoTool.GetInt(obj["x"]);
                     int y = InfoTool.GetInt(obj["y"]);
                     int z = InfoTool.GetInt(obj["z"]);
                     int zM = InfoTool.GetInt(obj["zM"]);
-                    string oS = InfoTool.GetString(obj["oS"]);
+                    string objectSet = InfoTool.GetString(obj["objectSet"]);
                     string l0 = InfoTool.GetString(obj["l0"]);
                     string l1 = InfoTool.GetString(obj["l1"]);
                     string l2 = InfoTool.GetString(obj["l2"]);
@@ -181,7 +181,7 @@ namespace HaCreator.Wz
                         }
                     }
                     bool flip = InfoTool.GetBool(obj["f"]);
-                    ObjectInfo objInfo = ObjectInfo.Get(oS, l0, l1, l2);
+                    ObjectInfo objInfo = ObjectInfo.Get(objectSet, l0, l1, l2);
                     if (objInfo == null)
                         continue;
                     Layer l = mapBoard.Layers[layer];
@@ -194,10 +194,10 @@ namespace HaCreator.Wz
                     int x = InfoTool.GetInt(tile["x"]);
                     int y = InfoTool.GetInt(tile["y"]);
                     int zM = InfoTool.GetInt(tile["zM"]);
-                    string u = InfoTool.GetString(tile["u"]);
-                    int no = InfoTool.GetInt(tile["no"]);
+                    string tileType = InfoTool.GetString(tile["tileType"]);
+                    int variant = InfoTool.GetInt(tile["variant"]);
                     Layer l = mapBoard.Layers[layer];
-                    TileInfo tileInfo = TileInfo.Get(tS, u, no.ToString());
+                    TileInfo tileInfo = TileInfo.Get(tileSet, tileType, variant.ToString());
                     mapBoard.BoardItems.TileObjs.Add((LayeredItem)tileInfo.CreateInstance(l, mapBoard, x, y, int.Parse(tile.Name), zM, false, false));
                     l.zMList.Add(zM);
                 }
@@ -454,7 +454,7 @@ namespace HaCreator.Wz
             {
                 int x = InfoTool.GetInt(portal["x"]);
                 int y = InfoTool.GetInt(portal["y"]);
-                string pt = Program.InfoManager.PortalTypeById[InfoTool.GetInt(portal["pt"])];
+                string pt = Program.InfoManager.PortalTypeById[InfoTool.GetInt(portal["portalType"])];
                 int tm = InfoTool.GetInt(portal["tm"]);
                 string tn = InfoTool.GetString(portal["tn"]);
                 string pn = InfoTool.GetString(portal["pn"]);
@@ -537,12 +537,12 @@ namespace HaCreator.Wz
                 int a = InfoTool.GetInt(bgProp["a"]);
                 BackgroundType type = (BackgroundType)InfoTool.GetInt(bgProp["type"]);
                 bool front = InfoTool.GetBool(bgProp["front"]);
-                bool? flip_t = InfoTool.GetOptionalBool(bgProp["f"]);
+                bool? flip_t = InfoTool.GetOptionalBool(bgProp["flip"]);
                 bool flip = flip_t.HasValue ? flip_t.Value : false;
-                string bS = InfoTool.GetString(bgProp["bS"]);
-                bool ani = InfoTool.GetBool(bgProp["ani"]);
-                string no = InfoTool.GetInt(bgProp["no"]).ToString();
-                BackgroundInfo bgInfo = BackgroundInfo.Get(bS, ani, no);
+                string backgroundSet = InfoTool.GetString(bgProp["backgroundSet"]);
+                bool animated = InfoTool.GetBool(bgProp["ani"]);
+                string bgNumber = InfoTool.GetInt(bgProp["bgNumber"]).ToString();
+                BackgroundInfo bgInfo = BackgroundInfo.Get(backgroundSet, animated, bgNumber);
                 if (bgInfo == null)
                     continue;
                 IList list = front ? mapBoard.BoardItems.FrontBackgrounds : mapBoard.BoardItems.BackBackgrounds;
@@ -571,11 +571,11 @@ namespace HaCreator.Wz
             {
                 string objPath = InfoTool.GetString(ship["shipObj"]);
                 string[] objPathParts = objPath.Split("/".ToCharArray());
-                string oS = SunInfoTools.RemoveExtension(objPathParts[objPathParts.Length - 4]);
+                string objectSet = SunInfoTools.RemoveExtension(objPathParts[objPathParts.Length - 4]);
                 string l0 = objPathParts[objPathParts.Length - 3];
                 string l1 = objPathParts[objPathParts.Length - 2];
                 string l2 = objPathParts[objPathParts.Length - 1];
-                ObjectInfo objInfo = ObjectInfo.Get(oS, l0, l1, l2);
+                ObjectInfo objInfo = ObjectInfo.Get(objectSet, l0, l1, l2);
                 ShipObject shipInstance = new ShipObject(objInfo, mapBoard,
                     InfoTool.GetInt(ship["x"]),
                     InfoTool.GetInt(ship["y"]),
@@ -665,29 +665,29 @@ namespace HaCreator.Wz
         {
             ContextMenuStrip result = new ContextMenuStrip();
             result.Items.Add(new ToolStripMenuItem("Edit map info...", HaRepacker.Properties.Resources.mapEditMenu, rightClickHandler[0]));
-            result.Items.Add(new ToolStripMenuItem("Add VR", HaRepacker.Properties.Resources.mapEditMenu, rightClickHandler[1]));
+            result.Items.Add(new ToolStripMenuItem("Add ViewRange", HaRepacker.Properties.Resources.mapEditMenu, rightClickHandler[1]));
             result.Items.Add(new ToolStripMenuItem("Add Minimap", HaRepacker.Properties.Resources.mapEditMenu, rightClickHandler[2]));
             return result;
         }
 
         public static void GetMapDimensions(SunImage mapImage, out Rectangle VR, out Point mapCenter, out Point mapSize, out Point minimapCenter, out Point minimapSize, out bool hasVR, out bool hasMinimap)
         {
-            System.Drawing.Rectangle? vr = MapInfo.GetVR(mapImage);
-            hasVR = vr.HasValue;
+            System.Drawing.Rectangle? viewRange = MapInfo.GetVR(mapImage);
+            hasVR = viewRange.HasValue;
             hasMinimap = mapImage["miniMap"] != null;
             if (!hasMinimap)
             {
                 // No minimap, generate sizes from VR
-                if (vr == null)
+                if (viewRange == null)
                 {
                     // No minimap and no VR, our only chance of getting sizes is by generating a VR, if that fails we're screwed
-                    if (!GetMapVR(mapImage, ref vr))
+                    if (!GetMapViewRange(mapImage, ref viewRange))
                     {
                         throw new NoVRException();
                     }
                 }
-                minimapSize = new Point(vr.Value.Width + 10, vr.Value.Height + 10); //leave 5 pixels on each side
-                minimapCenter = new Point(5 - vr.Value.Left, 5 - vr.Value.Top);
+                minimapSize = new Point(viewRange.Value.Width + 10, viewRange.Value.Height + 10); //leave 5 pixels on each side
+                minimapCenter = new Point(5 - viewRange.Value.Left, 5 - viewRange.Value.Top);
                 mapSize = new Point(minimapSize.X, minimapSize.Y);
                 mapCenter = new Point(minimapCenter.X, minimapCenter.Y);
             }
@@ -698,34 +698,34 @@ namespace HaCreator.Wz
                 minimapCenter = new Point(InfoTool.GetInt(miniMap["centerX"]), InfoTool.GetInt(miniMap["centerY"]));
                 int topOffs = 0, botOffs = 0, leftOffs = 0, rightOffs = 0;
                 int leftTarget = 69 - minimapCenter.X, topTarget = 86 - minimapCenter.Y, rightTarget = minimapSize.X - 69 - 69, botTarget = minimapSize.Y - 86 - 86;
-                if (vr == null)
+                if (viewRange == null)
                 {
                     // We have no VR info, so set all VRs according to their target
-                    vr = new System.Drawing.Rectangle(leftTarget, topTarget, rightTarget, botTarget);
+                    viewRange = new System.Drawing.Rectangle(leftTarget, topTarget, rightTarget, botTarget);
                 }
                 else
                 {
-                    if (vr.Value.Left < leftTarget)
+                    if (viewRange.Value.Left < leftTarget)
                     {
-                        leftOffs = leftTarget - vr.Value.Left;
+                        leftOffs = leftTarget - viewRange.Value.Left;
                     }
-                    if (vr.Value.Top < topTarget)
+                    if (viewRange.Value.Top < topTarget)
                     {
-                        topOffs = topTarget - vr.Value.Top;
+                        topOffs = topTarget - viewRange.Value.Top;
                     }
-                    if (vr.Value.Right > rightTarget)
+                    if (viewRange.Value.Right > rightTarget)
                     {
-                        rightOffs = vr.Value.Right - rightTarget;
+                        rightOffs = viewRange.Value.Right - rightTarget;
                     }
-                    if (vr.Value.Bottom > botTarget)
+                    if (viewRange.Value.Bottom > botTarget)
                     {
-                        botOffs = vr.Value.Bottom - botTarget;
+                        botOffs = viewRange.Value.Bottom - botTarget;
                     }
                 }
                 mapSize = new Point(minimapSize.X + leftOffs + rightOffs, minimapSize.Y + topOffs + botOffs);
                 mapCenter = new Point(minimapCenter.X + leftOffs, minimapCenter.Y + topOffs);
             }
-            VR = new Rectangle(vr.Value.X, vr.Value.Y, vr.Value.Width, vr.Value.Height);
+            VR = new Rectangle(viewRange.Value.X, viewRange.Value.Y, viewRange.Value.Width, viewRange.Value.Height);
         }
 
         public void CreateMapFromImage(SunImage mapImage, string mapName, string streetName, string categoryName, SunSubProperty strMapProp, PageCollection Tabs, MultiBoard multiBoard, EventHandler[] rightClickHandler)
@@ -776,7 +776,7 @@ namespace HaCreator.Wz
                 }
                 if (hasVR)
                 {
-                    mapBoard.VRRectangle = new VRRectangle(mapBoard, VR);
+                    mapBoard.ViewRangeRectangle = new ViewRangeRectangle(mapBoard, VR);
                 }
                 LoadLayers(mapImage, mapBoard);
                 LoadLife(mapImage, mapBoard);

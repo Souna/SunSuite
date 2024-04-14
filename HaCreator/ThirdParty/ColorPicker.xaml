@@ -80,7 +80,7 @@
                  HorizontalAlignment="Center"
                  VerticalAlignment="Top"
                  Margin="2"
-                 Source="Images/ColorSwatchSquare1.png" />
+                 Source="../Images/ColorSwatchSquare1.png" />
           <Canvas x:Name="canvasImage"
                 Width="150"
                 Height="150"
