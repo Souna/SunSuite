@@ -258,7 +258,7 @@ namespace SunLibrary.SunFileLib.Structure
         }
 
         /// <summary>
-        /// Parse the directories in the SunFile.
+        /// Parses the main invisible/"master" directory containing all of the others.
         /// </summary>
         public bool ParseMasterSunDirectory(out string parseError, bool parseImages)
         {
