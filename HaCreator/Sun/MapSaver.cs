@@ -222,7 +222,7 @@ namespace HaCreator.Wz
                         throw new Exception("Unkown type in layered lists");
                     }
                 }
-                layerProp["obj"] = objParent;
+                layerProp["objects"] = objParent;
 
                 // Save tiles
                 tiles.Sort((a, b) => a.Z.CompareTo(b.Z));
@@ -241,7 +241,7 @@ namespace HaCreator.Wz
 
                     tileParent[j.ToString()] = tile;
                 }
-                layerProp["tile"] = tileParent;
+                layerProp["tiles"] = tileParent;
 
                 image[layer.ToString()] = layerProp;
             }

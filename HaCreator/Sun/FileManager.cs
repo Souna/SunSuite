@@ -207,9 +207,9 @@ namespace HaCreator.Wz
                 Program.InfoManager.TileSets[SunInfoTools.RemoveExtension(tileset.Name)] = tileset;
         }
 
-        public void ExtractObjSets()
+        public void ExtractObjectSets()
         {
-            SunDirectory objParent1 = (SunDirectory)this["map"]["Obj"];
+            SunDirectory objParent1 = (SunDirectory)this["map"]["Object"];
             if (objParent1 != null)
             {
                 foreach (SunImage objset in objParent1.SunImages)

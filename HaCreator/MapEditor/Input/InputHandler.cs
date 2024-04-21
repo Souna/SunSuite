@@ -493,10 +493,6 @@ namespace HaCreator.MapEditor.Input
                             parentBoard.InvokeReturnToSelectionState();
                         break;
 
-                    default:
-                        clearRedo = false;
-                        break;
-
                     case Keys.W:
                         if (ctrl)
                             parentBoard.OnCloseTabRequested();
@@ -505,6 +501,10 @@ namespace HaCreator.MapEditor.Input
                     case Keys.Tab:
                         if (ctrl)
                             parentBoard.OnSwitchTabRequested(shift);
+                        break;
+
+                    default:
+                        clearRedo = false;
                         break;
                 }
                 if (actions.Count > 0)

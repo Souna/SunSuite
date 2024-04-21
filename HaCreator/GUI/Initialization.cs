@@ -66,12 +66,6 @@ namespace HaCreator.GUI
         {
             Program.SfManager = new FileManager(sfPath);
 
-            txtStatus.Text = "Initializing Map.sun...";
-            Application.DoEvents();
-            Program.SfManager.LoadSunFile("Map");
-            Program.SfManager.ExtractBackgroundSets();
-            Program.SfManager.ExtractTileSets();
-
             txtStatus.Text = "Initializing String.sun...";
             Application.DoEvents();
             Program.SfManager.LoadSunFile("string");
@@ -97,14 +91,14 @@ namespace HaCreator.GUI
             //Program.SfManager.LoadSunFile("sound");
             //Program.SfManager.ExtractSoundFile();
 
-            //txtStatus.Text = "Initializing Map.wz...";
-            //Application.DoEvents();
-            //Program.SfManager.LoadSunFile("map");
+            txtStatus.Text = "Initializing Map.sun...";
+            Application.DoEvents();
+            Program.SfManager.LoadSunFile("Map");
             //Program.SfManager.ExtractMapMarks();
             //Program.SfManager.ExtractPortals();
-            //Program.SfManager.ExtractTileSets();
-            //Program.SfManager.ExtractObjSets();
-            //Program.SfManager.ExtractBackgroundSets();
+            Program.SfManager.ExtractTileSets();
+            Program.SfManager.ExtractObjectSets();
+            Program.SfManager.ExtractBackgroundSets();
 
             //txtStatus.Text = "Initializing UI.wz...";
             //Application.DoEvents();
