@@ -86,6 +86,7 @@
             // 
             this.bgSetListBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bgSetListBox.FormattingEnabled = true;
+            this.bgSetListBox.ItemHeight = 20;
             this.bgSetListBox.Location = new System.Drawing.Point(0, 0);
             this.bgSetListBox.Name = "bgSetListBox";
             this.bgSetListBox.Size = new System.Drawing.Size(284, 81);
@@ -94,10 +95,11 @@
             // 
             // bgBack
             // 
+            this.bgBack.AutoSize = true;
             this.bgBack.Checked = true;
             this.bgBack.Location = new System.Drawing.Point(120, 3);
             this.bgBack.Name = "bgBack";
-            this.bgBack.Size = new System.Drawing.Size(68, 18);
+            this.bgBack.Size = new System.Drawing.Size(77, 24);
             this.bgBack.TabIndex = 1;
             this.bgBack.TabStop = true;
             this.bgBack.Text = "Static";
@@ -105,9 +107,10 @@
             // 
             // aniBg
             // 
+            this.aniBg.AutoSize = true;
             this.aniBg.Location = new System.Drawing.Point(3, 3);
             this.aniBg.Name = "aniBg";
-            this.aniBg.Size = new System.Drawing.Size(67, 18);
+            this.aniBg.Size = new System.Drawing.Size(104, 24);
             this.aniBg.TabIndex = 0;
             this.aniBg.Text = "Animated";
             this.aniBg.CheckedChanged += new System.EventHandler(this.bgSetListBox_SelectedIndexChanged);
@@ -124,7 +127,7 @@
             // 
             // BackgroundPanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(284, 435);
@@ -141,6 +144,7 @@
             this.splitContainer6.ResumeLayout(false);
             this.splitContainer7.Panel1.ResumeLayout(false);
             this.splitContainer7.Panel2.ResumeLayout(false);
+            this.splitContainer7.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
             this.splitContainer7.ResumeLayout(false);
             this.ResumeLayout(false);

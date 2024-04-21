@@ -44,8 +44,8 @@ namespace HaCreator.ThirdParty
             bitmap = SetBackgroundColor(bitmap, bgColor);
             imageViewer.Image = new Bitmap(bitmap); // Copying the bitmap for thread safety
             imageViewer.IsText = Text;
-            imageViewer.Width = bitmap.Width + 8;
-            imageViewer.Height = bitmap.Height + 8 + ((Text) ? 12 : 0);
+            imageViewer.Width = bitmap.Width + 12;
+            imageViewer.Height = bitmap.Height + 8 + ((Text) ? 16 : 0);
             imageViewer.Name = name;
             imageViewer.IsThumbnail = false;
 
@@ -60,8 +60,8 @@ namespace HaCreator.ThirdParty
             imageViewer.Dock = DockStyle.Bottom;
             imageViewer.Image = new Bitmap(bitmap); // Copying the bitmap for thread safety
             imageViewer.IsText = Text;
-            imageViewer.Width = bitmap.Width + 8;
-            imageViewer.Height = bitmap.Height + 8 + ((Text) ? 12 : 0);
+            imageViewer.Width = bitmap.Width + 12;
+            imageViewer.Height = bitmap.Height + 8 + ((Text) ? 16 : 0);
             imageViewer.Name = name;
             imageViewer.IsThumbnail = false;
 
