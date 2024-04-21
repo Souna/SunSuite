@@ -9,6 +9,7 @@ using HaCreator.MapEditor;
 using HaCreator.MapEditor.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
@@ -38,7 +39,7 @@ namespace HaCreator.GUI
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
-        {
+        {   
             multiBoard.TriggerMouseWheel(e);
         }
 

@@ -150,7 +150,7 @@ namespace HaCreator.Wz
                 SunProperty tileSetprop = layerProp["info"]["tileSet"];
                 string tileSet = null;
                 if (tileSetprop != null) tileSet = InfoTool.GetString(tileSetprop);
-                foreach (SunProperty obj in layerProp["obj"].SunProperties)
+                foreach (SunProperty obj in layerProp["objects"].SunProperties)
                 {
                     int x = InfoTool.GetInt(obj["x"]);
                     int y = InfoTool.GetInt(obj["y"]);
@@ -188,7 +188,7 @@ namespace HaCreator.Wz
                     mapBoard.BoardItems.TileObjs.Add((LayeredItem)objInfo.CreateInstance(l, mapBoard, x, y, z, zM, r, hide, reactor, flow, rx, ry, cx, cy, name, tags, questInfo, flip, false));
                     l.zMList.Add(zM);
                 }
-                SunProperty tileParent = layerProp["tile"];
+                SunProperty tileParent = layerProp["tiles"];
                 foreach (SunProperty tile in tileParent.SunProperties)
                 {
                     int x = InfoTool.GetInt(tile["x"]);

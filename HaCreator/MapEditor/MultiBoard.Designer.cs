@@ -66,6 +66,7 @@
             this.DxContainer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DxContainer_MouseDown);
             this.DxContainer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DxContainer_MouseMove);
             this.DxContainer.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DxContainer_MouseUp);
+            this.DxContainer.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.DxContainer_MouseWheel);
             // 
             // MultiBoard
             // 

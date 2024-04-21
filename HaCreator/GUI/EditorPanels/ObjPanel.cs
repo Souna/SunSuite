@@ -28,8 +28,8 @@ namespace HaCreator.GUI.EditorPanels
             InitializeComponent();
 
             List<string> sortedObjSets = new List<string>();
-            foreach (KeyValuePair<string, SunImage> oS in Program.InfoManager.ObjectSets)
-                sortedObjSets.Add(oS.Key);
+            foreach (KeyValuePair<string, SunImage> objectSet in Program.InfoManager.ObjectSets)
+                sortedObjSets.Add(objectSet.Key);
             sortedObjSets.Sort();
             foreach (string oS in sortedObjSets)
                 objSetListBox.Items.Add(oS);

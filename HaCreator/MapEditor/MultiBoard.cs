@@ -20,6 +20,7 @@ using SunLibrary.SunFileLib.Structure.Data;
 using SunLibrary.SunFileLib.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -602,6 +603,17 @@ namespace HaCreator.MapEditor
             }
         }
 
+        private void DxContainer_MouseWheel(object sender, MouseEventArgs e)
+        {
+            int rotationDelta = e.Delta;
+
+            // wheel up = positive, wheel down = negative
+            //if (!AddHScrollbarValue((int)rotationDelta))
+            //{
+            //    //AddVScrollbarValue((int)rotationDelta); // scroll v scroll bar instead if its not possible
+            //}
+        }
+
         public void DxContainer_KeyDown(object sender, KeyEventArgs e)
         {
             lock (this)
@@ -693,14 +705,17 @@ namespace HaCreator.MapEditor
             {
                 if (!this.deviceReady)
                     return;
+
                 int oldvalue = vScrollBar.Value;
                 int scrollValue = (e.Delta / 10) * vScrollBar.LargeChange;
+
                 if (vScrollBar.Value - scrollValue < vScrollBar.Minimum)
                     vScrollBar.Value = vScrollBar.Minimum;
                 else if (vScrollBar.Value - scrollValue > vScrollBar.Maximum)
                     vScrollBar.Value = vScrollBar.Maximum;
                 else
                     vScrollBar.Value -= scrollValue;
+
                 vScrollBar_Scroll(null, null);
                 base.OnMouseWheel(e);
             }
@@ -783,12 +798,47 @@ namespace HaCreator.MapEditor
             DxDevice.Reset(pParams);
         }
 
+        /// <summary>
+        /// Adds the horizontal scroll bar value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>True if scrolling is possible</returns>
+        public bool AddHScrollbarValue(int value)
+        {
+            if (hScrollBar.Value + value == hScrollBar.Value)
+                return false;
+
+            SetHScrollbarValue((int)(hScrollBar.Value + value));
+
+            // Update display
+            hScrollBar_Scroll(null, null);
+            return true;
+        }
+
         public void SetHScrollbarValue(int value)
         {
             lock (this)
             {
-                hScrollBar.Value = value;
+                if (value >= hScrollBar.Minimum && value <= hScrollBar.Maximum)
+                    hScrollBar.Value = value;
             }
+        }
+
+        /// <summary>
+        /// Adds the horizontal scroll bar value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>True if scrolling is possible</returns>
+        public bool AddVScrollbarValue(int value)
+        {
+            if (vScrollBar.Value + value == hScrollBar.Value)
+                return false;
+
+            SetVScrollbarValue((int)(vScrollBar.Value + value));
+
+            // Update display
+            vScrollBar_Scroll(null, null);
+            return true;
         }
 
         public void SetVScrollbarValue(int value)
