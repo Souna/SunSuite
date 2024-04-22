@@ -477,7 +477,7 @@ namespace SunFileManager
 
             int imageIndex = 0;
             // If this is 0 then there's no existing nodes under target node
-            int lastImageIndex = targetNode.LastNode != null ?  targetNode.LastNode.Index + 1 : 0;
+            int lastImageIndex = targetNode.LastNode != null && !createSubProperty ?  targetNode.LastNode.Index + 1 : 0;
 
             if (createSubProperty)
             {
