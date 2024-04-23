@@ -218,6 +218,7 @@ namespace SunFileManager
                     return;
                 }
             }
+            // hi
             else
             {
                 if (sunTreeView.SelectedNode.Tag is SunFile)
