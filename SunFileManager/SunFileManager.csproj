@@ -6,6 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BF8EEA7B-F0CD-45E4-8D71-5F3451A3467B}</ProjectGuid>
+	<RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
     <OutputType>WinExe</OutputType>
     <RootNamespace>SunFileManager</RootNamespace>
     <AssemblyName>SunFileManager</AssemblyName>

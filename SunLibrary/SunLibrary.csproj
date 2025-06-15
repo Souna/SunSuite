@@ -6,6 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0DA8B121-D068-4EC3-BCBF-A0CAA6F83EFB}</ProjectGuid>
+    <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
     <OutputType>Library</OutputType>
     <RootNamespace>SunLibrary</RootNamespace>
     <AssemblyName>SunLibrary</AssemblyName>
@@ -41,7 +42,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
