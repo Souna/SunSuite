@@ -364,3 +364,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /SunLibrary/ClassDiagram1.cd
+
+# MonoGame specific
+*.mgstats
+*.mgcb.bak
+*.mgcb.log
