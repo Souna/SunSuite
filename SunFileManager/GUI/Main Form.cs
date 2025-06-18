@@ -10,10 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using Path = System.IO.Path;
+using SunFileManager.Comparer;
+using System.Linq;
 
 namespace SunFileManager
 {
@@ -45,7 +48,21 @@ namespace SunFileManager
         private bool threadDone = false;
         private System.Threading.Thread runningThread = null;
 
-        public frmFileManager(string sunfileToLoad)
+        // Windows message handling
+        private const uint WM_COPYDATA = 0x004A;
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct COPYDATASTRUCT
+        {
+            public IntPtr dwData;
+            public int cbData;
+            public IntPtr lpData;
+        }
+
+        private HashSet<TreeNode> multiSelectedNodes = new HashSet<TreeNode>();
+        private TreeNode lastAnchorNode = null;
+
+        public frmFileManager(string[] sunfilesToLoad)
         {
             InitializeComponent();
             chkAnimateGif.Visible = false;
@@ -65,22 +82,27 @@ namespace SunFileManager
             Program.UserSettings.Load(Program.settingsPath);
             ApplySettings();
 
-            //materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+            // Register this form instance with the Program class
+            Program.SetMainFormInstance(this);
 
-            //Load a SunFile from double clicking it
-            LoadFile(sunfileToLoad);
-        }
+            // Enable drag and drop for the form
+            this.AllowDrop = true;
+            this.DragEnter += Form_DragEnter;
+            this.DragDrop += Form_DragDrop;
 
-        public static void LoadFile(string sunfileToLoad)
-        {
-            if (sunfileToLoad != null && File.Exists(sunfileToLoad))
+            // Load all files
+            if (sunfilesToLoad != null)
             {
-                SunFile f = manager.LoadSunFile(sunfileToLoad);
-                if (f != null)
+                foreach (var file in sunfilesToLoad)
                 {
-                    manager.AddLoadedSunFileToTreeView(f, null, null);
+                    LoadFile(file);
                 }
             }
+
+            sunTreeView.DrawMode = TreeViewDrawMode.OwnerDrawText;
+            sunTreeView.DrawNode += SunTreeView_DrawNode;
+            sunTreeView.KeyDown += SunTreeView_KeyDown_MultiSelect;
+            sunTreeView.AfterSelect += SunTreeView_AfterSelect_MultiSelect;
         }
 
         public void ApplySettings()
@@ -739,20 +761,37 @@ namespace SunFileManager
         {
             if (e.Button != MouseButtons.Right) return;
 
-            //  Get selected node.
-            SunNode selection = (SunNode)sunTreeView.GetNodeAt(e.X, e.Y);
-            sunTreeView.SelectedNode = selection;
+            //  Get clicked node.
+            SunNode clickedNode = (SunNode)sunTreeView.GetNodeAt(e.X, e.Y);
+            
+            // Check if we have multiple nodes selected
+            var selectedNodes = GetMultiSelectedNodes().Cast<SunNode>().ToList();
+            
+            if (clickedNode != null)
+            {
+                // If the clicked node is not in our selection, clear selection and select only this node
+                if (!selectedNodes.Contains(clickedNode))
+                {
+                    multiSelectedNodes.Clear();
+                    multiSelectedNodes.Add(clickedNode);
+                    sunTreeView.SelectedNode = clickedNode;
+                    lastAnchorNode = clickedNode;
+                    sunTreeView.Invalidate();
+                }
+                // If clicked node is in selection, keep current selection
+            }
+            
             cmsNodes.Items.Clear();
 
             //  There aren't any nodes or we right-clicked blank space.
-            if (sunTreeView.Nodes.Count == 0 || selection == null)
+            if (sunTreeView.Nodes.Count == 0 || clickedNode == null)
             {
                 contextMenuManager.CreateContextMenu(null, e);
             }
             //  There are nodes in the SunTreeView.
-            else if (sunTreeView.Nodes.Count != 0 && selection != null)
+            else if (sunTreeView.Nodes.Count != 0 && clickedNode != null)
             {
-                contextMenuManager.CreateContextMenu(selection, e);
+                contextMenuManager.CreateContextMenu(clickedNode, e);
             }
         }
 
@@ -1038,7 +1077,20 @@ namespace SunFileManager
         /// </summary>
         private void sunTreeView_DragDrop(object sender, DragEventArgs e)
         {
-            return;
+            // Check if this is a file drop (from desktop)
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                foreach (string file in files)
+                {
+                    if (Path.GetExtension(file).ToLower() == ".sun")
+                    {
+                        LoadFile(file);
+                    }
+                }
+                return;
+            }
+
             // Unlock updates
             TreeViewDragHelper.ImageList_DragLeave(this.sunTreeView.Handle);
 
@@ -1116,7 +1168,18 @@ namespace SunFileManager
         /// </summary>
         private void sunTreeView_DragEnter(object sender, DragEventArgs e)
         {
-            return;
+            // Check if this is a file drop (from desktop)
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                bool hasSunFiles = files.Any(file => Path.GetExtension(file).ToLower() == ".sun");
+                if (hasSunFiles)
+                {
+                    e.Effect = DragDropEffects.Copy;
+                    return;
+                }
+            }
+
             TreeViewDragHelper.ImageList_DragEnter(this.sunTreeView.Handle, e.X - this.sunTreeView.Left,
                 e.Y - this.sunTreeView.Top);
             // Enable timer for scrolling dragged item
@@ -1130,7 +1193,6 @@ namespace SunFileManager
         /// </summary>
         private void sunTreeView_DragLeave(object sender, EventArgs e)
         {
-            return;
             TreeViewDragHelper.ImageList_DragLeave(this.sunTreeView.Handle);
 
             // Disable timer for scrolling dragged item
@@ -1142,7 +1204,18 @@ namespace SunFileManager
         /// </summary>
         private void sunTreeView_DragOver(object sender, DragEventArgs e)
         {
-            return;
+            // Check if this is a file drop (from desktop)
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                bool hasSunFiles = files.Any(file => Path.GetExtension(file).ToLower() == ".sun");
+                if (hasSunFiles)
+                {
+                    e.Effect = DragDropEffects.Copy;
+                    return;
+                }
+            }
+
             // Compute drag position and move image
             Point formP = this.PointToClient(new Point(e.X, e.Y));
             TreeViewDragHelper.ImageList_DragMove(formP.X - this.sunTreeView.Left, formP.Y - this.sunTreeView.Top);
@@ -1270,6 +1343,42 @@ namespace SunFileManager
 
         #endregion Form Input Events
 
+        #region Form Drag and Drop
+
+        private void Form_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                bool hasSunFiles = files.Any(file => Path.GetExtension(file).ToLower() == ".sun");
+                if (hasSunFiles)
+                {
+                    e.Effect = DragDropEffects.Copy;
+                }
+                else
+                {
+                    e.Effect = DragDropEffects.None;
+                }
+            }
+        }
+
+        private void Form_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                foreach (string file in files)
+                {
+                    if (Path.GetExtension(file).ToLower() == ".sun")
+                    {
+                        LoadFile(file);
+                    }
+                }
+            }
+        }
+
+        #endregion Form Drag and Drop
+
         #region Debug
 
         private void btnCreateTestFile_Click(object sender, EventArgs e)
@@ -1296,5 +1405,98 @@ namespace SunFileManager
 
         #endregion Debug
 
+        public void LoadFile(string sunfileToLoad)
+        {
+            if (sunfileToLoad != null && File.Exists(sunfileToLoad))
+            {
+                SunFile f = manager.LoadSunFile(sunfileToLoad);
+                if (f != null)
+                {
+                    manager.AddLoadedSunFileToTreeView(f, Dispatcher.CurrentDispatcher, null);
+                }
+                else
+                {
+                    MessageBox.Show($"Failed to load file: {Path.GetFileName(sunfileToLoad)}", "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show($"File not found: {sunfileToLoad}", "File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == WM_COPYDATA)
+            {
+                COPYDATASTRUCT cds = (COPYDATASTRUCT)Marshal.PtrToStructure(m.LParam, typeof(COPYDATASTRUCT));
+                string filePath = Marshal.PtrToStringAnsi(cds.lpData);
+                if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+                {
+                    // Use Invoke to ensure we're on the UI thread
+                    this.Invoke(new Action(() => LoadFile(filePath)));
+                }
+                m.Result = IntPtr.Zero;
+                return;
+            }
+            base.WndProc(ref m);
+        }
+
+        private void SunTreeView_DrawNode(object sender, DrawTreeNodeEventArgs e)
+        {
+            if (multiSelectedNodes.Contains(e.Node))
+            {
+                // Use full row bounds when FullRowSelect is enabled, otherwise use text bounds
+                Rectangle bounds = sunTreeView.FullRowSelect ? e.Bounds : e.Node.Bounds;
+                e.Graphics.FillRectangle(SystemBrushes.Highlight, bounds);
+                TextRenderer.DrawText(e.Graphics, e.Node.Text, e.Node.TreeView.Font, e.Bounds, SystemColors.HighlightText, TextFormatFlags.GlyphOverhangPadding);
+            }
+            else
+            {
+                e.DrawDefault = true;
+            }
+        }
+
+        private void SunTreeView_AfterSelect_MultiSelect(object sender, TreeViewEventArgs e)
+        {
+            if (!Control.ModifierKeys.HasFlag(Keys.Shift) && !Control.ModifierKeys.HasFlag(Keys.Control))
+            {
+                multiSelectedNodes.Clear();
+                if (e.Node != null)
+                    multiSelectedNodes.Add(e.Node);
+                lastAnchorNode = e.Node;
+                sunTreeView.Invalidate();
+            }
+        }
+
+        private void SunTreeView_KeyDown_MultiSelect(object sender, KeyEventArgs e)
+        {
+            if (e.Shift && (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down))
+            {
+                if (sunTreeView.SelectedNode == null)
+                    return;
+                if (lastAnchorNode == null)
+                    lastAnchorNode = sunTreeView.SelectedNode;
+
+                TreeNodeCollection siblings = sunTreeView.SelectedNode.Parent?.Nodes ?? sunTreeView.Nodes;
+                int anchorIndex = siblings.IndexOf(lastAnchorNode);
+                int currentIndex = siblings.IndexOf(sunTreeView.SelectedNode);
+                int newIndex = currentIndex + (e.KeyCode == Keys.Up ? -1 : 1);
+                if (newIndex < 0 || newIndex >= siblings.Count)
+                    return;
+                TreeNode newNode = siblings[newIndex];
+                sunTreeView.SelectedNode = newNode;
+
+                multiSelectedNodes.Clear();
+                int start = Math.Min(anchorIndex, newIndex);
+                int end = Math.Max(anchorIndex, newIndex);
+                for (int i = start; i <= end; i++)
+                    multiSelectedNodes.Add(siblings[i]);
+                sunTreeView.Invalidate();
+                e.Handled = true;
+            }
+        }
+
+        public List<TreeNode> GetMultiSelectedNodes() => new List<TreeNode>(multiSelectedNodes);
     }
 }
