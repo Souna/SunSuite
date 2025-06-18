@@ -50,6 +50,13 @@ namespace SunFileManager
 
         public SunFile LoadSunFile(string path)
         {
+            // Prevent duplicate files (case-insensitive)
+            if (sunFiles.Exists(f => string.Equals(f.FilePath, path, StringComparison.OrdinalIgnoreCase)))
+            {
+                MessageBox.Show($"File '{Path.GetFileName(path)}' is already open.", "Duplicate File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return null;
+            }
+
             SunFile file;
 
             if (!OpenSunFile(path, out file))

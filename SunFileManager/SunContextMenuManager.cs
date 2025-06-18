@@ -4,6 +4,7 @@ using SunLibrary.SunFileLib.Properties;
 using SunLibrary.SunFileLib.Structure;
 using System;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace SunFileManager
 {
@@ -254,6 +255,13 @@ namespace SunFileManager
             RemoveSubMenu.DropDownItems.Clear();
             AddDigitPropertySubMenu.DropDownItems.Clear();
 
+            // Get all selected nodes (including multi-select)
+            var selectedNodes = mainform.GetMultiSelectedNodes().Cast<SunNode>().ToList();
+            if (selectedNodes.Count == 0 && node != null)
+            {
+                selectedNodes.Add(node);
+            }
+
             if (node == null)
             {
                 PopupMenu.Items.AddRange(new ToolStripItem[] { New, Open });
@@ -261,18 +269,31 @@ namespace SunFileManager
             }
             else
             {
-                if (node.Tag is SunFile fileNode)
+                // Check if multiple SunFile nodes are selected
+                var sunFileNodes = selectedNodes.Where(n => n.Tag is SunFile).ToList();
+                
+                if (sunFileNodes.Count > 1)
                 {
+                    // Multiple SunFile nodes selected - show unload option
+                    PopupMenu.Items.AddRange(new ToolStripItem[] { Unload });
+                    PopupMenu.Show(mainform.sunTreeView, e.X, e.Y);
+                    return;
+                }
+                else if (sunFileNodes.Count == 1)
+                {
+                    // Single SunFile node
+                    var fileNode = sunFileNodes[0];
+                    
                     //  Populate "Add" menu.
                     AddSubMenu.DropDownItems.AddRange(new ToolStripItem[] { AddSunDirectory, AddSunImage });
 
                     PopupMenu.Items.AddRange(new ToolStripItem[] { AddSubMenu, new ToolStripSeparator(), Rename, Save, Unload, Reload });
 
-                    if (fileNode.SunDirectory != null && fileNode.SunDirectory.TopLevelEntryCount > 0)
+                    if (fileNode.Tag is SunFile file && file.SunDirectory != null && file.SunDirectory.TopLevelEntryCount > 0)
                     {
                         PopupMenu.Items.Add(new ToolStripSeparator());
                         PopupMenu.Items.Add(Expand);
-                        if (node.IsExpanded) PopupMenu.Items.Add(Collapse);
+                        if (fileNode.IsExpanded) PopupMenu.Items.Add(Collapse);
                     }
                     PopupMenu.Show(mainform.sunTreeView, e.X, e.Y);
                 }
@@ -342,6 +363,12 @@ namespace SunFileManager
 
         private SunNode[] GetNodes(object sender)
         {
+            // Return all selected nodes if multiple are selected, otherwise return the current node
+            var selectedNodes = mainform.GetMultiSelectedNodes().Cast<SunNode>().ToList();
+            if (selectedNodes.Count > 0)
+            {
+                return selectedNodes.ToArray();
+            }
             return new SunNode[] { currentNode };
         }
     }
