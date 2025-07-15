@@ -1,11 +1,13 @@
 ﻿using SunLibrary.SunFileLib.Structure;
 using SunLibrary.SunFileLib.Util;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 namespace SunLibrary.SunFileLib.Properties
 {
@@ -106,7 +108,7 @@ namespace SunLibrary.SunFileLib.Properties
             return Name;
         }
 
-        public override Point GetPoint()
+        public override System.Drawing.Point GetPoint()
         {
             throw new System.NotImplementedException();
         }
@@ -232,7 +234,13 @@ namespace SunLibrary.SunFileLib.Properties
                 bmpData = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
                 uncompressedSize = width * height * 4;
                 decompressedBuffer = new byte[uncompressedSize];
-                zlib.Read(decompressedBuffer, 0, uncompressedSize);
+                int offset = 0;
+                while (offset < uncompressedSize)
+                {
+                    int read = zlib.Read(decompressedBuffer, offset, uncompressedSize - offset);
+                    if (read == 0) break; // End of stream
+                    offset += read;
+                }
                 Marshal.Copy(decompressedBuffer, 0, bmpData.Scan0, decompressedBuffer.Length);
                 bmp.UnlockBits(bmpData);
                 pngProp = bmp;
