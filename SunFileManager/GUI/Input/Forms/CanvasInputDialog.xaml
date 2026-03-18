@@ -1,0 +1,43 @@
+<Window x:Class="SunFileManager.GUI.Input.frmCanvasInputBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:container="clr-namespace:SunFileManager.GUI.Container"
+        Title="Add Image" Width="400" Height="300"
+        MinWidth="320" MinHeight="240"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        SizeToContent="Height">
+    <StackPanel Margin="12">
+        <Label Content="Name:" />
+        <TextBox x:Name="txtNameInput" Margin="0,4,0,8" />
+        <Label Content="Image File(s):" />
+        <Grid Margin="0,4,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="txtCanvasPath" Grid.Column="0" IsReadOnly="True" />
+            <Button Grid.Column="2" Content="Browse..." Click="btnBrowse_Click" />
+        </Grid>
+
+        <!-- File info -->
+        <StackPanel x:Name="fileInfoPanel" Visibility="Collapsed" Margin="0,8,0,0">
+            <TextBlock x:Name="lblInfo" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <!-- Preview -->
+        <container:PanningImageViewer x:Name="panningImageViewer"
+                                      Visibility="Collapsed"
+                                      Height="120" Margin="0,8,0,0"/>
+
+        <CheckBox x:Name="chkCreateSub" Content="Create SubProperty" Margin="0,8,0,0" />
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Content="OK"     x:Name="btnOk"     Width="80" Margin="0,0,8,0"
+                    IsDefault="True" Click="btnOk_Click" />
+            <Button Content="Cancel" x:Name="btnCancel" Width="80"
+                    IsCancel="True"  Click="btnCancel_Click" />
+        </StackPanel>
+    </StackPanel>
+</Window>

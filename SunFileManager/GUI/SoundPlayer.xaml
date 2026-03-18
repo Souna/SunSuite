@@ -17,17 +17,15 @@
             <StackPanel Orientation="Horizontal" Margin="10">
                 <Button x:Name="PauseButton" Content="Play" Width="100" Height="30"
                     Click="PauseButton_Click" />
-                <CheckBox x:Name="checkbox_Replay" Content="Loop" Foreground="Black" VerticalAlignment="Center" Margin="20,0,0,0"
+                <CheckBox x:Name="checkbox_Replay" Content="Loop" VerticalAlignment="Center" Margin="20,0,0,0"
                       Checked="checkbox_Replay_Checked" Unchecked="checkbox_Replay_Checked" />
             </StackPanel>
 
             <!-- Time -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,0">
-                <TextBlock x:Name="CurrentPositionLabel" Text="00:00" VerticalAlignment="Center"
-                       Foreground="Black" />
-                <TextBlock Text="/" VerticalAlignment="Center" Foreground="Black" Margin="10,0,0,0" />
-                <TextBlock x:Name="LengthLabel" Text="00:00" VerticalAlignment="Center"
-                       Foreground="Black" Margin="10,0,0,0" />
+                <TextBlock x:Name="CurrentPositionLabel" Text="00:00" VerticalAlignment="Center" />
+                <TextBlock Text="/" VerticalAlignment="Center" Margin="10,0,0,0" />
+                <TextBlock x:Name="LengthLabel" Text="00:00" VerticalAlignment="Center" Margin="10,0,0,0" />
             </StackPanel>
         </Grid>
 
@@ -41,7 +39,6 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="Volume: " VerticalAlignment="Center"
-                       Foreground="Black"
                        HorizontalAlignment="Right" Grid.Column="0" />
 
             <Slider x:Name="slider_volume" Value="50" Maximum="100" Minimum="0" Grid.Column="1"
