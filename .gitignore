@@ -369,3 +369,6 @@ FodyWeavers.xsd
 *.mgstats
 *.mgcb.bak
 *.mgcb.log
+
+# Claude Code
+.claude/

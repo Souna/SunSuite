@@ -78,50 +78,29 @@ namespace SunLibrary.SunFileLib.Properties
 
         #region SunObject Cast Values
 
-        public override int GetInt()
-        {
-            throw new NotImplementedException();
-        }
+        public override int GetInt() => 0;
 
-        public override short GetShort()
-        {
-            throw new NotImplementedException();
-        }
+        public override short GetShort() => 0;
 
-        public override long GetLong()
-        {
-            throw new NotImplementedException();
-        }
+        public override long GetLong() => 0;
 
-        public override float GetFloat()
-        {
-            throw new NotImplementedException();
-        }
+        public override float GetFloat() => 0f;
 
-        public override double GetDouble()
-        {
-            throw new NotImplementedException();
-        }
+        public override double GetDouble() => 0d;
 
         public override string GetString()
         {
             return Name;
         }
 
-        public override System.Drawing.Point GetPoint()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override System.Drawing.Point GetPoint() => System.Drawing.Point.Empty;
 
         public override Bitmap GetBitmap()
         {
             return GetPNG(false);
         }
 
-        public override byte[] GetBytes()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override byte[] GetBytes() => null;
 
         #endregion SunObject Cast Values
 

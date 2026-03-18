@@ -97,50 +97,26 @@ namespace SunLibrary.SunFileLib.Structure
             SunDirectory.Dispose();
         }
 
-        public override int GetInt()
-        {
-            throw new NotImplementedException();
-        }
+        public override int GetInt() => 0;
 
-        public override short GetShort()
-        {
-            throw new NotImplementedException();
-        }
+        public override short GetShort() => 0;
 
-        public override long GetLong()
-        {
-            throw new NotImplementedException();
-        }
+        public override long GetLong() => 0;
 
-        public override float GetFloat()
-        {
-            throw new NotImplementedException();
-        }
+        public override float GetFloat() => 0f;
 
-        public override double GetDouble()
-        {
-            throw new NotImplementedException();
-        }
+        public override double GetDouble() => 0d;
 
         public override string GetString()
         {
             return Name;
         }
 
-        public override Point GetPoint()
-        {
-            throw new NotImplementedException();
-        }
+        public override Point GetPoint() => Point.Empty;
 
-        public override Bitmap GetBitmap()
-        {
-            throw new NotImplementedException();
-        }
+        public override Bitmap GetBitmap() => null;
 
-        public override byte[] GetBytes()
-        {
-            throw new NotImplementedException();
-        }
+        public override byte[] GetBytes() => null;
 
         #endregion Inherited Members
 
@@ -227,7 +203,6 @@ namespace SunLibrary.SunFileLib.Structure
                 {
                     sunWriter.Write(new byte[(int)extraHeaderLength]);
                 }
-                sunWriter.Header = header;
                 sunDir.SaveDirectory(sunWriter);
 
                 using (FileStream fileStream = File.OpenRead(tempFile))
@@ -277,8 +252,7 @@ namespace SunLibrary.SunFileLib.Structure
             this.Header.FileStart = reader.ReadUInt32();
             this.Header.Copyright = reader.ReadNullTerminatedString();
 
-            reader.ReadBytes((int)(header.FileStart - reader.BaseStream.Position)); //reset to beginning? Does this even do anything?
-            reader.Header = this.Header;
+            reader.ReadBytes((int)(header.FileStart - reader.BaseStream.Position));
             long resetPos = reader.BaseStream.Position;     //position to rollback to if things go bad
 
             try

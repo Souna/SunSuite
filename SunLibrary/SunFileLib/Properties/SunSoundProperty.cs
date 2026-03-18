@@ -107,45 +107,24 @@ namespace SunLibrary.SunFileLib.Properties
         public override SunFile SunFileParent
         { get { return Parent.SunFileParent; } }
 
-        public override int GetInt()
-        {
-            throw new NotImplementedException();
-        }
+        public override int GetInt() => 0;
 
-        public override short GetShort()
-        {
-            throw new NotImplementedException();
-        }
+        public override short GetShort() => 0;
 
-        public override long GetLong()
-        {
-            throw new NotImplementedException();
-        }
+        public override long GetLong() => 0;
 
-        public override float GetFloat()
-        {
-            throw new NotImplementedException();
-        }
+        public override float GetFloat() => 0f;
 
-        public override double GetDouble()
-        {
-            throw new NotImplementedException();
-        }
+        public override double GetDouble() => 0d;
 
         public override string GetString()
         {
             return Name;
         }
 
-        public override Point GetPoint()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override Point GetPoint() => Point.Empty;
 
-        public override Bitmap GetBitmap()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override Bitmap GetBitmap() => null;
 
         public override byte[] GetBytes()
         {
@@ -292,13 +271,6 @@ namespace SunLibrary.SunFileLib.Properties
             {
                 bw.Write(soundHeader);
                 byte[] wavHeader = StructToBytes(wavFormat);
-                //if (headerEncrypted)
-                //{
-                //    for (int i = 0; i < wavHeader.Length; i++)
-                //    {
-                //        wavHeader[i] ^= this.sunReader.SunKey[i];
-                //    }
-                //}
                 bw.Write((byte)wavHeader.Length);
                 bw.Write(wavHeader, 0, wavHeader.Length);
                 header = ((MemoryStream)bw.BaseStream).ToArray();
@@ -360,11 +332,6 @@ namespace SunLibrary.SunFileLib.Properties
 
             if (Marshal.SizeOf<WaveFormat>() + wavFmt.ExtraSize != wavHeader.Length)
             {
-                //try decrypt
-                //for (int i = 0; i < wavHeader.Length; i++)
-                //{
-                //    wavHeader[i] ^= this.SunReader.SunKey[i];
-                //}
                 wavFmt = BytesToStruct<WaveFormat>(wavHeader);
 
                 if (Marshal.SizeOf<WaveFormat>() + wavFmt.ExtraSize != wavHeader.Length)

@@ -35,7 +35,6 @@ namespace SunLibrary.SunFileLib.Properties
 
         public override void WriteValue(SunBinaryWriter writer)
         {
-            //writer.Write(Name);
             writer.Write((byte)SunPropertyType.String);
             writer.Write(Value);
         }
@@ -80,50 +79,26 @@ namespace SunLibrary.SunFileLib.Properties
         public override SunFile SunFileParent
         { get { return Parent.SunFileParent; } }
 
-        public override int GetInt()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override int GetInt() => 0;
 
-        public override short GetShort()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override short GetShort() => 0;
 
-        public override long GetLong()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override long GetLong() => 0;
 
-        public override float GetFloat()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override float GetFloat() => 0f;
 
-        public override double GetDouble()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override double GetDouble() => 0d;
 
         public override string GetString()
         {
             return val;
         }
 
-        public override Point GetPoint()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override Point GetPoint() => Point.Empty;
 
-        public override Bitmap GetBitmap()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override Bitmap GetBitmap() => null;
 
-        public override byte[] GetBytes()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override byte[] GetBytes() => null;
 
         #endregion SunObject
 

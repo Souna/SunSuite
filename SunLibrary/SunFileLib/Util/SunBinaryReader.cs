@@ -1,5 +1,4 @@
-﻿using SunLibrary.SunFileLib.Structure;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 
 namespace SunLibrary.SunFileLib.Util
@@ -7,10 +6,6 @@ namespace SunLibrary.SunFileLib.Util
     public class SunBinaryReader : BinaryReader
     {
         #region Properties
-
-        public SunHeader Header { get; set; }
-
-        public uint Hash { get; set; }
 
         #endregion Properties
 
@@ -89,19 +84,7 @@ namespace SunLibrary.SunFileLib.Util
             return sb;
         }
 
-        public uint ReadOffset()
-        {
-            return ReadUInt32(); //Use just this line if not reading encrypted data
-            //uint offset = (uint)BaseStream.Position;
-            //offset = (offset - Header.FileStart) ^ uint.MaxValue;
-            //offset *= Hash;
-            //offset -= 0x581C3F6D; //Wz Offset Constant
-            //offset = SunTool.RotateLeft(offset, (byte)(offset & 0x1F));
-            //uint encryptedOffset = ReadUInt32();
-            //offset ^= encryptedOffset;
-            //offset += Header.FileStart * 2;
-            //return offset;
-        }
+        public uint ReadOffset() => ReadUInt32();
 
         #endregion Methods
     }

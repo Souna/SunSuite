@@ -111,20 +111,11 @@ namespace SunLibrary.SunFileLib.Properties
             return val.ToString();
         }
 
-        public override Point GetPoint()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override Point GetPoint() => Point.Empty;
 
-        public override Bitmap GetBitmap()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override Bitmap GetBitmap() => null;
 
-        public override byte[] GetBytes()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override byte[] GetBytes() => null;
 
         #endregion SunObject
 
