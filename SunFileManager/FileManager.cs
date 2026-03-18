@@ -3,6 +3,8 @@ using SunLibrary.SunFileLib.Structure;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Threading;
 
@@ -23,32 +25,39 @@ namespace SunFileManager
         {
         }
 
-        private bool OpenSunFile(string path, out SunFile file)
+        private async Task<SunFile> OpenSunFileAsync(string path)
         {
+            SunFile f = new SunFile(path);
+            lock (sunFiles)
+            {
+                sunFiles.Add(f);
+            }
+
             try
             {
-                SunFile f = new SunFile(path);
-
-                lock (sunFiles)
+                bool success = await Task.Run(() =>
                 {
-                    sunFiles.Add(f);
+                    string ignored = string.Empty;
+                    return f.ParseSunFile(out ignored, Program.UserSettings.AutoParseImages);
+                });
+
+                if (!success)
+                {
+                    lock (sunFiles) { sunFiles.Remove(f); }
+                    return null;
                 }
 
-                string error = string.Empty;
-                bool success = f.ParseSunFile(out error, Program.UserSettings.AutoParseImages);
-
-                file = f;
-                return success;
+                return f;
             }
             catch (Exception e)
             {
-                file = null;
-                MessageBox.Show("Error loading " + Path.GetFileName(path));
-                return false;
+                lock (sunFiles) { sunFiles.Remove(f); }
+                MessageBox.Show("Error loading " + Path.GetFileName(path) + "\n" + e.Message);
+                return null;
             }
         }
 
-        public SunFile LoadSunFile(string path)
+        public async Task<SunFile> LoadSunFileAsync(string path)
         {
             // Prevent duplicate files (case-insensitive)
             if (sunFiles.Exists(f => string.Equals(f.FilePath, path, StringComparison.OrdinalIgnoreCase)))
@@ -57,13 +66,7 @@ namespace SunFileManager
                 return null;
             }
 
-            SunFile file;
-
-            if (!OpenSunFile(path, out file))
-            {
-                return null;
-            }
-            return file;
+            return await OpenSunFileAsync(path);
         }
 
         public void AddLoadedSunFileToTreeView(SunFile file, Dispatcher dispatcher, List<string>? expansionState)
@@ -96,7 +99,7 @@ namespace SunFileManager
         /// <summary>
         /// Save a SunFile to disk.
         /// </summary>
-        public void SaveToDisk(ref SunNode node)
+        public async Task SaveToDiskAsync(SunNode node)
         {
             SunFile SaveSunFile = (SunFile)node.Tag;
             var savedExpansionState = mainForm.sunTreeView.Nodes.GetExpansionState();
@@ -111,23 +114,30 @@ namespace SunFileManager
             if (sfd.ShowDialog() != DialogResult.OK)
                 return;
 
-            //If saving a file that exists already, creates a new temp file and replaces current file with that
-            if (SaveSunFile.FilePath != null && SaveSunFile.FilePath.ToLower() == sfd.FileName.ToLower())
+            try
             {
-                SaveSunFile.SaveToDisk(sfd.FileName + "$tmp");
-                node.DeleteNode();
-                File.Delete(sfd.FileName);
-                File.Move(sfd.FileName + "$tmp", sfd.FileName);
+                //If saving a file that exists already, creates a new temp file and replaces current file with that
+                if (SaveSunFile.FilePath != null && SaveSunFile.FilePath.ToLower() == sfd.FileName.ToLower())
+                {
+                    SaveSunFile.SaveToDisk(sfd.FileName + "$tmp");
+                    node.DeleteNode();
+                    File.Delete(sfd.FileName);
+                    File.Move(sfd.FileName + "$tmp", sfd.FileName);
+                }
+                else // We're making a new file, or the name of the file was changed in the SaveFileDialog
+                {
+                    SaveSunFile.SaveToDisk(sfd.FileName);
+                    node.DeleteNode();
+                }
             }
-            else // We're making a new file, or the name of the file was changed in the SaveFileDialog
+            catch (Exception e)
             {
-                SaveSunFile.SaveToDisk(sfd.FileName);
-                node.DeleteNode();
+                MessageBox.Show(e.Message, "Error saving file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
             //Now reload the file
-
-            SunFile loadedSunFile = LoadSunFile(sfd.FileName);
+            SunFile loadedSunFile = await LoadSunFileAsync(sfd.FileName);
             if (loadedSunFile != null)
                 AddLoadedSunFileToTreeView(loadedSunFile, Dispatcher.CurrentDispatcher, savedExpansionState);
         }
@@ -135,21 +145,16 @@ namespace SunFileManager
         /// <summary>
         /// Reloads a file that already exists on the treeview.
         /// </summary>
-        public void ReloadSunFile(SunFile file, Dispatcher currentDispatcher = null)
+        public async Task ReloadSunFileAsync(SunFile file, Dispatcher currentDispatcher = null)
         {
             var savedExpansionState = mainForm.sunTreeView.Nodes.GetExpansionState();
             string path = file.FilePath;
             if (currentDispatcher != null)
-            {
-                currentDispatcher.BeginInvoke((Action)(() =>
-                {
-                    UnloadSunFile(file);
-                }));
-            }
+                currentDispatcher.Invoke(() => UnloadSunFile(file));
             else
                 UnloadSunFile(file);
 
-            SunFile loadedSunFile = LoadSunFile(path);
+            SunFile loadedSunFile = await LoadSunFileAsync(path);
 
             if (loadedSunFile != null)
                 frmFileManager.manager.AddLoadedSunFileToTreeView(loadedSunFile, currentDispatcher, savedExpansionState);

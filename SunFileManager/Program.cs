@@ -13,7 +13,6 @@ namespace SunFileManager
     public static class Program
     {
         public static UserSettings UserSettings;
-        public static string settingsPath;
         public static FileManager FileManager = new FileManager();
         private static frmFileManager mainFormInstance = null;
 
@@ -71,10 +70,7 @@ namespace SunFileManager
                         File.WriteAllLines(pendingFilesPath, sunFilesToLoad);
                     }
 
-                    settingsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                    settingsPath = Path.Combine(settingsPath, "SunSettings", "SunFileManager");
-                    UserSettings = new UserSettings();
-                    UserSettings.Load(settingsPath);
+                    UserSettings = UserSettings.Load();
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
                     

@@ -90,9 +90,9 @@ namespace SunFileManager
                 }));
 
             Save = new ToolStripMenuItem("Save", Resources.Save, new EventHandler(
-                delegate (object sender, EventArgs e)
+                async delegate (object sender, EventArgs e)
                 {
-                    mainform.SaveFile();
+                    await mainform.SaveFileAsync();
                 }));
 
             Unload = new ToolStripMenuItem("Unload", Resources.Remove, new EventHandler(
@@ -105,11 +105,11 @@ namespace SunFileManager
                 }));
 
             Reload = new ToolStripMenuItem("Reload", Resources.Refresh, new EventHandler(
-                delegate (object sender, EventArgs e)
+                async delegate (object sender, EventArgs e)
                 {
                     foreach (SunNode node in GetNodes(sender))
                     {
-                        frmFileManager.manager.ReloadSunFile((SunFile)node.Tag);
+                        await frmFileManager.manager.ReloadSunFileAsync((SunFile)node.Tag);
                     }
                 }));
 

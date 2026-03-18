@@ -2,7 +2,6 @@
 using System;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
 
 namespace SunLibrary.SunFileLib.Structure
 {
@@ -181,46 +180,39 @@ namespace SunLibrary.SunFileLib.Structure
             uint totalLength = sunDir.GetImgOffsets(sunDir.GetOffsets(Header.FileStart));
             Header.FileSize = totalLength - Header.FileStart;
 
-            try
+            SunBinaryWriter sunWriter = new SunBinaryWriter(File.Create(path));
+            for (int i = 0; i < Header.Identifier.Length; i++)
             {
-                SunBinaryWriter sunWriter = new SunBinaryWriter(File.Create(path));
-                for (int i = 0; i < Header.Identifier.Length; i++)
-                {
-                    sunWriter.Write((byte)Header.Identifier[i]);
-                }
-
-                for (int i = 0; i < Header.Ascii.Length; i++)
-                {
-                    sunWriter.Write((byte)Header.Ascii[i]);
-                }
-
-                sunWriter.Write((long)Header.FileSize);
-                sunWriter.Write(Header.FileStart);
-                sunWriter.WriteNullTerminatedString(Header.Copyright);
-
-                long extraHeaderLength = Header.FileStart - sunWriter.BaseStream.Position;
-                if (extraHeaderLength > 0)
-                {
-                    sunWriter.Write(new byte[(int)extraHeaderLength]);
-                }
-                sunDir.SaveDirectory(sunWriter);
-
-                using (FileStream fileStream = File.OpenRead(tempFile))
-                {
-                    sunDir.SaveImages(sunWriter, fileStream);
-                    fileStream.Close();
-                }
-
-                File.Delete(tempFile);
-                sunWriter.Close();
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
+                sunWriter.Write((byte)Header.Identifier[i]);
             }
-            catch (Exception e)
+
+            for (int i = 0; i < Header.Ascii.Length; i++)
             {
-                MessageBox.Show(e.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                sunWriter.Write((byte)Header.Ascii[i]);
             }
+
+            sunWriter.Write((long)Header.FileSize);
+            sunWriter.Write(Header.FileStart);
+            sunWriter.WriteNullTerminatedString(Header.Copyright);
+
+            long extraHeaderLength = Header.FileStart - sunWriter.BaseStream.Position;
+            if (extraHeaderLength > 0)
+            {
+                sunWriter.Write(new byte[(int)extraHeaderLength]);
+            }
+            sunDir.SaveDirectory(sunWriter);
+
+            using (FileStream fileStream = File.OpenRead(tempFile))
+            {
+                sunDir.SaveImages(sunWriter, fileStream);
+                fileStream.Close();
+            }
+
+            File.Delete(tempFile);
+            sunWriter.Close();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
         }
 
         /// <summary>

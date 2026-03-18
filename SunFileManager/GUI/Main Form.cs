@@ -12,6 +12,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using Path = System.IO.Path;
@@ -79,7 +80,6 @@ namespace SunFileManager
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-            Program.UserSettings.Load(Program.settingsPath);
             ApplySettings();
 
             // Register this form instance with the Program class
@@ -177,7 +177,7 @@ namespace SunFileManager
         /// <summary>
         /// Load an existing SunFile.
         /// </summary>
-        public void openToolStripMenuItem_Click(object sender, EventArgs e)
+        public async void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
             OpenFileDialog ofd = new OpenFileDialog()
@@ -190,44 +190,18 @@ namespace SunFileManager
             if (ofd.ShowDialog() != DialogResult.OK)
                 return;
 
-            // List to hold all selected SunFile paths.
-            List<string> sunFilePathsToLoad = new List<string>();
+            SunFile[] loadedFiles = await Task.WhenAll(ofd.FileNames.Select(p => manager.LoadSunFileAsync(p)));
 
-            // Fill list with selected filepaths.
-            foreach (string path in ofd.FileNames)
-                sunFilePathsToLoad.Add(path/*.ToLower()*/);
-
-            List<SunFile> loadedSunFiles = new List<SunFile>();
-
-            foreach (string filepath in sunFilePathsToLoad)
-            {
-                SunFile f = manager.LoadSunFile(filepath);
-                if (f == null)
-                {
-                    MessageBox.Show("Error");
-                }
-                else
-                {
-                    lock (loadedSunFiles)
-                    {
-                        loadedSunFiles.Add(f);
-                    }
-                }
-            }
-
-            foreach (SunFile sunFile in loadedSunFiles)
-            {
-                // Add to tree.
+            foreach (SunFile sunFile in loadedFiles.Where(f => f != null))
                 manager.AddLoadedSunFileToTreeView(sunFile, dispatcher, null);
-            }
         }
 
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFile();
+            await SaveFileAsync();
         }
 
-        public void SaveFile()
+        public async Task SaveFileAsync()
         {
             SunNode node;
 
@@ -252,7 +226,7 @@ namespace SunFileManager
                     sunTreeView.SelectedNode = ((SunNode)sunTreeView.SelectedNode).TopLevelNode;
                 }
             }
-            manager.SaveToDisk(ref node);
+            await manager.SaveToDiskAsync(node);
         }
 
         /// <summary>
@@ -1381,7 +1355,7 @@ namespace SunFileManager
 
         #region Debug
 
-        private void btnCreateTestFile_Click(object sender, EventArgs e)
+        private async void btnCreateTestFile_Click(object sender, EventArgs e)
         {
             //sunTreeView.Focus();
             //string name = "test.sun";
@@ -1392,24 +1366,22 @@ namespace SunFileManager
 
             //AddSunImageToSelectedNode((SunNode)sunTreeView.Nodes[file.Name], "image1");
 
-            SunFile file = manager.LoadSunFile(Path.Combine(DefaultPath + "\\stuff" + "\\NewSunFiles", "Map.sun"));
-            manager.sunFiles.Add(file);
-            sunTreeView.Nodes.Add(new SunNode(file));
+            SunFile file = await manager.LoadSunFileAsync(Path.Combine(DefaultPath + "\\stuff" + "\\NewSunFiles", "Map.sun"));
+            if (file != null) sunTreeView.Nodes.Add(new SunNode(file));
         }
-        private void btnOpenStringFile_Click(object sender, EventArgs e)
+        private async void btnOpenStringFile_Click(object sender, EventArgs e)
         {
-            SunFile file = manager.LoadSunFile(Path.Combine(DefaultPath + "\\stuff" + "\\NewSunFiles", "String.sun"));
-            manager.sunFiles.Add(file);
-            sunTreeView.Nodes.Add(new SunNode(file));
+            SunFile file = await manager.LoadSunFileAsync(Path.Combine(DefaultPath + "\\stuff" + "\\NewSunFiles", "String.sun"));
+            if (file != null) sunTreeView.Nodes.Add(new SunNode(file));
         }
 
         #endregion Debug
 
-        public void LoadFile(string sunfileToLoad)
+        public async void LoadFile(string sunfileToLoad)
         {
             if (sunfileToLoad != null && File.Exists(sunfileToLoad))
             {
-                SunFile f = manager.LoadSunFile(sunfileToLoad);
+                SunFile f = await manager.LoadSunFileAsync(sunfileToLoad);
                 if (f != null)
                 {
                     manager.AddLoadedSunFileToTreeView(f, Dispatcher.CurrentDispatcher, null);
