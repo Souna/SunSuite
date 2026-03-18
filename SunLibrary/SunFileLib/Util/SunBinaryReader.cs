@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 
 namespace SunLibrary.SunFileLib.Util
@@ -40,16 +41,28 @@ namespace SunLibrary.SunFileLib.Util
         public override string ReadString()
         {
             int size = ReadByte();
-            return Encoding.ASCII.GetString(ReadBytes(size));
+            return ReadString(size);
         }
 
         /// <summary>
-        /// Reads an ASCII string, without decryption
+        /// Reads an ASCII string of the given byte length.
+        /// Uses stack allocation for small strings to avoid heap allocations.
         /// </summary>
-        /// <param name="filePath">Length of bytes to read</param>
         public string ReadString(int length)
         {
-            return Encoding.ASCII.GetString(ReadBytes(length));
+            if (length == 0) return string.Empty;
+            if (length <= 256)
+            {
+                Span<byte> buf = stackalloc byte[length];
+                Read(buf);
+                return Encoding.ASCII.GetString(buf);
+            }
+            else
+            {
+                byte[] buf = new byte[length];
+                Read(buf, 0, length);
+                return Encoding.ASCII.GetString(buf);
+            }
         }
 
         public string ReadNullTerminatedString()
