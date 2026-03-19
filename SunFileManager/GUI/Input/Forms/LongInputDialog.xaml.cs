@@ -2,7 +2,7 @@ using System.Windows;
 
 namespace SunFileManager.GUI.Input.Forms
 {
-    public partial class frmLongInputBox : Window
+    public partial class frmLongInputBox : SunFileManager.GUI.SunFluentWindow
     {
         private string nameResult = null;
         private long? longResult = null;

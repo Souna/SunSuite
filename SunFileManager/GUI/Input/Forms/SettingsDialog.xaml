@@ -1,26 +1,33 @@
-<Window x:Class="SunFileManager.GUI.Input.Forms.frmSettings"
+<sfm:SunFluentWindow x:Class="SunFileManager.GUI.Input.Forms.frmSettings"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Settings" Width="300" Height="320"
+        xmlns:sfm="clr-namespace:SunFileManager.GUI"
+        Title="Settings" Width="300" Height="330"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False">
-    <StackPanel Margin="16">
-        <CheckBox x:Name="chkDarkMode"       Content="Dark Mode"            Margin="0,0,0,8" />
-        <CheckBox x:Name="chkAutoParseImages" Content="Auto-Parse Images"   Margin="0,0,0,8" />
-        <CheckBox x:Name="chkNodeWarnings"   Content="Node Warnings"        Margin="0,0,0,8" />
-        <CheckBox x:Name="chkFileBoxes"      Content="Show Root Lines"      Margin="0,0,0,8" />
-        <Separator Margin="0,4,0,12"/>
-        <TextBlock Text="Tree line style:" FontWeight="SemiBold" Margin="0,0,0,6"/>
-        <RadioButton x:Name="radNodeLines"     Content="Show Node Lines"    Margin="0,0,0,6" GroupName="Lines"/>
-        <RadioButton x:Name="radHighlightLine" Content="Highlight Full Row" Margin="0,0,0,6" GroupName="Lines"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
-            <Button Content="OK"    x:Name="btnOk"    Width="80" Margin="0,0,8,0"
-                    IsDefault="True" Click="btnOk_Click" />
-            <Button Content="Apply" x:Name="btnApply" Width="80" Margin="0,0,8,0"
-                    IsEnabled="False" Click="btnApply_Click" />
-            <Button Content="Cancel" x:Name="btnCancel" Width="80"
-                    IsCancel="True" Click="btnCancel_Click" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ui:TitleBar Grid.Row="0" Title="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"/>
+        <StackPanel Grid.Row="1" Margin="16">
+            <CheckBox x:Name="chkDarkMode"        Content="Dark Mode"          Margin="0,0,0,8" />
+            <CheckBox x:Name="chkAutoParseImages" Content="Auto-Parse Images"  Margin="0,0,0,8" />
+            <CheckBox x:Name="chkNodeWarnings"    Content="Node Warnings"      Margin="0,0,0,8" />
+            <CheckBox x:Name="chkFileBoxes"       Content="Show Root Lines"    Margin="0,0,0,8" />
+            <Separator Margin="0,4,0,12"/>
+            <TextBlock Text="Tree line style:" FontWeight="SemiBold" Margin="0,0,0,6"/>
+            <RadioButton x:Name="radNodeLines"     Content="Show Node Lines"    Margin="0,0,0,6" GroupName="Lines"/>
+            <RadioButton x:Name="radHighlightLine" Content="Highlight Full Row" Margin="0,0,0,6" GroupName="Lines"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                <Button Content="OK"     x:Name="btnOk"     Width="80" Margin="0,0,8,0"
+                        IsDefault="True" Click="btnOk_Click" />
+                <Button Content="Cancel" x:Name="btnCancel" Width="80"
+                        IsCancel="True"  Click="btnCancel_Click" />
+            </StackPanel>
         </StackPanel>
-    </StackPanel>
-</Window>
+    </Grid>
+</sfm:SunFluentWindow>

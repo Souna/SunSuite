@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace SunFileManager.GUI
 {
-    public partial class frmNewFile : Window
+    public partial class frmNewFile : SunFileManager.GUI.SunFluentWindow
     {
         private GUI.MainWindow mainWindow = null;
 

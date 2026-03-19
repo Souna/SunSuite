@@ -2,7 +2,7 @@ using System.Windows;
 
 namespace SunFileManager.GUI.Input.Forms
 {
-    public partial class frmFloatInputBox : Window
+    public partial class frmFloatInputBox : SunFileManager.GUI.SunFluentWindow
     {
         private string nameResult = null;
         private double? doubleResult = null;

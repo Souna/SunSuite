@@ -2,7 +2,7 @@ using System.Windows;
 
 namespace SunFileManager.GUI.Input.Forms
 {
-    public partial class frmPeterAlert : Window
+    public partial class frmPeterAlert : SunFileManager.GUI.SunFluentWindow
     {
         public frmPeterAlert()
         {

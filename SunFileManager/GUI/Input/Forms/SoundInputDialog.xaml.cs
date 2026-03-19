@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace SunFileManager.GUI.Input
 {
-    public partial class frmSoundInputBox : Window
+    public partial class frmSoundInputBox : SunFileManager.GUI.SunFluentWindow
     {
         private string nameResult = null;
         private string soundResult = null;

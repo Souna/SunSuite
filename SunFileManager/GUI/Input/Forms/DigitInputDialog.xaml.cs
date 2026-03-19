@@ -2,7 +2,7 @@ using System.Windows;
 
 namespace SunFileManager.GUI.Input
 {
-    public partial class frmDigitInputBox : Window
+    public partial class frmDigitInputBox : SunFileManager.GUI.SunFluentWindow
     {
         private string nameResult = null;
         private int? intResult = null;

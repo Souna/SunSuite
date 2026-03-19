@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 
 namespace SunFileManager.GUI.Input
 {
-    public partial class frmCanvasInputBox : Window
+    public partial class frmCanvasInputBox : SunFileManager.GUI.SunFluentWindow
     {
         private string nameResult = null;
         private List<string> selectedFiles = new List<string>();

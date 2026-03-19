@@ -19,11 +19,10 @@ using System.Windows.Interop;
 using System.Windows.Threading;
 using System.Windows.Media;
 using Wpf.Ui.Appearance;
-using FluentWindow = Wpf.Ui.Controls.FluentWindow;
 
 namespace SunFileManager.GUI
 {
-    public partial class MainWindow : FluentWindow
+    public partial class MainWindow : SunFluentWindow
     {
         // ── Statics ───────────────────────────────────────────────────────────────
         public static string DefaultPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -78,8 +77,13 @@ namespace SunFileManager.GUI
         // ── Settings ──────────────────────────────────────────────────────────────
         public void ApplySettings()
         {
-            ApplicationThemeManager.Apply(
-                Program.UserSettings.DarkMode ? ApplicationTheme.Dark : ApplicationTheme.Light);
+            bool dark = Program.UserSettings.DarkMode;
+            ApplicationThemeManager.Apply(dark ? ApplicationTheme.Dark : ApplicationTheme.Light);
+            foreach (Window w in Application.Current.Windows)
+            {
+                if (w is SunFluentWindow sfw)
+                    sfw.ApplyDwmTheme();
+            }
         }
 
         // ── WM_COPYDATA (single-instance file loading) ────────────────────────────

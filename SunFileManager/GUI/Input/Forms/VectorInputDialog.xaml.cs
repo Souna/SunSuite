@@ -2,7 +2,7 @@ using System.Windows;
 
 namespace SunFileManager.GUI.Input.Forms
 {
-    public partial class frmVectorInputBox : Window
+    public partial class frmVectorInputBox : SunFileManager.GUI.SunFluentWindow
     {
         private string nameResult = null;
         private System.Drawing.Point? pointResult = null;

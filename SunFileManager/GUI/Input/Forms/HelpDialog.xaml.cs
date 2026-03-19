@@ -2,7 +2,7 @@ using System.Windows;
 
 namespace SunFileManager.GUI.Input.Forms
 {
-    public partial class frmHelp : Window
+    public partial class frmHelp : SunFileManager.GUI.SunFluentWindow
     {
         public frmHelp()
         {
