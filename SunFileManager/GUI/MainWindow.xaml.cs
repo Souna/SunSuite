@@ -104,7 +104,7 @@ namespace SunFileManager.GUI
 
         public void ApplySettings()
         {
-            panningImageViewer.ShowOriginCross = Program.UserSettings.ShowOriginCross;
+            ApplyTheme();
         }
 
         // ── WM_COPYDATA (single-instance file loading) ────────────────────────────
@@ -785,6 +785,9 @@ namespace SunFileManager.GUI
             => new frmSettings(this).ShowDialog();
 
         private void menuHelp_Click(object sender, RoutedEventArgs e)
+            => new frmHelp().ShowDialog();
+
+        private void menuAbout_Click(object sender, RoutedEventArgs e)
             => new frmHelp().ShowDialog();
 
         // ── Keyboard shortcuts ────────────────────────────────────────────────────
