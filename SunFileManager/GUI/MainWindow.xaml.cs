@@ -104,7 +104,7 @@ namespace SunFileManager.GUI
 
         public void ApplySettings()
         {
-            ApplyTheme();
+            panningImageViewer.ShowOriginCross = Program.UserSettings.ShowOriginCross;
         }
 
         // ── WM_COPYDATA (single-instance file loading) ────────────────────────────
