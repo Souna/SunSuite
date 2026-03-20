@@ -787,6 +787,9 @@ namespace SunFileManager.GUI
         private void menuHelp_Click(object sender, RoutedEventArgs e)
             => new frmHelp().ShowDialog();
 
+        private void menuAbout_Click(object sender, RoutedEventArgs e)
+            => new frmHelp().ShowDialog();
+
         // ── Keyboard shortcuts ────────────────────────────────────────────────────
         protected override void OnKeyDown(KeyEventArgs e)
         {

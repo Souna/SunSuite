@@ -236,6 +236,8 @@ namespace SunFileManager
                     if (node.Tag is SunProperty property)
                         property.ParentImage.Changed = true;
 
+                    IsManuallyAdded = true;
+
                     if (expandNode)
                         IsExpanded = true;
 
@@ -350,7 +352,7 @@ namespace SunFileManager
         {
             try
             {
-                if (Tag is SunProperty prop)
+                if (Tag is SunProperty prop && prop.ParentImage != null)
                     prop.ParentImage.Changed = true;
 
                 Tag.Remove();
@@ -359,6 +361,9 @@ namespace SunFileManager
                     Children.Clear();
                 else
                     Parent?.Children.Remove(this);
+
+                if (Parent != null)
+                    Parent.IsManuallyAdded = true;
             }
             catch
             {

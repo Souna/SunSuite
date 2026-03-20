@@ -101,7 +101,9 @@ namespace SunFileManager
                     saveSunFile.FilePath.Equals(sfd.FileName, StringComparison.OrdinalIgnoreCase))
                 {
                     saveSunFile.SaveToDisk(sfd.FileName + "$tmp");
-                    node.DeleteNode();
+                    mainWindow.TreeNodes.Remove(node);
+                    sunFiles.Remove(saveSunFile);
+                    saveSunFile.Dispose();
                     File.Delete(sfd.FileName);
                     File.Move(sfd.FileName + "$tmp", sfd.FileName);
                 }
@@ -146,7 +148,9 @@ namespace SunFileManager
                 try
                 {
                     SunNode node = nodeToRemove ?? mainWindow.GetSelectedSunNode();
-                    node?.DeleteNode();
+                    if (node != null)
+                        mainWindow.TreeNodes.Remove(node);
+                    file.Dispose();
                     sunFiles.Remove(file);
                     GC.Collect();
                     GC.WaitForPendingFinalizers();
