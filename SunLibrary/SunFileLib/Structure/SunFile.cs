@@ -2,7 +2,6 @@
 using System;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
 
 namespace SunLibrary.SunFileLib.Structure
 {
@@ -97,50 +96,26 @@ namespace SunLibrary.SunFileLib.Structure
             SunDirectory.Dispose();
         }
 
-        public override int GetInt()
-        {
-            throw new NotImplementedException();
-        }
+        public override int GetInt() => 0;
 
-        public override short GetShort()
-        {
-            throw new NotImplementedException();
-        }
+        public override short GetShort() => 0;
 
-        public override long GetLong()
-        {
-            throw new NotImplementedException();
-        }
+        public override long GetLong() => 0;
 
-        public override float GetFloat()
-        {
-            throw new NotImplementedException();
-        }
+        public override float GetFloat() => 0f;
 
-        public override double GetDouble()
-        {
-            throw new NotImplementedException();
-        }
+        public override double GetDouble() => 0d;
 
         public override string GetString()
         {
             return Name;
         }
 
-        public override Point GetPoint()
-        {
-            throw new NotImplementedException();
-        }
+        public override Point GetPoint() => Point.Empty;
 
-        public override Bitmap GetBitmap()
-        {
-            throw new NotImplementedException();
-        }
+        public override Bitmap GetBitmap() => null;
 
-        public override byte[] GetBytes()
-        {
-            throw new NotImplementedException();
-        }
+        public override byte[] GetBytes() => null;
 
         #endregion Inherited Members
 
@@ -205,47 +180,39 @@ namespace SunLibrary.SunFileLib.Structure
             uint totalLength = sunDir.GetImgOffsets(sunDir.GetOffsets(Header.FileStart));
             Header.FileSize = totalLength - Header.FileStart;
 
-            try
+            SunBinaryWriter sunWriter = new SunBinaryWriter(File.Create(path));
+            for (int i = 0; i < Header.Identifier.Length; i++)
             {
-                SunBinaryWriter sunWriter = new SunBinaryWriter(File.Create(path));
-                for (int i = 0; i < Header.Identifier.Length; i++)
-                {
-                    sunWriter.Write((byte)Header.Identifier[i]);
-                }
-
-                for (int i = 0; i < Header.Ascii.Length; i++)
-                {
-                    sunWriter.Write((byte)Header.Ascii[i]);
-                }
-
-                sunWriter.Write((long)Header.FileSize);
-                sunWriter.Write(Header.FileStart);
-                sunWriter.WriteNullTerminatedString(Header.Copyright);
-
-                long extraHeaderLength = Header.FileStart - sunWriter.BaseStream.Position;
-                if (extraHeaderLength > 0)
-                {
-                    sunWriter.Write(new byte[(int)extraHeaderLength]);
-                }
-                sunWriter.Header = header;
-                sunDir.SaveDirectory(sunWriter);
-
-                using (FileStream fileStream = File.OpenRead(tempFile))
-                {
-                    sunDir.SaveImages(sunWriter, fileStream);
-                    fileStream.Close();
-                }
-
-                File.Delete(tempFile);
-                sunWriter.Close();
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
+                sunWriter.Write((byte)Header.Identifier[i]);
             }
-            catch (Exception e)
+
+            for (int i = 0; i < Header.Ascii.Length; i++)
             {
-                MessageBox.Show(e.Message, null, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                sunWriter.Write((byte)Header.Ascii[i]);
             }
+
+            sunWriter.Write((long)Header.FileSize);
+            sunWriter.Write(Header.FileStart);
+            sunWriter.WriteNullTerminatedString(Header.Copyright);
+
+            long extraHeaderLength = Header.FileStart - sunWriter.BaseStream.Position;
+            if (extraHeaderLength > 0)
+            {
+                sunWriter.Write(new byte[(int)extraHeaderLength]);
+            }
+            sunDir.SaveDirectory(sunWriter);
+
+            using (FileStream fileStream = File.OpenRead(tempFile))
+            {
+                sunDir.SaveImages(sunWriter, fileStream);
+                fileStream.Close();
+            }
+
+            File.Delete(tempFile);
+            sunWriter.Close();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
         }
 
         /// <summary>
@@ -277,8 +244,7 @@ namespace SunLibrary.SunFileLib.Structure
             this.Header.FileStart = reader.ReadUInt32();
             this.Header.Copyright = reader.ReadNullTerminatedString();
 
-            reader.ReadBytes((int)(header.FileStart - reader.BaseStream.Position)); //reset to beginning? Does this even do anything?
-            reader.Header = this.Header;
+            reader.ReadBytes((int)(header.FileStart - reader.BaseStream.Position));
             long resetPos = reader.BaseStream.Position;     //position to rollback to if things go bad
 
             try

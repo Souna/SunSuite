@@ -1,0 +1,31 @@
+<sfm:SunFluentWindow x:Class="SunFileManager.GUI.Input.Forms.frmHelp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sfm="clr-namespace:SunFileManager.GUI"
+        Title="Help" Width="420" Height="358"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ui:TitleBar Grid.Row="0" Title="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"/>
+        <ScrollViewer Grid.Row="1" Margin="16,8,16,0">
+            <TextBlock TextWrapping="Wrap" LineHeight="20">
+                <Bold>SunFile Manager</Bold>&#x0a;&#x0a;
+                Open .sun files with File → Open or drag-and-drop them onto the window.&#x0a;&#x0a;
+                Right-click any node to see available actions for that node type.&#x0a;&#x0a;
+                Double-click an Image node to parse and expand its contents.&#x0a;&#x0a;
+                Hold Ctrl or Shift while clicking to multi-select nodes.&#x0a;&#x0a;
+                Press Ctrl+S to save the selected file.&#x0a;&#x0a;
+                Drag .sun files from Explorer directly onto the tree to open them.
+            </TextBlock>
+        </ScrollViewer>
+        <Button Grid.Row="2" Content="OK" Width="80"
+                HorizontalAlignment="Right" Margin="16,12,16,12"
+                IsDefault="True" IsCancel="True" Click="btnOk_Click"/>
+    </Grid>
+</sfm:SunFluentWindow>

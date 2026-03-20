@@ -1,4 +1,4 @@
-﻿using SunLibrary.SunFileLib.Structure;
+﻿using System;
 using System.IO;
 using System.Text;
 
@@ -7,10 +7,6 @@ namespace SunLibrary.SunFileLib.Util
     public class SunBinaryReader : BinaryReader
     {
         #region Properties
-
-        public SunHeader Header { get; set; }
-
-        public uint Hash { get; set; }
 
         #endregion Properties
 
@@ -45,16 +41,28 @@ namespace SunLibrary.SunFileLib.Util
         public override string ReadString()
         {
             int size = ReadByte();
-            return Encoding.ASCII.GetString(ReadBytes(size));
+            return ReadString(size);
         }
 
         /// <summary>
-        /// Reads an ASCII string, without decryption
+        /// Reads an ASCII string of the given byte length.
+        /// Uses stack allocation for small strings to avoid heap allocations.
         /// </summary>
-        /// <param name="filePath">Length of bytes to read</param>
         public string ReadString(int length)
         {
-            return Encoding.ASCII.GetString(ReadBytes(length));
+            if (length == 0) return string.Empty;
+            if (length <= 256)
+            {
+                Span<byte> buf = stackalloc byte[length];
+                Read(buf);
+                return Encoding.ASCII.GetString(buf);
+            }
+            else
+            {
+                byte[] buf = new byte[length];
+                Read(buf, 0, length);
+                return Encoding.ASCII.GetString(buf);
+            }
         }
 
         public string ReadNullTerminatedString()
@@ -89,19 +97,7 @@ namespace SunLibrary.SunFileLib.Util
             return sb;
         }
 
-        public uint ReadOffset()
-        {
-            return ReadUInt32(); //Use just this line if not reading encrypted data
-            //uint offset = (uint)BaseStream.Position;
-            //offset = (offset - Header.FileStart) ^ uint.MaxValue;
-            //offset *= Hash;
-            //offset -= 0x581C3F6D; //Wz Offset Constant
-            //offset = SunTool.RotateLeft(offset, (byte)(offset & 0x1F));
-            //uint encryptedOffset = ReadUInt32();
-            //offset ^= encryptedOffset;
-            //offset += Header.FileStart * 2;
-            //return offset;
-        }
+        public uint ReadOffset() => ReadUInt32();
 
         #endregion Methods
     }

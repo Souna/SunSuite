@@ -1,39 +1,43 @@
-﻿using SunLibrary.Config;
+using System;
+using System.IO;
+using System.Text.Json;
 
 namespace SunFileManager.Config
 {
-    public class UserSettings : SettingsBase
+    public class UserSettings
     {
+        private static readonly string SettingsPath =
+            Path.Combine(AppContext.BaseDirectory, "settings.json");
+
         public bool DarkMode { get; set; } = false;
-
         public bool AutoParseImages { get; set; } = false;
-
         public bool NodeWarnings { get; set; } = true;
-
         public bool FileBoxes { get; set; } = true;
-
         public bool NodeLines { get; set; } = true;
-
         public bool HighlightLine { get; set; } = false;
 
-        public override void WriteSettings(SettingsWriter writer)
+        public static UserSettings Load()
         {
-            writer.Write("DarkMode", DarkMode);
-            writer.Write("AutoParseImages", AutoParseImages);
-            writer.Write("NodeWarnings", NodeWarnings);
-            writer.Write("FileBoxes", FileBoxes);
-            writer.Write("NodeLines", NodeLines);
-            writer.Write("HighlightLine", HighlightLine);
+            try
+            {
+                if (File.Exists(SettingsPath))
+                {
+                    string json = File.ReadAllText(SettingsPath);
+                    return JsonSerializer.Deserialize<UserSettings>(json) ?? new UserSettings();
+                }
+            }
+            catch { }
+            return new UserSettings();
         }
 
-        public override void ReadSettings(SettingsReader reader)
+        public void Save()
         {
-            DarkMode = reader.Read("DarkMode", false);
-            AutoParseImages = reader.Read("AutoParseImages", false);
-            NodeWarnings = reader.Read("NodeWarnings", true);
-            FileBoxes = reader.Read("FileBoxes", true);
-            NodeLines = reader.Read("NodeLines", true);
-            HighlightLine = reader.Read("HighlightLine", false);
+            try
+            {
+                string json = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(SettingsPath, json);
+            }
+            catch { }
         }
     }
 }

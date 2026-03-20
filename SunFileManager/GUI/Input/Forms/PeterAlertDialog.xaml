@@ -1,0 +1,24 @@
+<sfm:SunFluentWindow x:Class="SunFileManager.GUI.Input.Forms.frmPeterAlert"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sfm="clr-namespace:SunFileManager.GUI"
+        Title="Peter Alert" Width="250" Height="318"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ui:TitleBar Grid.Row="0" Title="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"/>
+        <Image Grid.Row="1"
+               Source="pack://application:,,,/Resources/peter.gif"
+               Stretch="Uniform" />
+        <Button Grid.Row="2" Content="OK" Width="80" Margin="0,8,0,8"
+                HorizontalAlignment="Center"
+                IsDefault="True" IsCancel="True" Click="btnOk_Click"/>
+    </Grid>
+</sfm:SunFluentWindow>
