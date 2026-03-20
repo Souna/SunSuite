@@ -11,6 +11,7 @@ namespace SunFileManager.Config
 
         public bool DarkMode { get; set; } = false;
         public bool AutoParseImages { get; set; } = false;
+        public bool NodeWarnings { get; set; } = true;
         public bool ShowOriginCross { get; set; } = true;
 
         public static UserSettings Load()

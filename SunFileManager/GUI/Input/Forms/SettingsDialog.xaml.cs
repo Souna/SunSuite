@@ -6,7 +6,7 @@ namespace SunFileManager.GUI.Input.Forms
     {
         private readonly GUI.MainWindow mainWindow;
 
-        private bool _snapDarkMode, _snapAutoParseImages, _snapShowOriginCross;
+        private bool _snapDarkMode, _snapAutoParseImages, _snapNodeWarnings, _snapShowOriginCross;
 
         public frmSettings(GUI.MainWindow parent)
         {
@@ -20,16 +20,20 @@ namespace SunFileManager.GUI.Input.Forms
         {
             _snapDarkMode        = Program.UserSettings.DarkMode;
             _snapAutoParseImages = Program.UserSettings.AutoParseImages;
+            _snapNodeWarnings    = Program.UserSettings.NodeWarnings;
             _snapShowOriginCross = Program.UserSettings.ShowOriginCross;
 
             chkDarkMode.IsChecked        = Program.UserSettings.DarkMode;
             chkAutoParseImages.IsChecked = Program.UserSettings.AutoParseImages;
+            chkNodeWarnings.IsChecked    = Program.UserSettings.NodeWarnings;
             chkShowOriginCross.IsChecked = Program.UserSettings.ShowOriginCross;
 
             chkDarkMode.Checked           += OnSettingChanged;
             chkDarkMode.Unchecked         += OnSettingChanged;
             chkAutoParseImages.Checked    += OnSettingChanged;
             chkAutoParseImages.Unchecked  += OnSettingChanged;
+            chkNodeWarnings.Checked       += OnSettingChanged;
+            chkNodeWarnings.Unchecked     += OnSettingChanged;
             chkShowOriginCross.Checked    += OnSettingChanged;
             chkShowOriginCross.Unchecked  += OnSettingChanged;
         }
@@ -42,6 +46,7 @@ namespace SunFileManager.GUI.Input.Forms
 
             Program.UserSettings.DarkMode        = chkDarkMode.IsChecked == true;
             Program.UserSettings.AutoParseImages = chkAutoParseImages.IsChecked == true;
+            Program.UserSettings.NodeWarnings    = chkNodeWarnings.IsChecked == true;
             Program.UserSettings.ShowOriginCross = chkShowOriginCross.IsChecked == true;
             Program.UserSettings.Save();
 
@@ -58,6 +63,7 @@ namespace SunFileManager.GUI.Input.Forms
 
             Program.UserSettings.DarkMode        = _snapDarkMode;
             Program.UserSettings.AutoParseImages = _snapAutoParseImages;
+            Program.UserSettings.NodeWarnings    = _snapNodeWarnings;
             Program.UserSettings.ShowOriginCross = _snapShowOriginCross;
             Program.UserSettings.Save();
 
