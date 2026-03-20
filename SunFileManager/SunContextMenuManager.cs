@@ -55,8 +55,8 @@ namespace SunFileManager
                 addSub.Items.Add(MakeItem("Image",     () => mainWindow.AddSunImageToSelectedNode(node, null)));
                 menu.Items.Add(addSub);
                 menu.Items.Add(new Separator());
-                menu.Items.Add(MakeItem("Rename", () => mainWindow.RenameSelectedNode()));
-                menu.Items.Add(MakeItem("Save",   async () => await mainWindow.SaveFileAsync()));
+                menu.Items.Add(MakeItem("Rename", () => mainWindow.RenameSelectedNode(node)));
+                menu.Items.Add(MakeItem("Save",   async () => await mainWindow.SaveFileAsync(node)));
                 menu.Items.Add(MakeItem("Unload", () => MainWindow.manager.UnloadSunFile((SunFile)node.Tag, node)));
                 menu.Items.Add(MakeItem("Reload", async () =>
                     await MainWindow.manager.ReloadSunFileAsync((SunFile)node.Tag, node, System.Windows.Threading.Dispatcher.CurrentDispatcher)));
@@ -76,12 +76,12 @@ namespace SunFileManager
                 addSub.Items.Add(MakeItem("Image",     () => mainWindow.AddSunImageToSelectedNode(node, null)));
                 menu.Items.Add(addSub);
                 menu.Items.Add(new Separator());
-                menu.Items.Add(MakeItem("Rename", () => mainWindow.RenameSelectedNode()));
+                menu.Items.Add(MakeItem("Rename", () => mainWindow.RenameSelectedNode(node)));
 
                 if (node.ChildCount > 0)
-                    menu.Items.Add(MakeRemoveSubMenu());
+                    menu.Items.Add(MakeRemoveSubMenu(node));
                 else
-                    menu.Items.Add(MakeItem("Remove", () => mainWindow.RemoveSelectedNodes()));
+                    menu.Items.Add(MakeItem("Remove", () => mainWindow.RemoveSelectedNodes(node)));
 
                 menu.Items.Add(new Separator());
                 menu.Items.Add(MakeItem("Expand All",  () => ExpandRecursive(node, true)));
@@ -120,12 +120,12 @@ namespace SunFileManager
                 }
                 menu.Items.Add(addSub);
                 menu.Items.Add(new Separator());
-                menu.Items.Add(MakeItem("Rename", () => mainWindow.RenameSelectedNode()));
+                menu.Items.Add(MakeItem("Rename", () => mainWindow.RenameSelectedNode(node)));
 
                 if (node.ChildCount > 0)
-                    menu.Items.Add(MakeRemoveSubMenu());
+                    menu.Items.Add(MakeRemoveSubMenu(node));
                 else
-                    menu.Items.Add(MakeItem("Remove", () => mainWindow.RemoveSelectedNodes()));
+                    menu.Items.Add(MakeItem("Remove", () => mainWindow.RemoveSelectedNodes(node)));
 
                 menu.Items.Add(new Separator());
                 menu.Items.Add(MakeItem("Expand All", () => ExpandRecursive(node, true)));
@@ -134,8 +134,8 @@ namespace SunFileManager
             }
             else if (node.Tag is SunProperty)
             {
-                menu.Items.Add(MakeItem("Rename", () => mainWindow.RenameSelectedNode()));
-                menu.Items.Add(MakeItem("Remove", () => mainWindow.RemoveSelectedNodes()));
+                menu.Items.Add(MakeItem("Rename", () => mainWindow.RenameSelectedNode(node)));
+                menu.Items.Add(MakeItem("Remove", () => mainWindow.RemoveSelectedNodes(node)));
             }
 
             return menu;
@@ -156,11 +156,11 @@ namespace SunFileManager
             return item;
         }
 
-        private MenuItem MakeRemoveSubMenu()
+        private MenuItem MakeRemoveSubMenu(SunNode node)
         {
             var sub = new MenuItem { Header = "Remove..." };
-            sub.Items.Add(MakeItem("This Node",       () => mainWindow.RemoveSelectedNodes()));
-            sub.Items.Add(MakeItem("All Child Nodes", () => mainWindow.RemoveChildNodes()));
+            sub.Items.Add(MakeItem("This Node",       () => mainWindow.RemoveSelectedNodes(node)));
+            sub.Items.Add(MakeItem("All Child Nodes", () => mainWindow.RemoveChildNodes(node)));
             return sub;
         }
 

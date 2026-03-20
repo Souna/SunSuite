@@ -59,11 +59,15 @@
                       Drop="sunTreeView_Drop"
                       SelectedItemChanged="sunTreeView_SelectedItemChanged"
                       MouseRightButtonUp="sunTreeView_MouseRightButtonUp"
+                      ContextMenuOpening="sunTreeView_ContextMenuOpening"
                       KeyDown="sunTreeView_KeyDown"
                       MouseDoubleClick="sunTreeView_DoubleClick"
                       PreviewMouseDown="sunTreeView_PreviewMouseDown"
                       VirtualizingPanel.IsVirtualizing="True"
                       VirtualizingPanel.VirtualizationMode="Recycling">
+                <TreeView.ContextMenu>
+                    <ContextMenu/>
+                </TreeView.ContextMenu>
 
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
@@ -92,6 +96,7 @@
                 <TreeView.ItemContainerStyle>
                     <Style TargetType="TreeViewItem">
                         <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
                         <Style.Triggers>
                             <!-- Multi-select highlight -->
                             <DataTrigger Binding="{Binding IsHighlighted}" Value="True">

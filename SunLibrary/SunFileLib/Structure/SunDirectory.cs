@@ -76,7 +76,8 @@ namespace SunLibrary.SunFileLib.Structure
         /// </summary>
         public override void Remove()
         {
-            ((SunDirectory)Parent).RemoveDirectory(this);
+            if (Parent is SunDirectory parentDir)
+                parentDir.RemoveDirectory(this);
         }
 
         /// <summary>
