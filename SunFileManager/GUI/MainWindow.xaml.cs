@@ -19,6 +19,7 @@ using System.Windows.Interop;
 using System.Windows.Threading;
 using System.Windows.Media;
 using Wpf.Ui.Appearance;
+using Wpf.Ui.Markup;
 
 namespace SunFileManager.GUI
 {
@@ -57,8 +58,10 @@ namespace SunFileManager.GUI
             sunTreeView.ItemsSource = TreeNodes;
             manager = new FileManager(this);
             contextMenuManager = new SunContextMenuManager(this);
+            panningImageViewer.ImageDoubleClicked += PanningImageViewer_ImageDoubleClicked;
 
             Program.SetMainFormInstance(this);
+            ApplyTheme();
             ApplySettings();
 
             SourceInitialized += (_, __) =>
@@ -75,15 +78,33 @@ namespace SunFileManager.GUI
         }
 
         // ── Settings ──────────────────────────────────────────────────────────────
-        public void ApplySettings()
+        public void ApplyTheme()
         {
             bool dark = Program.UserSettings.DarkMode;
-            ApplicationThemeManager.Apply(dark ? ApplicationTheme.Dark : ApplicationTheme.Light);
+            ApplicationTheme theme = dark ? ApplicationTheme.Dark : ApplicationTheme.Light;
+
+            ApplicationThemeManager.Apply(theme);
+
+            // Replace ALL ThemesDictionary instances — ApplicationThemeManager.Apply() may
+            // add a second one at the end of MergedDictionaries, and if only the first is
+            // replaced the last (stale) entry wins, leaving the wrong theme applied.
+            var dicts = Application.Current.Resources.MergedDictionaries;
+            for (int i = 0; i < dicts.Count; i++)
+            {
+                if (dicts[i] is ThemesDictionary)
+                    dicts[i] = new ThemesDictionary { Theme = theme };
+            }
+
             foreach (Window w in Application.Current.Windows)
             {
                 if (w is SunFluentWindow sfw)
                     sfw.ApplyDwmTheme();
             }
+        }
+
+        public void ApplySettings()
+        {
+            panningImageViewer.ShowOriginCross = Program.UserSettings.ShowOriginCross;
         }
 
         // ── WM_COPYDATA (single-instance file loading) ────────────────────────────
@@ -117,9 +138,9 @@ namespace SunFileManager.GUI
                 manager.AddLoadedSunFileToTreeView(sunFile, dispatcher, null);
         }
 
-        public async Task SaveFileAsync()
+        public async Task SaveFileAsync(SunNode node = null)
         {
-            SunNode node = GetSelectedSunNode();
+            node ??= GetSelectedSunNode();
 
             if (node == null)
             {
@@ -168,24 +189,24 @@ namespace SunFileManager.GUI
         }
 
         // ── Node manipulation (called by context menu) ────────────────────────────
-        public void RemoveSelectedNodes()
+        public void RemoveSelectedNodes(SunNode node = null)
         {
-            SunNode node = GetSelectedSunNode();
+            node ??= GetSelectedSunNode();
             node?.DeleteNode();
         }
 
-        public void RemoveChildNodes()
+        public void RemoveChildNodes(SunNode parent = null)
         {
-            SunNode parent = GetSelectedSunNode();
+            parent ??= GetSelectedSunNode();
             if (parent == null) return;
             foreach (SunNode node in parent.Children.ToList())
                 node?.DeleteNode(true);
             parent.Children.Clear();
         }
 
-        public void RenameSelectedNode()
+        public void RenameSelectedNode(SunNode node = null)
         {
-            SunNode node = GetSelectedSunNode();
+            node ??= GetSelectedSunNode();
             if (node == null) return;
 
             string title = node.Tag?.ObjectType switch
@@ -463,6 +484,7 @@ namespace SunFileManager.GUI
             vectorRow.Visibility = Visibility.Collapsed;
             panningImageViewer.Visibility = Visibility.Collapsed;
             panningImageViewer.Canvas = null;
+            panningImageViewer.OriginPoint = null;
             soundPlayer.Visibility = Visibility.Collapsed;
             soundPlayer.SoundProperty = null;
             btnApplyPropertyChanges.Visibility = Visibility.Collapsed;
@@ -502,6 +524,10 @@ namespace SunFileManager.GUI
                 case SunCanvasProperty canvasp:
                     panningImageViewer.Visibility = Visibility.Visible;
                     panningImageViewer.Canvas = canvasp.GetBitmap();
+                    var originProp = canvasp["origin"] as SunLibrary.SunFileLib.Properties.SunVectorProperty;
+                    panningImageViewer.OriginPoint = originProp != null
+                        ? new System.Drawing.Point(originProp.X.Value, originProp.Y.Value)
+                        : (System.Drawing.Point?)null;
                     break;
 
                 case SunVectorProperty vecp:
@@ -529,6 +555,28 @@ namespace SunFileManager.GUI
             btnApplyPropertyChanges.Visibility = Visibility.Visible;
             txtPropertyName.Text = name;
             txtPropertyValue.Text = value;
+        }
+
+        private void PanningImageViewer_ImageDoubleClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (GetSelectedSunNode()?.Tag is not SunCanvasProperty canvasp) return;
+
+            var ofd = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "Replace Image",
+                Filter = "Image Files|*.png;*.jpg;*.jpeg;*.bmp|All Files|*.*"
+            };
+            if (ofd.ShowDialog() != true) return;
+
+            Bitmap bmp;
+            try { bmp = new Bitmap(ofd.FileName); }
+            catch { return; }
+
+            var newPng = new SunPngProperty();
+            newPng.SetPNG(bmp);
+            canvasp.PNG = newPng;
+            canvasp.SetValue(null);
+            panningImageViewer.Canvas = canvasp.GetBitmap();
         }
 
         private void UpdateSelectionTypeLabel()
@@ -567,6 +615,8 @@ namespace SunFileManager.GUI
                     if (int.TryParse(txtVectorY.Text, out int yv)) vecp.Y.Value = yv;
                     break;
             }
+            if (node.Tag is SunProperty changedProp && changedProp.ParentImage != null)
+                changedProp.ParentImage.Changed = true;
             node.IsManuallyAdded = true;
         }
 
@@ -663,23 +713,27 @@ namespace SunFileManager.GUI
                 ParseOnTreeViewSelectedItem(node);
         }
 
+        // Tracks which node was right-clicked for ContextMenuOpening
+        private SunNode _contextMenuNode;
+
         private void sunTreeView_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var clickedNode = GetNodeAtMouse(e);
+            _contextMenuNode = GetNodeAtMouse(e);
 
-            if (clickedNode != null && !multiSelectedNodes.Contains(clickedNode))
+            if (_contextMenuNode != null && !multiSelectedNodes.Contains(_contextMenuNode))
             {
                 ClearHighlights();
-                clickedNode.IsHighlighted = true;
-                multiSelectedNodes.Add(clickedNode);
-                lastAnchorNode = clickedNode;
+                _contextMenuNode.IsHighlighted = true;
+                multiSelectedNodes.Add(_contextMenuNode);
+                lastAnchorNode = _contextMenuNode;
             }
+            // Do not mark handled — let ContextMenuOpening fire naturally
+        }
 
+        private void sunTreeView_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
             var selectedList = multiSelectedNodes.ToList();
-            ContextMenu cm = contextMenuManager.BuildContextMenu(clickedNode, selectedList);
-            cm.PlacementTarget = sunTreeView;
-            cm.IsOpen = true;
-            e.Handled = true;
+            sunTreeView.ContextMenu = contextMenuManager.BuildContextMenu(_contextMenuNode, selectedList);
         }
 
         // ── Drag-drop ─────────────────────────────────────────────────────────────
@@ -733,9 +787,6 @@ namespace SunFileManager.GUI
         private void menuHelp_Click(object sender, RoutedEventArgs e)
             => new frmHelp().ShowDialog();
 
-        private void menuAbout_Click(object sender, RoutedEventArgs e)
-            => new frmPeterAlert { Owner = this }.ShowDialog();
-
         // ── Keyboard shortcuts ────────────────────────────────────────────────────
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -745,7 +796,7 @@ namespace SunFileManager.GUI
                 _ = SaveFileAsync();
                 e.Handled = true;
             }
-            if (e.Key == Key.B &&
+            if (e.Key == Key.P &&
                 Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Alt | ModifierKeys.Shift))
             {
                 new frmPeterAlert { Owner = this }.ShowDialog();
