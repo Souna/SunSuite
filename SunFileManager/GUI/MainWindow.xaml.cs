@@ -171,9 +171,6 @@ namespace SunFileManager.GUI
             SunFile f = await manager.LoadSunFileAsync(sunfileToLoad);
             if (f != null)
                 manager.AddLoadedSunFileToTreeView(f, Dispatcher.CurrentDispatcher, null);
-            else
-                MessageBox.Show($"Failed to load file: {Path.GetFileName(sunfileToLoad)}", "Load Error",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         // ── Tree node helpers ─────────────────────────────────────────────────────
@@ -803,6 +800,7 @@ namespace SunFileManager.GUI
             foreach (string file in files)
                 if (Path.GetExtension(file).Equals(".sun", StringComparison.OrdinalIgnoreCase))
                     LoadFile(file);
+            e.Handled = true;
         }
 
         private void sunTreeView_DragEnter(object sender, DragEventArgs e) => Window_DragEnter(sender, e);
