@@ -521,6 +521,17 @@ namespace SunFileManager.GUI
                     txtPropertyValueMulti.Text = linkp.Value;
                     break;
 
+                case SunSubProperty subp
+                    when subp.SunProperties.Count == 1 && subp.SunProperties[0] is SunCanvasProperty:
+                    var soloCanvas = (SunCanvasProperty)subp.SunProperties[0];
+                    panningImageViewer.Visibility = Visibility.Visible;
+                    panningImageViewer.Canvas = soloCanvas.GetBitmap();
+                    var soloOrigin = soloCanvas["origin"] as SunLibrary.SunFileLib.Properties.SunVectorProperty;
+                    panningImageViewer.OriginPoint = soloOrigin != null
+                        ? new System.Drawing.Point(soloOrigin.X.Value, soloOrigin.Y.Value)
+                        : (System.Drawing.Point?)null;
+                    break;
+
                 case SunCanvasProperty canvasp:
                     panningImageViewer.Visibility = Visibility.Visible;
                     panningImageViewer.Canvas = canvasp.GetBitmap();
