@@ -221,6 +221,13 @@ namespace SunFileManager.GUI
             if (!frmNameInputBox.Show(title, out string newName, node.Name))
                 return;
 
+            if (node.Parent != null && node.Parent.Children.Any(
+                    c => c != node && string.Equals(c.Name, newName, StringComparison.OrdinalIgnoreCase)))
+            {
+                MessageBox.Show($"A node named \"{newName}\" already exists at this level.", "Duplicate Name", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             node.Rename(newName);
             txtPropertyName.Text = newName;
         }
