@@ -80,9 +80,24 @@ namespace SunFileManager.GUI.Container
         private void zoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (imageScale == null || zoomLabel == null) return;
-            imageScale.ScaleX = e.NewValue;
-            imageScale.ScaleY = e.NewValue;
-            zoomLabel.Text = $"{(int)Math.Round(e.NewValue * 100)}%";
+
+            double oldScale = imageScale.ScaleX;
+            double newScale = e.NewValue;
+
+            // Capture viewport center in content coordinates before scaling
+            double centerX = (scrollViewer.HorizontalOffset + scrollViewer.ViewportWidth  / 2) / oldScale;
+            double centerY = (scrollViewer.VerticalOffset   + scrollViewer.ViewportHeight / 2) / oldScale;
+
+            imageScale.ScaleX = newScale;
+            imageScale.ScaleY = newScale;
+            zoomLabel.Text = $"{(int)Math.Round(newScale * 100)}%";
+
+            // After layout updates, scroll to keep the same content point centered
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, () =>
+            {
+                scrollViewer.ScrollToHorizontalOffset(centerX * newScale - scrollViewer.ViewportWidth  / 2);
+                scrollViewer.ScrollToVerticalOffset  (centerY * newScale - scrollViewer.ViewportHeight / 2);
+            });
         }
 
         private void ZoomIn_Click(object sender, MouseButtonEventArgs e)
@@ -90,6 +105,8 @@ namespace SunFileManager.GUI.Container
 
         private void ZoomOut_Click(object sender, MouseButtonEventArgs e)
             => zoomSlider.Value = Math.Max(zoomSlider.Minimum, zoomSlider.Value - zoomSlider.SmallChange);
+
+        public void ResetZoom() => zoomSlider.Value = 1.0;
 
         // ── Pan logic ─────────────────────────────────────────────────────────────
         private void displayImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -37,7 +37,7 @@
             <!-- Preview -->
             <container:PanningImageViewer x:Name="panningImageViewer"
                                           Visibility="Collapsed"
-                                          Height="120" Margin="0,8,0,0"/>
+                                          Margin="0,8,0,0"/>
 
             <CheckBox x:Name="chkCreateSub" Content="Create SubProperty" Margin="0,8,0,0" />
 
