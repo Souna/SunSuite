@@ -70,8 +70,6 @@ namespace SunFileManager.GUI
                 hwndSource?.AddHook(WndProc);
             };
 
-            if (!Program.UserSettings.FileAssociationPrompted)
-                Loaded += PromptFileAssociation;
 
             if (sunFilesToLoad != null)
             {
@@ -122,34 +120,6 @@ namespace SunFileManager.GUI
                 handled = true;
             }
             return IntPtr.Zero;
-        }
-
-        // ── File association first-run prompt ─────────────────────────────────────
-        private void PromptFileAssociation(object sender, RoutedEventArgs e)
-        {
-            Loaded -= PromptFileAssociation;
-            Program.UserSettings.FileAssociationPrompted = true;
-            Program.UserSettings.Save();
-
-            var result = MessageBox.Show(
-                "Would you like to set SunFileManager as the default app for .sun files?\n\n" +
-                "Windows will open an 'Open with' dialog. Select SunFileManager.exe and check 'Always use this app to open .sun files'.",
-                "Set as Default App", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-            if (result != MessageBoxResult.Yes) return;
-
-            string tempFile = Path.Combine(Path.GetTempPath(), "SunFileManager_assoc.sun");
-            try
-            {
-                File.WriteAllBytes(tempFile, Array.Empty<byte>());
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = tempFile,
-                    Verb = "openwith",
-                    UseShellExecute = true
-                });
-            }
-            catch { }
         }
 
         // ── File operations ───────────────────────────────────────────────────────

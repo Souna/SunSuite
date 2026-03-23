@@ -14,7 +14,6 @@ namespace SunFileManager.Config
         public bool NodeWarnings { get; set; } = true;
         public bool ShowOriginCross { get; set; } = true;
         public string SunFilesPath { get; set; } = string.Empty;
-        public bool FileAssociationPrompted { get; set; } = false;
 
         public static UserSettings Load()
         {

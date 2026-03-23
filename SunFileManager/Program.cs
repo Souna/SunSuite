@@ -1,4 +1,3 @@
-using Microsoft.Win32;
 using SunFileManager.Config;
 using SunFileManager.GUI;
 using System;
@@ -26,12 +25,7 @@ namespace SunFileManager
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref COPYDATASTRUCT lParam);
 
-        [DllImport("shell32.dll")]
-        private static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
-
         private const uint WM_COPYDATA = 0x004A;
-        private const uint SHCNE_ASSOCCHANGED = 0x08000000;
-        private const uint SHCNF_IDLIST = 0x0000;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct COPYDATASTRUCT
@@ -59,7 +53,6 @@ namespace SunFileManager
                         File.WriteAllLines(pendingFilesPath, sunFilesToLoad);
 
                     UserSettings = UserSettings.Load();
-                    RegisterFileAssociation();
 
                     var app = new App();
                     app.InitializeComponent();
@@ -156,36 +149,6 @@ namespace SunFileManager
             {
                 Marshal.FreeHGlobal(cds.lpData);
             }
-        }
-
-        private static void RegisterFileAssociation()
-        {
-            try
-            {
-                string exePath = Process.GetCurrentProcess().MainModule.FileName;
-                string exeName = Path.GetFileName(exePath);
-                string openCommand = $"\"{exePath}\" \"%1\"";
-
-                // ProgID registration
-                using (var extKey = Registry.CurrentUser.CreateSubKey(@"Software\Classes\.sun"))
-                    extKey.SetValue("", "SunFileManager.sun");
-
-                using (var progKey = Registry.CurrentUser.CreateSubKey(@"Software\Classes\SunFileManager.sun"))
-                    progKey.SetValue("", "SunFile");
-
-                using (var cmdKey = Registry.CurrentUser.CreateSubKey(@"Software\Classes\SunFileManager.sun\shell\open\command"))
-                    cmdKey.SetValue("", openCommand);
-
-                // Applications registration — makes the exe appear in "Open with" lists
-                using (var appCmd = Registry.CurrentUser.CreateSubKey($@"Software\Classes\Applications\{exeName}\shell\open\command"))
-                    appCmd.SetValue("", openCommand);
-
-                using (var appTypes = Registry.CurrentUser.CreateSubKey($@"Software\Classes\Applications\{exeName}\SupportedTypes"))
-                    appTypes.SetValue(".sun", "");
-
-                SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
-            }
-            catch { }
         }
 
         public static void SetMainFormInstance(MainWindow instance) => mainWindowInstance = instance;
