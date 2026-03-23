@@ -45,7 +45,8 @@ namespace SunFileManager.GUI.Input
             {
                 Title = "Select Image File(s)",
                 Filter = "Image Files|*.jpg;*.bmp;*.png;*.gif;*.tiff",
-                Multiselect = true
+                Multiselect = true,
+                RestoreDirectory = true
             };
             if (ofd.ShowDialog() != true) return;
 

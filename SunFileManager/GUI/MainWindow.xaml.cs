@@ -124,11 +124,13 @@ namespace SunFileManager.GUI
         // ── File operations ───────────────────────────────────────────────────────
         public async void OpenFiles()
         {
+            string sunPath = Program.UserSettings.SunFilesPath;
             var ofd = new Microsoft.Win32.OpenFileDialog
             {
                 Title = "Choose SunFiles",
                 Filter = "SunFile|*.sun",
-                Multiselect = true
+                Multiselect = true,
+                InitialDirectory = Directory.Exists(sunPath) ? sunPath : null
             };
             if (ofd.ShowDialog() != true) return;
 
@@ -202,7 +204,7 @@ namespace SunFileManager.GUI
             parent ??= GetSelectedSunNode();
             if (parent == null) return;
             int count = parent.Children.Count;
-            if (count > 0)
+            if (count > 0 && Program.UserSettings.NodeWarnings)
             {
                 var result = MessageBox.Show(
                     $"This will permanently delete all {count} child node{(count == 1 ? "" : "s")} of \"{parent.Name}\". Continue?",
@@ -220,6 +222,9 @@ namespace SunFileManager.GUI
             int childCount = node.Children.Count;
 
             if (!isBinaryData && childCount == 0)
+                return true;
+
+            if (!Program.UserSettings.NodeWarnings)
                 return true;
 
             string message;

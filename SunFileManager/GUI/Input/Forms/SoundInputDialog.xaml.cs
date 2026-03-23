@@ -29,7 +29,8 @@ namespace SunFileManager.GUI.Input
             var ofd = new OpenFileDialog
             {
                 Title = "Select Sound File",
-                Filter = "MP3 Files|*.mp3"
+                Filter = "MP3 Files|*.mp3",
+                RestoreDirectory = true
             };
             if (ofd.ShowDialog() == true)
                 txtSoundPath.Text = ofd.FileName;

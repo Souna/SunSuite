@@ -3,8 +3,8 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sfm="clr-namespace:SunFileManager.GUI"
-        Title="Settings" Width="300" Height="235"
-        ResizeMode="NoResize"
+        Title="Settings" Width="380"
+        ResizeMode="NoResize" SizeToContent="Height"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False">
     <Grid>
@@ -17,12 +17,22 @@
             <CheckBox x:Name="chkDarkMode"        Content="Dark Mode"         Margin="0,0,0,8" />
             <CheckBox x:Name="chkAutoParseImages" Content="Auto-Parse Images" Margin="0,0,0,8" />
             <CheckBox x:Name="chkNodeWarnings"    Content="Node Warnings"     Margin="0,0,0,8" />
-            <CheckBox x:Name="chkShowOriginCross" Content="Show Origin Cross" Margin="0,0,0,8" />
+            <CheckBox x:Name="chkShowOriginCross" Content="Show Origin Cross" Margin="0,0,0,16" />
+
+            <Label Content="Sun Files Path:" Padding="0,0,0,4"/>
+            <Grid Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="txtSunFilesPath" Grid.Column="0" IsReadOnly="True" />
+                <Button Grid.Column="2" Content="Browse..." Click="btnBrowseSunPath_Click" />
+            </Grid>
+
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
-                <Button Content="OK"     x:Name="btnOk"     Width="80" Margin="0,0,8,0"
-                        IsDefault="True" Click="btnOk_Click" />
-                <Button Content="Cancel" x:Name="btnCancel" Width="80"
-                        IsCancel="True"  Click="btnCancel_Click" />
+                <Button Content="Close" x:Name="btnClose" Width="80"
+                        IsDefault="True" IsCancel="True" Click="btnClose_Click" />
             </StackPanel>
         </StackPanel>
     </Grid>

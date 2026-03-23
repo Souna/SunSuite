@@ -1,3 +1,4 @@
+using Microsoft.Win32;
 using System.Windows;
 
 namespace SunFileManager.GUI.Input.Forms
@@ -5,8 +6,6 @@ namespace SunFileManager.GUI.Input.Forms
     public partial class frmSettings : SunFileManager.GUI.SunFluentWindow
     {
         private readonly GUI.MainWindow mainWindow;
-
-        private bool _snapDarkMode, _snapAutoParseImages, _snapNodeWarnings, _snapShowOriginCross;
 
         public frmSettings(GUI.MainWindow parent)
         {
@@ -18,15 +17,11 @@ namespace SunFileManager.GUI.Input.Forms
 
         private void LoadSettings()
         {
-            _snapDarkMode        = Program.UserSettings.DarkMode;
-            _snapAutoParseImages = Program.UserSettings.AutoParseImages;
-            _snapNodeWarnings    = Program.UserSettings.NodeWarnings;
-            _snapShowOriginCross = Program.UserSettings.ShowOriginCross;
-
             chkDarkMode.IsChecked        = Program.UserSettings.DarkMode;
             chkAutoParseImages.IsChecked = Program.UserSettings.AutoParseImages;
             chkNodeWarnings.IsChecked    = Program.UserSettings.NodeWarnings;
             chkShowOriginCross.IsChecked = Program.UserSettings.ShowOriginCross;
+            txtSunFilesPath.Text         = Program.UserSettings.SunFilesPath;
 
             chkDarkMode.Checked           += OnSettingChanged;
             chkDarkMode.Unchecked         += OnSettingChanged;
@@ -48,6 +43,7 @@ namespace SunFileManager.GUI.Input.Forms
             Program.UserSettings.AutoParseImages = chkAutoParseImages.IsChecked == true;
             Program.UserSettings.NodeWarnings    = chkNodeWarnings.IsChecked == true;
             Program.UserSettings.ShowOriginCross = chkShowOriginCross.IsChecked == true;
+            Program.UserSettings.SunFilesPath    = txtSunFilesPath.Text;
             Program.UserSettings.Save();
 
             if (darkModeChanged)
@@ -55,22 +51,18 @@ namespace SunFileManager.GUI.Input.Forms
             mainWindow?.ApplySettings();
         }
 
-        private void btnOk_Click(object sender, RoutedEventArgs e) => Close();
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        private void btnBrowseSunPath_Click(object sender, RoutedEventArgs e)
         {
-            bool darkModeChanged = Program.UserSettings.DarkMode != _snapDarkMode;
-
-            Program.UserSettings.DarkMode        = _snapDarkMode;
-            Program.UserSettings.AutoParseImages = _snapAutoParseImages;
-            Program.UserSettings.NodeWarnings    = _snapNodeWarnings;
-            Program.UserSettings.ShowOriginCross = _snapShowOriginCross;
-            Program.UserSettings.Save();
-
-            if (darkModeChanged)
-                mainWindow?.ApplyTheme();
-            mainWindow?.ApplySettings();
-            Close();
+            var dialog = new OpenFolderDialog { Title = "Select Sun Files Folder" };
+            if (!string.IsNullOrEmpty(txtSunFilesPath.Text))
+                dialog.InitialDirectory = txtSunFilesPath.Text;
+            if (dialog.ShowDialog() == true)
+            {
+                txtSunFilesPath.Text = dialog.FolderName;
+                ApplyNow();
+            }
         }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e) => Close();
     }
 }
