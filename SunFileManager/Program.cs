@@ -1,3 +1,4 @@
+using Microsoft.Win32;
 using SunFileManager.Config;
 using SunFileManager.GUI;
 using System;
@@ -25,7 +26,12 @@ namespace SunFileManager
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref COPYDATASTRUCT lParam);
 
+        [DllImport("shell32.dll")]
+        private static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+
         private const uint WM_COPYDATA = 0x004A;
+        private const uint SHCNE_ASSOCCHANGED = 0x08000000;
+        private const uint SHCNF_IDLIST = 0x0000;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct COPYDATASTRUCT
@@ -53,6 +59,7 @@ namespace SunFileManager
                         File.WriteAllLines(pendingFilesPath, sunFilesToLoad);
 
                     UserSettings = UserSettings.Load();
+                    RegisterFileAssociation();
 
                     var app = new App();
                     app.InitializeComponent();
@@ -91,64 +98,85 @@ namespace SunFileManager
                 }
                 else
                 {
-                    string pendingFilesPath = Path.Combine(Path.GetTempPath(), "SunFileManager_PendingFiles.txt");
-                    try
+                    if (sunFilesToLoad.Length == 0) return;
+
+                    IntPtr hwnd = FindExistingInstanceWindow();
+                    if (hwnd != IntPtr.Zero)
                     {
-                        List<string> existing = new List<string>();
-                        if (File.Exists(pendingFilesPath))
-                            existing.AddRange(File.ReadAllLines(pendingFilesPath));
-                        existing.AddRange(sunFilesToLoad);
-                        File.WriteAllLines(pendingFilesPath, existing);
+                        // Primary window is ready — send files via WM_COPYDATA
+                        SetForegroundWindow(hwnd);
+                        foreach (string file in sunFilesToLoad)
+                            SendFileViaWmCopyData(file, hwnd);
                     }
-                    catch
+                    else
                     {
-                        Process current = Process.GetCurrentProcess();
-                        foreach (Process process in Process.GetProcessesByName(current.ProcessName))
+                        // Primary window not ready yet (race at startup) — write to pending file
+                        string pendingFilesPath = Path.Combine(Path.GetTempPath(), "SunFileManager_PendingFiles.txt");
+                        try
                         {
-                            if (process.Id != current.Id)
-                            {
-                                SetForegroundWindow(process.MainWindowHandle);
-                                foreach (string file in sunFilesToLoad)
-                                    SendFileToExistingInstance(file);
-                                break;
-                            }
+                            List<string> existing = new List<string>();
+                            if (File.Exists(pendingFilesPath))
+                                existing.AddRange(File.ReadAllLines(pendingFilesPath));
+                            existing.AddRange(sunFilesToLoad);
+                            File.WriteAllLines(pendingFilesPath, existing.Distinct().ToArray());
                         }
+                        catch { }
                     }
                 }
             }
         }
 
-        private static void SendFileToExistingInstance(string filePath)
+        private static IntPtr FindExistingInstanceWindow()
+        {
+            Process current = Process.GetCurrentProcess();
+            foreach (Process process in Process.GetProcessesByName(current.ProcessName))
+            {
+                if (process.Id != current.Id && process.MainWindowHandle != IntPtr.Zero)
+                    return process.MainWindowHandle;
+            }
+            return IntPtr.Zero;
+        }
+
+        private static void SendFileViaWmCopyData(string filePath, IntPtr hwnd)
         {
             if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath)) return;
-
-            IntPtr hwnd = FindWindow(null, "SunFile Manager");
-            if (hwnd == IntPtr.Zero)
+            byte[] sarr = System.Text.Encoding.Default.GetBytes(filePath + "\0");
+            COPYDATASTRUCT cds = new COPYDATASTRUCT
             {
-                Process current = Process.GetCurrentProcess();
-                foreach (Process process in Process.GetProcessesByName(current.ProcessName))
-                {
-                    if (process.Id != current.Id && process.MainWindowHandle != IntPtr.Zero)
-                    {
-                        hwnd = process.MainWindowHandle;
-                        break;
-                    }
-                }
-            }
-
-            if (hwnd != IntPtr.Zero)
+                dwData = IntPtr.Zero,
+                cbData = sarr.Length,
+                lpData = Marshal.AllocHGlobal(sarr.Length)
+            };
+            try
             {
-                byte[] sarr = System.Text.Encoding.Default.GetBytes(filePath + "\0");
-                COPYDATASTRUCT cds = new COPYDATASTRUCT
-                {
-                    dwData = IntPtr.Zero,
-                    cbData = sarr.Length,
-                    lpData = Marshal.AllocHGlobal(sarr.Length)
-                };
                 Marshal.Copy(sarr, 0, cds.lpData, sarr.Length);
                 SendMessage(hwnd, WM_COPYDATA, IntPtr.Zero, ref cds);
+            }
+            finally
+            {
                 Marshal.FreeHGlobal(cds.lpData);
             }
+        }
+
+        private static void RegisterFileAssociation()
+        {
+            try
+            {
+                string exePath = Process.GetCurrentProcess().MainModule.FileName;
+                string openCommand = $"\"{exePath}\" \"%1\"";
+
+                using (var extKey = Registry.CurrentUser.CreateSubKey(@"Software\Classes\.sun"))
+                    extKey.SetValue("", "SunFileManager.sun");
+
+                using (var progKey = Registry.CurrentUser.CreateSubKey(@"Software\Classes\SunFileManager.sun"))
+                    progKey.SetValue("", "SunFile");
+
+                using (var cmdKey = Registry.CurrentUser.CreateSubKey(@"Software\Classes\SunFileManager.sun\shell\open\command"))
+                    cmdKey.SetValue("", openCommand);
+
+                SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
+            }
+            catch { }
         }
 
         public static void SetMainFormInstance(MainWindow instance) => mainWindowInstance = instance;
