@@ -44,7 +44,20 @@ namespace SunFileManager
                 .ToArray();
 
             bool createdNew;
-            using (Mutex mutex = new Mutex(true, "SunFileManager", out createdNew))
+            Mutex mutex;
+            try
+            {
+                mutex = new Mutex(true, "SunFileManager", out createdNew);
+            }
+            catch (AbandonedMutexException ex)
+            {
+                // Previous instance was killed without releasing the mutex.
+                // We now own it — treat this as a fresh launch.
+                mutex = ex.Mutex;
+                createdNew = true;
+            }
+
+            using (mutex)
             {
                 if (createdNew)
                 {

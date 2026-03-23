@@ -71,10 +71,13 @@ namespace SunFileManager.GUI
             };
 
 
-            if (sunFilesToLoad != null)
+            if (sunFilesToLoad != null && sunFilesToLoad.Length > 0)
             {
-                foreach (string file in sunFilesToLoad)
-                    LoadFile(file);
+                Loaded += (_, __) =>
+                {
+                    foreach (string file in sunFilesToLoad)
+                        LoadFile(file);
+                };
             }
         }
 
