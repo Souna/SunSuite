@@ -163,8 +163,10 @@ namespace SunFileManager
             try
             {
                 string exePath = Process.GetCurrentProcess().MainModule.FileName;
+                string exeName = Path.GetFileName(exePath);
                 string openCommand = $"\"{exePath}\" \"%1\"";
 
+                // ProgID registration
                 using (var extKey = Registry.CurrentUser.CreateSubKey(@"Software\Classes\.sun"))
                     extKey.SetValue("", "SunFileManager.sun");
 
@@ -173,6 +175,13 @@ namespace SunFileManager
 
                 using (var cmdKey = Registry.CurrentUser.CreateSubKey(@"Software\Classes\SunFileManager.sun\shell\open\command"))
                     cmdKey.SetValue("", openCommand);
+
+                // Applications registration — makes the exe appear in "Open with" lists
+                using (var appCmd = Registry.CurrentUser.CreateSubKey($@"Software\Classes\Applications\{exeName}\shell\open\command"))
+                    appCmd.SetValue("", openCommand);
+
+                using (var appTypes = Registry.CurrentUser.CreateSubKey($@"Software\Classes\Applications\{exeName}\SupportedTypes"))
+                    appTypes.SetValue(".sun", "");
 
                 SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
             }
