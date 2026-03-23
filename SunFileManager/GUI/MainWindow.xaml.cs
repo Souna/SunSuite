@@ -192,16 +192,46 @@ namespace SunFileManager.GUI
         public void RemoveSelectedNodes(SunNode node = null)
         {
             node ??= GetSelectedSunNode();
-            node?.DeleteNode();
+            if (node == null) return;
+            if (!ConfirmNodeDeletion(node)) return;
+            node.DeleteNode();
         }
 
         public void RemoveChildNodes(SunNode parent = null)
         {
             parent ??= GetSelectedSunNode();
             if (parent == null) return;
+            int count = parent.Children.Count;
+            if (count > 0)
+            {
+                var result = MessageBox.Show(
+                    $"This will permanently delete all {count} child node{(count == 1 ? "" : "s")} of \"{parent.Name}\". Continue?",
+                    "Remove All Children", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result != MessageBoxResult.Yes) return;
+            }
             foreach (SunNode node in parent.Children.ToList())
                 node?.DeleteNode(true);
             parent.Children.Clear();
+        }
+
+        private static bool ConfirmNodeDeletion(SunNode node)
+        {
+            bool isBinaryData = node.Tag is SunCanvasProperty || node.Tag is SunSoundProperty;
+            int childCount = node.Children.Count;
+
+            if (!isBinaryData && childCount == 0)
+                return true;
+
+            string message;
+            if (isBinaryData && childCount > 0)
+                message = $"Delete \"{node.Name}\"? This will remove its binary data and {childCount} child node{(childCount == 1 ? "" : "s")}.";
+            else if (isBinaryData)
+                message = $"Delete \"{node.Name}\"? This will permanently remove its binary data.";
+            else
+                message = $"Delete \"{node.Name}\"? This will also delete {childCount} child node{(childCount == 1 ? "" : "s")}.";
+
+            return MessageBox.Show(message, "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning)
+                   == MessageBoxResult.Yes;
         }
 
         public void RenameSelectedNode(SunNode node = null)
