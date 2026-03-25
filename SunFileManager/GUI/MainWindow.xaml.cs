@@ -18,6 +18,8 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using SunFileManager.Converter;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Markup;
 
@@ -38,6 +40,11 @@ namespace SunFileManager.GUI
 
         // ── Context menu ──────────────────────────────────────────────────────────
         private SunContextMenuManager contextMenuManager;
+
+        // ── Animation playback ────────────────────────────────────────────────────
+        private DispatcherTimer _animTimer;
+        private List<(BitmapSource Source, int Delay)> _animFrames;
+        private int _animFrameIndex;
 
         // ── WM_COPYDATA ───────────────────────────────────────────────────────────
         private const uint WM_COPYDATA = 0x004A;
@@ -518,6 +525,7 @@ namespace SunFileManager.GUI
         public void DisplayNodeValue(SunObject obj)
         {
             // Reset all
+            StopAnimation();
             nameRow.Visibility = Visibility.Collapsed;
             scalarValueRow.Visibility = Visibility.Collapsed;
             multiValueRow.Visibility = Visibility.Collapsed;
@@ -560,6 +568,12 @@ namespace SunFileManager.GUI
                     txtPropertyName.Text = linkp.Name;
                     txtPropertyValueMulti.Text = linkp.Value;
                     DisplayLinkTarget(linkp);
+                    break;
+
+                case SunSubProperty animSubp
+                    when animSubp.Parent is SunSubProperty aniParent &&
+                         aniParent.Name.Equals("Ani", StringComparison.OrdinalIgnoreCase):
+                    PlayAnimation(BuildAnimFrames(animSubp));
                     break;
 
                 case SunSubProperty subp
@@ -632,6 +646,60 @@ namespace SunFileManager.GUI
                     soundPlayer.SoundProperty = soundp;
                     break;
             }
+        }
+
+        private List<(BitmapSource Source, int Delay)> BuildAnimFrames(SunSubProperty animNode)
+        {
+            var frames = new List<(BitmapSource, int)>();
+            foreach (var prop in animNode.SunProperties
+                .Where(p => int.TryParse(p.Name, out _))
+                .OrderBy(p => int.Parse(p.Name)))
+            {
+                Bitmap bmp = prop.GetBitmap();
+                if (bmp == null) continue;
+
+                // Resolve the actual canvas to read delay (link forwards GetBitmap but not child props)
+                SunObject canvas = prop is SunLinkProperty lp ? lp.LinkValue : prop;
+                int delay = canvas?["delay"]?.GetInt() ?? 100;
+                if (delay <= 0) delay = 100;
+
+                // Pre-convert once here so the animation tick only swaps an already-ready BitmapSource
+                frames.Add((bmp.ToWpfBitmap(), delay));
+            }
+            return frames;
+        }
+
+        private void PlayAnimation(List<(BitmapSource Source, int Delay)> frames)
+        {
+            if (frames.Count == 0) return;
+            _animFrames = frames;
+            _animFrameIndex = 0;
+            panningImageViewer.Visibility = Visibility.Visible;
+            _animTimer = new DispatcherTimer();
+            _animTimer.Tick += AnimTimer_Tick;
+            ShowAnimFrame();
+        }
+
+        private void ShowAnimFrame()
+        {
+            var (source, delay) = _animFrames[_animFrameIndex];
+            panningImageViewer.ImageSource = source;
+            _animTimer.Interval = TimeSpan.FromMilliseconds(delay);
+            _animTimer.Start();
+        }
+
+        private void AnimTimer_Tick(object sender, EventArgs e)
+        {
+            _animTimer.Stop();
+            _animFrameIndex = (_animFrameIndex + 1) % _animFrames.Count;
+            ShowAnimFrame();
+        }
+
+        private void StopAnimation()
+        {
+            _animTimer?.Stop();
+            _animTimer = null;
+            _animFrames = null;
         }
 
         private void ShowScalar(string name, string value)

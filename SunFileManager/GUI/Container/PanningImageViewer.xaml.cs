@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using SunFileManager.Converter;
 
@@ -86,6 +87,13 @@ namespace SunFileManager.GUI.Container
                 _currentBitmap = value;
                 displayImage.Source = value != null ? value.ToWpfBitmap() : null;
             }
+        }
+
+        /// <summary>Sets a pre-converted BitmapSource directly, bypassing the Bitmap→BitmapSource conversion.</summary>
+        public BitmapSource ImageSource
+        {
+            get => displayImage.Source as BitmapSource;
+            set => displayImage.Source = value;
         }
 
         private System.Drawing.Bitmap _currentBitmap;
