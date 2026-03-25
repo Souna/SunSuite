@@ -10,9 +10,10 @@ namespace SunFileManager.Config
             Path.Combine(AppContext.BaseDirectory, "settings.json");
 
         public bool DarkMode { get; set; } = false;
-        public bool AutoParseImages { get; set; } = false;
+        public bool AutoParseImages { get; set; } = true;
         public bool NodeWarnings { get; set; } = true;
         public bool ShowOriginCross { get; set; } = true;
+        public string SunFilesPath { get; set; } = string.Empty;
 
         public static UserSettings Load()
         {

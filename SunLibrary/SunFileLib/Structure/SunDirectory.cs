@@ -245,12 +245,14 @@ namespace SunLibrary.SunFileLib.Structure
         {
             subDirs.Remove(dir);
             dir.Parent = null;
+            dir.Dispose();
         }
 
         public void RemoveImage(SunImage img)
         {
             images.Remove(img);
             img.Parent = null;
+            img.Dispose();
         }
 
         /// <summary>

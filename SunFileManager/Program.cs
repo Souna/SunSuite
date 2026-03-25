@@ -44,7 +44,20 @@ namespace SunFileManager
                 .ToArray();
 
             bool createdNew;
-            using (Mutex mutex = new Mutex(true, "SunFileManager", out createdNew))
+            Mutex mutex;
+            try
+            {
+                mutex = new Mutex(true, "SunFileManager", out createdNew);
+            }
+            catch (AbandonedMutexException ex)
+            {
+                // Previous instance was killed without releasing the mutex.
+                // We now own it — treat this as a fresh launch.
+                mutex = ex.Mutex;
+                createdNew = true;
+            }
+
+            using (mutex)
             {
                 if (createdNew)
                 {
@@ -91,62 +104,62 @@ namespace SunFileManager
                 }
                 else
                 {
-                    string pendingFilesPath = Path.Combine(Path.GetTempPath(), "SunFileManager_PendingFiles.txt");
-                    try
+                    if (sunFilesToLoad.Length == 0) return;
+
+                    IntPtr hwnd = FindExistingInstanceWindow();
+                    if (hwnd != IntPtr.Zero)
                     {
-                        List<string> existing = new List<string>();
-                        if (File.Exists(pendingFilesPath))
-                            existing.AddRange(File.ReadAllLines(pendingFilesPath));
-                        existing.AddRange(sunFilesToLoad);
-                        File.WriteAllLines(pendingFilesPath, existing);
+                        // Primary window is ready — send files via WM_COPYDATA
+                        SetForegroundWindow(hwnd);
+                        foreach (string file in sunFilesToLoad)
+                            SendFileViaWmCopyData(file, hwnd);
                     }
-                    catch
+                    else
                     {
-                        Process current = Process.GetCurrentProcess();
-                        foreach (Process process in Process.GetProcessesByName(current.ProcessName))
+                        // Primary window not ready yet (race at startup) — write to pending file
+                        string pendingFilesPath = Path.Combine(Path.GetTempPath(), "SunFileManager_PendingFiles.txt");
+                        try
                         {
-                            if (process.Id != current.Id)
-                            {
-                                SetForegroundWindow(process.MainWindowHandle);
-                                foreach (string file in sunFilesToLoad)
-                                    SendFileToExistingInstance(file);
-                                break;
-                            }
+                            List<string> existing = new List<string>();
+                            if (File.Exists(pendingFilesPath))
+                                existing.AddRange(File.ReadAllLines(pendingFilesPath));
+                            existing.AddRange(sunFilesToLoad);
+                            File.WriteAllLines(pendingFilesPath, existing.Distinct().ToArray());
                         }
+                        catch { }
                     }
                 }
             }
         }
 
-        private static void SendFileToExistingInstance(string filePath)
+        private static IntPtr FindExistingInstanceWindow()
+        {
+            Process current = Process.GetCurrentProcess();
+            foreach (Process process in Process.GetProcessesByName(current.ProcessName))
+            {
+                if (process.Id != current.Id && process.MainWindowHandle != IntPtr.Zero)
+                    return process.MainWindowHandle;
+            }
+            return IntPtr.Zero;
+        }
+
+        private static void SendFileViaWmCopyData(string filePath, IntPtr hwnd)
         {
             if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath)) return;
-
-            IntPtr hwnd = FindWindow(null, "SunFile Manager");
-            if (hwnd == IntPtr.Zero)
+            byte[] sarr = System.Text.Encoding.Default.GetBytes(filePath + "\0");
+            COPYDATASTRUCT cds = new COPYDATASTRUCT
             {
-                Process current = Process.GetCurrentProcess();
-                foreach (Process process in Process.GetProcessesByName(current.ProcessName))
-                {
-                    if (process.Id != current.Id && process.MainWindowHandle != IntPtr.Zero)
-                    {
-                        hwnd = process.MainWindowHandle;
-                        break;
-                    }
-                }
-            }
-
-            if (hwnd != IntPtr.Zero)
+                dwData = IntPtr.Zero,
+                cbData = sarr.Length,
+                lpData = Marshal.AllocHGlobal(sarr.Length)
+            };
+            try
             {
-                byte[] sarr = System.Text.Encoding.Default.GetBytes(filePath + "\0");
-                COPYDATASTRUCT cds = new COPYDATASTRUCT
-                {
-                    dwData = IntPtr.Zero,
-                    cbData = sarr.Length,
-                    lpData = Marshal.AllocHGlobal(sarr.Length)
-                };
                 Marshal.Copy(sarr, 0, cds.lpData, sarr.Length);
                 SendMessage(hwnd, WM_COPYDATA, IntPtr.Zero, ref cds);
+            }
+            finally
+            {
                 Marshal.FreeHGlobal(cds.lpData);
             }
         }

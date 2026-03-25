@@ -45,7 +45,8 @@ namespace SunFileManager.GUI.Input
             {
                 Title = "Select Image File(s)",
                 Filter = "Image Files|*.jpg;*.bmp;*.png;*.gif;*.tiff",
-                Multiselect = true
+                Multiselect = true,
+                RestoreDirectory = true
             };
             if (ofd.ShowDialog() != true) return;
 
@@ -105,8 +106,20 @@ namespace SunFileManager.GUI.Input
 
             if (preview != null)
             {
-                panningImageViewer.Canvas = preview;
+                var workArea = SystemParameters.WorkArea;
+                int maxViewerW = (int)(workArea.Width  * 0.65);
+                int maxViewerH = (int)(workArea.Height * 0.55);
+                int viewerW = Math.Clamp(preview.Width,        200, maxViewerW);
+                int viewerH = Math.Clamp(preview.Height + 36,  150, maxViewerH); // +36 for zoom bar
+
+                panningImageViewer.Width      = viewerW;
+                panningImageViewer.Height     = viewerH;
+                panningImageViewer.Canvas     = preview;
+                panningImageViewer.ResetZoom();
                 panningImageViewer.Visibility = Visibility.Visible;
+
+                Width = Math.Max(400, viewerW + 24);
+
                 string sizeStr = GetFileSizeString(new FileInfo(ofd.FileNames[0]).Length);
                 lblInfo.Text = $"{preview.Width} x {preview.Height}  |  {sizeStr}  |  {Path.GetExtension(ofd.FileNames[0])}";
                 fileInfoPanel.Visibility = Visibility.Visible;

@@ -53,9 +53,10 @@ namespace SunFileManager
 
         public async Task<SunFile> LoadSunFileAsync(string path)
         {
-            if (sunFiles.Exists(f => string.Equals(f.FilePath, path, StringComparison.OrdinalIgnoreCase)))
+            string fileName = Path.GetFileName(path);
+            if (sunFiles.Exists(f => string.Equals(Path.GetFileName(f.FilePath), fileName, StringComparison.OrdinalIgnoreCase)))
             {
-                MessageBox.Show($"File '{Path.GetFileName(path)}' is already open.", "Duplicate File",
+                MessageBox.Show($"A file named '{fileName}' is already open.", "Duplicate File",
                     MessageBoxButton.OK, MessageBoxImage.Information);
                 return null;
             }

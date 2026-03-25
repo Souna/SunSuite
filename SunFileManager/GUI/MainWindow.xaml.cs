@@ -70,10 +70,14 @@ namespace SunFileManager.GUI
                 hwndSource?.AddHook(WndProc);
             };
 
-            if (sunFilesToLoad != null)
+
+            if (sunFilesToLoad != null && sunFilesToLoad.Length > 0)
             {
-                foreach (string file in sunFilesToLoad)
-                    LoadFile(file);
+                Loaded += (_, __) =>
+                {
+                    foreach (string file in sunFilesToLoad)
+                        LoadFile(file);
+                };
             }
         }
 
@@ -85,21 +89,18 @@ namespace SunFileManager.GUI
 
             ApplicationThemeManager.Apply(theme);
 
-            // Replace ALL ThemesDictionary instances — ApplicationThemeManager.Apply() may
-            // add a second one at the end of MergedDictionaries, and if only the first is
-            // replaced the last (stale) entry wins, leaving the wrong theme applied.
+            // Apply() may add a ThemesDictionary without removing the previous one.
+            // Keep app resources at exactly one ThemesDictionary to prevent accumulation.
             var dicts = Application.Current.Resources.MergedDictionaries;
-            for (int i = 0; i < dicts.Count; i++)
-            {
+            for (int i = dicts.Count - 1; i >= 0; i--)
                 if (dicts[i] is ThemesDictionary)
-                    dicts[i] = new ThemesDictionary { Theme = theme };
-            }
+                    dicts.RemoveAt(i);
+            dicts.Add(new ThemesDictionary { Theme = theme });
 
+            // Update DWM title bar for every open window (not handled by ApplicationThemeManager).
             foreach (Window w in Application.Current.Windows)
-            {
                 if (w is SunFluentWindow sfw)
                     sfw.ApplyDwmTheme();
-            }
         }
 
         public void ApplySettings()
@@ -124,11 +125,13 @@ namespace SunFileManager.GUI
         // ── File operations ───────────────────────────────────────────────────────
         public async void OpenFiles()
         {
+            string sunPath = Program.UserSettings.SunFilesPath;
             var ofd = new Microsoft.Win32.OpenFileDialog
             {
                 Title = "Choose SunFiles",
                 Filter = "SunFile|*.sun",
-                Multiselect = true
+                Multiselect = true,
+                InitialDirectory = Directory.Exists(sunPath) ? sunPath : null
             };
             if (ofd.ShowDialog() != true) return;
 
@@ -169,9 +172,6 @@ namespace SunFileManager.GUI
             SunFile f = await manager.LoadSunFileAsync(sunfileToLoad);
             if (f != null)
                 manager.AddLoadedSunFileToTreeView(f, Dispatcher.CurrentDispatcher, null);
-            else
-                MessageBox.Show($"Failed to load file: {Path.GetFileName(sunfileToLoad)}", "Load Error",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         // ── Tree node helpers ─────────────────────────────────────────────────────
@@ -192,16 +192,49 @@ namespace SunFileManager.GUI
         public void RemoveSelectedNodes(SunNode node = null)
         {
             node ??= GetSelectedSunNode();
-            node?.DeleteNode();
+            if (node == null) return;
+            if (!ConfirmNodeDeletion(node)) return;
+            node.DeleteNode();
         }
 
         public void RemoveChildNodes(SunNode parent = null)
         {
             parent ??= GetSelectedSunNode();
             if (parent == null) return;
+            int count = parent.Children.Count;
+            if (count > 0 && Program.UserSettings.NodeWarnings)
+            {
+                var result = MessageBox.Show(
+                    $"This will permanently delete all {count} child node{(count == 1 ? "" : "s")} of \"{parent.Name}\". Continue?",
+                    "Remove All Children", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result != MessageBoxResult.Yes) return;
+            }
             foreach (SunNode node in parent.Children.ToList())
                 node?.DeleteNode(true);
             parent.Children.Clear();
+        }
+
+        private static bool ConfirmNodeDeletion(SunNode node)
+        {
+            bool isBinaryData = node.Tag is SunCanvasProperty || node.Tag is SunSoundProperty;
+            int childCount = node.Children.Count;
+
+            if (!isBinaryData && childCount == 0)
+                return true;
+
+            if (!Program.UserSettings.NodeWarnings)
+                return true;
+
+            string message;
+            if (isBinaryData && childCount > 0)
+                message = $"Delete \"{node.Name}\"? This will remove its binary data and {childCount} child node{(childCount == 1 ? "" : "s")}.";
+            else if (isBinaryData)
+                message = $"Delete \"{node.Name}\"? This will permanently remove its binary data.";
+            else
+                message = $"Delete \"{node.Name}\"? This will also delete {childCount} child node{(childCount == 1 ? "" : "s")}.";
+
+            return MessageBox.Show(message, "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning)
+                   == MessageBoxResult.Yes;
         }
 
         public void RenameSelectedNode(SunNode node = null)
@@ -220,6 +253,13 @@ namespace SunFileManager.GUI
 
             if (!frmNameInputBox.Show(title, out string newName, node.Name))
                 return;
+
+            if (node.Parent != null && node.Parent.Children.Any(
+                    c => c != node && string.Equals(c.Name, newName, StringComparison.OrdinalIgnoreCase)))
+            {
+                MessageBox.Show($"A node named \"{newName}\" already exists at this level.", "Duplicate Name", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             node.Rename(newName);
             txtPropertyName.Text = newName;
@@ -521,6 +561,17 @@ namespace SunFileManager.GUI
                     txtPropertyValueMulti.Text = linkp.Value;
                     break;
 
+                case SunSubProperty subp
+                    when subp.SunProperties.Count == 1 && subp.SunProperties[0] is SunCanvasProperty:
+                    var soloCanvas = (SunCanvasProperty)subp.SunProperties[0];
+                    panningImageViewer.Visibility = Visibility.Visible;
+                    panningImageViewer.Canvas = soloCanvas.GetBitmap();
+                    var soloOrigin = soloCanvas["origin"] as SunLibrary.SunFileLib.Properties.SunVectorProperty;
+                    panningImageViewer.OriginPoint = soloOrigin != null
+                        ? new System.Drawing.Point(soloOrigin.X.Value, soloOrigin.Y.Value)
+                        : (System.Drawing.Point?)null;
+                    break;
+
                 case SunCanvasProperty canvasp:
                     panningImageViewer.Visibility = Visibility.Visible;
                     panningImageViewer.Canvas = canvasp.GetBitmap();
@@ -750,6 +801,7 @@ namespace SunFileManager.GUI
             foreach (string file in files)
                 if (Path.GetExtension(file).Equals(".sun", StringComparison.OrdinalIgnoreCase))
                     LoadFile(file);
+            e.Handled = true;
         }
 
         private void sunTreeView_DragEnter(object sender, DragEventArgs e) => Window_DragEnter(sender, e);
