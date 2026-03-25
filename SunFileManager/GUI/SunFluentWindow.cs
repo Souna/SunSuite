@@ -7,9 +7,8 @@ namespace SunFileManager.GUI
 {
     /// <summary>
     /// Base window class for all SunFileManager windows.
-    /// Automatically applies the correct DWM dark/light mode attribute
-    /// when the window's HWND is ready, and exposes ApplyDwmTheme()
-    /// so ApplySettings() can refresh it for already-open windows.
+    /// Applies the correct DWM dark/light title-bar attribute when the HWND is ready,
+    /// and exposes ApplyDwmTheme() so ApplyTheme() can refresh already-open windows.
     /// </summary>
     public class SunFluentWindow : FluentWindow
     {

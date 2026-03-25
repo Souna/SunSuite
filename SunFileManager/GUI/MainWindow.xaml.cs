@@ -89,21 +89,18 @@ namespace SunFileManager.GUI
 
             ApplicationThemeManager.Apply(theme);
 
-            // Replace ALL ThemesDictionary instances — ApplicationThemeManager.Apply() may
-            // add a second one at the end of MergedDictionaries, and if only the first is
-            // replaced the last (stale) entry wins, leaving the wrong theme applied.
+            // Apply() may add a ThemesDictionary without removing the previous one.
+            // Keep app resources at exactly one ThemesDictionary to prevent accumulation.
             var dicts = Application.Current.Resources.MergedDictionaries;
-            for (int i = 0; i < dicts.Count; i++)
-            {
+            for (int i = dicts.Count - 1; i >= 0; i--)
                 if (dicts[i] is ThemesDictionary)
-                    dicts[i] = new ThemesDictionary { Theme = theme };
-            }
+                    dicts.RemoveAt(i);
+            dicts.Add(new ThemesDictionary { Theme = theme });
 
+            // Update DWM title bar for every open window (not handled by ApplicationThemeManager).
             foreach (Window w in Application.Current.Windows)
-            {
                 if (w is SunFluentWindow sfw)
                     sfw.ApplyDwmTheme();
-            }
         }
 
         public void ApplySettings()
