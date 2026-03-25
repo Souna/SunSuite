@@ -87,26 +87,23 @@ namespace SunLibrary.SunFileLib.Properties
 
         #region Cast Values
 
-        public override int GetInt() => 0;
+        public override int GetInt() => LinkValue?.GetInt() ?? 0;
 
-        public override short GetShort() => 0;
+        public override short GetShort() => LinkValue?.GetShort() ?? 0;
 
-        public override long GetLong() => 0;
+        public override long GetLong() => LinkValue?.GetLong() ?? 0;
 
-        public override float GetFloat() => 0f;
+        public override float GetFloat() => LinkValue?.GetFloat() ?? 0f;
 
-        public override double GetDouble() => 0d;
+        public override double GetDouble() => LinkValue?.GetDouble() ?? 0d;
 
-        public override string GetString()
-        {
-            return val;
-        }
+        public override string GetString() => val;  // raw path string; use LinkValue for the resolved target
 
-        public override Point GetPoint() => Point.Empty;
+        public override Point GetPoint() => LinkValue?.GetPoint() ?? Point.Empty;
 
-        public override Bitmap GetBitmap() => null;
+        public override Bitmap GetBitmap() => LinkValue?.GetBitmap();
 
-        public override byte[] GetBytes() => null;
+        public override byte[] GetBytes() => LinkValue?.GetBytes();
 
         public override string ToString()
         {
@@ -156,7 +153,7 @@ namespace SunLibrary.SunFileLib.Properties
         public string Value
         {
             get { return val; }
-            set { val = value; ParentImage.Changed = true; }
+            set { val = value; linkValue = null; ParentImage.Changed = true; }
         }
 
         public SunObject LinkValue
@@ -165,29 +162,17 @@ namespace SunLibrary.SunFileLib.Properties
             {
                 if (linkValue == null)
                 {
-                    string[] paths = val.Split('/');
                     linkValue = parent;
-                    foreach (string path in paths)
+                    foreach (string path in val.Split('/'))
                     {
+                        if (linkValue == null) break;
                         if (path == "..")
-                        {
-                            linkValue = Parent;
-                        }
-                        else
-                        {
-                            if (linkValue is SunProperty)
-                                linkValue = ((SunProperty)linkValue)[path];
-                            else if (linkValue is SunImage)
-                                linkValue = ((SunImage)linkValue)[path];
-                            else if (linkValue is SunDirectory)
-                                linkValue = ((SunDirectory)linkValue)[path];
-                            else
-                            {
-                                ErrorLogger.Log(ErrorLevel.Critical, "Link property is corrupted at property: " + FullPath);
-                                return null;
-                            }
-                        }
+                            linkValue = linkValue.Parent;
+                        else if (path.Length > 0)
+                            linkValue = linkValue[path];
                     }
+                    if (linkValue == null)
+                        ErrorLogger.Log(ErrorLevel.Critical, "Link property could not be resolved: " + FullPath + " -> " + val);
                 }
                 return linkValue;
             }

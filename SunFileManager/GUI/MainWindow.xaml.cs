@@ -559,6 +559,7 @@ namespace SunFileManager.GUI
                     btnApplyPropertyChanges.Visibility = Visibility.Visible;
                     txtPropertyName.Text = linkp.Name;
                     txtPropertyValueMulti.Text = linkp.Value;
+                    DisplayLinkTarget(linkp);
                     break;
 
                 case SunSubProperty subp
@@ -597,6 +598,40 @@ namespace SunFileManager.GUI
             }
 
             UpdateSelectionTypeLabel();
+        }
+
+        private void DisplayLinkTarget(SunLinkProperty linkp)
+        {
+            var target = linkp.LinkValue;
+            if (target == null) return;
+
+            switch (target)
+            {
+                case SunCanvasProperty canvasp:
+                    panningImageViewer.Visibility = Visibility.Visible;
+                    panningImageViewer.Canvas = canvasp.GetBitmap();
+                    var originProp = canvasp["origin"] as SunLibrary.SunFileLib.Properties.SunVectorProperty;
+                    panningImageViewer.OriginPoint = originProp != null
+                        ? new System.Drawing.Point(originProp.X.Value, originProp.Y.Value)
+                        : (System.Drawing.Point?)null;
+                    break;
+
+                case SunSubProperty subp
+                    when subp.SunProperties?.Count == 1 && subp.SunProperties[0] is SunCanvasProperty:
+                    var soloCanvas = (SunCanvasProperty)subp.SunProperties[0];
+                    panningImageViewer.Visibility = Visibility.Visible;
+                    panningImageViewer.Canvas = soloCanvas.GetBitmap();
+                    var soloOrigin = soloCanvas["origin"] as SunLibrary.SunFileLib.Properties.SunVectorProperty;
+                    panningImageViewer.OriginPoint = soloOrigin != null
+                        ? new System.Drawing.Point(soloOrigin.X.Value, soloOrigin.Y.Value)
+                        : (System.Drawing.Point?)null;
+                    break;
+
+                case SunSoundProperty soundp:
+                    soundPlayer.Visibility = Visibility.Visible;
+                    soundPlayer.SoundProperty = soundp;
+                    break;
+            }
         }
 
         private void ShowScalar(string name, string value)
@@ -660,7 +695,9 @@ namespace SunFileManager.GUI
                 case SunStringProperty strp:
                     strp.Value = txtPropertyValueMulti.Text; break;
                 case SunLinkProperty linkp:
-                    linkp.Value = txtPropertyValueMulti.Text; break;
+                    linkp.Value = txtPropertyValueMulti.Text;
+                    DisplayLinkTarget(linkp);
+                    break;
                 case SunVectorProperty vecp:
                     if (int.TryParse(txtVectorX.Text, out int xv)) vecp.X.Value = xv;
                     if (int.TryParse(txtVectorY.Text, out int yv)) vecp.Y.Value = yv;
