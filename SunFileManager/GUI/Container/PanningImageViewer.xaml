@@ -9,10 +9,13 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" BorderBrush="{DynamicResource ControlElevationBorderBrush}" BorderThickness="1">
-            <ScrollViewer x:Name="scrollViewer"
-                          HorizontalScrollBarVisibility="Auto"
-                          VerticalScrollBarVisibility="Auto"
-                          PanningMode="Both">
+            <Grid>
+                <Rectangle x:Name="bgRect"/>
+                <ScrollViewer x:Name="scrollViewer"
+                              Background="Transparent"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Auto"
+                              PanningMode="Both">
                 <Grid x:Name="contentGrid">
                     <Grid.LayoutTransform>
                         <ScaleTransform x:Name="imageScale" ScaleX="1" ScaleY="1"/>
@@ -30,7 +33,8 @@
                             VerticalAlignment="Top"
                             IsHitTestVisible="False" />
                 </Grid>
-            </ScrollViewer>
+                </ScrollViewer>
+            </Grid>
         </Border>
 
         <!-- Zoom controls -->
@@ -40,6 +44,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="36"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="−" FontSize="14" VerticalAlignment="Center"
                        Margin="0,0,4,0" Cursor="Hand"
@@ -55,6 +60,13 @@
             <TextBlock Grid.Column="3" x:Name="zoomLabel" Text="100%"
                        VerticalAlignment="Center" TextAlignment="Right"
                        FontSize="11"/>
+            <Button Grid.Column="4" x:Name="btnBgToggle"
+                    Width="22" Height="22" Padding="0" Margin="6,0,0,0"
+                    VerticalAlignment="Center"
+                    Click="btnBgToggle_Click"
+                    ToolTip="Toggle background (Checkerboard / Dark / Light)">
+                <Rectangle x:Name="bgPreview" Width="12" Height="12"/>
+            </Button>
         </Grid>
     </Grid>
 </UserControl>

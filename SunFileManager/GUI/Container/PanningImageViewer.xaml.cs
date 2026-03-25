@@ -19,9 +19,56 @@ namespace SunFileManager.GUI.Container
         /// <summary>Raised when the user double-clicks the image.</summary>
         public event MouseButtonEventHandler ImageDoubleClicked;
 
+        // ── Background modes ──────────────────────────────────────────────────────
+        private enum ViewerBackground { Checkerboard, Dark, Light }
+        private ViewerBackground _bgMode = ViewerBackground.Checkerboard;
+
+        private static readonly Brush _checkerBrush = CreateCheckerBrush();
+        private static readonly Brush _darkBrush   = new SolidColorBrush(Color.FromRgb(45,  45,  45 ));
+        private static readonly Brush _lightBrush  = new SolidColorBrush(Color.FromRgb(210, 210, 210));
+
+        private static Brush CreateCheckerBrush()
+        {
+            const int s = 8; // pixels per square
+            var light = new SolidColorBrush(Color.FromRgb(204, 204, 204));
+            var dark  = new SolidColorBrush(Color.FromRgb(148, 148, 148));
+            var drawing = new DrawingGroup();
+            drawing.Children.Add(new GeometryDrawing(light, null, new RectangleGeometry(new Rect(0, 0, s * 2, s * 2))));
+            drawing.Children.Add(new GeometryDrawing(dark,  null, new RectangleGeometry(new Rect(s, 0, s, s))));
+            drawing.Children.Add(new GeometryDrawing(dark,  null, new RectangleGeometry(new Rect(0, s, s, s))));
+            var brush = new DrawingBrush
+            {
+                Drawing      = drawing,
+                TileMode     = TileMode.Tile,
+                Viewport     = new Rect(0, 0, s * 2, s * 2),
+                ViewportUnits = BrushMappingMode.Absolute,
+            };
+            brush.Freeze();
+            return brush;
+        }
+
+        private void ApplyBackground()
+        {
+            Brush brush = _bgMode switch
+            {
+                ViewerBackground.Dark  => _darkBrush,
+                ViewerBackground.Light => _lightBrush,
+                _                      => _checkerBrush,
+            };
+            bgRect.Fill = brush;
+            bgPreview.Fill = brush;
+        }
+
+        private void btnBgToggle_Click(object sender, RoutedEventArgs e)
+        {
+            _bgMode = (ViewerBackground)(((int)_bgMode + 1) % 3);
+            ApplyBackground();
+        }
+
         public PanningImageViewer()
         {
             InitializeComponent();
+            ApplyBackground();
             zoomSlider.Loaded += (s, e) =>
             {
                 var thumb = (zoomSlider.Template.FindName("PART_Track", zoomSlider) as Track)?.Thumb;
